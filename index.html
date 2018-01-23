@@ -2,8 +2,18 @@
   <head>
     <script src="./node_modules/axios/dist/axios.js"></script>
     <script src="app.js"></script>
+    <script src="game.js"></script>
   </head>
   <body>
-    
+    <script>
+      document.addEventListener('DOMContentLoaded', function(e) {
+        console.log('up and running');
+
+        var game = new Game();
+        game.initGame(5);
+        game.pGame();
+
+      });
+    </script>
   </body>
 </html>
