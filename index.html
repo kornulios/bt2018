@@ -1,18 +1,25 @@
 <html>
   <head>
     <script src="./node_modules/axios/dist/axios.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/player.js"></script>
     <script src="js/game.js"></script>
   </head>
   <body>
     <script>
+      //main game object
+      var game;
+
       document.addEventListener('DOMContentLoaded', function(e) {
         console.log('up and running');
 
-        var game = new Game();
-        game.initGame(5);
-        game.playGame();
-
+        game = new Game();
+        getData().then(function(res){
+          game.initGame(res.data.players);
+          game.playGame();
+        }).catch(function(err){
+          console.log('Data load failed');
+        });
       });
     </script>
   </body>

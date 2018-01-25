@@ -1,33 +1,21 @@
-function Player(args) {
-  this.speed = args.speed,
-  this.x = 0,
-  this.y = 0;
-  this.distance = 0;
-  this.onTrack = false;
-  this.track = [];
+class Player {
+  constructor(args) {
+    this.speed = args.speed || 0;
+    this.x = 0;
+    this.y = 0;
+    this.name = args.name || 'unknown';
+  }
 
-  this.getPlayer = function() {
-    return this;
+  setSpeed(speed) {
+    return this.speed = speed;
+  }
+
+  getCoords() {
+    return {x: this.x, y: this.y};
+  }
+
+  run() {
+    console.log(this.name, 'says: I\'m running with speed ' + this.speed);
   }
 }
 
-Player.prototype.start = function(trackMap) {
-  this.distance = 0;
-  this.onTrack = true;
-}
-
-Player.prototype.finish = function() {
-  this.onTrack = false;
-}
-
-Player.prototype.run = function(trackMap) {
-  console.log('Im running with speed ' + this.speed);
-}
-
-Player.prototype.setSpeed = function(speed) {
-  return this.speed = speed;
-}
-
-Player.prototype.getCoords = function() {
-  return { x: this.x, y: this.y };
-}
