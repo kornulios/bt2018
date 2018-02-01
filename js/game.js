@@ -6,7 +6,7 @@ function Game() {
   this.initGame = function (newPlayers) { //array with players
     // var newPlayers = numPlayers || 1;
     for (var i = 0; i < newPlayers.length; i++) {
-      players.push(new Player({ name: newPlayers[i].name , speed: Math.floor(Math.random() * 40 + 20) }));
+      players.push(new Player({ name: newPlayers[i].name , speed: Math.round((Math.random() * 14  + 8) * 100) / 100 }));
     }
   }
 
