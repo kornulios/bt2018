@@ -7,6 +7,11 @@ function renderPlayer(player) {
   mainView.innerHTML = tpl;
 }
 
+function renderGameTurn(turn) {
+  var view = document.querySelector("#turn-box");
+  view.innerHTML = 'Game turn: ' + turn;
+}
+
 function getMainView() {
   return document.querySelector("#main-view");
 }
