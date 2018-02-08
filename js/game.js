@@ -24,11 +24,15 @@ function Game() {
 
       tickNum++;
       if (tickNum > maxTicks) clearInterval(ticker);
-    }, 1000);
+    }, 333);
     
   }
 
   this.renderPlayers = function() {
-    renderPlayer(players[0]);
+    clearMainView();
+    players.forEach(function(player, i){
+      renderPlayer(player);
+    });
+    // renderPlayer(players[0]);
   }
 }
