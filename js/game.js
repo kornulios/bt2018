@@ -24,7 +24,16 @@ function Game() {
     ticker = setInterval(function () {
       gameTimer += 0.1;
       for (var i = 0; i < players.length; i++) {
+        var oldDist = players[i].getDistance();
+        var newDist; 
+        var wpoints = track.getWaypoints();
         players[i].run();
+        newDist = players[i].getDistance();
+        for (var j=0; j<wpoints.length; j++) {
+          if(oldDist < wpoints[j] && newDist > wpoints[j]) {
+            console.log('Push result ' + players[i].getPlayer().name + ' on WP ' + j + ' time ' + gameTimer);
+          }  
+        }
       }
 
       me.renderPlayers();

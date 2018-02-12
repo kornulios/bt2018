@@ -7,4 +7,8 @@ class Track {
   getTrackLength() {
     return this.trackLength;
   }
+
+  getWaypoints() {
+    return this.waypoints;
+  }
 }
