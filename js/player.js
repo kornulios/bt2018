@@ -21,6 +21,10 @@ class Player {
     // console.log(this.name, 'says: I\'m running with speed ' + this.speed, "Distance passed", this.distance, 'm');
   }
 
+  getDistance() {
+    return this.distance;
+  }
+
   getPlayer() {
     return {
       name: this.name,

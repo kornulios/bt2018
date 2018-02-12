@@ -20,3 +20,8 @@ function clearMainView() {
   var mainView = getMainView();
   mainView.innerHTML = "";
 }
+
+function setGameStatus(message) {
+  var view = document.querySelector("#turn-box");
+  view.innerHTML = message;
+}
