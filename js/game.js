@@ -1,10 +1,11 @@
 //Game controller
 
 function Game() {
-  var players = [];
-  var track; 
-  var gameTimer = 0;
-  var gameRuns = false;
+  var players = [],
+    track,
+    gameTimer = 0,
+    gameRuns = false,
+    gameResults = {};
 
   this.initGame = function (newPlayers) { //array with players
     track = new Track();
@@ -19,6 +20,7 @@ function Game() {
     var tickNum = 0, maxTicks = 5;
     gameRuns = true;
 
+    //main game loop
     ticker = setInterval(function () {
       gameTimer += 0.1;
       for (var i = 0; i < players.length; i++) {
@@ -41,7 +43,7 @@ function Game() {
 
   this.checkGameEnd = function () {
     for (i = 0; i < players.length; i++) {
-      if (players[i].getDistance() < 100) return true;
+      if (players[i].getDistance() < track.getTrackLength()) return true;
     }
     return false;
   }
