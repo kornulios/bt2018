@@ -18,7 +18,10 @@ class Player {
   run() {
     var _dp = (this.speed / 3600) * 1000;
     this.distance += Math.round(_dp * 100) / 100;
-    // console.log(this.name, 'says: I\'m running with speed ' + this.speed, "Distance passed", this.distance, 'm');
+  }
+
+  stop() {
+    return this.speed = 0;
   }
 
   getDistance() {

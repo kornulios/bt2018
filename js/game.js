@@ -5,10 +5,12 @@ function Game() {
     track,
     gameTimer = 0,
     gameRuns = false,
+    gameSpeed = 100,
     gameResults = {};
 
   this.initGame = function (newPlayers) { //array with players
     track = new Track();
+    results = new Results();
     for (var i = 0; i < newPlayers.length; i++) {
       players.push(new Player({ name: newPlayers[i].name, speed: Math.round((Math.random() * 14 + 8) * 100) / 100 }));
     }
@@ -22,18 +24,34 @@ function Game() {
 
     //main game loop
     ticker = setInterval(function () {
+
       gameTimer += 0.1;
+
       for (var i = 0; i < players.length; i++) {
         var oldDist = players[i].getDistance();
         var newDist; 
         var wpoints = track.getWaypoints();
-        players[i].run();
-        newDist = players[i].getDistance();
+        var player = players[i];
+
+        player.run();
+        newDist = player.getDistance();
+
         for (var j=0; j<wpoints.length; j++) {
           if(oldDist < wpoints[j] && newDist > wpoints[j]) {
-            console.log('Push result ' + players[i].getPlayer().name + ' on WP ' + j + ' time ' + gameTimer);
+            console.log('Push result ' + players[i].getPlayer().name + ' on WP ' + j + ' time ' + gameTimer.toFixed(1));
+            results.pushResult(
+              player.name,
+              j,
+              gameTimer.toFixed(1)
+            );
           }  
         }
+
+        //stop condition
+        if (newDist > track.getTrackLength()) {
+          players[i].stop();
+        }
+
       }
 
       me.renderPlayers();
@@ -46,7 +64,7 @@ function Game() {
         clearInterval(ticker);
         setGameStatus('Game ended');
       }
-    }, 333);
+    }, gameSpeed);
 
   }
 
