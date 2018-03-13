@@ -8,12 +8,19 @@ function Game() {
     gameSpeed = 100,
     gameResults = {};
 
+  var gm = this;
+
   this.initGame = function (newPlayers) { //array with players
     track = new Track();
     results = new Results();
     for (var i = 0; i < newPlayers.length; i++) {
       players.push(new Player({ name: newPlayers[i].name, speed: Math.round((Math.random() * 14 + 8) * 100) / 100 }));
     }
+
+    //test window events
+    window.addEventListener('message', function (e) {
+      console.log('Hello, message was received');
+    });
   }
 
   this.playGame = function () {
@@ -28,30 +35,20 @@ function Game() {
       gameTimer += 0.1;
 
       for (var i = 0; i < players.length; i++) {
-        var oldDist = players[i].getDistance();
-        var newDist; 
-        var wpoints = track.getWaypoints();
+
         var player = players[i];
+        var runStatus;
 
-        player.run();
-        newDist = player.getDistance();
-
-        for (var j=0; j<wpoints.length; j++) {
-          if(oldDist < wpoints[j] && newDist > wpoints[j]) {
-            console.log('Push result ' + players[i].getPlayer().name + ' on WP ' + j + ' time ' + gameTimer.toFixed(1));
-            results.pushResult(
-              player.name,
-              j,
-              gameTimer.toFixed(1)
-            );
-          }  
+        if (player.running) {
+          player.run();
+          runStatus = track.isWaypointPassed(player.getPlayer());
+          if (runStatus == -2) {
+            player.stop();
+          } else if (runStatus > -1) {
+            results.pushResult(player.name, runStatus, gameTimer.toFixed(1));
+          }
         }
-
-        //stop condition
-        if (newDist > track.getTrackLength()) {
-          players[i].stop();
-        }
-
+        
       }
 
       me.renderPlayers();

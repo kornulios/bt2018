@@ -1,7 +1,7 @@
 // renders one player
 function renderPlayer(player) {
   var me = player.getPlayer();
-  var tpl = "<div class='row'><div class='cell'>"+me.name+"</div><div class='cell'>"+me.distance+"</dev></div>";
+  var tpl = "<div class='row'><div class='cell'>"+me.name+"</div><div class='cell'>"+me.distance+"</div></div>";
   var mainView = getMainView();
 
   mainView.innerHTML = mainView.innerHTML + tpl;
