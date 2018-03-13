@@ -60,6 +60,7 @@ function Game() {
       if (!gameRuns) {
         clearInterval(ticker);
         setGameStatus('Game ended');
+        renderResults(results);
       }
     }, gameSpeed);
 

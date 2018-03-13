@@ -25,4 +25,12 @@ class Results {
       if (res.waypoint == wp) return true;
     });
   }
+
+  getMaxWaypoint() {
+    var max = 0;
+    this.data.forEach(function(val) {       //try to use reduce here...
+      if (val.waypoint > max) max = val.waypoint;
+    });
+    return max+1;
+  }
 }

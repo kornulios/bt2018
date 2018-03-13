@@ -12,6 +12,13 @@ function renderGameTurn(turn) {
   view.innerHTML = 'Game turn: ' + turn;
 }
 
+function renderResults(results) {
+  var mainView = getMainView();
+  var headerTpl = "<div>Name</div>";
+
+  mainView.innerHTML = mainView.innerHTML + headerTpl;
+}
+
 function getMainView() {
   return document.querySelector("#main-view");
 }
