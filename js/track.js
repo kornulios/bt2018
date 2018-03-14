@@ -13,6 +13,10 @@ class Track {
     return this.waypoints;
   }
 
+  getWaypointsNum() {
+    return this.waypoints.length;
+  }
+
   isWaypointPassed(player) {    //return number of passed waypoint or -1
     for(var i=0; i<this.waypoints.length; i++){
       if(player.distance > this.waypoints[i] && (player.distance - player.dp) <= this.waypoints[i]) {

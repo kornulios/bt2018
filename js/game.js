@@ -12,7 +12,7 @@ function Game() {
 
   this.initGame = function (newPlayers) { //array with players
     track = new Track();
-    results = new Results();
+    results = new Results(track);
     for (var i = 0; i < newPlayers.length; i++) {
       players.push(new Player({ name: newPlayers[i].name, speed: Math.round((Math.random() * 14 + 8) * 100) / 100 }));
     }

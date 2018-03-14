@@ -1,6 +1,7 @@
 class Results {
-  constructor() {
+  constructor(track) {
     this.data = [];
+    this.waypointsNum = track.getWaypointsNum();
   }
 
   getNextRID() {
@@ -26,11 +27,7 @@ class Results {
     });
   }
 
-  getMaxWaypoint() {
-    var max = 0;
-    this.data.forEach(function(val) {       //try to use reduce here...
-      if (val.waypoint > max) max = val.waypoint;
-    });
-    return max+1;
+  maxWaypointNum() {
+    return this.waypointsNum;
   }
 }
