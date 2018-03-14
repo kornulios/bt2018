@@ -1,6 +1,11 @@
 .cell {
-  display: inline-block;
+  /* display: inline-block; */
   width: 60px;
   color: red;
   margin-left: 5px;
+}
+
+.row div {
+  display: inline-block;
+  width: 100px;
 }

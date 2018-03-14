@@ -14,9 +14,25 @@ function renderGameTurn(turn) {
 
 function renderResults(results) {
   var mainView = getMainView();
-  var headerTpl = "<div>Name</div>";
+  var players = results.playerNames();
+  var mainTpl = "";
+  var headerTpl = "<div class='head-row'>Name</div>";
+  for (var i = 0; i<results.maxWaypointNum(); i++) {
+    headerTpl += `<div>WP_${i}</div>`;
+  }
 
-  mainView.innerHTML = mainView.innerHTML + headerTpl;
+  headerTpl = "<div class='row'>" + headerTpl + "</div>";
+
+  players.forEach(function(name){
+    var rslt = results.getPlayerResults(name);
+    console.log(rslt);
+    var resTpl = "";
+    rslt.forEach(function(r){
+      resTpl += "<div>" + r.time + "</div>";
+    });
+    mainTpl += `<div class='row'><div>${name}</div>${resTpl}</div>`;
+  });
+  mainView.innerHTML = headerTpl + mainTpl;
 }
 
 function getMainView() {

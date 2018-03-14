@@ -27,6 +27,22 @@ class Results {
     });
   }
 
+  getPlayerResults(name) {
+    return this.data.filter(function(res, i){
+      if(res.playerName == name) return true;
+    });
+  }
+
+  playerNames() {
+    var res = [];
+    this.data.forEach(function(val, i) {
+      if (res.indexOf(val.playerName) == -1) {
+        res.push(val.playerName);
+      }
+    });
+    return res;
+  }
+
   maxWaypointNum() {
     return this.waypointsNum;
   }

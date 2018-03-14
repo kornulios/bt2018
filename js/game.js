@@ -42,13 +42,12 @@ function Game() {
         if (player.running) {
           player.run();
           runStatus = track.isWaypointPassed(player.getPlayer());
-          if (runStatus == -2) {
-            player.stop();
-          } else if (runStatus > -1) {
+          if (runStatus > -1) {
             results.pushResult(player.name, runStatus, gameTimer.toFixed(1));
           }
+          if (runStatus == track.getWaypointsNum - 1) player.stop();
         }
-        
+
       }
 
       me.renderPlayers();
