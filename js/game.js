@@ -35,22 +35,26 @@ function Game() {
       gameTimer += 0.1;
 
       for (var i = 0; i < players.length; i++) {
-
         var player = players[i];
         var runStatus;
-
         if (player.running) {
           player.run();
           runStatus = track.isWaypointPassed(player.getPlayer());
-          if (runStatus > -1) {
+          if (runStatus !== -1) {
             results.pushResult(player.name, runStatus, gameTimer.toFixed(1));
+            if (runStatus == track.getWaypointsNum() - 1) player.stop();
           }
-          if (runStatus == track.getWaypointsNum - 1) player.stop();
+          if (track.passShootingRange(player.getPlayer())) {
+            player.shoot();
+          }
+        } else if (player.shooting) {
+          player.shoot();
         }
-
       }
 
+      //render graphics
       me.renderPlayers();
+      renderResults(results);
       renderGameTurn(tickNum);
 
       gameRuns = me.checkGameEnd();
@@ -59,7 +63,7 @@ function Game() {
       if (!gameRuns) {
         clearInterval(ticker);
         setGameStatus('Game ended');
-        renderResults(results);
+        
       }
     }, gameSpeed);
 

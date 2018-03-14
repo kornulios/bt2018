@@ -1,7 +1,8 @@
 class Track {
   constructor(args) {
-    this.trackLength = 100;
-    this.waypoints = [25, 50, 75, 100];   //waypoint distance from start
+    this.trackLength = 400;
+    this.shootingRange = 250;
+    this.waypoints = [100, 200, 300, 400];   //waypoint distance from start
   }
 
   getTrackLength() {
@@ -24,5 +25,12 @@ class Track {
       }
     }
     return -1;  //no wp passed
+  }
+
+  passShootingRange(player) {
+    if(player.distance > this.shootingRange && (player.distance - player.dp) <= this.shootingRange) {
+      return true;
+    }
+    return false;
   }
 }
