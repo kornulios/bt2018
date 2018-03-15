@@ -10,7 +10,7 @@ class View {
     this.clearMainView();
     for (let p of players) {
       let tpl = `<div>${p.name}</div><div>${p.speed}</div><div>${p.status}
-        </div><div>(${p.misses})</div><div>${p.distance}m</div>`;
+        </div><div>(${p.misses})</div><div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
       me.mainView.innerHTML += tpl;
     }

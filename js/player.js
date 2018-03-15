@@ -19,7 +19,7 @@ class Player {
   }
 
   getCoords() {
-    return {x: this.x, y: this.y};
+    return { x: this.x, y: this.y };
   }
 
   addPenalty(length) {
@@ -28,20 +28,24 @@ class Player {
   }
 
   run(track) {
-    this.status = 'Running';
     this._dp = (this.speed / 3600) * 1000;
-    if (this.penalty < 0) {
+    if (this.penalty <= 0) {
+      this.status = 'Running';
       this.distance += Math.round(this._dp * 100) / 100;
     } else {
+      this.status = 'Penalty Lap';
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
     }
-    let runStatus = { waypointPassed: track.isWaypointPassed(this.distance, this._dp), distancePassed: this.distance };
+    let runStatus = {
+      waypointPassed: track.isWaypointPassed(this.distance, this._dp),
+      shootingPassed: track.passShootingRange(this.distance, this._dp)
+    };
     return runStatus;
   }
 
   shoot() {
-    if(!this.shooting) {
+    if (!this.shooting) {
       this.status = 'Shooting';
       this.shooting = true;
       this.running = false;
@@ -71,6 +75,7 @@ class Player {
   stop() {
     // console.log(this.name + ' stopped');
     this.running = false;
+    this.status = 'Finished';
     this._dp = 0;
     return this.speed = 0;
   }

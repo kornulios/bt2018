@@ -16,7 +16,7 @@ class Track {
     return this.waypoints;
   }
 
-  getWaypointsNum() {
+  waypointsNum() {
     return this.waypoints.length;
   }
 
@@ -29,8 +29,8 @@ class Track {
     return -1;  //no wp passed
   }
 
-  passShootingRange(player) {
-    if(player.distance > this.shootingRange && (player.distance - player.dp) <= this.shootingRange) {
+  passShootingRange(newDist, prevDist) {
+    if(newDist > this.shootingRange && (newDist - prevDist) <= this.shootingRange) {
       return true;
     }
     return false;

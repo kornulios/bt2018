@@ -35,11 +35,13 @@ class Race {
     if (p.running) {
       let runStatus = p.run(me.track);
       if (runStatus.waypointPassed !== -1) {
-        console.log('wp passed');
         me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1));
-        if (runStatus.waypointPassed == me.track.waypointsNum - 1) {
+        if (p.getDistance() > me.track.getTrackLength()) {
           p.stop();
         }
+      }
+      if (runStatus.shootingPassed) {
+        p.shoot();
       }
     } else if (p.shooting) {
       let shootStatus = p.shoot();

@@ -1,7 +1,7 @@
 class Results {
   constructor(track) {
     this.data = [];
-    this.waypointsNum = track.getWaypointsNum();
+    this.waypointsNum = track.waypointsNum();
   }
 
   pushResult(name, wp, t) {
