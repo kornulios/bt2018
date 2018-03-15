@@ -4,6 +4,7 @@ function renderPlayer(player) {
   var tpl = "<div class='row'><div class='cell'>" + 
     me.name + "</div><div class='cell'>" + 
     me.distance + "</div>" + "<div>" + me.speed + "</div>" + "<div>" + me.status + "</div>"
+    + "<div>(" + me.misses + ")</div>"
     + "</div>";
   var mainView = getMainView();
 

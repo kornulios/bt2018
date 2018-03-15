@@ -4,10 +4,6 @@ class Results {
     this.waypointsNum = track.getWaypointsNum();
   }
 
-  getNextRID() {
-    return this.data.length;
-  }
-
   pushResult(name, wp, t) {
     var resObj = {
       playerName: name,

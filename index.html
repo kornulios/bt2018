@@ -1,38 +1,70 @@
 <html>
-  <head>
-    <script src="./node_modules/axios/dist/axios.js"></script>
-    <script src="js/view.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/result.js"></script>
-    <script src="js/track.js"></script>
-    <script src="js/player.js"></script>
-    <script src="js/game.js"></script>
 
-    <link rel="stylesheet" href="css/style.css">
+<head>
+  <script src="./node_modules/axios/dist/axios.js"></script>
+  <script src="js/view.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/result.js"></script>
+  <script src="js/track.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/game.js"></script>
 
-  </head>
-  <body>
-    <script>
-      //main game object
-      var game;
+  <link rel="stylesheet" href="css/style.css">
 
-      document.addEventListener('DOMContentLoaded', function(e) {
-        console.log('up and running');
+</head>
 
-        game = new Game();
-        getData().then(function(res){
-          game.initGame(res.data.players);
-          game.playGame();
-        }).catch(function(err){
-          console.log('Data load failed', err);
-        });
+<body>
+  <script>
+    //main game object
+    var game;
 
+    document.addEventListener('DOMContentLoaded', function (e) {
+      console.log('up and running');
+
+      game = new Game();
+      getData().then(function (res) {
+        game.initGame(res.data.players);
+        game.playGame();
+      }).catch(function (err) {
+        console.log('Data load failed', err);
       });
-    </script>
 
-    <button>Start</button>
-    <div id="turn-box"></div>
-    <div id="main-view"></div>
-    <div id="results-view"></div>
-  </body>
+      // var roads = [
+      //   "Alice's House-Bob's House", "Alice's House-Cabin",
+      //   "Alice's House-Post Office", "Bob's House-Town Hall",
+      //   "Daria's House-Ernie's House", "Daria's House-Town Hall",
+      //   "Ernie's House-Grete's House", "Grete's House-Farm",
+      //   "Grete's House-Shop", "Marketplace-Farm",
+      //   "Marketplace-Post Office", "Marketplace-Shop",
+      //   "Marketplace-Town Hall", "Shop-Town Hall"
+      // ];
+
+      // function buildGraph(edges) {
+      //   let graph = Object.create(null);
+      //   function addEdge(from, to) {
+      //     if (graph[from] == null) {
+      //       graph[from] = [to];
+      //     } else {
+      //       graph[from].push(to);
+      //     }
+      //   }
+      //   for (let [from, to] of edges.map(r => r.split("-"))) {
+      //     addEdge(from, to);
+      //     addEdge(to, from);
+      //   }
+      //   return graph;
+      // }
+
+      // var roadGraph = buildGraph(roads);
+      // console.log(roadGraph);
+
+    });
+  </script>
+
+  <button>Start</button>
+  <div id="turn-box"></div>
+  <div id="main-view"></div>
+  <div id="results-view"></div>
+</body>
+
 </html>

@@ -2,6 +2,7 @@ class Track {
   constructor(args) {
     this.trackLength = 400;
     this.shootingRange = 250;
+    this.penaltyLength = 30;
     this.waypoints = [100, 200, 300, 400];   //waypoint distance from start
   }
 
@@ -10,7 +11,6 @@ class Track {
   }
 
   getWaypoints() {
-    // window.dispatchEvent(new Event('message'));
     return this.waypoints;
   }
 

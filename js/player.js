@@ -5,6 +5,8 @@ class Player {
     this._dp = 0;
     this.x = 0;
     this.y = 0;
+    this.penalty = 0;
+    this.misses = 0;
     this.name = args.name || 'unknown';
     this.running = true;
     this.shooting = false;
@@ -21,7 +23,12 @@ class Player {
 
   run() {
     this._dp = (this.speed / 3600) * 1000;
-    this.distance += Math.round(this._dp * 100) / 100;
+    if (this.penalty < 0) {
+      this.distance += Math.round(this._dp * 100) / 100;
+    } else {
+      this.penalty -= Math.round(this._dp * 100) / 100;
+      this._dp = 0;
+    }
   }
 
   shoot() {
@@ -37,8 +44,12 @@ class Player {
     this.rifle.aimTime -= 0.1;
     if (this.rifle.aimTime < 0.1) {
       // fire
-      this.rifle.aimTime = Math.random();
       this.rifle.ammo -= 1;
+      if (Math.random() < 0.2) {
+        this.penalty += 50;
+        this.misses++;
+      }
+      this.rifle.aimTime = Math.random();
     }
     if (this.rifle.ammo == 0) {
       this.shooting = false;
@@ -72,6 +83,7 @@ class Player {
       distance: this.distance.toFixed(2),
       dp: this._dp,
       speed: this.speed,
+      misses: this.misses,
       status: this.running ? "Running" : (this.shooting ? "Shooting(" + this.rifle.ammo + ")" : "Finished")
     }
   }
