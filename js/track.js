@@ -4,6 +4,8 @@ class Track {
     this.shootingRange = 250;
     this.penaltyLength = 30;
     this.waypoints = [100, 200, 300, 400];   //waypoint distance from start
+
+    console.log('Track init complete');
   }
 
   getTrackLength() {
@@ -18,9 +20,9 @@ class Track {
     return this.waypoints.length;
   }
 
-  isWaypointPassed(player) {    //return number of passed waypoint or -1
+  isWaypointPassed(newDist, prevDist) {    //return number of passed waypoint or -1
     for(var i=0; i<this.waypoints.length; i++){
-      if(player.distance > this.waypoints[i] && (player.distance - player.dp) <= this.waypoints[i]) {
+      if(newDist > this.waypoints[i] && (newDist - prevDist) <= this.waypoints[i]) {
         return i;
       }
     }

@@ -11,6 +11,7 @@ class Player {
     this.running = true;
     this.shooting = false;
     this.rifle = {};
+    this.status = 'Not run';
   }
 
   setSpeed(speed) {
@@ -21,7 +22,12 @@ class Player {
     return {x: this.x, y: this.y};
   }
 
-  run() {
+  addPenalty(length) {
+    this.penalty += length;
+    return this.penalty;
+  }
+
+  run(track) {
     this._dp = (this.speed / 3600) * 1000;
     if (this.penalty < 0) {
       this.distance += Math.round(this._dp * 100) / 100;
@@ -29,6 +35,8 @@ class Player {
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
     }
+    let runStatus = { waypointPassed: track.isWaypointPassed(this.distance, this._dp), distancePassed: this.distance };
+    return runStatus;
   }
 
   shoot() {

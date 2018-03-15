@@ -1,19 +1,24 @@
 // renders one player
-function renderPlayer(player) {
-  var me = player.getPlayer();
-  var tpl = "<div class='row'><div class='cell'>" + 
-    me.name + "</div><div class='cell'>" + 
-    me.distance + "</div>" + "<div>" + me.speed + "</div>" + "<div>" + me.status + "</div>"
-    + "<div>(" + me.misses + ")</div>"
-    + "</div>";
-  var mainView = getMainView();
+class View {
+  constructor() {
+    this.mainView = document.querySelector('#main-view');
+    this.resultView = document.querySelector('#results-view');
+  }
 
-  mainView.innerHTML = mainView.innerHTML + tpl;
-}
+  renderPlayers(players) {
+    let me = this;
+    // console.log(players);
+    for (let p of players) {
+      let tpl = `<div>${p.name}</div><div>${p.speed}</div><div>${p.status}
+        </div><div>(${p.misses})</div><div>${p.distance}m</div>`;
+      tpl = `<div class="row">${tpl}</div>`;
+      me.mainView.innerHTML += tpl;
+    }
+  }
 
-function renderGameTurn(turn) {
-  var view = document.querySelector("#turn-box");
-  view.innerHTML = 'Game turn: ' + turn;
+  clearMainView() {
+    this.mainView.innerHTML = "";
+  }
 }
 
 function renderResults(results) {

@@ -7,7 +7,7 @@
   <script src="js/result.js"></script>
   <script src="js/track.js"></script>
   <script src="js/player.js"></script>
-  <script src="js/game.js"></script>
+  <script src="js/race.js"></script>
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -21,48 +21,49 @@
     document.addEventListener('DOMContentLoaded', function (e) {
       console.log('up and running');
 
+      class Game {
+        constructor() {
+          this.gameSpeed = 200;
+          this.gameTimer;
+          this.gameRunning = false;
+          this.view = new View();
+          this.race = Object.create(null);
+        }
+        createRace(players, track) {
+          this.race = new Race(players, track);
+          this.view.renderPlayers(this.race.players);
+        }
+        startGame() {
+          var me = this;
+          me.gameTimer = setInterval(function() {
+            if(!me.race.run()) clearInterval(me.gameTimer);
+            me.view.renderPlayers(me.race.players);
+          }, me.gameSpeed);
+            
+        }
+      }
       game = new Game();
+
       getData().then(function (res) {
-        game.initGame(res.data.players);
-        game.playGame();
+        game.createRace(res.data.players, new Track());
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
 
-      // var roads = [
-      //   "Alice's House-Bob's House", "Alice's House-Cabin",
-      //   "Alice's House-Post Office", "Bob's House-Town Hall",
-      //   "Daria's House-Ernie's House", "Daria's House-Town Hall",
-      //   "Ernie's House-Grete's House", "Grete's House-Farm",
-      //   "Grete's House-Shop", "Marketplace-Farm",
-      //   "Marketplace-Post Office", "Marketplace-Shop",
-      //   "Marketplace-Town Hall", "Shop-Town Hall"
-      // ];
-
-      // function buildGraph(edges) {
-      //   let graph = Object.create(null);
-      //   function addEdge(from, to) {
-      //     if (graph[from] == null) {
-      //       graph[from] = [to];
-      //     } else {
-      //       graph[from].push(to);
-      //     }
-      //   }
-      //   for (let [from, to] of edges.map(r => r.split("-"))) {
-      //     addEdge(from, to);
-      //     addEdge(to, from);
-      //   }
-      //   return graph;
-      // }
-
-      // var roadGraph = buildGraph(roads);
-      // console.log(roadGraph);
-
+      function log(data) {
+        console.log(data);
+      }
     });
+
+    function startGame() {
+      if (game) {
+        game.startGame();;
+      }
+    }
+
   </script>
 
-  <button>Start</button>
-  <div id="turn-box"></div>
+  <button onclick="startGame();">Start</button>
   <div id="main-view"></div>
   <div id="results-view"></div>
 </body>
