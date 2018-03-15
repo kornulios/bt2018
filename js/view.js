@@ -7,7 +7,7 @@ class View {
 
   renderPlayers(players) {
     let me = this;
-    // console.log(players);
+    this.clearMainView();
     for (let p of players) {
       let tpl = `<div>${p.name}</div><div>${p.speed}</div><div>${p.status}
         </div><div>(${p.misses})</div><div>${p.distance}m</div>`;

@@ -35,7 +35,8 @@ class Race {
     if (p.running) {
       let runStatus = p.run(me.track);
       if (runStatus.waypointPassed !== -1) {
-        me.results.pushResult(p.name, p.runStatus.waypointPassed, this.gameTimer.toFixed(1));
+        console.log('wp passed');
+        me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1));
         if (runStatus.waypointPassed == me.track.waypointsNum - 1) {
           p.stop();
         }
@@ -47,7 +48,6 @@ class Race {
       }
     }
   }
-
 }
 
 

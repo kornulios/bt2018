@@ -28,6 +28,7 @@ class Player {
   }
 
   run(track) {
+    this.status = 'Running';
     this._dp = (this.speed / 3600) * 1000;
     if (this.penalty < 0) {
       this.distance += Math.round(this._dp * 100) / 100;
@@ -41,6 +42,7 @@ class Player {
 
   shoot() {
     if(!this.shooting) {
+      this.status = 'Shooting';
       this.shooting = true;
       this.running = false;
       this.rifle = {
