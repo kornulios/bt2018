@@ -26,7 +26,6 @@ class Race {
     for (let p of me.players) {
       if (p.running) return true;
     }
-
     return false;
   }
 

@@ -73,19 +73,10 @@ class Player {
   }
 
   stop() {
-    // console.log(this.name + ' stopped');
     this.running = false;
     this.status = 'Finished';
     this._dp = 0;
     return this.speed = 0;
-  }
-
-  running() {
-    return this.running;
-  }
-
-  shooting() {
-    return this.shooting;
   }
 
   getDistance() {
