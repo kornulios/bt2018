@@ -1,6 +1,7 @@
 class Player {
   constructor(args) {
-    this.speed = args.speed || 0; // km/h
+    this.baseSpeed = args.speed || 0; // km/h
+    this.speed = this.baseSpeed;
     this.distance = 0;
     this._dp = 0;
     this.x = 0;
