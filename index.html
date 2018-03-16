@@ -35,11 +35,14 @@
         }
         startGame() {
           var me = this;
-          me.gameTimer = setInterval(function() {
-            if(!me.race.run()) clearInterval(me.gameTimer);
+          me.gameTimer = setInterval(function () {
+            if (!me.race.run()) {
+              clearInterval(me.gameTimer);
+            }
             me.view.renderPlayers(me.race.players);
+            me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length-1));
           }, me.gameSpeed);
-            
+
         }
       }
       game = new Game();

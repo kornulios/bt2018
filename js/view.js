@@ -9,19 +9,36 @@ class View {
     let me = this;
     this.clearMainView();
     for (let p of players) {
-      let tpl = `<div>${p.name}</div><div>${p.speed}</div><div>${p.status}
+      let tpl = `<div>${p.name}</div><div>${p.baseSpeed}</div><div>${p.status}
         </div><div>(${p.misses})</div><div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
       me.mainView.innerHTML += tpl;
     }
   }
 
+  renderResults(results) { //should render sorted results per waypoint
+    // console.log(results);
+    let me = this;
+    let tpl = "";
+    for (let r of results) {
+      tpl += '<div class="row">';
+      tpl += me.drawCell(r.playerName) + me.drawCell(r.time);
+      tpl += '</div>';
+    }
+    me.resultView.innerHTML = tpl;
+  }
+
   clearMainView() {
     this.mainView.innerHTML = "";
   }
+
+  drawCell(text) {
+    return `<div>${text}</div>`;
+  }
+
 }
 
-function renderResults(results) {
+function renderResultsOld(results) {
   var mainView = document.querySelector("#results-view");;
   var players = results.playerNames();
   var mainTpl = "";
