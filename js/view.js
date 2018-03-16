@@ -20,10 +20,12 @@ class View {
     // console.log(results);
     let me = this;
     let tpl = "";
+    let place = 1;
     for (let r of results) {
       tpl += '<div class="row">';
-      tpl += me.drawCell(r.playerName) + me.drawCell(r.time);
+      tpl += `<div style="width:20px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell(r.time);
       tpl += '</div>';
+      place++;
     }
     me.resultView.innerHTML = tpl;
   }
