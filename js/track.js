@@ -1,7 +1,7 @@
 class Track {
   constructor(args) {
     this.trackLength = 400;
-    this.shootingRange = 250;
+    this.shootingRange = [150, 350];     //in case of multiple?
     this.penaltyLength = 30;
     this.waypoints = [100, 200, 300, 400];   //waypoint distance from start
 
@@ -30,8 +30,10 @@ class Track {
   }
 
   passShootingRange(newDist, prevDist) {
-    if(newDist > this.shootingRange && (newDist - prevDist) <= this.shootingRange) {
-      return true;
+    for (let i = 0; i < this.shootingRange.length; i++) {
+      if(newDist > this.shootingRange[i] && (newDist - prevDist) <= this.shootingRange[i]) {
+        return true;
+      }
     }
     return false;
   }
