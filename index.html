@@ -40,7 +40,7 @@
               clearInterval(me.gameTimer);
             }
             me.view.renderPlayers(me.race.players);
-            me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length-1));
+            me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
           }, me.gameSpeed);
 
         }
@@ -52,10 +52,6 @@
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
-
-      function log(data) {
-        console.log(data);
-      }
     });
 
     function startGame() {
