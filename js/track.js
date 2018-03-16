@@ -1,9 +1,9 @@
 class Track {
   constructor(args) {
-    this.trackLength = 400;
-    this.shootingRange = [150, 350];     //in case of multiple?
-    this.penaltyLength = 30;
-    this.waypoints = [100, 200, 300, 400];   //waypoint distance from start
+    this.trackLength = 400;                 //overall track distance
+    this.shootingRange = [150, 350];        //specify distances for shooting ranges
+    this.penaltyLength = 30;                //length of penalty lap (huh!?)
+    this.waypoints = [100, 200, 300, 400];  //waypoint distance from start
 
     console.log('Track init complete');
   }
