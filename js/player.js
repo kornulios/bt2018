@@ -46,6 +46,8 @@ class Player {
   }
 
   shoot() {
+    let shootingStatus = true;
+    //enter range
     if (!this.shooting) {
       this.status = 'Shooting';
       this.shooting = true;
@@ -54,15 +56,17 @@ class Player {
         ammo: 5,
         aimTime: Math.random()
       }
-      return;
+      return shootingStatus;
     }
+
     this.rifle.aimTime -= 0.1;
+
     if (this.rifle.aimTime < 0.1) {
       // fire
       this.rifle.ammo -= 1;
       if (Math.random() < 0.2) {
-        this.penalty += 50;
         this.misses++;
+        shootingStatus = false;
       }
       this.rifle.aimTime = Math.random();
     }
@@ -71,6 +75,7 @@ class Player {
       this.running = true;
       this.rifle = {};
     }
+    return shootingStatus ? 'ok' : 'missed';
   }
 
   stop() {

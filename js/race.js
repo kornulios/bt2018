@@ -45,7 +45,7 @@ class Race {
     } else if (p.shooting) {
       let shootStatus = p.shoot();
       if (shootStatus == 'missed') {
-        p.addPenalty(track.penaltyLength);
+        p.addPenalty(me.track.penaltyLength);
       }
     }
   }
