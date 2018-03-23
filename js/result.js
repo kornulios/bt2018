@@ -1,14 +1,16 @@
 class Results {
   constructor(track) {
     this.data = [];
+    this.shootingData = [];
     this.waypointsNum = track.waypointsNum();
+    this.relative = true; 
   }
 
   pushResult(name, wp, t) {
     var resObj = {
       playerName: name,
       waypoint: wp,
-      time: +t
+      time: +t,
     };
     this.data.push(resObj);
   }
@@ -18,9 +20,16 @@ class Results {
   }
 
   getWaypointResults(wp) {
-    return this.data.filter(function(res, i) {
+    let mapped = this.data.filter(function(res, i) {
       if (res.waypoint == wp) return true;
     });
+    mapped = mapped.map((res, i, arr) => {
+      if (res.waypoint == wp) {
+        res.rTime = (i !== 0) ? '+' + (res.time - arr[0].time).toFixed(1) : res.time.toFixed(1);
+        return res;
+      }
+    });
+    return mapped;
   }
 
   getPlayerResults(name) {
