@@ -48,7 +48,7 @@
       game = new Game();
 
       getData().then(function (res) {
-        game.createRace(res.data.players, new Track(2500, 5));
+        game.createRace(res.data.players, new Track(500, 5));
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
