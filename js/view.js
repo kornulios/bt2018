@@ -9,8 +9,13 @@ class View {
     let me = this;
     this.clearMainView();
     for (let p of players) {
-      let tpl = `<div>${p.name}</div><div>${p.baseSpeed}</div><div>${p.status}
-        </div><div>(${p.misses})</div><div>${p.distance.toFixed(2)}m</div>`;
+      let spColor = (p.state == 0) ? 'black' : (p.state == 1) ? 'red' : 'green'; 
+      let tpl = `<div>${p.name}</div>
+        <div>${p.baseSpeed}</div>
+        <div style="color: ${spColor}">${p.speed.toFixed(2)}</div>
+        <div>${p.status}</div>
+        <div>(${p.misses})</div>
+        <div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
       me.mainView.innerHTML += tpl;
     }

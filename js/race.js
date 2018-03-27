@@ -35,6 +35,7 @@ class Race {
       let runStatus = p.run(me.track);
       if (runStatus.waypointPassed !== -1) {
         me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1));
+        p.makeDecision();
         if (p.getDistance() > me.track.getTrackLength()) {
           p.stop();
         }
