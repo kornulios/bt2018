@@ -9,7 +9,7 @@ class View {
     let me = this;
     this.clearMainView();
     for (let p of players) {
-      let spColor = (p.state == 0) ? 'black' : (p.state == 1) ? 'red' : 'green'; 
+      let spColor = (p.state == RUNSTATE.NORMAL) ? 'black' : (p.state == RUNSTATE.EASE) ? 'red' : 'green'; 
       let tpl = `<div>${p.name}</div>
         <div>${p.baseSpeed}</div>
         <div style="color: ${spColor}">${p.speed.toFixed(2)}</div>

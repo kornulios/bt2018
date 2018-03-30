@@ -17,6 +17,11 @@
   <script>
     //main game object
     var game;
+    const RUNSTATE = {
+      NORMAL: 0,
+      EASE: 1,
+      PUSHING: 2
+    }
 
     document.addEventListener('DOMContentLoaded', function (e) {
       console.log('up and running');

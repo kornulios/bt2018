@@ -1,11 +1,5 @@
 class Player {
   constructor(args) {
-    this.RUNSTATE = {
-      NORMAL: 0,
-      EASE: 1,
-      PUSHING: 2
-    }
-
     this.baseSpeed = args.speed || 0; // km/h
     this.speed = this.baseSpeed;
     this.distance = 0;
@@ -17,7 +11,7 @@ class Player {
     this.shooting = false;
     this.rifle = {};
     this.status = 'Not run';
-    this.state = this.RUNSTATE.NORMAL;
+    this.state = RUNSTATE.NORMAL;
   }
 
 
@@ -37,8 +31,8 @@ class Player {
   run(track) {
     //calc speed
     let speedModifier = this.baseSpeed;
-    if (this.state == this.RUNSTATE.EASE) speedModifier = this.baseSpeed * 0.8;
-    if (this.state == this.RUNSTATE.PUSHING) speedModifier = this.baseSpeed * 1.2;
+    if (this.state == RUNSTATE.EASE) speedModifier = this.baseSpeed * 0.8;
+    if (this.state == RUNSTATE.PUSHING) speedModifier = this.baseSpeed * 1.2;
     this.speed = speedModifier;
     //move distance
     this._dp = (this.speed / 3600) * 1000;
@@ -46,7 +40,7 @@ class Player {
       this.status = 'Running';
       this.distance += Math.round(this._dp * 100) / 100;
     } else {
-      this.status = 'Penalty Lap';
+      this.status = 'Penalty';
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
     }
@@ -115,7 +109,7 @@ class Player {
   //AI 
   makeDecision() {
     let me = this;
-    let choise = Math.floor(Math.random() * 3);
+    let choise = Math.floor(Math.random() * Object.keys(RUNSTATE).length);
     me.state = choise;
   }
 }
