@@ -17,11 +17,6 @@
   <script>
     //main game object
     var game;
-    const RUNSTATE = {
-      NORMAL: 0,
-      EASE: 1,
-      PUSHING: 2
-    }
 
     document.addEventListener('DOMContentLoaded', function (e) {
       console.log('up and running');
@@ -53,7 +48,7 @@
       game = new Game();
 
       getData().then(function (res) {
-        game.createRace(res.data.players, new Track(500, 5));
+        game.createRace(res.data.players, new Track(trackData[0]));
       }).catch(function (err) {
         console.log('Data load failed', err);
       });

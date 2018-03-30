@@ -11,7 +11,7 @@ class Player {
     this.shooting = false;
     this.rifle = {};
     this.status = 'Not run';
-    this.state = RUNSTATE.NORMAL;
+    this.state = CONSTANT.RUNSTATE.NORMAL;
   }
 
 
@@ -31,8 +31,8 @@ class Player {
   run(track) {
     //calc speed
     let speedModifier = this.baseSpeed;
-    if (this.state == RUNSTATE.EASE) speedModifier = this.baseSpeed * 0.8;
-    if (this.state == RUNSTATE.PUSHING) speedModifier = this.baseSpeed * 1.2;
+    if (this.state == CONSTANT.RUNSTATE.EASE) speedModifier = this.baseSpeed * 0.8;
+    if (this.state == CONSTANT.RUNSTATE.PUSHING) speedModifier = this.baseSpeed * 1.2;
     this.speed = speedModifier;
     //move distance
     this._dp = (this.speed / 3600) * 1000;
@@ -109,7 +109,7 @@ class Player {
   //AI 
   makeDecision() {
     let me = this;
-    let choise = Math.floor(Math.random() * Object.keys(RUNSTATE).length);
+    let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
     me.state = choise;
   }
 }
