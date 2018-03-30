@@ -1,6 +1,7 @@
 // renders one player
 class View {
   constructor() {
+    this.trackView = document.querySelector('#track-info');
     this.mainView = document.querySelector('#main-view');
     this.resultView = document.querySelector('#results-view');
   }
@@ -32,6 +33,12 @@ class View {
       place++;
     }
     me.resultView.innerHTML = tpl;
+  }
+
+  renderTrackInfo(track) {
+    let tpl = '';
+    tpl = `Track length: ${track.trackLength} Laps: ${track.laps} Waypoints: ${track.waypoints}`;
+    this.trackView.innerHTML = tpl;
   }
 
   clearMainView() {

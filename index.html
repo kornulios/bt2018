@@ -49,6 +49,7 @@
 
       getData().then(function (res) {
         game.createRace(res.data.players, new Track(trackData[0]));
+        game.view.renderTrackInfo(game.race.track);
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
@@ -63,6 +64,7 @@
   </script>
 
   <button onclick="startGame();">Start</button>
+  <div id="track-info"></div>
   <div id="main-view"></div>
   <div id="results-view"></div>
 </body>
