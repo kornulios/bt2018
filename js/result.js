@@ -1,8 +1,8 @@
 class Results {
-  constructor(track) {
+  constructor(race) {
     this.data = [];
     this.shootingData = [];
-    this.waypointsNum = track.waypointsNum();
+    this.waypointsNum = race.track.waypointsNum();
     this.relative = true; 
   }
 
@@ -15,8 +15,17 @@ class Results {
     this.data.push(resObj);
   }
 
+  pushShootingResult(p, result) {
+    // debugger
+    this.shootingData.push({name: p.name, range: p.rangeNum, result: result});
+  }
+
   getResults() {
     return this.data;
+  }
+
+  getShootingResults(name, range) {
+
   }
 
   getWaypointResults(wp) {
@@ -48,7 +57,7 @@ class Results {
     return res;
   }
 
-  maxWaypointNum() {
-    return this.waypointsNum;
-  }
+  // maxWaypointNum() {
+  //   return this.waypointsNum;
+  // }
 }

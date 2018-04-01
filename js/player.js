@@ -9,9 +9,12 @@ class Player {
     this.name = args.name || 'unknown';
     this.running = true;
     this.shooting = false;
+    this.shootResult = [];
+    this.rangeNum = 0;
     this.rifle = {};
     this.status = 'Not run';
     this.state = CONSTANT.RUNSTATE.NORMAL;
+
   }
 
 
@@ -51,36 +54,46 @@ class Player {
     return runStatus;
   }
 
-  shoot() {
+  shoot(range) {
     let shootingStatus = true;
     //enter range
     if (!this.shooting) {
       this.status = 'Shooting';
       this.shooting = true;
+      this.rangeNum = range;
       this.running = false;
       this.rifle = {
         ammo: 5,
         aimTime: Math.random()
       }
+      this.shootResult[range] = ['o', 'o', 'o', 'o', 'o'];
       return shootingStatus;
     }
 
-    this.rifle.aimTime -= 0.1;
-
-    if (this.rifle.aimTime < 0.1) {
-      // fire
-      this.rifle.ammo -= 1;
-      if (Math.random() < 0.2) {
-        this.misses++;
-        shootingStatus = false;
-      }
-      this.rifle.aimTime = Math.random();
-    }
     if (this.rifle.ammo == 0) {
       this.shooting = false;
       this.running = true;
       this.rifle = {};
+      return;
     }
+
+    this.rifle.aimTime -= 0.1;
+    if (this.rifle.aimTime > 0.1) {
+      return false;
+    }
+
+    // fire
+    this.rifle.ammo -= 1;
+    this.rifle.aimTime = Math.random();
+    if (Math.random() < 0.2) {
+      this.misses++;
+      this.shootResult[this.rangeNum][this.rifle.ammo] = '-';
+      shootingStatus = false;
+    } else {
+      this.shootResult[this.rangeNum][this.rifle.ammo] = '+';
+    }
+
+    
     return shootingStatus ? 'ok' : 'missed';
   }
 

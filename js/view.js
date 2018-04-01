@@ -6,16 +6,19 @@ class View {
     this.resultView = document.querySelector('#results-view');
   }
 
-  renderPlayers(players) {
+  renderPlayers(race) {
     let me = this;
     this.clearMainView();
-    for (let p of players) {
+    for (let p of race.players) {
       let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green'; 
+      let shootTpl = (p.shooting) ? `[${p.shootResult[p.rangeNum].join('')}]` : `(${p.misses})`;
+      let pStatus = p.status;
+
       let tpl = `<div>${p.name}</div>
         <div>${p.baseSpeed}</div>
         <div style="color: ${spColor}">${p.speed.toFixed(2)}</div>
         <div>${p.status}</div>
-        <div>(${p.misses})</div>
+        <div>${shootTpl}</div>
         <div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
       me.mainView.innerHTML += tpl;

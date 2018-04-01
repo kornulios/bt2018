@@ -4,11 +4,11 @@ class Race {
   constructor(newPlayers, newTrack) {
     this.track = newTrack;
     this.players = [];
-    this.results = new Results(this.track);
+    this.results = new Results(this);
     this.gameTimer = 0;
     this.gameStatus = 'Not started';
     for (let p of newPlayers) {
-      this.players.push(new Player({ name: p.name, speed: Math.round((Math.random() * 14 + 8) * 100) / 100 }));
+      this.players.push(new Player({ name: p.name, speed: Math.round((Math.random() * 12 + 12) * 100) / 100 }));
     }
   }
 
@@ -41,10 +41,11 @@ class Race {
         }
       }
       if (runStatus.shootingPassed) {
-        p.shoot();
+        p.shoot(runStatus.shootingPassed);
       }
     } else if (p.shooting) {
       let shootStatus = p.shoot();
+      if (shootStatus != false) me.results.pushShootingResult(p, shootStatus);
       if (shootStatus == 'missed') {
         p.addPenalty(me.track.penaltyLength);
       }

@@ -2,7 +2,7 @@ class Track {
   constructor(data) {
     this.trackLength = data.stats.length;    //overall track distance
     this.penaltyLength = 150;                //length of penalty lap (huh!?)
-    this.shootingRange = [250];              //specify distances for shooting ranges
+    this.shootingRange = [200, 400];              //specify distances for shooting ranges
     this.waypoints = this.setupWaypoints(data.stats.length, data.stats.waypoints);
     this.laps = data.stats.laps;
  
@@ -41,7 +41,7 @@ class Track {
   passShootingRange(newDist, prevDist) {
     for (let i = 0; i < this.shootingRange.length; i++) {
       if(newDist > this.shootingRange[i] && (newDist - prevDist) <= this.shootingRange[i]) {
-        return true;
+        return i+1;
       }
     }
     return false;

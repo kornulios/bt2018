@@ -31,7 +31,7 @@
         }
         createRace(players, track) {
           this.race = new Race(players, track);
-          this.view.renderPlayers(this.race.players);
+          this.view.renderPlayers(this.race);
         }
         startGame() {
           var me = this;
@@ -39,7 +39,7 @@
             if (!me.race.run()) {
               clearInterval(me.gameTimer);
             }
-            me.view.renderPlayers(me.race.players);
+            me.view.renderPlayers(me.race);
             me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
           }, me.gameSpeed);
 
