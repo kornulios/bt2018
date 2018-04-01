@@ -20,14 +20,6 @@ class Results {
     this.shootingData.push({name: p.name, range: p.rangeNum, result: result});
   }
 
-  getResults() {
-    return this.data;
-  }
-
-  getShootingResults(name, range) {
-
-  }
-
   getWaypointResults(wp) {
     let mapped = this.data.filter(function(res, i) {
       if (res.waypoint == wp) return true;
@@ -56,8 +48,4 @@ class Results {
     });
     return res;
   }
-
-  // maxWaypointNum() {
-  //   return this.waypointsNum;
-  // }
 }

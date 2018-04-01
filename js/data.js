@@ -10,8 +10,8 @@ var CONSTANT = {
 
   TRACK_TYPE: {
     SPRINT: {
-      length: 600,
-      waypoints: 15,
+      length: 2500,
+      waypoints: 25,
       laps: 5,
       shootings: 4,
       type: 'Sprint'
