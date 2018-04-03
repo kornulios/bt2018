@@ -15,9 +15,30 @@ class Results {
     this.data.push(resObj);
   }
 
-  pushShootingResult(p, result) {
-    // debugger
-    this.shootingData.push({name: p.name, range: p.rangeNum, result: result});
+  pushShootingResult(p, result, shootNum) {
+    this.shootingData.push({name: p.name, range: p.rangeNum, result: result, shootNum: shootNum});
+  }
+
+  getShootingResult(name, range) {
+    let mapped = this.shootingData.filter((val, i)=>{
+      if (val.name == name && val.range == range) return true;
+    });
+    let res = mapped.map((val, i, arr) => {
+        if(val.result) {
+          return '+';
+        } else {
+          return '-';
+        }
+    });
+    return res;
+  }
+
+  getMisses(name) {
+    // get misses count
+    let res = this.shootingData.filter((val, i) => {
+      if (val.name == name && !val.result) return true;
+    });
+    return res.length;
   }
 
   getWaypointResults(wp) {

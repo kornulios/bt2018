@@ -11,7 +11,7 @@ class View {
     this.clearMainView();
     for (let p of race.players) {
       let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green'; 
-      let shootTpl = (p.shooting) ? `[${p.shootResult[p.rangeNum].join('')}]` : `(${p.misses})`;
+      let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMisses(p.name)})`;
       let pStatus = p.status;
 
       let tpl = `<div>${p.name}</div>

@@ -41,13 +41,20 @@ class Race {
         }
       }
       if (runStatus.shootingPassed) {
-        p.shoot(runStatus.shootingPassed);
+        p.enterShootingRange(runStatus.shootingPassed);
       }
     } else if (p.shooting) {
-      let shootStatus = p.shoot();
-      if (shootStatus != false) me.results.pushShootingResult(p, shootStatus);
-      if (shootStatus == 'missed') {
-        p.addPenalty(me.track.penaltyLength);
+      let shot = p.shoot();
+
+      if (shot) {
+        me.results.pushShootingResult(p, shot.result, shot.shotNum);
+        if (shot.result == false) {
+          p.addPenalty(me.track.penaltyLength);
+        }
+        if (shot.shotNum == 5) {
+          p.quitShootingRange();
+          me.results.getMisses(p.name);
+        }
       }
     }
   }
