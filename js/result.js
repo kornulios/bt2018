@@ -39,13 +39,24 @@ class Results {
 
   getWaypointResults(wp) {
     let me = this;
-    let mapped = this.data.filter(function(res, i) {
+    let mapped = me.data.filter(function(res, i) {
       if (res.waypoint == wp) return true;
     });
+
+    mapped.sort(function(a,b){
+      if (a.time > b.time) {
+        return 1;
+      }
+      if (a.time < b.time) {
+        return -1
+      }
+      return 0;
+    });
+
     mapped = mapped.map((res, i, arr) => {
       if (res.waypoint == wp) {
         // res.rTime = (i !== 0) ? '+' + (res.time - arr[0].time).toFixed(1) : res.time.toFixed(1);
-        if (this.relative) {
+        if (me.relative) {
           
         } else {
           res.rTime = me.convertToMinutes(res.time);
