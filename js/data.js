@@ -19,6 +19,8 @@ var CONSTANT = {
   }
 }
 
+Object.freeze(CONSTANT);
+
 var trackData = [
   {
     location: 'Ruhpolding',
