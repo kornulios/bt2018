@@ -3,7 +3,7 @@ class Results {
     this.data = [];
     this.shootingData = [];
     this.waypointsNum = race.track.waypointsNum();
-    this.relative = true; 
+    this.relative = false; 
   }
 
   pushResult(name, wp, t) {
@@ -20,16 +20,12 @@ class Results {
   }
 
   getShootingResult(name, range) {
-    let mapped = this.shootingData.filter((val, i)=>{
-      if (val.name == name && val.range == range) return true;
-    });
-    let res = mapped.map((val, i, arr) => {
-        if(val.result) {
-          return '+';
-        } else {
-          return '-';
-        }
-    });
+    let res = [];
+    for (let i = 0; i<this.shootingData.length; i++) {
+      if (this.shootingData[i].name == name && this.shootingData[i].range == range) {
+        (this.shootingData[i].result) ? res.push('+') : res.push('-');
+      }
+    }
     return res;
   }
 
@@ -47,7 +43,12 @@ class Results {
     });
     mapped = mapped.map((res, i, arr) => {
       if (res.waypoint == wp) {
-        res.rTime = (i !== 0) ? '+' + (res.time - arr[0].time).toFixed(1) : res.time.toFixed(1);
+        // res.rTime = (i !== 0) ? '+' + (res.time - arr[0].time).toFixed(1) : res.time.toFixed(1);
+        if (this.relative) {
+          
+        } else {
+          res.rTime = res.time.toFixed(1);
+        }
         return res;
       }
     });

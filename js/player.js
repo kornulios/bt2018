@@ -1,18 +1,24 @@
 class Player {
   constructor(args) {
-    this.baseSpeed = args.speed || 0; // km/h
-    this.speed = this.baseSpeed;
+    //base stats
+    this.baseSpeed = this.speed = args.speed || 0; // km/h
+    this.name = args.name || 'unknown';
+    
+    //distance related
     this.distance = 0;
     this._dp = 0;
     this.penalty = 0;
-    // this.misses = 0;
-    this.name = args.name || 'unknown';
-    this.running = true;
+
+    //race related
+    this.notstarted = true;
+    this.finished = false;
+    this.running = false;
     this.shooting = false;
-    // this.shootResult = [];
+    this.startTimer = args.startTimer;
     this.rangeNum = 0;
     this.rifle = {};
-    this.status = 'Not run';
+
+    //AI related
     this.state = CONSTANT.RUNSTATE.NORMAL;
 
   }
@@ -55,10 +61,10 @@ class Player {
   }
 
   enterShootingRange(range) {
-    let shootingStatus = true;
     //enter range
+    let shootingStatus = true;
     if (!this.shooting) {
-      this.status = 'Shooting';
+      // this.status = 'Shooting';
       this.rangeNum = range;
       this.shooting = true;
       this.running = false;
@@ -93,8 +99,16 @@ class Player {
     return {result: hit, shotNum: 5 - this.rifle.ammo};
   }
 
+  start() {
+    this.running = true;
+    this.notstarted = false;
+    this.finished = false;
+    this.shooting = false;
+  }
+
   stop() {
     this.running = false;
+    this.finished = true;
     this.status = 'Finished';
     this._dp = 0;
     return this.speed = 0;

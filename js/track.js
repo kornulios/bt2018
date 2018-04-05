@@ -5,6 +5,7 @@ class Track {
     this.shootingRange = [500, 1000, 1500, 2000];              //specify distances for shooting ranges
     this.waypoints = this.setupWaypoints(data.stats.length, data.stats.waypoints);
     this.laps = data.stats.laps;
+    this.startType = data.startType;
  
     console.log('Track init complete');
   }
