@@ -10,7 +10,7 @@ class Results {
     var resObj = {
       playerName: name,
       waypoint: wp,
-      time: +t,
+      time: t,
     };
     this.data.push(resObj);
   }
@@ -38,6 +38,7 @@ class Results {
   }
 
   getWaypointResults(wp) {
+    let me = this;
     let mapped = this.data.filter(function(res, i) {
       if (res.waypoint == wp) return true;
     });
@@ -47,7 +48,7 @@ class Results {
         if (this.relative) {
           
         } else {
-          res.rTime = res.time.toFixed(1);
+          res.rTime = me.convertToMinutes(res.time);
         }
         return res;
       }
@@ -69,5 +70,13 @@ class Results {
       }
     });
     return res;
+  }
+
+  convertToMinutes(time) {
+    let minutes = Math.floor(time / 60);
+    let seconds = time - minutes * 60;
+    let millis = seconds.toFixed(1).split('.')[1];
+    seconds = (seconds < 10) ? "0" + seconds.toFixed(0) : seconds.toFixed(0);
+    return minutes + ':' + seconds + '.' + millis;
   }
 }
