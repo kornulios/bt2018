@@ -42,7 +42,9 @@
             me.view.renderPlayers(me.race);
             me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
           }, me.gameSpeed);
-
+        }
+        setGameSpeed(val) {
+          this.gameSpeed = val;
         }
       }
       game = new Game();
@@ -53,6 +55,10 @@
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
+
+      var startButton = document.getElementById('start-button');
+      startButton.addEventListener('click', startGame);
+
     });
 
     function startGame() {
@@ -63,7 +69,7 @@
 
   </script>
 
-  <button onclick="startGame();">Start</button>
+  <button id="start-button">Start</button>
   <div id="track-info"></div>
   <div id="main-view"></div>
   <div id="results-view"></div>
