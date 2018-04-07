@@ -18,7 +18,7 @@ class Race {
         startTimer: startTimer
       }));
       if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
-        startTimer += 5;
+        startTimer += 25;
       }
     }
   }

@@ -3,7 +3,6 @@ body {
 }
 
 .cell {
-  /* display: inline-block; */
   width: 60px;
   color: red;
   margin-left: 5px;
@@ -20,4 +19,8 @@ body {
 
 #results-view::before {
   content: "Results:";
+}
+
+.btn-ctrl {
+  width: 40px;
 }
