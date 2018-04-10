@@ -31,7 +31,7 @@ class View {
     let place = 1;
     for (let r of results) {
       tpl += '<div class="row">';
-      tpl += `<div style="width:20px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.rTime));
+      tpl += `<div style="width:20px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
       tpl += '</div>';
       place++;
     }

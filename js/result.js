@@ -55,11 +55,14 @@ class Results {
 
     mapped = mapped.map((res, i, arr) => {
       if (res.waypoint == wp) {
-        // res.rTime = (i !== 0) ? '+' + (res.time - arr[0].time).toFixed(1) : res.time.toFixed(1);
         if (me.relative) {
-          
+          if (i == 0) {
+            res.resultTime = me.convertToMinutes(res.time);
+          } else {
+            res.resultTime = '+' + me.convertToMinutes(res.time - arr[0].time);
+          }
         } else {
-          res.rTime = me.convertToMinutes(res.time);
+          res.resultTime = me.convertToMinutes(res.time);
         }
         return res;
       }
@@ -86,8 +89,15 @@ class Results {
   convertToMinutes(time) {
     let minutes = Math.floor(time / 60);
     let seconds = time - minutes * 60;
+    let forwardZero = (seconds < 10) ? '0' : '';
     let millis = seconds.toFixed(1).split('.')[1];
-    seconds = (seconds < 10) ? "0" + seconds.toFixed(0) : seconds.toFixed(0);
-    return minutes + ':' + seconds + '.' + millis;
+    let timeStr = "";
+
+    //apply formatting
+    seconds = forwardZero + Math.floor(seconds);
+    minutes = (minutes > 0) ? minutes + ':' : '';
+    timeStr = minutes + seconds + '.' + millis;
+
+    return timeStr;
   }
 }
