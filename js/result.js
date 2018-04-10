@@ -3,7 +3,7 @@ class Results {
     this.data = [];
     this.shootingData = [];
     this.waypointsNum = race.track.waypointsNum();
-    this.relative = false; 
+    this.relative = true; 
   }
 
   pushResult(name, wp, t) {
@@ -89,7 +89,7 @@ class Results {
   convertToMinutes(time) {
     let minutes = Math.floor(time / 60);
     let seconds = time - minutes * 60;
-    let forwardZero = (seconds < 10) ? '0' : '';
+    let forwardZero = (seconds < 10 && minutes > 0) ? '0' : '';
     let millis = seconds.toFixed(1).split('.')[1];
     let timeStr = "";
 

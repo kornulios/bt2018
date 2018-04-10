@@ -17,10 +17,10 @@ class Player {
     this.startTimer = args.startTimer;
     this.rangeNum = 0;
     this.rifle = {};
+    this.accuracy = args.accuracy || 0.05;
 
     //AI related
     this.state = CONSTANT.RUNSTATE.NORMAL;
-
   }
 
 
@@ -64,7 +64,6 @@ class Player {
     //enter range
     let shootingStatus = true;
     if (!this.shooting) {
-      // this.status = 'Shooting';
       this.rangeNum = range;
       this.shooting = true;
       this.running = false;
@@ -90,7 +89,7 @@ class Player {
     }
     this.rifle.ammo -= 1;
     this.rifle.aimTime = Math.random();
-    if (Math.random() < 0.2) {
+    if (Math.random() < this.accuracy) {
       hit = false;
     } else {
       hit = true;
@@ -118,16 +117,16 @@ class Player {
     return this.distance;
   }
 
-  getPlayer() {
-    return {
-      name: this.name,
-      distance: this.distance.toFixed(2),
-      dp: this._dp,
-      speed: this.speed,
-      misses: this.misses,
-      status: this.running ? "Running" : (this.shooting ? "Shooting(" + this.rifle.ammo + ")" : "Finished")
-    }
-  }
+  // getPlayer() {
+  //   return {
+  //     name: this.name,
+  //     distance: this.distance.toFixed(2),
+  //     dp: this._dp,
+  //     speed: this.speed,
+  //     misses: this.misses,
+  //     status: this.running ? "Running" : (this.shooting ? "Shooting(" + this.rifle.ammo + ")" : "Finished")
+  //   }
+  // }
 
   //AI 
   makeDecision() {

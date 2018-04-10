@@ -13,8 +13,8 @@ class Race {
     for (let p of newPlayers) {
       this.players.push(new Player({
         name: p.name,
-        speed: Math.round((Math.random() * 12 + 12) * 100) / 100,
-        accuracy: Math.random() * (1 - 0.5) + 0.5,
+        speed: Math.round((Math.random() * (22 - 19) + 19) * 100) / 100,
+        accuracy: Math.random() * (0.3 - 0.025) + 0.025,
         startTimer: startTimer
       }));
       if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
