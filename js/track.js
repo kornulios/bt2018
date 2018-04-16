@@ -1,6 +1,6 @@
 class Track {
-  constructor(data) {
-    this.trackLength = data.stats.length;    //overall track distance
+  constructor(data, gen) {
+    this.trackLength = data.stats.length[gen];    //overall track distance
     this.penaltyLength = 150;                //length of penalty lap (huh!?)
     this.shootingRange = [500, 1000, 1500, 2000];              //specify distances for shooting ranges
     this.waypoints = this.setupWaypoints(data.stats.length, data.stats.waypoints);
