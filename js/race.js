@@ -8,8 +8,11 @@ class Race {
     this.gameTimer = 0;
     this.gameStatus = 'Not started';
     this.startType = newTrack.startType;
+    this.penaltyType = newTrack.penaltyType;
 
     let startTimer = 0;
+
+    // players init - to be refactored
     for (let p of newPlayers) {
       this.players.push(new Player({
         name: p.name,
@@ -50,7 +53,7 @@ class Race {
     if (p.running) {
       let runStatus = p.run(me.track);
       if (runStatus.waypointPassed !== -1) {
-        me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer);
+        me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
           p.stop();
@@ -65,7 +68,7 @@ class Race {
       if (shot) {
         me.results.pushShootingResult(p, shot.result, shot.shotNum);
         if (shot.result == false) {
-          p.addPenalty(me.track.penaltyLength);
+          me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(100);
         }
         if (shot.shotNum == 5) {
           p.quitShootingRange();

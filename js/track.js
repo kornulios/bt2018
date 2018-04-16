@@ -1,17 +1,26 @@
 class Track {
   constructor(data, gen) {
-    this.trackLength = data.stats.length[gen];    //overall track distance
-    this.penaltyLength = 150;                //length of penalty lap (huh!?)
-    this.shootingRange = [500, 1000, 1500, 2000];              //specify distances for shooting ranges
-    this.waypoints = this.setupWaypoints(data.stats.length[gen], data.stats.waypoints);
+    this.lapLength = data.stats.lapLength[gen];
+    this.trackLength = data.stats.lapLength[gen] * data.stats.laps;    //overall track distance
+    this.penaltyLength = 150;                
+    this.shootingRange = [];              //specify distances for shooting ranges
+    this.waypoints = this.setupWaypoints(this.trackLength, data.stats.waypoints);
     this.laps = data.stats.laps;
-    this.startType = data.startType;
+    this.startType = data.stats.startType;
+    this.penaltyType = data.stats.penaltyType;
  
+    this.setupShootinRanges();
     console.log('Track init complete');
   }
 
   getTrackLength() {
     return this.trackLength;
+  }
+
+  setupShootinRanges() {
+    for (let i =1; i < this.laps; i++) {
+      this.shootingRange.push(i * this.lapLength);
+    }
   }
 
   setupWaypoints(tlen, num) {

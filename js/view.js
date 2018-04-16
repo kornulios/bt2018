@@ -40,7 +40,7 @@ class View {
 
   renderTrackInfo(track) {
     let tpl = '';
-    tpl = `Track length: ${track.trackLength} Laps: ${track.laps} Waypoints: ${track.waypoints}`;
+    tpl = `Track length: ${track.trackLength} Laps: ${track.laps}<br>Waypoints: ${track.waypoints}<br>Shootings: ${track.shootingRange}`;
     this.trackView.innerHTML = tpl;
   }
 

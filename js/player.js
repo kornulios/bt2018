@@ -8,6 +8,7 @@ class Player {
     this.distance = 0;
     this._dp = 0;
     this.penalty = 0;
+    this.penaltyTime = 0;
 
     //race related
     this.notstarted = true;
@@ -35,6 +36,10 @@ class Player {
   addPenalty(length) {
     this.penalty += length;
     return this.penalty;
+  }
+
+  addPenaltyTime(time) {
+    this.penaltyTime += time;
   }
 
   run(track) {
