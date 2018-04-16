@@ -3,7 +3,7 @@ class Track {
     this.trackLength = data.stats.length[gen];    //overall track distance
     this.penaltyLength = 150;                //length of penalty lap (huh!?)
     this.shootingRange = [500, 1000, 1500, 2000];              //specify distances for shooting ranges
-    this.waypoints = this.setupWaypoints(data.stats.length, data.stats.waypoints);
+    this.waypoints = this.setupWaypoints(data.stats.length[gen], data.stats.waypoints);
     this.laps = data.stats.laps;
     this.startType = data.startType;
  

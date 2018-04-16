@@ -106,6 +106,7 @@ class Player {
   }
 
   stop() {
+    console.log('Stopping ' + this.name);
     this.running = false;
     this.finished = true;
     this.status = 'Finished';

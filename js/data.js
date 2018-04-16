@@ -7,8 +7,6 @@ var CONSTANT = {
   RACE_START_TYPE: { ALL: 1, SEPARATE: 2 },
 
   RUNSTATE: { NORMAL: 0, EASE: 1, PUSHING: 2 },
-
-
 }
 
 Object.freeze(CONSTANT);
@@ -29,7 +27,6 @@ var trackData = [
     location: 'Ruhpolding',
     season: 'Season 1',
     stats: raceTypes.sprint,
-    // penaltyType: CONSTANT.PENALTY_TYPE.LAP,
     startType: CONSTANT.RACE_START_TYPE.SEPARATE
   }
 ];

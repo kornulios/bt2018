@@ -13,7 +13,7 @@ class Race {
     for (let p of newPlayers) {
       this.players.push(new Player({
         name: p.name,
-        speed: Math.round((Math.random() * (22 - 19) + 19) * 100) / 100,
+        speed: Math.round((Math.random() * (22 - 15) + 15) * 100) / 100,
         accuracy: Math.random() * (0.3 - 0.025) + 0.025,
         startTimer: startTimer
       }));
@@ -52,7 +52,7 @@ class Race {
       if (runStatus.waypointPassed !== -1) {
         me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer);
         p.makeDecision();
-        if (p.getDistance() > me.track.getTrackLength()) {
+        if (p.getDistance() > me.track.trackLength) {
           p.stop();
         }
       }
