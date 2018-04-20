@@ -3,6 +3,7 @@ class Player {
     //base stats
     this.baseSpeed = this.speed = args.speed || 0; // km/h
     this.name = args.name || 'unknown';
+    this.index = args.index;
     
     //distance related
     this.distance = 0;

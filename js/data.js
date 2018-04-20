@@ -42,6 +42,6 @@ var trackData = [
   {
     location: 'Ruhpolding',
     coordsMap: [],
-    stats: raceTypes.individual
+    stats: raceTypes.sprint
   }
 ];

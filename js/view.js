@@ -9,8 +9,9 @@ class View {
   renderPlayers(race) {
     let me = this;
     this.clearMainView();
+
     for (let p of race.players) {
-      let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green'; 
+      let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
       let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMisses(p.name)})`;
       let pStatus = p.status;
 
@@ -44,12 +45,60 @@ class View {
     this.trackView.innerHTML = tpl;
   }
 
+  renderChampionshipView(championship) {
+    //TODO screen with player stats and points
+    this.clearMainView();
+
+    let tpl = '';
+    // let p = championship.players;
+    tpl += '<div>Championship standings</div>'
+    for (let p of championship.players) {
+      tpl += '<div class="row">';
+      tpl += this.drawCell(p.name) + this.drawCell(p.baseSpeed) + this.drawCell(p.accuracy) + this.drawCell((championship.points[p.name]));
+      tpl += '</div>';
+    }
+
+    this.mainView.innerHTML = tpl;
+  }
+
+  renderRaceView(race) {
+    //TODO render race with players and results
+  }
+
   clearMainView() {
     this.mainView.innerHTML = "";
   }
 
+  showRunScreen() {
+    document.getElementById('run-btn').classList.remove('hidden');
+    document.getElementById('start-btn').classList.add('hidden');
+  }
+
+  showFinishScreen() {
+    document.getElementById('finish-btn').classList.remove('hidden');
+    document.getElementById('run-btn').classList.add('hidden');
+  }
+
   drawCell(text) {
     return `<div>${text}</div>`;
+  }
+
+  drawOnCanvas() {
+    let myCanvas = document.querySelector('#main-canvas');
+    let context = myCanvas.getContext("2d");
+
+    var width = 125;  // Triangle Width
+    var height = 105; // Triangle Height
+    var padding = 20;
+
+    context.beginPath();
+    context.moveTo(padding + width / 2, padding);        // Top Corner
+    context.lineTo(padding + width, height + padding); // Bottom Right
+    context.lineTo(padding, height + padding);         // Bottom Left
+    context.closePath();
+
+    context.fillStyle = "#ffc821";
+    context.fill();
   }
 
 }

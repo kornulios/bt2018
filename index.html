@@ -8,6 +8,7 @@
   <script src="js/track.js"></script>
   <script src="js/player.js"></script>
   <script src="js/race.js"></script>
+  <script src="js/championship.js"></script>
 
   <link rel="stylesheet" href="css/style.css">
 
@@ -23,26 +24,45 @@
 
       class Game {
         constructor() {
-          this.gameSpeed = 10;
+          this.gameSpeed = 5;
           this.gameTimer;
           this.gameRunning = false;
           this.view = new View();
+          this.championship = Object.create(null);
           this.race = Object.create(null);
         }
+
         createRace(players, track) {
           this.race = new Race(players, track);
           this.view.renderPlayers(this.race);
         }
-        startGame() {
+
+        createChampionship(players) {
+          this.championship = new Championship(players);
+        }
+
+        nextRace() {
+          let me = this,
+            race = me.championship.getNextRace();
+
+          me.view.renderPlayers(race);
+          me.view.showRunScreen();
+          me.race = race;
+        }
+
+        startRace() {
           var me = this;
           me.gameTimer = setInterval(function () {
             if (!me.race.run()) {
               clearInterval(me.gameTimer);
+              me.championship.addResults(me.race.results);
+              me.view.showFinishScreen();
             }
             me.view.renderPlayers(me.race);
             me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
           }, me.gameSpeed);
         }
+
         setGameSpeed(val) {
           this.gameSpeed = val;
         }
@@ -50,36 +70,41 @@
       game = new Game();
 
       getData().then(function (res) {
-        game.createRace(res.data.players, new Track(trackData[0], 'women'));
-        game.view.renderTrackInfo(game.race.track);
+        game.createChampionship(res.data.players);
+        game.view.renderChampionshipView(game.championship);
       }).catch(function (err) {
         console.log('Data load failed', err);
       });
 
-      var startButton = document.getElementById('start-button');
+      var startButton = document.getElementById('start-btn');
       startButton.addEventListener('click', startGame);
-
+      document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
+      // game.view.drawOnCanvas();
     });
 
     function startGame() {
       if (game) {
-        game.startGame();;
+        game.nextRace();
       }
     }
 
   </script>
-
-  <button id="start-button">Start</button>
-  <div id="controls">
-    <button>Pause</button>
-    <span>Speed: </span>
-    <button id="speed-normal" class="btn-ctrl">></button>
-    <button id="speed-fast" class="btn-ctrl">>></button>
-    <button id="speed-fastest" class="btn-ctrl">>>></button>
+  <div class='gray-back'>
+    <button id="start-btn">Next race</button>
+    <button id="run-btn" class="hidden">Run</button>
+    <button id="finish-btn" class="hidden">Finish</button>
+    <div id="controls">
+      <button>Pause</button>
+      <span>Speed: </span>
+      <button id="speed-normal" class="btn-ctrl">></button>
+      <button id="speed-fast" class="btn-ctrl">>></button>
+      <button id="speed-fastest" class="btn-ctrl">>>></button>
+    </div>
   </div>
   <div id="track-info"></div>
   <div id="main-view"></div>
   <div id="results-view"></div>
+  <!-- <canvas id="main-canvas"></canvas> -->
 </body>
 
 </html>

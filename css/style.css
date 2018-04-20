@@ -2,6 +2,10 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
+.gray-back {
+  background: lightgray;
+}
+
 .cell {
   width: 60px;
   color: red;
@@ -17,10 +21,23 @@ body {
   margin-top: 20px;
 }
 
-#results-view::before {
+/* #results-view::before {
   content: "Results:";
-}
+} */
 
 .btn-ctrl {
   width: 40px;
+}
+
+#main-canvas {
+  position: absolute;
+  top: 100px;
+  left: 650px;
+  width: 600px;
+  height: 300px;
+  border: 1px solid black;
+}
+
+.hidden {
+  display: none;
 }
