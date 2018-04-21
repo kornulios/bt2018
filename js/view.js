@@ -48,16 +48,21 @@ class View {
   renderChampionshipView(championship) {
     //TODO screen with player stats and points
     let me = this;
+    let players = championship.getStandingsResults();
     this.clearMainView();
 
     let tpl = '';
     tpl += '<div>Championship standings</div>';
     tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Points']);
-    for (let p of championship.players) {
-      tpl += this.drawRow([p.name, p.baseSpeed, p.getAccuracy(), championship.points[p.name]]);
+    for (let p of players) {
+      tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, championship.points[p.name]]);
     }
 
     this.mainView.innerHTML = tpl;
+
+    document.getElementById('start-btn').classList.remove('hidden');
+    document.getElementById('run-btn').classList.add('hidden');
+    document.getElementById('finish-btn').classList.add('hidden');
   }
 
   renderRaceView(race) {
@@ -66,6 +71,7 @@ class View {
 
   clearMainView() {
     this.mainView.innerHTML = "";
+    this.resultView.innerHTML = "";
   }
 
   showRunScreen() {

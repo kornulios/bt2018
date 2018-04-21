@@ -41,13 +41,18 @@
           this.championship = new Championship(players);
         }
 
+        mainScreen() {
+          let me = this;
+          me.view.renderChampionshipView(me.championship);
+        }
+
         nextRace() {
           let me = this,
             race = me.championship.getNextRace();
 
           me.view.renderPlayers(race);
           me.view.showRunScreen();
-          me.race = race;
+          me.race = new Race(race.players, new Track(trackData[0], 'women')); //temp solution!
         }
 
         startRace() {
@@ -76,11 +81,16 @@
         console.log('Data load failed', err);
       });
 
+      initEvents();
+      // game.view.drawOnCanvas();
+    });
+
+    function initEvents() {
       var startButton = document.getElementById('start-btn');
       startButton.addEventListener('click', startGame);
       document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
-      // game.view.drawOnCanvas();
-    });
+      document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
+    }
 
     function startGame() {
       if (game) {

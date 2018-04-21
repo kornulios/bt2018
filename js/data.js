@@ -22,7 +22,7 @@ var raceTypes = {
     shootings: 2,
     type: 'Sprint',
     penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE
+    startType: CONSTANT.RACE_START_TYPE.ALL
   },
   individual: {
     lapLength: { men: 4000, women: 3000 },

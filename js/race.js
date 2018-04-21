@@ -13,11 +13,12 @@ class Race {
     let startTimer = 0;
 
     //set players start time
-    if (this.startType = CONSTANT.RACE_START_TYPE.SEPARATE) {
-      for (let p of this.players) {
+    for (let p of this.players) {
+      if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
         p.startTimer = startTimer;
         startTimer += CONSTANT.START_TIME_INTERVAL;
       }
+      p.reset();
     }
   }
 

@@ -4,6 +4,7 @@ class Player {
     this.baseSpeed = this.speed = args.speed || 0; // km/h
     this.name = args.name || 'unknown';
     this.index = args.index;
+    this.accuracy = args.accuracy || 0.05;
     
     //distance related
     this.distance = 0;
@@ -19,7 +20,6 @@ class Player {
     this.startTimer = args.startTimer;
     this.rangeNum = 0;
     this.rifle = {};
-    this.accuracy = args.accuracy || 0.05;
 
     //AI related
     this.state = CONSTANT.RUNSTATE.NORMAL;
@@ -121,6 +121,20 @@ class Player {
     this.status = 'Finished';
     this._dp = 0;
     return this.speed = 0;
+  }
+
+  reset() {
+    this.distance = 0;
+    this.distance = 0;
+    this._dp = 0;
+    this.penalty = 0;
+    this.penaltyTime = 0;
+    this.notstarted = true;
+    this.finished = false;
+    this.running = false;
+    this.shooting = false;
+    this.rangeNum = 0;
+    this.rifle = {};
   }
 
   getDistance() {
