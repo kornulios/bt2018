@@ -1,14 +1,25 @@
 class Championship {
-  constructor(players) {
+  constructor(newPlayers) {
     this.raceCount = 5;
     this.race = [];
     this.points = {};
-    this.players = players;
+    this.players = [];
     this.nextRace = 0;
     this.pointsMap = [10, 6, 4, 3, 2, 1];
 
+    this.initPlayers(newPlayers);
     this.initRaces();
     this.initResults();
+  }
+
+  initPlayers(newPlayers) {
+    for (let p of newPlayers) {
+      this.players.push(new Player({
+        name: p.name,
+        speed: Math.round((Math.random() * (22 - 15) + 15) * 100) / 100,
+        accuracy: Math.random() * (0.3 - 0.025) + 0.025,
+      }));
+    }
   }
 
   initRaces() {

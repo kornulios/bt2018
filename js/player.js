@@ -34,6 +34,10 @@ class Player {
     return { x: this.x, y: this.y };
   }
 
+  getAccuracy() {
+    return 100 - this.accuracy.toFixed(2) * 100;
+  }
+
   addPenalty(length) {
     this.penalty += length;
     return this.penalty;

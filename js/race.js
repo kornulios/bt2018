@@ -13,17 +13,7 @@ class Race {
     let startTimer = 0;
 
     // players init - to be refactored
-    for (let p of newPlayers) {
-      this.players.push(new Player({
-        name: p.name,
-        speed: Math.round((Math.random() * (22 - 15) + 15) * 100) / 100,
-        accuracy: Math.random() * (0.3 - 0.025) + 0.025,
-        startTimer: startTimer
-      }));
-      if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
-        startTimer += 25;
-      }
-    }
+    
   }
 
   run() {

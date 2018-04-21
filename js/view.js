@@ -47,15 +47,14 @@ class View {
 
   renderChampionshipView(championship) {
     //TODO screen with player stats and points
+    let me = this;
     this.clearMainView();
 
     let tpl = '';
-    // let p = championship.players;
-    tpl += '<div>Championship standings</div>'
+    tpl += '<div>Championship standings</div>';
+    tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Points']);
     for (let p of championship.players) {
-      tpl += '<div class="row">';
-      tpl += this.drawCell(p.name) + this.drawCell(p.baseSpeed) + this.drawCell(p.accuracy) + this.drawCell((championship.points[p.name]));
-      tpl += '</div>';
+      tpl += this.drawRow([p.name, p.baseSpeed, p.getAccuracy(), championship.points[p.name]]);
     }
 
     this.mainView.innerHTML = tpl;
@@ -81,6 +80,16 @@ class View {
 
   drawCell(text) {
     return `<div>${text}</div>`;
+  }
+
+  drawRow(args) {
+    let tpl = '';
+    tpl += '<div class="row">'
+      for (let a of args) {
+        tpl += this.drawCell(a);
+      }
+    tpl += '</div>'
+    return tpl;
   }
 
   drawOnCanvas() {
