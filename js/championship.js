@@ -4,6 +4,7 @@ class Championship {
     this.race = [];
     this.points = {};
     this.players = [];
+    this.roster = [];   //TBI
     this.nextRace = 0;
     this.pointsMap = [10, 6, 4, 3, 2, 1];
 

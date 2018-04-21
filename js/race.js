@@ -1,9 +1,9 @@
 //Game controller
 
 class Race {
-  constructor(newPlayers, newTrack) {
+  constructor(players, newTrack) {
     this.track = newTrack;
-    this.players = [];
+    this.players = players;
     this.results = new Results(this);
     this.gameTimer = 0;
     this.gameStatus = 'Not started';
@@ -12,8 +12,13 @@ class Race {
 
     let startTimer = 0;
 
-    // players init - to be refactored
-    
+    //set players start time
+    if (this.startType = CONSTANT.RACE_START_TYPE.SEPARATE) {
+      for (let p of this.players) {
+        p.startTimer = startTimer;
+        startTimer += CONSTANT.START_TIME_INTERVAL;
+      }
+    }
   }
 
   run() {
