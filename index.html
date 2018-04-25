@@ -24,7 +24,7 @@
 
       class Game {
         constructor() {
-          this.gameSpeed = 5;
+          this.gameSpeed = 1;      //50 ticks per second
           this.gameTimer;
           this.gameRunning = false;
           this.view = new View();
@@ -57,19 +57,27 @@
 
         startRace() {
           var me = this;
-          me.gameTimer = setInterval(function () {
-            if (!me.race.run()) {
-              clearInterval(me.gameTimer);
-              me.championship.addResults(me.race.results);
-              me.view.showFinishScreen();
-            }
-            me.view.renderPlayers(me.race);
-            me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
-          }, me.gameSpeed);
+          // me.gameTimer = setInterval(function () {
+          //   if (!me.race.run()) {
+          //     clearInterval(me.gameTimer);
+          //     me.championship.addResults(me.race.results);
+          //     me.view.showFinishScreen();
+          //   }
+          //   me.view.renderPlayers(me.race);
+          //   me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
+          // }, me.gameSpeed);
+          let gameRunning = true;
+          do
+            gameRunning = me.race.run();
+          while (gameRunning)
+          
+          me.view.renderPlayers(me.race);
+          me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
         }
 
-        setGameSpeed(val) {
-          this.gameSpeed = val;
+        setGameSpeed() {
+          debugger
+          this.gameSpeed = 10;
         }
       }
       game = new Game();
@@ -90,6 +98,7 @@
       startButton.addEventListener('click', startGame);
       document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
+      document.getElementById('speed-fastest').addEventListener('click', game.setGameSpeed.bind(game));
     }
 
     function startGame() {

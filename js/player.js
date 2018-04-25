@@ -6,8 +6,8 @@ class Player {
     this.index = args.index;
     this.accuracy = args.accuracy || 0.05;
     this.strength = args.strength || Util.rand(100, 45);
-    this.stamina = args.stamina || Math.floor(Math.random() * (100-30) + 30);
-    
+    this.stamina = args.stamina || Math.floor(Math.random() * (100 - 30) + 30);
+
     //distance related
     this.distance = 0;
     this._dp = 0;
@@ -53,12 +53,12 @@ class Player {
   run(track) {
     //move distance
     if (this.penalty <= 0) {
-      this._dp = (this.currentSpeed / 3600) * 1000;
       this.status = 'Running';
+      this._dp = (this.currentSpeed / 3600) * 100;
       this.distance += Math.round(this._dp * 100) / 100;
     } else {
-      this._dp = ((this.currentSpeed * 0.6) / 3600) * 1000;
       this.status = 'Penalty';
+      this._dp = ((this.currentSpeed) / 3600) * 100;
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
     }
@@ -105,8 +105,8 @@ class Player {
     } else {
       hit = true;
     }
-    
-    return {result: hit, shotNum: 5 - this.rifle.ammo};
+
+    return { result: hit, shotNum: 5 - this.rifle.ammo };
   }
 
   start() {
@@ -159,13 +159,18 @@ class Player {
   makeDecision() {
     let me = this;
     let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
-// debugger
+    // debugger
     //calculate new speed
     let newSpeed = me.baseSpeed;
-    let speedModifier = (Util.rand(30,10) / 100) * (me.strength / 100);
-    if (choise == CONSTANT.RUNSTATE.EASE) newSpeed = me.baseSpeed * (1 - speedModifier);
-    if (choise == CONSTANT.RUNSTATE.PUSHING) newSpeed = me.baseSpeed * (1 + speedModifier);
-    
+    let speedModifier = 0;
+    if (choise == CONSTANT.RUNSTATE.EASE) {
+      speedModifier = (Util.rand(40, 20) / 100) * ((100 - me.strength) / 100);
+      newSpeed = me.baseSpeed * (1 - speedModifier);
+    } else if (choise == CONSTANT.RUNSTATE.PUSHING) {
+      speedModifier = (Util.rand(30, 10) / 100) * (me.strength / 100);
+      newSpeed = me.baseSpeed * (1 + speedModifier);
+    }
+
     me.setSpeed(newSpeed);
     me.state = choise;  //needed ???
   }
