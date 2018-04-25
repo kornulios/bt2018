@@ -17,7 +17,7 @@ class View {
 
       let tpl = `<div>${p.name}</div>
         <div>${p.baseSpeed}</div>
-        <div style="color: ${spColor}">${p.speed.toFixed(2)}</div>
+        <div style="color: ${spColor}">${p.currentSpeed.toFixed(2)}</div>
         <div>${p.status}</div>
         <div>${shootTpl}</div>
         <div>${p.distance.toFixed(2)}m</div>`;
@@ -53,9 +53,9 @@ class View {
 
     let tpl = '';
     tpl += '<div>Championship standings</div>';
-    tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Points']);
+    tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Strength', 'Points']);
     for (let p of players) {
-      tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, championship.points[p.name]]);
+      tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
     }
 
     this.mainView.innerHTML = tpl;

@@ -1,10 +1,12 @@
 class Player {
   constructor(args) {
     //base stats
-    this.baseSpeed = this.speed = args.speed || 0; // km/h
+    this.baseSpeed = this.currentSpeed = args.speed || 0; // km/h
     this.name = args.name || 'unknown';
     this.index = args.index;
     this.accuracy = args.accuracy || 0.05;
+    this.strength = args.strength || Util.rand(100, 45);
+    this.stamina = args.stamina || Math.floor(Math.random() * (100-30) + 30);
     
     //distance related
     this.distance = 0;
@@ -28,7 +30,7 @@ class Player {
 
 
   setSpeed(speed) {
-    return this.speed = speed;
+    return this.currentSpeed = speed;
   }
 
   getCoords() {
@@ -49,17 +51,13 @@ class Player {
   }
 
   run(track) {
-    //calc speed
-    let speedModifier = this.baseSpeed;
-    if (this.state == CONSTANT.RUNSTATE.EASE) speedModifier = this.baseSpeed * 0.8;
-    if (this.state == CONSTANT.RUNSTATE.PUSHING) speedModifier = this.baseSpeed * 1.2;
-    this.speed = speedModifier;
     //move distance
-    this._dp = (this.speed / 3600) * 1000;
     if (this.penalty <= 0) {
+      this._dp = (this.currentSpeed / 3600) * 1000;
       this.status = 'Running';
       this.distance += Math.round(this._dp * 100) / 100;
     } else {
+      this._dp = ((this.currentSpeed * 0.6) / 3600) * 1000;
       this.status = 'Penalty';
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
@@ -77,10 +75,11 @@ class Player {
     if (!this.shooting) {
       this.rangeNum = range;
       this.shooting = true;
+      this.status = 'Range';
       this.running = false;
       this.rifle = {
         ammo: 5,
-        aimTime: Math.random()
+        aimTime: Util.rand(25, 18) / 10
       }
       return shootingStatus;
     }
@@ -98,8 +97,9 @@ class Player {
     if (this.rifle.aimTime > 0.1) {
       return false;
     }
+    this.status = 'Shooting';
     this.rifle.ammo -= 1;
-    this.rifle.aimTime = Math.random();
+    this.rifle.aimTime = Util.rand(12, 5) / 10;
     if (Math.random() < this.accuracy) {
       hit = false;
     } else {
@@ -121,10 +121,11 @@ class Player {
     this.finished = true;
     this.status = 'Finished';
     this._dp = 0;
-    return this.speed = 0;
+    return this.currentSpeed = 0;
   }
 
   reset() {
+    this.currentSpeed = this.baseSpeed;
     this.distance = 0;
     this._dp = 0;
     this.penalty = 0;
@@ -158,7 +159,15 @@ class Player {
   makeDecision() {
     let me = this;
     let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
-    me.state = choise;
+// debugger
+    //calculate new speed
+    let newSpeed = me.baseSpeed;
+    let speedModifier = (Util.rand(30,10) / 100) * (me.strength / 100);
+    if (choise == CONSTANT.RUNSTATE.EASE) newSpeed = me.baseSpeed * (1 - speedModifier);
+    if (choise == CONSTANT.RUNSTATE.PUSHING) newSpeed = me.baseSpeed * (1 + speedModifier);
+    
+    me.setSpeed(newSpeed);
+    me.state = choise;  //needed ???
   }
 }
 

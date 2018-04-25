@@ -17,7 +17,7 @@ class Championship {
     for (let p of newPlayers) {
       this.players.push(new Player({
         name: p.name,
-        speed: Math.round((Math.random() * (22 - 15) + 15) * 100) / 100,
+        speed: Math.round((Math.random() * (22 - 18) + 18) * 100) / 100,
         accuracy: Math.random() * (0.3 - 0.025) + 0.025,
         startTimer: 0
       }));
@@ -56,7 +56,7 @@ class Championship {
     //return sorted array of points object
     let res = [];
     for (let p of this.players) {
-      res.push({name: p.name, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy()});
+      res.push({name: p.name, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength});
     }
     res.sort((a, b) => {
       if (a.points > b.points) {

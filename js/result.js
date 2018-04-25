@@ -10,7 +10,7 @@ class Results {
     var resObj = {
       playerName: name,
       waypoint: wp,
-      time: t,
+      time: t
     };
     this.data.push(resObj);
   }
