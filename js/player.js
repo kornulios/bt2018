@@ -51,11 +51,12 @@ class Player {
 
   run(track) {
     //move distance
-    this._dp = (this.currentSpeed / 3600) * 1000;
     if (this.penalty <= 0) {
+      this._dp = (this.currentSpeed / 3600) * 1000;
       this.status = 'Running';
       this.distance += Math.round(this._dp * 100) / 100;
     } else {
+      this._dp = ((this.currentSpeed * 0.6) / 3600) * 1000;
       this.status = 'Penalty';
       this.penalty -= Math.round(this._dp * 100) / 100;
       this._dp = 0;
