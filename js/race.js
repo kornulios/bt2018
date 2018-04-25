@@ -18,7 +18,7 @@ class Race {
         p.startTimer = startTimer;
         startTimer += CONSTANT.START_TIME_INTERVAL;
       }
-      p.reset();
+      // p.reset();
     }
   }
 

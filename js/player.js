@@ -13,6 +13,7 @@ class Player {
     this.penaltyTime = 0;
 
     //race related
+    this.status = 'Not run';
     this.notstarted = true;
     this.finished = false;
     this.running = false;
@@ -125,7 +126,6 @@ class Player {
 
   reset() {
     this.distance = 0;
-    this.distance = 0;
     this._dp = 0;
     this.penalty = 0;
     this.penaltyTime = 0;
@@ -135,6 +135,8 @@ class Player {
     this.shooting = false;
     this.rangeNum = 0;
     this.rifle = {};
+    this.state = CONSTANT.RUNSTATE.NORMAL;
+    this.status = 'Not run';
   }
 
   getDistance() {

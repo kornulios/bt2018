@@ -24,6 +24,12 @@ class Championship {
     }
   }
 
+  resetPlayers() {
+    for (let p of this.players) {
+      p.reset();
+    }
+  }
+
   initRaces() {
     // TODO create array of races objects
     for (let i = 0; i < this.raceCount; i++) {
@@ -65,6 +71,7 @@ class Championship {
 
   getNextRace() {
     // return next race object
+    this.resetPlayers();
     return this.race[this.nextRace];
   }
 
