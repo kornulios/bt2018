@@ -5,8 +5,8 @@ class Player {
     this.name = args.name || 'unknown';
     this.index = args.index;
     this.accuracy = args.accuracy || 0.05;
-    this.strength = args.strength || Util.rand(100, 45);
-    this.stamina = args.stamina || Math.floor(Math.random() * (100 - 30) + 30);
+    this.strength = args.strength || Util.rand(99, 75);
+    this.stamina = args.stamina || Util.rand(99,30);
 
     //distance related
     this.distance = 0;
@@ -79,7 +79,7 @@ class Player {
       this.running = false;
       this.rifle = {
         ammo: 5,
-        aimTime: Util.rand(25, 18) / 10
+        aimTime: Util.rand(25, 18) 
       }
       return shootingStatus;
     }
@@ -99,7 +99,7 @@ class Player {
     }
     this.status = 'Shooting';
     this.rifle.ammo -= 1;
-    this.rifle.aimTime = Util.rand(12, 5) / 10;
+    this.rifle.aimTime = Util.rand(5, 1);
     if (Math.random() < this.accuracy) {
       hit = false;
     } else {
@@ -164,10 +164,10 @@ class Player {
     let newSpeed = me.baseSpeed;
     let speedModifier = 0;
     if (choise == CONSTANT.RUNSTATE.EASE) {
-      speedModifier = (Util.rand(40, 20) / 100) * ((100 - me.strength) / 100);
+      speedModifier = (Util.rand(10, 1) / 100) * ((100 - me.strength) / 100);
       newSpeed = me.baseSpeed * (1 - speedModifier);
     } else if (choise == CONSTANT.RUNSTATE.PUSHING) {
-      speedModifier = (Util.rand(30, 10) / 100) * (me.strength / 100);
+      speedModifier = (Util.rand(10, 1) / 100) * (me.strength / 100);
       newSpeed = me.baseSpeed * (1 + speedModifier);
     }
 
