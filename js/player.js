@@ -74,10 +74,11 @@ class Player {
     if (!this.shooting) {
       this.rangeNum = range;
       this.shooting = true;
+      this.status = 'Range';
       this.running = false;
       this.rifle = {
         ammo: 5,
-        aimTime: Math.random()
+        aimTime: Util.rand(25, 18) / 10
       }
       return shootingStatus;
     }
@@ -95,8 +96,9 @@ class Player {
     if (this.rifle.aimTime > 0.1) {
       return false;
     }
+    this.status = 'Shooting';
     this.rifle.ammo -= 1;
-    this.rifle.aimTime = Math.random();
+    this.rifle.aimTime = Util.rand(12, 5) / 10;
     if (Math.random() < this.accuracy) {
       hit = false;
     } else {
