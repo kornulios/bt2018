@@ -2,6 +2,10 @@ function getData() {
   return axios.get('http://localhost:3000/data');
 }
 
+function rand(max, min) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 var CONSTANT = {
   PENALTY_TYPE: { LAP: 1, MINUTE: 0 },
   RACE_START_TYPE: { ALL: 1, SEPARATE: 2 },
