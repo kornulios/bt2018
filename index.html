@@ -32,10 +32,10 @@
           this.race = Object.create(null);
         }
 
-        createRace(players, track) {
-          this.race = new Race(players, track);
-          this.view.renderPlayers(this.race);
-        }
+        // createRace(players, track) {
+        //   this.race = new Race(players, track);
+        //   this.view.renderPlayers(this.race);
+        // }
 
         createChampionship(players) {
           this.championship = new Championship(players);
@@ -51,8 +51,9 @@
             race = me.championship.getNextRace();
 
           me.view.renderPlayers(race);
+          me.view.renderTrackInfo(race);
           me.view.showRunScreen();
-          me.race = new Race(race.players, new Track(trackData[0], 'women')); //temp solution!
+          me.race = race; 
         }
 
         startRace() {
@@ -104,7 +105,7 @@
       startButton.addEventListener('click', startGame);
       document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
-      document.getElementById('speed-fastest').addEventListener('click', game.setGameSpeed.bind(game));
+      document.getElementById('speed-fastest').addEventListener('click', game.calculateRace.bind(game));
     }
 
     function startGame() {

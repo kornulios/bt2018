@@ -33,7 +33,7 @@ class Championship {
   initRaces() {
     // TODO create array of races objects
     for (let i = 0; i < this.raceCount; i++) {
-      this.race[i] = new Race(this.players, new Track(trackData[0], 'women'));
+      this.race.push(new Race(this.players, trackData[0], 'women'));
     }
   }
 

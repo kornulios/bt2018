@@ -8,6 +8,7 @@ class Track {
     this.laps = data.stats.laps;
     this.startType = data.stats.startType;
     this.penaltyType = data.stats.penaltyType;
+    this.raceType = data.stats.type;
 
     this.setupShootinRanges();
     console.log('Track init complete');
