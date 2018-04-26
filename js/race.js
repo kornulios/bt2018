@@ -12,16 +12,6 @@ class Race {
 
     //misc data
     this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
-
-    // let startTimer = 0;
-
-    // //set players start time
-    // for (let p of this.players) {
-    //   if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
-    //     p.startTimer = startTimer;
-    //     startTimer += CONSTANT.START_TIME_INTERVAL;
-    //   }
-    // }
   }
 
   run() {
@@ -34,7 +24,10 @@ class Race {
       me.gameTimer += 0.1;
       for (let p of me.players) {
         if (p.notstarted) {
-          if (me.gameTimer >= p.startTimer) p.start();
+          if (me.gameTimer >= p.startTimer) {
+            p.start();
+            if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;
+          }
         }
         me.playerAct(p);
       }

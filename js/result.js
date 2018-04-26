@@ -82,6 +82,12 @@ class Results {
     });
   }
 
+  getTop(number) {
+    let finishRes = this.getFinishResults();
+    let currentRes = finishRes.slice(0, number);
+    return currentRes.slice(0, number);
+  }
+
   playerNames() {
     var res = [];
     this.data.forEach(function(val, i) {

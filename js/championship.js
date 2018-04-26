@@ -57,7 +57,7 @@ class Championship {
     //return sorted array of points object
     let res = [];
     for (let p of this.players) {
-      res.push({name: p.name, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength});
+      res.push({ name: p.name, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength });
     }
     res.sort((a, b) => {
       if (a.points > b.points) {
@@ -77,17 +77,29 @@ class Championship {
     let startTime = 0;
     let nRace = this.race[this.nextRace];
 
-    for (let p of this.players) {
-      if(nRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
+    if (nRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
+      for (let p of this.players) {
         p.startTimer = startTime;
         startTime += CONSTANT.START_TIME_INTERVAL;
-      } else if (nRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
-        // get prev race results
-        // get top XX players
-        let res = this.race[this.nextRace - 1].results.getTop(20);
+        roster.push(p);
       }
-      roster.push(p);
+    } else if (nRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
+      // get prev race results
+      // get top XX players
+      let res = this.race[this.nextRace - 2].results.getTop(20);
+      let baseTime = res[0].time;
+      for (let i = 0; i<res.length; i++) {
+        for(let p of this.players) {
+          if (p.name == res[i].playerName) {
+            p.startTimer = res[i].time - baseTime;
+            roster.push(p);
+          }
+        }
+      }
+    } else if (nRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
+      roster = this.players;      //TEMP!
     }
+
     nRace.players = roster;
 
     return nRace;

@@ -11,7 +11,7 @@ class Track {
     this.raceType = data.stats.type;
 
     this.setupShootinRanges();
-    console.log('Track init complete');
+    // console.log('Track init complete');
   }
 
   getTrackLength() {
