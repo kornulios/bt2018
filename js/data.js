@@ -28,7 +28,7 @@ Object.freeze(CONSTANT);
 
 var raceTypes = {
   sprint: {
-    lapLength: { men: 3300, women: 2500 },
+    lapLength: { men: 3333.33, women: 2500 },
     waypoints: 25,
     laps: 3,
     shootings: 2,
@@ -57,7 +57,7 @@ var raceTypes = {
   },
   massStart: {
     // 30 top ranked championship players
-    lapLength: { men: 3000, women: 2500 },
+    lapLength: { men: 3333, women: 2500 },
     waypoints: 25,
     laps: 5,
     shootings: 4,
@@ -87,3 +87,5 @@ var trackData = [
     stats: raceTypes.individual
   }
 ];
+
+

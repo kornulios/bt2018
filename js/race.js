@@ -11,7 +11,7 @@ class Race {
     this.penaltyType = this.track.penaltyType;
 
     //misc data
-    this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000) + 'km'
+    this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
 
     let startTimer = 0;
 

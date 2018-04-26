@@ -1,5 +1,5 @@
 class Championship {
-  constructor(newPlayers) {
+  constructor(newPlayers, raceConfigs) {
     this.raceCount = 5;
     this.race = [];
     this.points = {};
@@ -9,7 +9,7 @@ class Championship {
     this.pointsMap = [10, 6, 4, 3, 2, 1];
 
     this.initPlayers(newPlayers);
-    this.initRaces();
+    this.initRaces(raceConfigs);
     this.initResults();
   }
 
@@ -30,10 +30,11 @@ class Championship {
     }
   }
 
-  initRaces() {
+  initRaces(raceConfigs) {
     // TODO create array of races objects
-    for (let i = 0; i < this.raceCount; i++) {
-      this.race.push(new Race(this.players, trackData[0], 'women'));
+    for (let i = 0; i < raceConfigs.length; i++) {
+      this.race.push(new Race(this.players, raceConfigs[i], 'men'));
+      this.race.push(new Race(this.players, raceConfigs[i], 'women'));
     }
   }
 
