@@ -33,8 +33,8 @@ class Championship {
   initRaces(raceConfigs) {
     // TODO create array of races objects
     for (let i = 0; i < raceConfigs.length; i++) {
-      this.race.push(new Race(this.players, raceConfigs[i], 'men'));
-      this.race.push(new Race(this.players, raceConfigs[i], 'women'));
+      this.race.push(new Race(raceConfigs[i], 'men'));
+      this.race.push(new Race(raceConfigs[i], 'women'));
     }
   }
 
@@ -73,7 +73,24 @@ class Championship {
   getNextRace() {
     // return next race object
     this.resetPlayers();
-    return this.race[this.nextRace];
+    let roster = [];
+    let startTime = 0;
+    let nRace = this.race[this.nextRace];
+
+    for (let p of this.players) {
+      if(nRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
+        p.startTimer = startTime;
+        startTime += CONSTANT.START_TIME_INTERVAL;
+      } else if (nRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
+        // get prev race results
+        // get top XX players
+        let res = this.race[this.nextRace - 1].results.getTop(20);
+      }
+      roster.push(p);
+    }
+    nRace.players = roster;
+
+    return nRace;
   }
 
 }

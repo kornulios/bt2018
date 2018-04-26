@@ -1,9 +1,9 @@
 //Game controller
 
 class Race {
-  constructor(players, newTrack, gender) {
+  constructor(newTrack, gender) {
     this.track = new Track(newTrack, gender);
-    this.players = players;
+    this.players = [];
     this.results = new Results(this);
     this.gameTimer = 0;
     this.gameStatus = 'Not started';
@@ -13,15 +13,15 @@ class Race {
     //misc data
     this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
 
-    let startTimer = 0;
+    // let startTimer = 0;
 
-    //set players start time
-    for (let p of this.players) {
-      if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
-        p.startTimer = startTimer;
-        startTimer += CONSTANT.START_TIME_INTERVAL;
-      }
-    }
+    // //set players start time
+    // for (let p of this.players) {
+    //   if (this.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
+    //     p.startTimer = startTimer;
+    //     startTimer += CONSTANT.START_TIME_INTERVAL;
+    //   }
+    // }
   }
 
   run() {
