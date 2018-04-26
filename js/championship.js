@@ -84,9 +84,8 @@ class Championship {
         roster.push(p);
       }
     } else if (nRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
-      // get prev race results
-      // get top XX players
-      let res = this.race[this.nextRace - 2].results.getTop(20);
+      // hmm, think a bit more about it
+      let res = this.race[this.nextRace - 2].results.getTop(CONSTANT.PURSUIT_PLAYERS_NUM);
       let baseTime = res[0].time;
       for (let i = 0; i<res.length; i++) {
         for(let p of this.players) {
