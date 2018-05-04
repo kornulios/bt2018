@@ -4,14 +4,13 @@ class Track {
     this.trackLength = data.stats.lapLength[gen] * data.stats.laps;    //overall track distance
     this.penaltyLength = 150;
     this.shootingRange = [];              //specify distances for shooting ranges
-    this.waypoints = this.setupWaypoints(this.trackLength, data.stats.waypoints);
+    this.waypoints = this.setupWaypoints(this.trackLength, data.stats.waypoints);   // TODO waypoints model should be refactored
     this.laps = data.stats.laps;
     this.startType = data.stats.startType;
     this.penaltyType = data.stats.penaltyType;
     this.raceType = data.stats.type;
 
     this.setupShootinRanges();
-    // console.log('Track init complete');
   }
 
   getTrackLength() {

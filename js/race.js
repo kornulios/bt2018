@@ -26,7 +26,7 @@ class Race {
         if (p.notstarted) {
           if (me.gameTimer >= p.startTimer) {
             p.start();
-            if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;
+            if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework
           }
         }
         me.playerAct(p);
@@ -59,7 +59,7 @@ class Race {
       if (shot) {
         me.results.pushShootingResult(p, shot.result, shot.shotNum);
         if (shot.result == false) {
-          me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(100);
+          me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);
         }
         if (shot.shotNum == 5) {
           p.quitShootingRange();

@@ -1,7 +1,7 @@
 class Championship {
   constructor(newPlayers, raceConfigs) {
     this.raceCount = 5;
-    this.race = [];
+    this.races = [];
     this.points = {};
     this.players = [];
     this.roster = [];   //TBI
@@ -33,8 +33,8 @@ class Championship {
   initRaces(raceConfigs) {
     // TODO create array of races objects
     for (let i = 0; i < raceConfigs.length; i++) {
-      this.race.push(new Race(raceConfigs[i], 'men'));
-      this.race.push(new Race(raceConfigs[i], 'women'));
+      this.races.push(new Race(raceConfigs[i], 'men'));
+      this.races.push(new Race(raceConfigs[i], 'women'));
     }
   }
 
@@ -75,17 +75,18 @@ class Championship {
     this.resetPlayers();
     let roster = [];
     let startTime = 0;
-    let nRace = this.race[this.nextRace];
+    let _nextRace = this.races[this.nextRace];
 
-    if (nRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
+    //create start list based on racetype
+    if (_nextRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
       for (let p of this.players) {
         p.startTimer = startTime;
         startTime += CONSTANT.START_TIME_INTERVAL;
         roster.push(p);
       }
-    } else if (nRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
-      // hmm, think a bit more about it
-      let res = this.race[this.nextRace - 2].results.getTop(CONSTANT.PURSUIT_PLAYERS_NUM);
+    } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
+      // TODO hmm, think a bit more about it
+      let res = this.races[this.nextRace - 2].results.getTop(CONSTANT.PURSUIT_PLAYERS_NUM);
       let baseTime = res[0].time;
       for (let i = 0; i<res.length; i++) {
         for(let p of this.players) {
@@ -95,13 +96,13 @@ class Championship {
           }
         }
       }
-    } else if (nRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
+    } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
       roster = this.players;      //TEMP!
     }
 
-    nRace.players = roster;
+    _nextRace.players = roster;
 
-    return nRace;
+    return _nextRace;
   }
 
 }
