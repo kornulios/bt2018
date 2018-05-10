@@ -30,6 +30,8 @@
           this.view = new View();
           this.championship = Object.create(null);
           this.race = Object.create(null);
+
+          this.selectedResults = 0;
         }
 
         // createRace(players, track) {
@@ -44,6 +46,10 @@
         mainScreen() {
           let me = this;
           me.view.renderChampionshipView(me.championship);
+        }
+
+        setResultView(viewNum) {
+          this.selectedResults = viewNum;
         }
 
         nextRace() {
@@ -65,7 +71,7 @@
               me.view.showFinishScreen();
             }
             me.view.renderPlayers(me.race);
-            me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
+            me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
           }, me.gameSpeed);
         }
 

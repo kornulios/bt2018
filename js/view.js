@@ -26,10 +26,13 @@ class View {
     }
   }
 
-  renderResults(results) { //should render sorted results per waypoint
+  renderResults(results, waypoint) { //should render sorted results per waypoint
     let me = this;
     let tpl = "";
     let place = 1;
+
+    //render controls
+    tpl = `Standings at ${waypoint}`;
     for (let r of results) {
       tpl += '<div class="row">';
       tpl += `<div style="width:20px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
@@ -39,10 +42,19 @@ class View {
     me.resultView.innerHTML = tpl;
   }
 
-  renderTrackInfo(track) {
+  renderTrackInfo(race) {
     let tpl = '';
-    tpl = `<div>${track.name}</div>`;
+    tpl = `<div>${race.name}</div>`;
     this.trackView.innerHTML = tpl;
+    for (let i=0; i<race.track.waypoints.length; i++) {
+      let newLink = document.createElement('a');
+      newLink.classList.add('res-link');
+      newLink.innerHTML = race.track.waypoints[i].toFixed(0);
+      newLink.addEventListener('click', function() {
+        game.setResultView(i);
+      });
+      this.trackView.appendChild(newLink);
+    }
   }
 
   renderChampionshipView(championship) {

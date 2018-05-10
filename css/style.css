@@ -17,8 +17,26 @@ body {
   width: 100px;
 }
 
+#main-view {
+  border: 1px solid black;
+  width: 60%;
+  float: left;
+}
+
 #results-view {
-  margin-top: 20px;
+  border: 1px solid black;
+  width: 30%;
+  margin-left: 20px;
+  float: left;
+}
+
+.res-link {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.res-link:hover {
+  color: lightgray;
 }
 
 /* #results-view::before {
