@@ -9,14 +9,18 @@ function runTests() {
 }
 
 function testResults() {
+  let t = 'PASSED';
   let myRes = game.race.results;
   for (let i=0; i<myRes.waypointsNum; i++){
-    appendTestResult("Waypoint " + i + " count: " + myRes.getWpRes(i).length);
+    if (myRes.getWpRes(i).length !== game.championship.players.length) {
+      t = 'FAILED';
+    }
   }
+  appendTestResult('Results per waypoint count: ' + t);
 }
 
 function isChampionshipCreated() {
-  if (game.championship) {
+  if (game.championship === Object(game.championship)) {
     appendTestResult("PASS: Championship created");
   } else {
     appendTestResult("FAIL: Championship not created");
