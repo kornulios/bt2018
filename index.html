@@ -49,7 +49,9 @@
         }
 
         setResultView(viewNum) {
-          this.selectedResults = viewNum;
+          let me = this;
+          me.selectedResults = viewNum;
+          me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
         }
 
         nextRace() {
@@ -96,7 +98,13 @@
       game = new Game();
 
       getData().then(function (res) {
-        game.createChampionship(res.data.players);
+        let players = [];
+        for (let i=0; i<104; i++){
+          let p = { name: "Player " + i}
+          players.push(p);
+        }
+        // game.createChampionship(res.data.players);
+        game.createChampionship(players);
         game.view.renderChampionshipView(game.championship);
       }).catch(function (err) {
         console.log('Data load failed', err);
