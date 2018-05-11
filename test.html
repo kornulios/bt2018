@@ -1,0 +1,142 @@
+<html>
+
+<head>
+  <script src="./node_modules/axios/dist/axios.js"></script>
+  <script src="js/view.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/result.js"></script>
+  <script src="js/track.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/race.js"></script>
+  <script src="js/championship.js"></script>
+  <script src="js/test/test.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+  <script>
+    //main game object
+    var game;
+
+    document.addEventListener('DOMContentLoaded', function (e) {
+      console.log('up and running');
+
+      class Game {
+        constructor() {
+          this.gameSpeed = 1;      //50 ticks per second
+          this.gameTimer;
+          this.gameRunning = false;
+          this.view = new View();
+          this.championship = Object.create(null);
+          this.race = Object.create(null);
+
+          this.selectedResults = 0;
+        }
+
+        // createRace(players, track) {
+        //   this.race = new Race(players, track);
+        //   this.view.renderPlayers(this.race);
+        // }
+
+        createChampionship(players) {
+          this.championship = new Championship(players, trackData);
+        }
+
+        mainScreen() {
+          let me = this;
+          me.view.renderChampionshipView(me.championship);
+        }
+
+        setResultView(viewNum) {
+          let me = this;
+          me.selectedResults = viewNum;
+          me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+        }
+
+        nextRace() {
+          let me = this,
+            race = me.championship.getNextRace();
+
+          // me.view.renderPlayers(race);
+          // me.view.renderTrackInfo(race);
+          // me.view.showRunScreen();
+          me.race = race; 
+        }
+
+        startRace() {
+          var me = this;
+          me.gameTimer = setInterval(function () {
+            if (!me.race.run()) {
+              clearInterval(me.gameTimer);
+              me.championship.addResults(me.race.results);
+              me.view.showFinishScreen();
+            }
+            me.view.renderPlayers(me.race);
+            me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+          }, me.gameSpeed);
+        }
+
+        calculateRace() {
+          let me = this;
+          let gameRunning = true;
+          do
+            gameRunning = me.race.run();
+          while (gameRunning)
+
+          me.championship.addResults(me.race.results);
+          // me.view.showFinishScreen();
+          // me.view.renderPlayers(me.race);
+          // me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
+        }
+
+        setGameSpeed() {
+          debugger
+          this.gameSpeed = 10;
+        }
+      }
+      game = new Game();
+
+      getData().then(function (res) {
+        let players = [];
+        for (let i=0; i<104; i++){
+          let p = { name: "Player " + i}
+          players.push(p);
+        }
+        game.createChampionship(players);
+        // game.view.renderChampionshipView(game.championship);
+      }).catch(function (err) {
+        console.log('Data load failed', err);
+      });
+
+      // initEvents();
+      // game.view.drawOnCanvas();
+    });
+
+    function initEvents() {
+      // var startButton = document.getElementById('start-btn');
+      // startButton.addEventListener('click', startGame);
+  
+    }
+
+    function startGame() {
+      if (game) {
+        game.nextRace();
+      }
+    }
+
+  </script>
+  <div class='gray-back'>
+    <button id="start-btn" onclick="runTests();">Run test</button>
+  </div>
+  <div id="test-window">
+
+  </div>
+  <!-- <div id="track-info"></div>
+  <div id="main-view"></div>
+  <div id="results-view"></div> -->
+  <!-- <canvas id="main-canvas"></canvas> -->
+</body>
+
+</html>

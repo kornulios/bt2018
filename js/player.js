@@ -55,11 +55,11 @@ class Player {
     if (this.penalty <= 0) {
       this.status = 'Running';
       this._dp = (this.currentSpeed / 3600) * 100;
-      this.distance += Math.round(this._dp * 100) / 100;
+      this.distance += (this._dp * 100) / 100;
     } else {
       this.status = 'Penalty';
       this._dp = ((this.currentSpeed) / 3600) * 100;
-      this.penalty -= Math.round(this._dp * 100) / 100;
+      this.penalty -= (this._dp * 100) / 100;
       this._dp = 0;
     }
     let runStatus = {

@@ -26,7 +26,7 @@ class Track {
   setupWaypoints(tlen, num) {
     let resArr = [];
     for (let step = tlen / num; step <= tlen; step += tlen / num) {
-      resArr.push(step);
+      resArr.push(Math.ceil(step));
     }
     return resArr;
   }
@@ -39,9 +39,12 @@ class Track {
     return Math.ceil(distance / this.trackLength);
   }
 
-  isWaypointPassed(newDist, prevDist) {    //return number of passed waypoint or -1
+  isWaypointPassed(newDist, diff) {    //return number of passed waypoint or -1
+    // debugger
+    let prevDist = newDist - diff;
     for (var i = 0; i < this.waypoints.length; i++) {
-      if (newDist > this.waypoints[i] && (newDist - prevDist) <= this.waypoints[i]) {
+      if ((newDist >= this.waypoints[i]) && (prevDist < this.waypoints[i])) {
+        // debugger
         return i;
       }
     }
