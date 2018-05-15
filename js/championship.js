@@ -7,10 +7,12 @@ class Championship {
     this.roster = [];   //TBI
     this.nextRace = 0;
     this.pointsMap = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
-                    30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 
-                    20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 
-                    10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-
+      30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+      20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
+      10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    this.pointsMapMS = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
+      30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+      20, 18, 16, 14, 12, 10, 8, 6, 4, 2];
     this.initPlayers(newPlayers);
     this.initRaces(raceConfigs);
     this.initResults();
@@ -50,8 +52,14 @@ class Championship {
   addResults(results) {
     //TODO add points for race results
     let res = results.getFinishResults();
-    for (let i = 0; i < this.pointsMap.length; i++) {
-      this.points[res[i].playerName] += this.pointsMap[i];
+    if (res.length == 30) {
+      for (let i = 0; i < this.pointsMapMS.length; i++) {
+        this.points[res[i].playerName] += this.pointsMapMS[i];
+      }
+    } else {
+      for (let i = 0; i < this.pointsMap.length; i++) {
+        this.points[res[i].playerName] += this.pointsMap[i];
+      }
     }
     this.nextRace++;
   }
@@ -73,6 +81,17 @@ class Championship {
     return res;
   }
 
+  getTopResults(resultNum) {
+    let res = [];
+    res = this.players.sort(
+      (a, b) => {
+        return this.points[a.name] < this.points[b.name] ? 1 : -1
+        return 0;
+      }
+    ).slice(0, resultNum);
+    return res;
+  }
+
   getNextRace() {
     // return next race object
     this.resetPlayers();
@@ -91,8 +110,8 @@ class Championship {
       // TODO hmm, think a bit more about it
       let res = this.races[this.nextRace - 2].results.getTop(CONSTANT.PURSUIT_PLAYERS_NUM);
       let baseTime = res[0].time;
-      for (let i = 0; i<res.length; i++) {
-        for(let p of this.players) {
+      for (let i = 0; i < res.length; i++) {
+        for (let p of this.players) {
           if (p.name == res[i].playerName) {
             p.startTimer = res[i].time - baseTime;
             roster.push(p);
@@ -100,7 +119,9 @@ class Championship {
         }
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
-      roster = this.players;      //TEMP!
+      //massstart? pick top 30 from championship ratings
+      let r = this.getTopResults(30);
+      roster = r;
     }
 
     _nextRace.players = roster;

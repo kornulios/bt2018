@@ -23,7 +23,8 @@ var CONSTANT = {
   START_TIME_INTERVAL: 30,
   PURSUIT_PLAYERS_NUM: 60,
   PENALTY_LAP_LENGTH: 150,
-  PENALTY_MINUTE: 100
+  PENALTY_MINUTE: 100,
+
 }
 
 Object.freeze(CONSTANT);
@@ -59,7 +60,7 @@ var raceTypes = {
   },
   massStart: {
     // 30 top ranked championship players
-    lapLength: { men: 3333, women: 2500 },
+    lapLength: { men: 3333.33, women: 2500 },
     waypoints: 25,
     laps: 5,
     shootings: 4,
@@ -82,6 +83,11 @@ var trackData = [
     location: 'Ruhpolding',
     coordsMap: [],
     stats: raceTypes.pursuit
+  },
+  {
+    location: 'Ruhpolding',
+    coordsMap: [],
+    stats: raceTypes.massStart
   },
   {
     location: 'Ruhpolding',

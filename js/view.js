@@ -12,7 +12,7 @@ class View {
 
     for (let p of race.players) {
       let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
-      let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMisses(p.name)})`;
+      let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
       let pStatus = p.status;
 
       let tpl = `<div>${p.name}</div>

@@ -37,6 +37,19 @@ class Results {
     return res.length;
   }
 
+  getMissesByRange(name) {
+    let rangeResults = [];
+
+    for (let i=1; i<4; i++) {
+      let rng = this.getShootingResult(name, i);
+      if (rng.length > 0) {
+        let res = rng.filter(s => s == '-');
+        rangeResults.push(res.length);
+      }
+    }
+    return rangeResults.join('+');
+  }
+
   getWaypointResults(wp) {
     let me = this;
     let mapped = me.data.filter(function(res, i) {
@@ -70,7 +83,7 @@ class Results {
     return mapped;
   }
 
-  getWpRes(wp) {
+  getWpRes(wp) {      // for debug purpose
     let me = this;
     let mapped = me.data.filter(function(res, i) {
       if (res.waypoint == wp) return true;
