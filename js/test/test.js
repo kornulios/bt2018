@@ -1,11 +1,23 @@
 function runTests() {
-  isChampionshipCreated();
-  game.nextRace();
-  game.calculateRace();
-  if (game.race.results) {
-    appendTestResult('PASS: Results created');
-  }
-  testResults();
+  // isChampionshipCreated();
+  // game.nextRace();
+  // game.calculateRace();
+  // if (game.race.results) {
+  //   appendTestResult('PASS: Results created');
+  // }
+  // testResults();
+  let champ = sanityCheck();
+  isChampionshipCreated(champ);
+}
+
+function sanityCheck() {
+  let mockPlayers = [];
+        for (let i=0; i<104; i++){
+          let p = { name: "Player " + i}
+          mockPlayers.push(p);
+        }
+  let g = new Championship(mockPlayers, trackData);
+  return g;
 }
 
 function testResults() {
@@ -19,9 +31,12 @@ function testResults() {
   appendTestResult('Results per waypoint count: ' + t);
 }
 
-function isChampionshipCreated() {
-  if (game.championship === Object(game.championship)) {
+function isChampionshipCreated(champ) {
+  if (champ === Object(champ)) {
     appendTestResult("PASS: Championship created");
+    if (champ.players.length == 104) {
+      appendTestResult("PASS: players count is 104");
+    }
   } else {
     appendTestResult("FAIL: Championship not created");
   }
