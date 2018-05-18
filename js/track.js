@@ -1,7 +1,7 @@
 class Track {
   constructor(data, gen) {
     this.lapLength = data.stats.lapLength[gen];
-    this.trackLength = data.stats.lapLength[gen] * data.stats.laps;    //overall track distance
+    this.trackLength = Math.ceil(data.stats.lapLength[gen] * data.stats.laps);    //overall track distance
     this.penaltyLength = 150;
     this.shootingRange = [];              //specify distances for shooting ranges
     this.waypoints = this.setupWaypoints(this.trackLength, data.stats.waypoints);   // TODO waypoints model should be refactored

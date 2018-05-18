@@ -41,6 +41,10 @@ class Player {
     return this.accuracy;
   }
 
+  getDistance() {
+    return this.distance;
+  }
+
   addPenalty(length) {
     this.penalty += length;
     return this.penalty;
@@ -140,9 +144,6 @@ class Player {
     this.status = 'Not run';
   }
 
-  getDistance() {
-    return this.distance;
-  }
 
   // getPlayer() {
   //   return {
