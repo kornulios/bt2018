@@ -1,10 +1,10 @@
 class Player {
   constructor(args) {
     //base stats
-    this.baseSpeed = this.currentSpeed = args.speed || 0; // km/h
+    this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200,2000) / 100; // km/h
     this.name = args.name || 'unknown';
     this.index = args.index;
-    this.accuracy = args.accuracy || 0.05;
+    this.accuracy = args.accuracy || Util.rand(99, 80);
     this.strength = args.strength || Util.rand(99, 75);
     this.stamina = args.stamina || Util.rand(99,30);
 
@@ -38,7 +38,7 @@ class Player {
   }
 
   getAccuracy() {
-    return 100 - this.accuracy.toFixed(2) * 100;
+    return this.accuracy;
   }
 
   addPenalty(length) {
@@ -100,7 +100,7 @@ class Player {
     this.status = 'Shooting';
     this.rifle.ammo -= 1;
     this.rifle.aimTime = Util.rand(5, 1);
-    if (Math.random() < this.accuracy) {
+    if (Util.rand(100,0) > this.accuracy) {
       hit = false;
     } else {
       hit = true;
