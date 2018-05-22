@@ -7,13 +7,21 @@ function runTests() {
   // }
   // testResults();
   
-  let champ = sanityCheck();
+  let testGame = createTestGame();
+  appendTestResult('Test game is instance of Game: ' + (testGame instanceof Game));
+  
+
+  let champ = createTestChamp();
   isChampionshipCreated(champ);
   testTrack(champ);
   testResults(champ);
 }
 
-function sanityCheck() {
+function createTestGame() {
+  return new Game();
+}
+
+function createTestChamp() {
   let mockPlayers = [];
   var mockTrackData = [
     {
@@ -38,7 +46,7 @@ function testTrack(champ){
 }
 
 function testResults(champ) {
-  let t = 'PASSED';
+  let t = true;
 
   let race = champ.getNextRace();
   let gameRunning = true;
@@ -51,10 +59,10 @@ function testResults(champ) {
   let myRes = race.results;
   for (let i = 0; i < myRes.waypointsNum; i++) {
     if (myRes.getWpRes(i).length !== game.championship.players.length) {
-      t = 'FAILED';
+      t = false;
     }
   }
-  appendTestResult('Results per waypoint count: ' + t);
+  appendTestResult('Results number is 104 per each waypoint: ' + t);
 }
 
 function isChampionshipCreated(champ) {
