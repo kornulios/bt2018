@@ -109,7 +109,6 @@ class Player {
     } else {
       hit = true;
     }
-
     return { result: hit, shotNum: 5 - this.rifle.ammo };
   }
 
@@ -142,6 +141,7 @@ class Player {
     this.rifle = {};
     this.state = CONSTANT.RUNSTATE.NORMAL;
     this.status = 'Not run';
+    return this;
   }
 
 

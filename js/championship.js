@@ -22,8 +22,8 @@ class Championship {
     for (let p of newPlayers) {
       this.players.push(new Player({
         name: p.name,
-        // speed: Math.round((Math.random() * (22 - 20) + 20) * 100) / 100,    //TEMP huh?!
-        // accuracy: Math.random() * (0.3 - 0.075) + 0.075,
+        speed: p.speed,
+        accuracy: p.accuracy,
         startTimer: 0
       }));
     }

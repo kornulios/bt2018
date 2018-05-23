@@ -3,16 +3,29 @@ class Game {
     this.gameSpeed = 1;      //50 ticks per second
     this.gameTimer;
     this.gameRunning = false;
+
     this.view = new View();
     this.championship = Object.create(null);
     this.race = Object.create(null);
+    this.players = this.loadPlayers();
 
     this.selectedResults = 0;
   }
 
+  loadPlayers() {
+    //AJAX will go there 
+    // getData();
+    let me = this;
+    let res = [];
+    for (let i = 0; i < 104; i++) {
+      let p = { name: "Player " + i }
+      res.push(p);
+    }
+    return res;
+  }
+
   createChampionship(players) {
-    this.championship = new Championship(players, trackData);
-    return this.championship;
+    return new Championship(players, trackData);
   }
 
   mainScreen() {
@@ -26,6 +39,15 @@ class Game {
     me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
   }
 
+  startNewChampionship() {
+    if(this.players.length > 0) {
+      this.championship = this.createChampionship(this.players);
+      this.view.renderChampionshipView(this.championship);
+    } else {
+      console.log('No players loaded.');
+    }
+  }
+
   nextRace() {
     let me = this,
       race = me.championship.getNextRace();
@@ -33,7 +55,7 @@ class Game {
     me.view.renderPlayers(race);
     me.view.renderTrackInfo(race);
     me.view.showRunScreen();
-    me.race = race; 
+    me.race = race;
   }
 
   startRace() {

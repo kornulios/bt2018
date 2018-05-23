@@ -22,22 +22,20 @@
 
     document.addEventListener('DOMContentLoaded', function (e) {
       console.log('up and running');
-
-      
       game = new Game();
 
-      getData().then(function (res) {
-        let players = [];
-        for (let i=0; i<104; i++){
-          let p = { name: "Player " + i}
-          players.push(p);
-        }
-        // game.createChampionship(res.data.players);
-        game.createChampionship(players);
-        game.view.renderChampionshipView(game.championship);
-      }).catch(function (err) {
-        console.log('Data load failed', err);
-      });
+      // getData().then(function (res) {
+      //   let players = [];
+      //   for (let i=0; i<104; i++){
+      //     let p = { name: "Player " + i}
+      //     players.push(p);
+      //   }
+      //   // game.createChampionship(res.data.players);
+      //   game.createChampionship(players);
+      //   game.view.renderChampionshipView(game.championship);
+      // }).catch(function (err) {
+      //   console.log('Data load failed', err);
+      // });
 
       initEvents();
       // game.view.drawOnCanvas();
@@ -45,17 +43,12 @@
 
     function initEvents() {
       var startButton = document.getElementById('start-btn');
-      startButton.addEventListener('click', startGame);
+      startButton.addEventListener('click', game.startNewChampionship.bind(game));
       document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
       document.getElementById('speed-fastest').addEventListener('click', game.calculateRace.bind(game));
     }
 
-    function startGame() {
-      if (game) {
-        game.nextRace();
-      }
-    }
 
   </script>
   <div class='gray-back'>
