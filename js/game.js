@@ -10,11 +10,6 @@ class Game {
     this.selectedResults = 0;
   }
 
-  // createRace(players, track) {
-  //   this.race = new Race(players, track);
-  //   this.view.renderPlayers(this.race);
-  // }
-
   createChampionship(players) {
     this.championship = new Championship(players, trackData);
   }
