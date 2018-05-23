@@ -12,6 +12,7 @@ class Game {
 
   createChampionship(players) {
     this.championship = new Championship(players, trackData);
+    return this.championship;
   }
 
   mainScreen() {
