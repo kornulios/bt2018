@@ -26,96 +26,59 @@ window.onload = function () {
     assert(false, 'Failing test');
   });
 
+  var config = {
+    baseSpeed: 13
+  }
+
   var game = new Game();
   var player = [];
-  player.push({name: 'Player', accuracy: 90, speed: 20});
-  var champ = game.createChampionship(player, trackData);
+  player.push({name: 'Player', accuracy: 90, speed: config.baseSpeed});
+  var champ = new Championship(player, trackData);
   var testTrack = new Track(trackData[0], 'women');
   
+  testGame();
 
   test("Sanity check", function () {
-    assert((game instanceof Game), "Test game is instance of Game");
     assert((champ instanceof Championship), "Champ is instance of Championship");
-    assert(champ.players.length == 1, "Player count should be 1");
-    // assert(champ.players[0].name == 'Player', "Player name should be Player");
+    assert(champ.players.length == 1, "Champ player count should be 1");
+    assert(champ.races.length == 8, "Champ races count should be 8");
   });
 
   test("Player test", function() {
     var testPlayer = champ.players[0];
     
     assert(testPlayer.name == 'Player', "Player 0 name should be Player");
+    assert(testPlayer.nationality == "GER", "Player 0 nationality should be Germany");
+    assert(testPlayer.playerNumber == 1, "Player 0 number should be 1");
     assert(testPlayer.getAccuracy() == 90, "Player ACC is 90");
-    assert(testPlayer.baseSpeed == 20, "Player base speed is 20");
+    assert(testPlayer.baseSpeed == config.baseSpeed, "Player base speed is " + config.baseSpeed);
     assert(testPlayer.run(testTrack), "Player runs");
+    assert(testPlayer.getDistance() > 0, "Player passed more than 0m: " + testPlayer.getDistance());
+    assert(testPlayer.reset().getDistance() == 0, "Reset player distance is 0");
+  });
+
+  test("Penalty test", function() {
+    var testPlayer = champ.players[0];
+    testPlayer.reset();
+    assert(testPlayer.addPenalty(50), "50m should be added as penalty distance");
+    assert(testPlayer.getDistance() == 0, "Initial distance should be 0");
+    testPlayer.run(testTrack);
+    assert(testPlayer.penalty < 50, "Penalty after run is lower than 50");
+    assert(testPlayer.getDistance() == 0, "After run distance should be 0");
+  })
+
+  test("Shooting test", function() {
+    var testPlayer = champ.players[0];
+    var shootResult;
+    testPlayer.reset();
+    assert(testPlayer.enterShootingRange(0), "Player enters shooting range");
+    assert(testPlayer.rifle.ammo == 5, "Ammo at shooting range is 5");
+    assert(testPlayer.rifle.aimTime > 0, "Aiming time is greater than 0");
+    do {
+      shootResult = testPlayer.shoot();
+    } while (!shootResult);
+    assert(shootResult, "Player shoots");
+    assert(testPlayer.rifle.ammo == 4, "Ammo after shot is 4");
+
   });
 }
-
-//   this.run = function() {  
-//     let testGame = this.createTestGame();
-//     // appendTestResult('Test game is instance of Game: ' + (testGame instanceof Game));
-
-
-//     let champ = createTestChamp();
-//     isChampionshipCreated(champ);
-//     testTrack(champ);
-//     testResults(champ);
-//   }
-
-//   this.render = function() {
-
-//   }
-
-
-//   function createTestChamp() {
-//     let mockPlayers = [];
-//     var mockTrackData = [
-//       {
-//         location: 'Ruhpolding',
-//         stats: raceTypes.sprint
-//       }];
-
-//     for (let i = 0; i < 104; i++) {
-//       let p = { name: "Player " + i }
-//       mockPlayers.push(p);
-//     }
-//     let g = new Championship(mockPlayers, mockTrackData);
-//     return g;
-//   }
-
-//   function testTrack(champ){
-//     var race = champ.getNextRace();
-//     appendTestResult('Track length should be 10000: ' + (race.track.trackLength == 10000));
-//     // champ.addResults(race.results);
-//     // race = champ.getNextRace();
-//     // appendTestResult('Track length should be 7500: ' + (race.track.trackLength == 7500));
-//   }
-
-//   function testResults(champ) {
-//     let t = true;
-
-//     let race = champ.getNextRace();
-//     let gameRunning = true;
-//     do
-//       gameRunning = race.run();
-//     while (gameRunning)
-
-//     champ.addResults(race.results);
-//     // debugger
-//     let myRes = race.results;
-//     for (let i = 0; i < myRes.waypointsNum; i++) {
-//       if (myRes.getWpRes(i).length !== game.championship.players.length) {
-//         t = false;
-//       }
-//     }
-//     appendTestResult('Results number is 104 per each waypoint: ' + t);
-//   }
-
-//   function appendTestResult(text) {
-//     let testdiv = document.querySelector('#test-window');
-//     let resdiv = document.createElement('div');
-//     resdiv.innerHTML = text;
-//     testdiv.appendChild(resdiv);
-//   }
-
-
-// }
