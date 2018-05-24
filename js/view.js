@@ -72,9 +72,10 @@ class View {
 
     this.mainView.innerHTML = tpl;
 
-    document.getElementById('start-btn').classList.remove('hidden');
+    document.getElementById('start-btn').classList.add('hidden');
     document.getElementById('run-btn').classList.add('hidden');
     document.getElementById('finish-btn').classList.add('hidden');
+    document.getElementById('next-btn').classList.remove('hidden');
   }
 
   renderRaceView(race) {
@@ -88,7 +89,7 @@ class View {
 
   showRunScreen() {
     document.getElementById('run-btn').classList.remove('hidden');
-    document.getElementById('start-btn').classList.add('hidden');
+    document.getElementById('next-btn').classList.add('hidden');    
   }
 
   showFinishScreen() {

@@ -1,6 +1,6 @@
 class Game {
   constructor() {
-    this.gameSpeed = 1;      //50 ticks per second
+    this.gameSpeed = 10;      //50 ticks per second
     this.gameTimer;
     this.gameRunning = false;
 
@@ -17,8 +17,8 @@ class Game {
     // getData();
     let me = this;
     let res = [];
-    for (let i = 0; i < 104; i++) {
-      let p = { name: "Player " + i }
+    for (let i = 0; i < 100; i++) {
+      let p = { name: "Player " + i }   //mock for players
       res.push(p);
     }
     return res;
@@ -72,6 +72,7 @@ class Game {
   }
 
   calculateRace() {
+//used to skip race 
     let me = this;
     let gameRunning = true;
     do
@@ -84,7 +85,7 @@ class Game {
     me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
   }
 
-  setGameSpeed() {
+  setGameSpeed() {    //not implemented
     debugger
     this.gameSpeed = 10;
   }

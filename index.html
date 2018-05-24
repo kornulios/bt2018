@@ -45,6 +45,7 @@
       var startButton = document.getElementById('start-btn');
       startButton.addEventListener('click', game.startNewChampionship.bind(game));
       document.getElementById('run-btn').addEventListener('click', game.startRace.bind(game));
+      document.getElementById('next-btn').addEventListener('click', game.nextRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
       document.getElementById('speed-fastest').addEventListener('click', game.calculateRace.bind(game));
     }
@@ -52,7 +53,8 @@
 
   </script>
   <div class='gray-back'>
-    <button id="start-btn">Next race</button>
+    <button id="start-btn">Start game</button>
+    <button id="next-btn" class="hidden">Next race</button>
     <button id="run-btn" class="hidden">Run</button>
     <button id="finish-btn" class="hidden">Finish</button>
     <div id="controls">
