@@ -64,12 +64,11 @@ class Game {
 
     me.gameTimer = setTimeout(function runRace() {
       //update
-      for(let ticks=0; ticks<20; ticks++) {
+      for (let ticks = 0; ticks < 20; ticks++) {
         me.gameRunning = me.race.run();
       }
       //render
-      me.view.renderPlayers(me.race);
-      me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+
 
       if (!me.gameRunning) {
         me.championship.addResults(me.race.results);
@@ -78,6 +77,31 @@ class Game {
         me.gameTimer = setTimeout(runRace, me.gameSpeed);
       }
     }, me.gameSpeed);
+  }
+
+  render() {
+    let me = this;
+    // me.view.renderPlayers(me.race);
+    me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+  }
+
+  runGame() {       //refactored with rAF
+    let me = this;
+
+    me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
+
+    // me.gameRunning = me.race.run();
+    for (let ticks = 0; ticks < 120; ticks++) {
+      me.gameRunning = me.race.run();
+    }
+    me.render();
+
+    if (!me.gameRunning) {
+      window.cancelAnimationFrame(me.stopTimer);
+      alert('Race finished');
+      me.championship.addResults(me.race.results);
+      me.view.showFinishScreen();
+    }
   }
 
   calculateRace() {
