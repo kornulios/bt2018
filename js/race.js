@@ -14,7 +14,16 @@ class Race {
     this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
   }
 
+  initRoster(roster) {
+    for(let p of roster) {
+      // let newPlayer = new Player({name: 'PIP', startTimer: 0});
+      this.players.push(p);
+    }
+  }
+
   run() {
+    // debugger
+    let t0 = Date.now();
     let me = this;
     if (me.gameStatus == 'Not started') {
       me.gameStatus = 'Started';
@@ -32,6 +41,8 @@ class Race {
         me.playerAct(p);
       }
     }
+    let t1 = Date.now();
+    // console.log("Time between cycles: " + (t1-t0));
     //check race end
     for (let p of me.players) {
       if (!p.finished) return true;

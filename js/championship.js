@@ -124,7 +124,7 @@ class Championship {
       roster = r;
     }
 
-    _nextRace.players = roster;
+    _nextRace.initRoster(roster);
 
     return _nextRace;
   }

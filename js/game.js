@@ -1,6 +1,6 @@
 class Game {
   constructor() {
-    this.gameSpeed = 10;      //50 ticks per second
+    this.gameSpeed = 1000 / 60;      //50 ticks per second
     this.gameTimer;
     this.gameRunning = false;
 
@@ -17,7 +17,7 @@ class Game {
     // getData();
     let me = this;
     let res = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 104; i++) {
       let p = { name: "Player " + i }   //mock for players
       res.push(p);
     }
@@ -40,7 +40,7 @@ class Game {
   }
 
   startNewChampionship() {
-    if(this.players.length > 0) {
+    if (this.players.length > 0) {
       this.championship = this.createChampionship(this.players);
       this.view.renderChampionshipView(this.championship);
     } else {
@@ -60,19 +60,28 @@ class Game {
 
   startRace() {
     var me = this;
-    me.gameTimer = setInterval(function () {
-      if (!me.race.run()) {
-        clearInterval(me.gameTimer);
-        me.championship.addResults(me.race.results);
-        me.view.showFinishScreen();
+    me.gameRunning = true;
+
+    me.gameTimer = setTimeout(function runRace() {
+      //update
+      for(let ticks=0; ticks<20; ticks++) {
+        me.gameRunning = me.race.run();
       }
+      //render
       me.view.renderPlayers(me.race);
       me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+
+      if (!me.gameRunning) {
+        me.championship.addResults(me.race.results);
+        me.view.showFinishScreen();
+      } else {
+        me.gameTimer = setTimeout(runRace, me.gameSpeed);
+      }
     }, me.gameSpeed);
   }
 
   calculateRace() {
-//used to skip race 
+    //used to skip race 
     let me = this;
     let gameRunning = true;
     do
