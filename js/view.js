@@ -8,9 +8,10 @@ class View {
 
   renderPlayers(race) {
     let me = this;
-    this.clearMainView();
-
+    let mainDiv = document.createElement('div');
+  
     for (let p of race.players) {
+      let rowDiv = document.createElement('div');
       let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
       let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
       let pStatus = p.status;
@@ -22,8 +23,29 @@ class View {
         <div>${shootTpl}</div>
         <div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
-      me.mainView.innerHTML += tpl;
+      rowDiv.innerHTML = tpl;
+      // let rowDiv = me.renderDiv("", 'row');
+      // rowDiv.appendChild(me.renderDiv(p.name));
+      // rowDiv.appendChild(me.renderDiv(p.baseSpeed));
+      // rowDiv.appendChild(me.renderDiv(p.currentSpeed.toFixed(2)));
+      // rowDiv.appendChild(me.renderDiv(p.status));
+      // rowDiv.appendChild(me.renderDiv(shootTpl));
+      // rowDiv.appendChild(me.renderDiv(p.distance.toFixed(2)));
+      
+      mainDiv.appendChild(rowDiv);
     }
+
+    //render 
+    this.clearMainView();
+    this.mainView.appendChild(mainDiv);
+  }
+
+  renderDiv(text, cls) {
+    let myDiv = document.createElement('div');
+    let newText = document.createTextNode(text);
+    myDiv.classList.add(cls);
+    myDiv.appendChild(newText);
+    return myDiv;
   }
 
   renderResults(results, waypoint) { //should render sorted results per waypoint

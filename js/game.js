@@ -58,35 +58,39 @@ class Game {
     me.race = race;
   }
 
-  startRace() {
-    var me = this;
-    me.gameRunning = true;
+  // startRace() {
+  //   var me = this;
+  //   me.gameRunning = true;
 
-    me.gameTimer = setTimeout(function runRace() {
-      //update
-      for (let ticks = 0; ticks < 20; ticks++) {
-        me.gameRunning = me.race.run();
-      }
-      //render
+  //   me.gameTimer = setTimeout(function runRace() {
+  //     //update
+  //     for (let ticks = 0; ticks < 20; ticks++) {
+  //       me.gameRunning = me.race.run();
+  //     }
+  //     //render
 
 
-      if (!me.gameRunning) {
-        me.championship.addResults(me.race.results);
-        me.view.showFinishScreen();
-      } else {
-        me.gameTimer = setTimeout(runRace, me.gameSpeed);
-      }
-    }, me.gameSpeed);
-  }
+  //     if (!me.gameRunning) {
+  //       me.championship.addResults(me.race.results);
+  //       me.view.showFinishScreen();
+  //     } else {
+  //       me.gameTimer = setTimeout(runRace, me.gameSpeed);
+  //     }
+  //   }, me.gameSpeed);
+  // }
 
   render() {
     let me = this;
-    // me.view.renderPlayers(me.race);
+    me.view.renderPlayers(me.race);
     me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
   }
 
-  runGame() {       //refactored with rAF
+  runGame( tFrame ) {       //refactored with rAF
     let me = this;
+
+    if (!tNow) {
+      tNow = window.performance.now();
+    }
 
     me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
@@ -98,7 +102,7 @@ class Game {
 
     if (!me.gameRunning) {
       window.cancelAnimationFrame(me.stopTimer);
-      alert('Race finished');
+      alert('Race finished in ' + (tFrame - tNow) + 'ms');
       me.championship.addResults(me.race.results);
       me.view.showFinishScreen();
     }
