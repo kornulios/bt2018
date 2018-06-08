@@ -12,6 +12,12 @@ body {
   margin-left: 5px;
 }
 
+.row div:first-child {
+  display: inline-block;
+  width: 150px;
+  color: green;
+}
+
 .row div {
   display: inline-block;
   width: 100px;

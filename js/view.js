@@ -17,7 +17,7 @@ class View {
       let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
       let pStatus = p.status;
 
-      let tpl = `<div>${p.name}</div>
+      let tpl = `<div>${p.number} ${p.name}</div>
         <div>${p.baseSpeed}</div>
         <div style="color: ${spColor}">${p.currentSpeed.toFixed(2)}</div>
         <div>${p.status}</div>

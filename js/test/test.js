@@ -49,7 +49,7 @@ window.onload = function () {
     
     assert(testPlayer.name == 'Player', "Player 0 name should be Player");
     assert(testPlayer.nationality == "GER", "Player 0 nationality should be Germany");
-    assert(testPlayer.playerNumber == 1, "Player 0 number should be 1");
+    // assert(testPlayer.number == 1, "Player 0 number should be 1"); should go to race numbers!
     assert(testPlayer.getAccuracy() == 90, "Player ACC is 90");
     assert(testPlayer.baseSpeed == config.baseSpeed, "Player base speed is " + config.baseSpeed);
     assert(testPlayer.run(testTrack), "Player runs");

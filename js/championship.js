@@ -96,6 +96,7 @@ class Championship {
     // return next race object
     this.resetPlayers();
     let roster = [];
+    let number = 1;
     let startTime = 0;
     let _nextRace = this.races[this.nextRace];
 
@@ -103,6 +104,7 @@ class Championship {
     if (_nextRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
       for (let p of this.players) {
         p.startTimer = startTime;
+        p.number = number++;
         startTime += CONSTANT.START_TIME_INTERVAL;
         roster.push(p);
       }
@@ -114,6 +116,7 @@ class Championship {
         for (let p of this.players) {
           if (p.name == res[i].playerName) {
             p.startTimer = res[i].time - baseTime;
+            p.number = number++;
             roster.push(p);
           }
         }
@@ -121,6 +124,9 @@ class Championship {
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
       //massstart? pick top 30 from championship ratings
       let r = this.getTopResults(30);
+      for (let p of r) {
+        p.number = number++;
+      }
       roster = r;
     }
 
