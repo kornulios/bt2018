@@ -58,27 +58,6 @@ class Game {
     me.race = race;
   }
 
-  // startRace() {
-  //   var me = this;
-  //   me.gameRunning = true;
-
-  //   me.gameTimer = setTimeout(function runRace() {
-  //     //update
-  //     for (let ticks = 0; ticks < 20; ticks++) {
-  //       me.gameRunning = me.race.run();
-  //     }
-  //     //render
-
-
-  //     if (!me.gameRunning) {
-  //       me.championship.addResults(me.race.results);
-  //       me.view.showFinishScreen();
-  //     } else {
-  //       me.gameTimer = setTimeout(runRace, me.gameSpeed);
-  //     }
-  //   }, me.gameSpeed);
-  // }
-
   render() {
     let me = this;
     me.view.renderPlayers(me.race);
@@ -94,7 +73,6 @@ class Game {
 
     me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
-    // me.gameRunning = me.race.run();
     for (let ticks = 0; ticks < 120; ticks++) {
       me.gameRunning = me.race.run();
     }

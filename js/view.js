@@ -8,7 +8,8 @@ class View {
 
   renderPlayers(race) {
     let me = this;
-    let mainDiv = document.createElement('div');
+    // let mainDiv = document.createElement('div');
+    let mainDiv = document.createDocumentFragment();
   
     for (let p of race.players) {
       let rowDiv = document.createElement('div');
@@ -24,13 +25,6 @@ class View {
         <div>${p.distance.toFixed(2)}m</div>`;
       tpl = `<div class="row">${tpl}</div>`;
       rowDiv.innerHTML = tpl;
-      // let rowDiv = me.renderDiv("", 'row');
-      // rowDiv.appendChild(me.renderDiv(p.name));
-      // rowDiv.appendChild(me.renderDiv(p.baseSpeed));
-      // rowDiv.appendChild(me.renderDiv(p.currentSpeed.toFixed(2)));
-      // rowDiv.appendChild(me.renderDiv(p.status));
-      // rowDiv.appendChild(me.renderDiv(shootTpl));
-      // rowDiv.appendChild(me.renderDiv(p.distance.toFixed(2)));
       
       mainDiv.appendChild(rowDiv);
     }
@@ -40,7 +34,7 @@ class View {
     this.mainView.appendChild(mainDiv);
   }
 
-  renderDiv(text, cls) {
+  renderDiv(text, cls) {      //not used, look for further implementation cases
     let myDiv = document.createElement('div');
     let newText = document.createTextNode(text);
     myDiv.classList.add(cls);
