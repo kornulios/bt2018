@@ -90,14 +90,16 @@ class Game {
     //used to skip race 
     let me = this;
     let gameRunning = true;
+    let raceResults = me.race.results;
+
     do
       gameRunning = me.race.run();
     while (gameRunning)
 
-    me.championship.addResults(me.race.results);
+    me.championship.addResults(raceResults);
     me.view.showFinishScreen();
     me.view.renderPlayers(me.race);
-    me.view.renderResults(me.race.results.getWaypointResults(me.race.track.waypoints.length - 1));
+    me.view.renderResults(raceResults.getWaypointResults(me.race.track.waypoints.length - 1));
   }
 
   setGameSpeed() {    //not implemented
