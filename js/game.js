@@ -48,14 +48,7 @@ class Game {
   }
 
   prepareNextRace() {
-    let me = this;
-      // race = me.championship.getNextRace();
-
-    // me.view.renderPlayers(race);
-    // me.view.renderTrackInfo(race);
-
-    me.view.showRunScreen();
-    // me.race = race;
+    this.view.showRunScreen();
   }
 
   render() {
@@ -81,7 +74,6 @@ class Game {
     if (!me.gameRunning) {
       window.cancelAnimationFrame(me.stopTimer);
       // alert('Race finished in ' + (tFrame - tNow) + 'ms');
-      // me.championship.addResults(me.race.results);
       me.view.showFinishScreen();
     }
   }
@@ -90,18 +82,14 @@ class Game {
     //used to skip race 
     let me = this;
     let gameRunning = true;
-    // let raceResults = me.race.results;
 
     do
       gameRunning = me.championship.runRace();
     while (gameRunning)
 
-    // me.championship.addResults(raceResults);
     me.view.showFinishScreen();
     me.view.renderChampionshipView(me.championship);
-    // debugger
-    // me.view.renderPlayers(me.race);
-    // me.view.renderResults(raceResults.getWaypointResults(me.race.track.waypoints.length - 1));
+    me.view.renderResults(me.championship.races[me.championship.getLastRaceNum()].getFinishResult());
   }
 
   setGameSpeed() {    //not implemented

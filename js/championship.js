@@ -72,8 +72,7 @@ class Championship {
   //   this.nextRace++;
   // }
 
-  calculatePoints(results) {
-    var res = results.getWaypointResults(this.currentRace.track.waypointsNum() - 1);
+  calculatePoints(res) {
     if (res.length == 30) {
       for (let i = 0; i < this.pointsMapMS.length; i++) {
         this.points[res[i].playerName] += this.pointsMapMS[i];
@@ -168,13 +167,16 @@ class Championship {
     return _nextRace;
   }
 
+  getLastRaceNum() {
+    return this.nextRace - 1;
+  }
+
   runRace() {
     this.raceInProgress = this.currentRace.run();
     if (this.currentRace.status == 'Finished') {
       //update resuts
-      this.calculatePoints(this.currentRace.results);
+      this.calculatePoints(this.currentRace.getFinishResult());
       this.nextRace++;
-      console.log('next race switched to' + this.nextRace);
       this.currentRace = this.getNextRace();
     }
 

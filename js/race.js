@@ -17,7 +17,6 @@ class Race {
 
   initRoster(roster) {
     for(let p of roster) {
-      // let newPlayer = new Player({name: 'PIP', startTimer: 0});
       this.players.push(p);
     }
   }
