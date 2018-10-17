@@ -1,3 +1,5 @@
+// MAJOR REFACTORING UNDERWAY 17.10.2018
+
 class Results {
   constructor(race) {
     this.data = [];
@@ -47,6 +49,7 @@ class Results {
         rangeResults.push(res.length);
       }
     }
+    console.log(rangeResults);
     return rangeResults.join('+');
   }
 

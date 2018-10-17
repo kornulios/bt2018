@@ -1,6 +1,5 @@
 (function () {
 
-  // this.game = new Game();
   var testResults;
 
   this.assert = function (value, desc) {
@@ -32,7 +31,7 @@ window.onload = function () {
 
   var game = new Game();
   var player = [];
-  player.push({name: 'Player', accuracy: 90, speed: config.baseSpeed});
+  player.push({name: 'Player', accuracy: 90, speed: 13});
   var champ = new Championship(player, trackData);
   var testTrack = new Track(trackData[0], 'women');
   
@@ -79,6 +78,9 @@ window.onload = function () {
     } while (!shootResult);
     assert(shootResult, "Player shoots");
     assert(testPlayer.rifle.ammo == 4, "Ammo after shot is 4");
+  });
+
+  test('Results test', function() {
 
   });
 }

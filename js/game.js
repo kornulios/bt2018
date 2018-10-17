@@ -80,7 +80,7 @@ class Game {
 
     if (!me.gameRunning) {
       window.cancelAnimationFrame(me.stopTimer);
-      alert('Race finished in ' + (tFrame - tNow) + 'ms');
+      // alert('Race finished in ' + (tFrame - tNow) + 'ms');
       me.championship.addResults(me.race.results);
       me.view.showFinishScreen();
     }

@@ -48,7 +48,7 @@
       document.getElementById('run-btn').addEventListener('click', game.runGame.bind(game));
       document.getElementById('next-btn').addEventListener('click', game.nextRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
-      document.getElementById('speed-fastest').addEventListener('click', game.calculateRace.bind(game));
+      document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
     }
 
 
@@ -59,11 +59,11 @@
     <button id="run-btn" class="hidden">Run</button>
     <button id="finish-btn" class="hidden">Finish</button>
     <div id="controls">
-      <button>Pause</button>
-      <span>Speed: </span>
-      <button id="speed-normal" class="btn-ctrl">></button>
-      <button id="speed-fast" class="btn-ctrl">>></button>
-      <button id="speed-fastest" class="btn-ctrl">>>></button>
+      <!-- <button>Pause</button> -->
+      <!-- <span>Speed: </span> -->
+      <!-- <button id="speed-normal" class="btn-ctrl">></button> -->
+      <!-- <button id="speed-fast" class="btn-ctrl">>></button> -->
+      <button id="calculate-btn">Calculate race</button>
     </div>
   </div>
   <div id="track-info"></div>
