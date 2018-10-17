@@ -12,6 +12,7 @@ class Race {
 
     //misc data
     this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
+    this.gender = gender;
   }
 
   initRoster(roster) {
@@ -19,6 +20,10 @@ class Race {
       // let newPlayer = new Player({name: 'PIP', startTimer: 0});
       this.players.push(p);
     }
+  }
+
+  getFinishResult() {
+    return this.results.getWaypointResults(this.track.waypointsNum() - 1);
   }
 
   run() {

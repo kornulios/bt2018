@@ -137,8 +137,14 @@ class Championship {
         roster.push(p);
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
-      // TODO hmm, think a bit more about it
-      let res = this.races[this.nextRace - 2].results.getTop(CONSTANT.PURSUIT_PLAYERS_NUM);
+      //search for sprint race type with same gender
+      var res;
+      for (var r = 0; r < this.races.length; r++) {
+        if (this.races[r].track.raceType == 'Sprint' && this.races[r].gender == _nextRace.gender) {
+          res = this.races[r].getFinishResult().slice(0, 60);
+          break;
+        }
+      }
       let baseTime = res[0].time;
       for (let i = 0; i < res.length; i++) {
         for (let p of this.players) {
