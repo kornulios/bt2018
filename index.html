@@ -46,7 +46,7 @@
       var startButton = document.getElementById('start-btn');
       startButton.addEventListener('click', game.startNewChampionship.bind(game));
       document.getElementById('run-btn').addEventListener('click', game.runGame.bind(game));
-      document.getElementById('next-btn').addEventListener('click', game.nextRace.bind(game));
+      document.getElementById('next-btn').addEventListener('click', game.prepareNextRace.bind(game));
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
       document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
     }

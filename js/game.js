@@ -6,7 +6,6 @@ class Game {
 
     this.view = new View();
     this.championship = Object.create(null);
-    this.race = Object.create(null);
     this.players = this.loadPlayers();
 
     this.selectedResults = 0;
@@ -48,14 +47,15 @@ class Game {
     }
   }
 
-  nextRace() {
-    let me = this,
-      race = me.championship.getNextRace();
+  prepareNextRace() {
+    let me = this;
+      // race = me.championship.getNextRace();
 
-    me.view.renderPlayers(race);
-    me.view.renderTrackInfo(race);
+    // me.view.renderPlayers(race);
+    // me.view.renderTrackInfo(race);
+
     me.view.showRunScreen();
-    me.race = race;
+    // me.race = race;
   }
 
   render() {
@@ -74,14 +74,14 @@ class Game {
     me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
     for (let ticks = 0; ticks < 120; ticks++) {
-      me.gameRunning = me.race.run();
+      me.gameRunning = me.championship.runRace();
     }
     me.render();
 
     if (!me.gameRunning) {
       window.cancelAnimationFrame(me.stopTimer);
       // alert('Race finished in ' + (tFrame - tNow) + 'ms');
-      me.championship.addResults(me.race.results);
+      // me.championship.addResults(me.race.results);
       me.view.showFinishScreen();
     }
   }
@@ -90,16 +90,18 @@ class Game {
     //used to skip race 
     let me = this;
     let gameRunning = true;
-    let raceResults = me.race.results;
+    // let raceResults = me.race.results;
 
     do
-      gameRunning = me.race.run();
+      gameRunning = me.championship.runRace();
     while (gameRunning)
 
-    me.championship.addResults(raceResults);
+    // me.championship.addResults(raceResults);
     me.view.showFinishScreen();
-    me.view.renderPlayers(me.race);
-    me.view.renderResults(raceResults.getWaypointResults(me.race.track.waypoints.length - 1));
+    me.view.renderChampionshipView(me.championship);
+    // debugger
+    // me.view.renderPlayers(me.race);
+    // me.view.renderResults(raceResults.getWaypointResults(me.race.track.waypoints.length - 1));
   }
 
   setGameSpeed() {    //not implemented

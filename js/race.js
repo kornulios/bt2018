@@ -6,7 +6,7 @@ class Race {
     this.players = [];
     this.results = new Results(this);
     this.gameTimer = 0;
-    this.gameStatus = 'Not started';
+    this.status = 'Not started';
     this.startType = this.track.startType;
     this.penaltyType = this.track.penaltyType;
 
@@ -22,14 +22,12 @@ class Race {
   }
 
   run() {
-    // debugger
-    let t0 = Date.now();
     let me = this;
-    if (me.gameStatus == 'Not started') {
-      me.gameStatus = 'Started';
+    if (me.status == 'Not started') {
+      me.status = 'Started';
       return true;
     }
-    if (me.gameStatus = 'Started') {
+    if (me.status = 'Started') {
       me.gameTimer += 0.1;
       for (let p of me.players) {
         if (p.notstarted) {
@@ -41,12 +39,12 @@ class Race {
         me.playerAct(p);
       }
     }
-    let t1 = Date.now();
-    // console.log("Time between cycles: " + (t1-t0));
+    
     //check race end
     for (let p of me.players) {
       if (!p.finished) return true;
     }
+    me.status = 'Finished';
     return false;
   }
 

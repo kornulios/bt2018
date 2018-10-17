@@ -1,10 +1,9 @@
 // MAJOR REFACTORING UNDERWAY 17.10.2018
 
 class Results {
-  constructor(race) {
+  constructor() {
     this.data = [];
     this.shootingData = [];
-    this.waypointsNum = race.track.waypointsNum();
     this.relative = true; 
   }
 
@@ -94,11 +93,11 @@ class Results {
     return mapped;
   }
 
-  getFinishResults() {
-    let me = this;
-    let res = me.getWaypointResults(me.waypointsNum - 1);
-    return res;
-  }
+  // getFinishResults() {
+  //   let me = this;
+  //   let res = me.getWaypointResults(me.waypointsNum - 1);
+  //   return res;
+  // }
 
   getPlayerResults(name) {
     return this.data.filter(function(res, i){

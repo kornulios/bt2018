@@ -1,11 +1,16 @@
+//TODO - remove all direct references to race results
+
 class Championship {
   constructor(newPlayers, raceConfigs) {
-    this.raceCount = 5;
-    this.races = [];
     this.points = {};
-    this.players = [];
-    this.roster = [];   //TBI
+    this.races = this.initRaces(raceConfigs);
+    this.players = this.initPlayers(newPlayers);
+    this.roster = [];   
     this.nextRace = 0;
+
+    this.currentRace = this.getNextRace();
+    this.raceInProgress = false;
+
     this.pointsMap = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
       30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
       20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
@@ -13,20 +18,21 @@ class Championship {
     this.pointsMapMS = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
       30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
       20, 18, 16, 14, 12, 10, 8, 6, 4, 2];
-    this.initPlayers(newPlayers);
-    this.initRaces(raceConfigs);
+
     this.initResults();
   }
 
   initPlayers(newPlayers) {
+    var newArr = [];
     for (let p of newPlayers) {
-      this.players.push(new Player({
+      newArr.push(new Player({
         name: p.name,
         speed: p.speed,
         accuracy: p.accuracy,
         startTimer: 0
       }));
     }
+    return newArr;
   }
 
   resetPlayers() {
@@ -37,10 +43,12 @@ class Championship {
 
   initRaces(raceConfigs) {
     // TODO create array of races objects
+    var newRaces = [];
     for (let i = 0; i < raceConfigs.length; i++) {
-      this.races.push(new Race(raceConfigs[i], 'men'));
-      this.races.push(new Race(raceConfigs[i], 'women'));
+      newRaces.push(new Race(raceConfigs[i], 'men'));
+      newRaces.push(new Race(raceConfigs[i], 'women'));
     }
+    return newRaces;
   }
 
   initResults() {
@@ -49,9 +57,23 @@ class Championship {
     }
   }
 
-  addResults(results) {
-    //TODO add points for race results
-    let res = results.getFinishResults();
+  // addResults(results) {
+  //   //TODO add points for race results
+  //   let res = results.getFinishResults();
+  //   if (res.length == 30) {
+  //     for (let i = 0; i < this.pointsMapMS.length; i++) {
+  //       this.points[res[i].playerName] += this.pointsMapMS[i];
+  //     }
+  //   } else {
+  //     for (let i = 0; i < this.pointsMap.length; i++) {
+  //       this.points[res[i].playerName] += this.pointsMap[i];
+  //     }
+  //   }
+  //   this.nextRace++;
+  // }
+
+  calculatePoints(results) {
+    var res = results.getWaypointResults(this.currentRace.track.waypointsNum() - 1);
     if (res.length == 30) {
       for (let i = 0; i < this.pointsMapMS.length; i++) {
         this.points[res[i].playerName] += this.pointsMapMS[i];
@@ -61,7 +83,6 @@ class Championship {
         this.points[res[i].playerName] += this.pointsMap[i];
       }
     }
-    this.nextRace++;
   }
 
   getStandingsResults() {
@@ -90,6 +111,13 @@ class Championship {
       }
     ).slice(0, resultNum);
     return res;
+  }
+
+  getRaceResult(raceNum) {
+      if (raceNum === undefined) {
+        return this.races[this.nextRace - 1].results;  
+      }
+      return this.races[raceNum].results;
   }
 
   getNextRace() {
@@ -131,8 +159,20 @@ class Championship {
     }
 
     _nextRace.initRoster(roster);
-
     return _nextRace;
+  }
+
+  runRace() {
+    this.raceInProgress = this.currentRace.run();
+    if (this.currentRace.status == 'Finished') {
+      //update resuts
+      this.calculatePoints(this.currentRace.results);
+      this.nextRace++;
+      console.log('next race switched to' + this.nextRace);
+      this.currentRace = this.getNextRace();
+    }
+
+    return this.raceInProgress;
   }
 
 }
