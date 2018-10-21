@@ -147,23 +147,10 @@ class Player {
     return this;
   }
 
-
-  // getPlayer() {
-  //   return {
-  //     name: this.name,
-  //     distance: this.distance.toFixed(2),
-  //     dp: this._dp,
-  //     speed: this.speed,
-  //     misses: this.misses,
-  //     status: this.running ? "Running" : (this.shooting ? "Shooting(" + this.rifle.ammo + ")" : "Finished")
-  //   }
-  // }
-
   //AI 
   makeDecision() {
     let me = this;
     let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
-    // debugger
     //calculate new speed
     let newSpeed = me.baseSpeed;
     let speedModifier = 0;

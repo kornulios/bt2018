@@ -57,21 +57,6 @@ class Championship {
     }
   }
 
-  // addResults(results) {
-  //   //TODO add points for race results
-  //   let res = results.getFinishResults();
-  //   if (res.length == 30) {
-  //     for (let i = 0; i < this.pointsMapMS.length; i++) {
-  //       this.points[res[i].playerName] += this.pointsMapMS[i];
-  //     }
-  //   } else {
-  //     for (let i = 0; i < this.pointsMap.length; i++) {
-  //       this.points[res[i].playerName] += this.pointsMap[i];
-  //     }
-  //   }
-  //   this.nextRace++;
-  // }
-
   calculatePoints(res) {
     if (res.length == 30) {
       for (let i = 0; i < this.pointsMapMS.length; i++) {

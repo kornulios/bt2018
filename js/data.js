@@ -33,7 +33,6 @@ var Util = {
     }
     return res.join('+');
   }
-
 };
 
 var CONSTANT = {
