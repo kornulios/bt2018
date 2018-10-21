@@ -24,6 +24,7 @@ class Championship {
 
   initPlayers(newPlayers) {
     var newArr = [];
+    debugger
     for (let p of newPlayers) {
       newArr.push(new Player({
         name: p.name,
@@ -139,8 +140,9 @@ class Championship {
       //search for sprint race type with same gender
       var res;
       for (var r = 0; r < this.races.length; r++) {
-        if (this.races[r].track.raceType == 'Sprint' && this.races[r].gender == _nextRace.gender) {
-          res = this.races[r].getFinishResult().slice(0, 60);
+        var race = this.races[r];
+        if (race.track.raceType == 'Sprint' && race.gender == _nextRace.gender) {
+          res = race.getFinishResult().slice(0, 60);
           break;
         }
       }

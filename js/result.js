@@ -54,7 +54,7 @@ class Results {
 
   getWaypointResults(wp) {
     let me = this;
-    let mapped = me.data.filter(function(res, i) {
+    let mapped = me.data.filter(function(res) {
       if (res.waypoint == wp) return true;
     });
 
@@ -105,21 +105,21 @@ class Results {
     });
   }
 
-  getTop(number) {
-    let finishRes = this.getFinishResults();
-    let currentRes = finishRes.slice(0, number);
-    return currentRes.slice(0, number);
-  }
+  // getTop(number) {
+  //   let finishRes = this.getFinishResults();
+  //   let currentRes = finishRes.slice(0, number);
+  //   return currentRes.slice(0, number);
+  // }
 
-  playerNames() {
-    var res = [];
-    this.data.forEach(function(val, i) {
-      if (res.indexOf(val.playerName) == -1) {
-        res.push(val.playerName);
-      }
-    });
-    return res;
-  }
+  // playerNames() {
+  //   var res = [];
+  //   this.data.forEach(function(val, i) {
+  //     if (res.indexOf(val.playerName) == -1) {
+  //       res.push(val.playerName);
+  //     }
+  //   });
+  //   return res;
+  // }
 
   convertToMinutes(time) {
     let minutes = Math.floor(time / 60);
