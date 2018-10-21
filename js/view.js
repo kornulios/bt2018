@@ -1,148 +1,171 @@
 // renders one player
 class View {
-  constructor() {
-    this.trackView = document.querySelector('#track-info');
-    this.mainView = document.querySelector('#main-view');
-    this.resultView = document.querySelector('#results-view');
-  }
+	constructor() {
+		this.trackView = document.querySelector('#track-info');
+		this.mainView = document.querySelector('#main-view');
+		this.resultView = document.querySelector('#results-view');
+	}
 
-  renderPlayers(race) {
-    let me = this;
-    // let mainDiv = document.createElement('div');
-    let mainDiv = document.createDocumentFragment();
-  
-    for (let p of race.players) {
-      let rowDiv = document.createElement('div');
-      let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
-      let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
-      let pStatus = p.status;
+	renderPlayers(race) {
+		let me = this;
+		// let mainDiv = document.createElement('div');
+		let mainDiv = document.createDocumentFragment();
 
-      let tpl = `<div>${p.number} ${p.name}</div>
+		for (let p of race.players) {
+			let rowDiv = document.createElement('div');
+			let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
+			let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
+			let pStatus = p.status;
+
+			let tpl = `<div>${p.number} ${p.name}</div>
         <div>${p.baseSpeed}</div>
         <div style="color: ${spColor}">${p.currentSpeed.toFixed(2)}</div>
         <div>${p.status}</div>
         <div>${shootTpl}</div>
         <div>${p.distance.toFixed(2)}m</div>`;
-      tpl = `<div class="row">${tpl}</div>`;
-      rowDiv.innerHTML = tpl;
-      
-      mainDiv.appendChild(rowDiv);
-    }
+			tpl = `<div class="row">${tpl}</div>`;
+			rowDiv.innerHTML = tpl;
 
-    //render 
-    this.clearMainView();
-    this.mainView.appendChild(mainDiv);
-  }
+			mainDiv.appendChild(rowDiv);
+		}
 
-  renderDiv(text, cls) {      //not used, look for further implementation cases
-    let myDiv = document.createElement('div');
-    let newText = document.createTextNode(text);
-    myDiv.classList.add(cls);
-    myDiv.appendChild(newText);
-    return myDiv;
-  }
+		//render 
+		this.clearMainView();
+		this.mainView.appendChild(mainDiv);
+	}
 
-  renderResults(results, waypoint) { //should render sorted results per waypoint
-    let me = this;
-    let tpl = "";
-    let place = 1;
+	renderDiv(text, cls) {      //not used, look for further implementation cases
+		let myDiv = document.createElement('div');
+		let newText = document.createTextNode(text);
+		myDiv.classList.add(cls);
+		myDiv.appendChild(newText);
+		return myDiv;
+	}
 
-    //render controls
-    tpl = `Standings at ${waypoint}`;
-    for (let r of results) {
-      tpl += '<div class="row">';
-      tpl += `<div style="width:30px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
-      tpl += '</div>';
-      place++;
-    }
-    me.resultView.innerHTML = tpl;
-  }
+	renderResults_old(results, waypoint) { //should render sorted results per waypoint
+		let me = this;
+		let tpl = "";
+		let place = 1;
 
-  renderTrackInfo(race) {
-    let tpl = '';
-    tpl = `<div>${race.name}</div>`;
-    this.trackView.innerHTML = tpl;
-    for (let i=0; i<race.track.waypoints.length; i++) {
-      let newLink = document.createElement('a');
-      newLink.classList.add('res-link');
-      newLink.innerHTML = race.track.waypoints[i].toFixed(0);
-      newLink.addEventListener('click', function() {
-        game.setResultView(i);
-      });
-      this.trackView.appendChild(newLink);
-    }
-  }
+		//render controls
+		tpl = `Standings at ${waypoint}`;
+		for (let r of results) {
+			tpl += '<div class="row">';
+			tpl += `<div style="width:30px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
+			tpl += '</div>';
+			place++;
+		}
+		me.resultView.innerHTML = tpl;
+	}
 
-  renderChampionshipView(championship) {
-    //TODO screen with player stats and points
-    let me = this;
-    let players = championship.getStandingsResults();
-    this.clearMainView();
+	renderResults(race, waypoint) { //should render sorted results per waypoint
+		// debugger
+		var me = this,
+			results = race.getFinishResult(),
+			displayWp = waypoint || race.track.waypointsNum() - 1,
+			tpl = "",
+			place = 1;
 
-    let tpl = '';
-    tpl += '<div>Championship standings</div>';
-    tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Strength', 'Points']);
-    for (let p of players) {
-      tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
-    }
+		//render controls
+		tpl = `Standings at ${displayWp}`;
+		for (let r of results) {
+			tpl += '<div class="row">';
+			tpl += `<div style="width:30px;">${place}</div>`
+				+ me.drawCell(r.playerName)
+				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
+				+ me.drawCell(Util.convertToMinutes(r.time));
 
-    this.mainView.innerHTML = tpl;
+			tpl += '</div>';
+			place++;
+		}
+		me.resultView.innerHTML = tpl;
+	}
 
-    document.getElementById('start-btn').classList.add('hidden');
-    document.getElementById('run-btn').classList.add('hidden');
-    document.getElementById('finish-btn').classList.add('hidden');
-    document.getElementById('next-btn').classList.remove('hidden');
-  }
+	renderTrackInfo(race) {
+		let tpl = '';
+		tpl = `<div>${race.name}</div>`;
+		this.trackView.innerHTML = tpl;
+		for (let i = 0; i < race.track.waypoints.length; i++) {
+			let newLink = document.createElement('a');
+			newLink.classList.add('res-link');
+			newLink.innerHTML = race.track.waypoints[i].toFixed(0);
+			newLink.addEventListener('click', function () {
+				game.setResultView(i);
+			});
+			this.trackView.appendChild(newLink);
+		}
+	}
 
-  renderRaceView(race) {
-    //TODO render race with players and results
-  }
+	renderChampionshipView(championship) {
+		//TODO screen with player stats and points
+		let me = this;
+		let players = championship.getStandingsResults();
+		this.clearMainView();
 
-  clearMainView() {
-    this.mainView.innerHTML = "";
-    this.resultView.innerHTML = "";
-  }
+		let tpl = '';
+		tpl += '<div>Championship standings</div>';
+		tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Strength', 'Points']);
+		for (let p of players) {
+			tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
+		}
 
-  showRunScreen() {
-    document.getElementById('run-btn').classList.remove('hidden');
-    document.getElementById('next-btn').classList.add('hidden');    
-  }
+		this.mainView.innerHTML = tpl;
 
-  showFinishScreen() {
-    document.getElementById('finish-btn').classList.remove('hidden');
-    document.getElementById('run-btn').classList.add('hidden');
-  }
+		document.getElementById('start-btn').classList.add('hidden');
+		document.getElementById('run-btn').classList.add('hidden');
+		document.getElementById('finish-btn').classList.add('hidden');
+		document.getElementById('next-btn').classList.remove('hidden');
+	}
 
-  drawCell(text) {
-    return `<div>${text}</div>`;
-  }
+	renderRaceView(race) {
+		//TODO render race with players and results
+	}
 
-  drawRow(args) {
-    let tpl = '';
-    tpl += '<div class="row">'
-      for (let a of args) {
-        tpl += this.drawCell(a);
-      }
-    tpl += '</div>'
-    return tpl;
-  }
+	clearMainView() {
+		this.mainView.innerHTML = "";
+		this.resultView.innerHTML = "";
+	}
 
-  drawOnCanvas() {
-    let myCanvas = document.querySelector('#main-canvas');
-    let context = myCanvas.getContext("2d");
+	showRunScreen() {
+		document.getElementById('run-btn').classList.remove('hidden');
+		document.getElementById('next-btn').classList.add('hidden');
+	}
 
-    var width = 125;  // Triangle Width
-    var height = 105; // Triangle Height
-    var padding = 20;
+	showFinishScreen() {
+		document.getElementById('finish-btn').classList.remove('hidden');
+		document.getElementById('run-btn').classList.add('hidden');
+	}
 
-    context.beginPath();
-    context.moveTo(padding + width / 2, padding);        // Top Corner
-    context.lineTo(padding + width, height + padding); // Bottom Right
-    context.lineTo(padding, height + padding);         // Bottom Left
-    context.closePath();
+	drawCell(text) {
+		return `<div>${text}</div>`;
+	}
 
-    context.fillStyle = "#ffc821";
-    context.fill();
-  }
+	drawRow(args) {
+		let tpl = '';
+		tpl += '<div class="row">'
+		for (let a of args) {
+			tpl += this.drawCell(a);
+		}
+		tpl += '</div>'
+		return tpl;
+	}
+
+	drawOnCanvas() {
+		let myCanvas = document.querySelector('#main-canvas');
+		let context = myCanvas.getContext("2d");
+
+		var width = 125;  // Triangle Width
+		var height = 105; // Triangle Height
+		var padding = 20;
+
+		context.beginPath();
+		context.moveTo(padding + width / 2, padding);        // Top Corner
+		context.lineTo(padding + width, height + padding); // Bottom Right
+		context.lineTo(padding, height + padding);         // Bottom Left
+		context.closePath();
+
+		context.fillStyle = "#ffc821";
+		context.fill();
+	}
 
 }

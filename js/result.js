@@ -2,8 +2,8 @@
 
 class Results {
   constructor() {
-    this.data = [];
-    this.shootingData = [];
+    this.data = [];             // {name, waypoint, time}
+    this.shootingData = [];     // { name, number, result[ARR] }
     this.relative = true; 
   }
 
@@ -16,27 +16,35 @@ class Results {
     this.data.push(resObj);
   }
 
-  pushShootingResult(p, result, shootNum) {
-    this.shootingData.push({name: p.name, range: p.rangeNum, result: result, shootNum: shootNum});
+  pushShootingResult(name, number, range, result) {
+    this.shootingData.push({name: name, number: number, range: range, result: result});
   }
 
-  getShootingResult(name, range) {
-    let res = [];
-    for (let i = 0; i<this.shootingData.length; i++) {
-      if (this.shootingData[i].name == name && this.shootingData[i].range == range) {
-        (this.shootingData[i].result) ? res.push('+') : res.push('-');
+  getShootingResult(name) {
+    var res = [];
+    for (var i = 0; i < this.shootingData.length; i++) {
+      if (this.shootingData[i].name == name) {
+        res.push(this.shootingData[i].result);
       }
     }
     return res;
   }
 
-  getMisses(name) {
-    // get misses count
-    let res = this.shootingData.filter((val, i) => {
-      if (val.name == name && !val.result) return true;
-    });
-    return res.length;
-  }
+  // getMisses(name) {
+  //   // get misses count
+  //   // var res = this.shootingData.filter((val, i) => {
+  //   //   if (val.name == name && !val.result) return true;
+  //   // });
+  //   var res = [];
+
+  //   for (var i = 0; this.shootingData.length; i++) {
+  //     if (this.shootingData[i].name == name) {
+  //       // res.push(this.shootingData[i].)
+  //     }
+  //   }
+
+  //   return res.length;
+  // }
 
   getMissesByRange(name) {
     let rangeResults = [];
@@ -53,6 +61,29 @@ class Results {
   }
 
   getWaypointResults(wp) {
+    var me = this,
+        results = me.data.filter(function(res) {
+          if (res.waypoint == wp) return true;
+        });
+
+    results.sort(function(a,b){
+      if (a.time > b.time) {
+        return 1;
+      }
+      if (a.time < b.time) {
+        return -1
+      }
+      return 0;
+	});
+	for (var i = 0; i < results.length; i++) {
+		var shooting = me.getShootingResult(results[i].playerName);
+		results[i].shooting = shooting;
+	}
+
+	return results;
+  }
+
+  getWaypointResults_old(wp) {
     let me = this;
     let mapped = me.data.filter(function(res) {
       if (res.waypoint == wp) return true;
@@ -85,13 +116,13 @@ class Results {
     return mapped;
   }
 
-  getWpRes(wp) {      // for debug purpose
-    let me = this;
-    let mapped = me.data.filter(function(res, i) {
-      if (res.waypoint == wp) return true;
-    });
-    return mapped;
-  }
+  // getWpRes(wp) {      // for debug purpose
+  //   let me = this;
+  //   let mapped = me.data.filter(function(res, i) {
+  //     if (res.waypoint == wp) return true;
+  //   });
+  //   return mapped;
+  // }
 
   // getFinishResults() {
   //   let me = this;
@@ -121,18 +152,5 @@ class Results {
   //   return res;
   // }
 
-  convertToMinutes(time) {
-    let minutes = Math.floor(time / 60);
-    let seconds = time - minutes * 60;
-    let forwardZero = (seconds < 10 && minutes > 0) ? '0' : '';
-    let millis = seconds.toFixed(1).split('.')[1];
-    let timeStr = "";
-
-    //apply formatting
-    seconds = forwardZero + Math.floor(seconds);
-    minutes = (minutes > 0) ? minutes + ':' : '';
-    timeStr = minutes + seconds + '.' + millis;
-
-    return timeStr;
-  }
+  
 }

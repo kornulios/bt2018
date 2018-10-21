@@ -89,7 +89,7 @@ class Game {
 
     me.view.showFinishScreen();
     me.view.renderChampionshipView(me.championship);
-    me.view.renderResults(me.championship.races[me.championship.getLastRaceNum()].getFinishResult());
+    me.view.renderResults(me.championship.getLastRace());
   }
 
   setGameSpeed() {    //not implemented

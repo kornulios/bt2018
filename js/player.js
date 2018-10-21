@@ -22,6 +22,7 @@ class Player {
     this.shooting = false;
     this.startTimer = args.startTimer;
     this.rangeNum = 0;
+    this.currentRange = [];
     this.rifle = {};
 
     //AI related
@@ -75,9 +76,10 @@ class Player {
 
   enterShootingRange(range) {
     //enter range
-    let shootingStatus = true;
+    var shootingStatus = true;
     if (!this.shooting) {
       this.rangeNum = range;
+      this.currentRange = [];
       this.shooting = true;
       this.status = 'Range';
       this.running = false;
@@ -96,7 +98,7 @@ class Player {
   }
 
   shoot() {
-    let hit;
+    var hit;
     this.rifle.aimTime -= 0.1;
     if (this.rifle.aimTime > 0.1) {
       return false;
@@ -109,7 +111,8 @@ class Player {
     } else {
       hit = true;
     }
-    return { result: hit, shotNum: 5 - this.rifle.ammo };
+    this.currentRange.push(hit);
+    return this.currentRange;
   }
 
   start() {

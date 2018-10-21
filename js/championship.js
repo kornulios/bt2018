@@ -24,7 +24,6 @@ class Championship {
 
   initPlayers(newPlayers) {
     var newArr = [];
-    debugger
     for (let p of newPlayers) {
       newArr.push(new Player({
         name: p.name,
@@ -157,7 +156,7 @@ class Championship {
         }
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
-      //massstart? pick top 30 from championship ratings
+      //massstart - pick top 30 from championship ratings
       let r = this.getTopResults(30);
       for (let p of r) {
         p.number = number++;
@@ -169,8 +168,8 @@ class Championship {
     return _nextRace;
   }
 
-  getLastRaceNum() {
-    return this.nextRace - 1;
+  getLastRace() {
+    return this.races[this.nextRace - 1];
   }
 
   runRace() {

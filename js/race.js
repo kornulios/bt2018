@@ -67,16 +67,16 @@ class Race {
         p.enterShootingRange(runStatus.shootingPassed);
       }
     } else if (p.shooting) {
-      let shot = p.shoot();
-
-      if (shot) {
-        me.results.pushShootingResult(p, shot.result, shot.shotNum);
-        if (shot.result == false) {
-          me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);
-        }
-        if (shot.shotNum == 5) {
+      var shootingStatus = p.shoot();
+      if (shootingStatus) {
+        if (shootingStatus.length == 5) {
+          me.results.pushShootingResult(p.name, p.number, p.rangeNum, shootingStatus);
+          shootingStatus.forEach(shotRes => {
+            if (!shotRes) {
+              me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);
+            }
+          });
           p.quitShootingRange();
-          me.results.getMisses(p.name);
         }
       }
     }
