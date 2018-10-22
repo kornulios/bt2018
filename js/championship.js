@@ -27,6 +27,7 @@ class Championship {
     for (let p of newPlayers) {
       newArr.push(new Player({
         name: p.name,
+        team: p.team,
         speed: p.speed,
         accuracy: p.accuracy,
         startTimer: 0

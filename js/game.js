@@ -1,99 +1,110 @@
 class Game {
-  constructor() {
-    this.gameSpeed = 1000 / 60;      //50 ticks per second
-    this.gameTimer;
-    this.gameRunning = false;
+	constructor() {
+		this.gameSpeed = 1000 / 60;      //50 ticks per second
+		this.gameTimer;
+		this.gameRunning = false;
 
-    this.view = new View();
-    this.championship = Object.create(null);
-    this.players = this.loadPlayers();
+		this.view = new View();
+		this.championship = Object.create(null);
+		this.players = this.loadPlayers();
 
-    this.selectedResults = 0;
-  }
+		this.selectedResults = 0;
+	}
 
-  loadPlayers() {
-    //AJAX will go there 
-    // getData();
-    let me = this;
-    let res = [];
-    for (let i = 0; i < 104; i++) {
-      let p = { name: "Player " + i }   //mock for players
-      res.push(p);
-    }
-    return res;
-  }
+	loadPlayers() {
+		//AJAX will go there 
+		// getData();
+		var teams = this.loadTeams(),
+			res = [];
 
-  createChampionship(players) {
-    return new Championship(players, trackData);
-  }
+		for (var i = 0; i < 104; i++) {
+			// var p = { name: "Player " + i }   //mock for players
+			res.push({ name: "Player " + i, team: teams[Util.rand(teams.length)] });
+		}
+		return res;
+	}
 
-  mainScreen() {
-    let me = this;
-    me.view.renderChampionshipView(me.championship);
-  }
+	loadTeams() {
+		//mock for teams
+		var teamCount = 26;
+		var teams = [];
+		for (var i = 1; i < teamCount; i++) {
+			teams.push({ name: 'Team ' + i, shortName: 'T' + i, flag: '', colors: [] });
+		}
+		return teams;
+	}
 
-  setResultView(viewNum) {
-    let me = this;
-    me.selectedResults = viewNum;
-    me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
-  }
+	createChampionship(players) {
+		return new Championship(players, trackData);
+	}
 
-  startNewChampionship() {
-    if (this.players.length > 0) {
-      this.championship = this.createChampionship(this.players);
-      this.view.renderChampionshipView(this.championship);
-    } else {
-      console.log('No players loaded.');
-    }
-  }
+	mainScreen() {
+		let me = this;
+		me.view.renderChampionshipView(me.championship);
+	}
 
-  prepareNextRace() {
-    this.view.showRunScreen();
-  }
+	setResultView(viewNum) {
+		let me = this;
+		me.selectedResults = viewNum;
+		me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+	}
 
-  render() {
-    let me = this;
-    me.view.renderPlayers(me.race);
-    me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
-  }
+	startNewChampionship() {
+		if (this.players.length > 0) {
+			this.championship = this.createChampionship(this.players);
+			this.view.renderChampionshipView(this.championship);
+		} else {
+			console.log('No players loaded.');
+		}
+	}
 
-  runGame( tFrame ) {       //refactored with rAF
-    let me = this;
+	prepareNextRace() {
+		this.view.showRunScreen();
+	}
 
-    if (!tNow) {
-      tNow = window.performance.now();
-    }
+	render() {
+		let me = this;
+		me.view.renderPlayers(me.race);
+		me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+	}
 
-    me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
+	runGame(tFrame) {       //refactored with rAF
+		let me = this;
 
-    for (let ticks = 0; ticks < 120; ticks++) {
-      me.gameRunning = me.championship.runRace();
-    }
-    me.render();
+		if (!tNow) {
+			tNow = window.performance.now();
+		}
 
-    if (!me.gameRunning) {
-      window.cancelAnimationFrame(me.stopTimer);
-      // alert('Race finished in ' + (tFrame - tNow) + 'ms');
-      me.view.showFinishScreen();
-    }
-  }
+		me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
-  calculateRace() {
-    //used to skip race 
-    let me = this;
-    let gameRunning = true;
+		for (let ticks = 0; ticks < 120; ticks++) {
+			me.gameRunning = me.championship.runRace();
+		}
+		me.render();
 
-    do
-      gameRunning = me.championship.runRace();
-    while (gameRunning)
+		if (!me.gameRunning) {
+			window.cancelAnimationFrame(me.stopTimer);
+			// alert('Race finished in ' + (tFrame - tNow) + 'ms');
+			me.view.showFinishScreen();
+		}
+	}
 
-    me.view.showFinishScreen();
-    me.view.renderChampionshipView(me.championship);
-    me.view.renderResults(me.championship.getLastRace());
-  }
+	calculateRace() {
+		//used to skip race 
+		let me = this;
+		let gameRunning = true;
 
-  setGameSpeed() {    //not implemented
-    debugger
-    this.gameSpeed = 10;
-  }
+		do
+			gameRunning = me.championship.runRace();
+		while (gameRunning)
+
+		me.view.showFinishScreen();
+		me.view.renderChampionshipView(me.championship);
+		me.view.renderResults(me.championship.getLastRace());
+	}
+
+	setGameSpeed() {    //not implemented
+		debugger
+		this.gameSpeed = 10;
+	}
 }

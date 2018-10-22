@@ -3,6 +3,7 @@ class Player {
     //base stats
     this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200,1600) / 100; // km/h
     this.name = args.name || 'unknown';
+    this.team = args.team || 'Missing team';
     this.index = args.index;
     this.accuracy = args.accuracy || Util.rand(99, 80);
     this.strength = args.strength || Util.rand(99, 75);
@@ -100,9 +101,11 @@ class Player {
   shoot() {
     var hit;
     this.rifle.aimTime -= 0.1;
+
     if (this.rifle.aimTime > 0.1) {
       return false;
     }
+    
     this.status = 'Shooting';
     this.rifle.ammo -= 1;
     this.rifle.aimTime = Util.rand(5, 1);
