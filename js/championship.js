@@ -74,7 +74,7 @@ class Championship {
     //return sorted array of points object
     let res = [];
     for (let p of this.players) {
-      res.push({ name: p.name, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength });
+      res.push({ name: p.name, team: p.team, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength });
     }
     res.sort((a, b) => {
       if (a.points > b.points) {

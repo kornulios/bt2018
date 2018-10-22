@@ -42,25 +42,26 @@ class View {
 		return myDiv;
 	}
 
-	renderResults_old(results, waypoint) { //should render sorted results per waypoint
-		let me = this;
-		let tpl = "";
-		let place = 1;
+	// renderResults_old(results, waypoint) { //should render sorted results per waypoint
+	// 	let me = this;
+	// 	let tpl = "";
+	// 	let place = 1;
 
-		//render controls
-		tpl = `Standings at ${waypoint}`;
-		for (let r of results) {
-			tpl += '<div class="row">';
-			tpl += `<div style="width:30px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
-			tpl += '</div>';
-			place++;
-		}
-		me.resultView.innerHTML = tpl;
-	}
+	// 	//render controls
+	// 	tpl = `Standings at ${waypoint}`;
+	// 	for (let r of results) {
+	// 		tpl += '<div class="row">';
+	// 		tpl += `<div style="width:30px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
+	// 		tpl += '</div>';
+	// 		place++;
+	// 	}
+	// 	me.resultView.innerHTML = tpl;
+	// }
 
 	renderResults(race, waypoint) { //should render sorted results per waypoint
 		// debugger
 		var me = this,
+			raceName = race.getName(),
 			results = race.getFinishResult(),
 			displayWp = waypoint || race.track.waypointsNum() - 1,
 			tpl = "",
@@ -68,10 +69,12 @@ class View {
 
 		//render controls
 		tpl = `Standings at ${displayWp}`;
+		tpl += `<div>${raceName}</div>`;
 		for (let r of results) {
 			tpl += '<div class="row">';
 			tpl += `<div style="width:30px;">${place}</div>`
 				+ me.drawCell(r.playerName)
+				+ me.drawCell(r.team.shortName)
 				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
 				+ me.drawCell(Util.convertToMinutes(r.time));
 
@@ -104,9 +107,9 @@ class View {
 
 		let tpl = '';
 		tpl += '<div>Championship standings</div>';
-		tpl += me.drawRow(['Name', 'Speed', 'Accuracy', 'Strength', 'Points']);
+		tpl += me.drawRow(['Name', 'Team', 'Speed', 'Accuracy', 'Strength', 'Points']);
 		for (let p of players) {
-			tpl += this.drawRow([p.name, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
+			tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
 		}
 
 		this.mainView.innerHTML = tpl;

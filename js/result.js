@@ -8,16 +8,18 @@ class Results {
     this.relative = true; 
   }
 
-  pushResult(name, wp, t) {
+  pushResult(name, number, team, wp, t) {
     var resObj = {
-      playerName: name,
+	  playerName: name,
+	  number: number,
+	  team: team,
       waypoint: wp,
       time: t
     };
     this.data.push(resObj);
   }
 
-  pushShootingResult(name, number, range, result) {
+  pushShootingResult(name, number, team, range, result) {
     this.shootingData.push({name: name, number: number, range: range, result: result});
   }
 

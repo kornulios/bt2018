@@ -25,13 +25,13 @@ body {
 
 #main-view {
   border: 1px solid black;
-  width: 60%;
+  width: 680px;
   float: left;
 }
 
 #results-view {
   border: 1px solid black;
-  width: 30%;
+  width: 450;
   margin-left: 20px;
   float: left;
 }

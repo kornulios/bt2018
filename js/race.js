@@ -25,6 +25,10 @@ class Race {
     return this.results.getWaypointResults(this.track.waypointsNum() - 1);
   }
 
+  getName() {
+    return this.name;
+  }
+
   run() {
     let me = this;
     if (me.status == 'Not started') {
@@ -57,7 +61,7 @@ class Race {
     if (p.running) {
       let runStatus = p.run(me.track);
       if (runStatus.waypointPassed !== -1) {
-        me.results.pushResult(p.name, runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
+        me.results.pushResult(p.name, p.number, p.team, runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
           p.stop();
@@ -70,7 +74,7 @@ class Race {
       var shootingStatus = p.shoot();
       if (shootingStatus) {
         if (shootingStatus.length == 5) {
-          me.results.pushShootingResult(p.name, p.number, p.rangeNum, shootingStatus);
+          me.results.pushShootingResult(p.name, p.number, p.team, p.rangeNum, shootingStatus);
           shootingStatus.forEach(shotRes => {
             if (!shotRes) {
               me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);

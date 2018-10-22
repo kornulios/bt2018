@@ -19,7 +19,7 @@ class Game {
 
 		for (var i = 0; i < 104; i++) {
 			// var p = { name: "Player " + i }   //mock for players
-			res.push({ name: "Player " + i, team: teams[Util.rand(teams.length)] });
+			res.push({ name: "Player " + i, team: teams[Util.rand(teams.length - 1)] });
 		}
 		return res;
 	}
