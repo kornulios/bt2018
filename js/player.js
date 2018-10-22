@@ -5,7 +5,7 @@ class Player {
     this.name = args.name || 'unknown';
     this.team = args.team || 'Missing team';
     this.index = args.index;
-    this.accuracy = args.accuracy || Util.rand(90, 50);
+    this.accuracy = args.accuracy || Util.rand(99, 70);
     this.strength = args.strength || Util.rand(99, 75);
     this.stamina = args.stamina || Util.rand(99, 30);
 

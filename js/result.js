@@ -13,7 +13,7 @@ class Results {
 	  playerName: player.name,
 	  number: player.number,
 	  team: player.team,
-	  player: player,
+	//   player: player,
       waypoint: wp,
       time: t
     };

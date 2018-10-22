@@ -159,12 +159,19 @@ class Championship {
   }
 
   runRace() {
+
+    if (this.nextRace > this.races.length) {
+      return false;
+    }
+
     this.raceInProgress = this.currentRace.run();
     if (this.currentRace.status == 'Finished') {
       //update resuts
       this.calculatePoints(this.currentRace.getFinishResult());
       this.nextRace++;
-      this.currentRace = this.getNextRace();
+      if(this.nextRace < this.races.length) {
+        this.currentRace = this.getNextRace();
+      }
     }
 
     return this.raceInProgress;
