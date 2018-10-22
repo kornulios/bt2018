@@ -1,13 +1,13 @@
 class Player {
   constructor(args) {
     //base stats
-    this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200,1600) / 100; // km/h
+    this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200, 1600) / 100; // km/h
     this.name = args.name || 'unknown';
     this.team = args.team || 'Missing team';
     this.index = args.index;
-    this.accuracy = args.accuracy || Util.rand(99, 80);
+    this.accuracy = args.accuracy || Util.rand(90, 50);
     this.strength = args.strength || Util.rand(99, 75);
-    this.stamina = args.stamina || Util.rand(99,30);
+    this.stamina = args.stamina || Util.rand(99, 30);
 
     //distance related
     this.distance = 0;
@@ -30,6 +30,13 @@ class Player {
     this.state = CONSTANT.RUNSTATE.NORMAL;
   }
 
+  getShortInfo() {
+    return {
+      name: this.name,
+      team: this.team.shortName,
+      number: this.number
+    };
+  }
 
   setSpeed(speed) {
     return this.currentSpeed = speed;
@@ -86,7 +93,7 @@ class Player {
       this.running = false;
       this.rifle = {
         ammo: 5,
-        aimTime: Util.rand(25, 18) 
+        aimTime: Util.rand(25, 18)
       }
       return shootingStatus;
     }
@@ -105,11 +112,11 @@ class Player {
     if (this.rifle.aimTime > 0.1) {
       return false;
     }
-    
+
     this.status = 'Shooting';
     this.rifle.ammo -= 1;
     this.rifle.aimTime = Util.rand(5, 1);
-    if (Util.rand(100,0) > this.accuracy) {
+    if (Util.rand(100, 0) > this.accuracy) {
       hit = false;
     } else {
       hit = true;

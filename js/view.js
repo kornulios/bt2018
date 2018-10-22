@@ -74,7 +74,7 @@ class View {
 			tpl += '<div class="row">';
 			tpl += `<div style="width:30px;">${place}</div>`
 				+ me.drawCell(r.playerName)
-				+ me.drawCell(r.team.shortName)
+				+ me.drawCell(r.team)
 				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
 				+ me.drawCell(Util.convertToMinutes(r.time));
 
