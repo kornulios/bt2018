@@ -8,6 +8,8 @@ class Player {
     this.accuracy = args.accuracy || Util.rand(99, 70);
     this.strength = args.strength || Util.rand(99, 75);
     this.stamina = args.stamina || Util.rand(99, 30);
+    this.fatigue = 100;
+    this.technique = args.technique || Util.rand(99, 50);
 
     //distance related
     this.distance = 0;
@@ -65,6 +67,10 @@ class Player {
 
   run(track) {
     //move distance
+    if (this.fatigue > 50) {
+      this.fatigue -= 0.002;
+    }
+
     if (this.penalty <= 0) {
       this.status = 'Running';
       this._dp = (this.currentSpeed / 3600) * 100;
@@ -142,6 +148,7 @@ class Player {
 
   reset() {
     this.currentSpeed = this.baseSpeed;
+    this.fatigue = 100;
     this.distance = 0;
     this._dp = 0;
     this.penalty = 0;

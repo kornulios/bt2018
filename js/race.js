@@ -64,6 +64,7 @@ class Race {
         me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
+          console.log(p.name, p.fatigue);
           p.stop();
         }
       }

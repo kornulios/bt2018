@@ -73,7 +73,7 @@ class View {
 		for (let r of results) {
 			tpl += '<div class="row">';
 			tpl += `<div style="width:30px;">${place}</div>`
-				+ me.drawCell(r.playerName)
+				+ me.drawCell(r.playerName, '100')
 				+ me.drawCell(r.team)
 				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
 				+ me.drawCell(Util.convertToMinutes(r.time));
@@ -107,7 +107,7 @@ class View {
 
 		let tpl = '';
 		tpl += '<div>Championship standings</div>';
-		tpl += me.drawRow(['Name', 'Team', 'Speed', 'Accuracy', 'Strength', 'Points']);
+		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {
 			tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
 		}
@@ -139,8 +139,9 @@ class View {
 		document.getElementById('run-btn').classList.add('hidden');
 	}
 
-	drawCell(text) {
-		return `<div>${text}</div>`;
+	drawCell(text, cls) {
+		// cls = cls || ''
+		return `<div class=${cls}'>${text}</div>`;
 	}
 
 	drawRow(args) {
