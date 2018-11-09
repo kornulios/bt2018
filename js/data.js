@@ -2,6 +2,8 @@ function getData() {
 	return axios.get('http://localhost:3000/data');
 }
 
+var debugProfiler = {};
+
 var Util = {
 	rand: function (max, min) {
 		min = min || 0;

@@ -45,7 +45,9 @@ class Race {
             if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework
           }
         }
-        me.playerAct(p);
+        if (!p.finished) {
+          me.playerAct(p);
+        }
       }
     }
     
@@ -53,6 +55,13 @@ class Race {
     for (let p of me.players) {
       if (!p.finished) return true;
     }
+
+    var debD = [];
+    for (var i = 0; i < debugProfiler['Player 1'].length; i += 60) {
+      debD.push([i, debugProfiler['Player 1'][i][0], debugProfiler['Player 1'][i][1]]);
+    }
+    console.table(debD);
+
     me.status = 'Finished';
     return false;
   }
@@ -73,7 +82,7 @@ class Race {
         me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
-          console.log(p.name, p.fatigue.toFixed(2));
+          // console.log(p.name, p.fatigue.toFixed(2));
           p.stop();
         }
       }

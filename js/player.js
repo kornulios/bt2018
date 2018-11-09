@@ -163,8 +163,28 @@ class Player {
 
   recalculateStatus() {
     //FATIGUE
-    if (this.fatigue > 0) {
-      this.fatigue = this.fatigue * (1 - 0.0002);
+    if (this.running) {
+      switch (this.state) {
+        case CONSTANT.RUNSTATE.EASE:
+          this.fatigue = this.fatigue * (1 - 0.0001);
+          break;
+        case CONSTANT.RUNSTATE.NORMAL:
+          this.fatigue = this.fatigue * (1 - 0.0002);
+          break;
+        case CONSTANT.RUNSTATE.PUSHING:
+          this.fatigue = this.fatigue * (1 - 0.0004);
+          break;
+      }
+    }
+
+    if (this.shooting) {
+      this.fatigue = this.fatigue * (1 + 0.0004);
+    }
+
+    if (debugProfiler[this.name]) {
+      debugProfiler[this.name].push([this.state, this.fatigue]);
+    } else {
+      debugProfiler[this.name] = [this.state, this.fatigue];
     }
   }
 
