@@ -172,11 +172,13 @@ class Player {
     let newSpeed = me.baseSpeed;
     let speedModifier = 0;
     if (choise == CONSTANT.RUNSTATE.EASE) {
-      speedModifier = (Util.rand(10, 1) / 100) * ((100 - me.strength) / 100);
-      newSpeed = me.baseSpeed * (1 - speedModifier);
+      // speedModifier = (Util.rand(10, 1) / 100) * ((100 - me.strength) / 100);
+      // newSpeed = me.baseSpeed * (1 - speedModifier);
+      newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
     } else if (choise == CONSTANT.RUNSTATE.PUSHING) {
-      speedModifier = (Util.rand(10, 1) / 100) * (me.strength / 100);
-      newSpeed = me.baseSpeed * (1 + speedModifier);
+      // speedModifier = (Util.rand(10, 1) / 100) * (me.strength / 100);
+      // newSpeed = me.baseSpeed * (1 + speedModifier);
+      newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
     }
 
     me.setSpeed(newSpeed);
