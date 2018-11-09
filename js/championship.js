@@ -5,7 +5,7 @@ class Championship {
     this.points = {};
     this.races = this.initRaces(raceConfigs);
     this.players = this.initPlayers(newPlayers);
-    this.roster = [];   
+    this.roster = [];
     this.nextRace = 0;
 
     this.currentRace = this.getNextRace();
@@ -23,15 +23,20 @@ class Championship {
   }
 
   initPlayers(newPlayers) {
-    var newArr = [];
+    var newArr = [],
+      tempNum = 0,
+      tempAI = [];
     for (let p of newPlayers) {
+      tempAI = (tempNum < 10) ? CONSTANT.AI.AGGRESSIVE : (tempNum > 90) ? CONSTANT.AI.WEAK : CONSTANT.AI.NORMAL;
       newArr.push(new Player({
         name: p.name,
         team: p.team,
         speed: p.speed,
         accuracy: p.accuracy,
-        startTimer: 0
+        startTimer: 0,
+        aiBehaviour: tempAI
       }));
+      tempNum++;
     }
     return newArr;
   }
@@ -99,10 +104,10 @@ class Championship {
   }
 
   getRaceResult(raceNum) {
-      if (raceNum === undefined) {
-        return this.races[this.nextRace - 1].results;  
-      }
-      return this.races[raceNum].results;
+    if (raceNum === undefined) {
+      return this.races[this.nextRace - 1].results;
+    }
+    return this.races[raceNum].results;
   }
 
   getNextRace() {
@@ -169,7 +174,7 @@ class Championship {
       //update resuts
       this.calculatePoints(this.currentRace.getFinishResult());
       this.nextRace++;
-      if(this.nextRace < this.races.length) {
+      if (this.nextRace < this.races.length) {
         this.currentRace = this.getNextRace();
       }
     }

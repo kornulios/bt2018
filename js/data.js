@@ -46,6 +46,13 @@ var CONSTANT = {
 		PURSUIT: 3
 	},
 
+	//AI behaviour constants
+	AI: {
+		AGGRESSIVE : [50, 25, 25],
+		WEAK : [25, 25, 50],
+		NORMAL : [33, 34, 33],
+	},
+
 	RUNSTATE: { NORMAL: 0, EASE: 1, PUSHING: 2 },
 
 	START_TIME_INTERVAL: 30,

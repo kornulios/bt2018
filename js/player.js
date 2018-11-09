@@ -29,6 +29,7 @@ class Player {
     this.rifle = {};
 
     //AI related
+    this.aiBehaviour = args.aiBehaviour || CONSTANT.AI.NORMAL;
     this.state = CONSTANT.RUNSTATE.NORMAL;
   }
 
@@ -190,19 +191,27 @@ class Player {
 
   //AI 
   makeDecision() {
-    let me = this;
-    let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
+    var me = this,
+        newSpeed = me.baseSpeed,
+        dice = Util.rand(100),
+        aggro = me.aiBehaviour[0],
+        norm = aggro + me.aiBehaviour[1],
+        choise;
+    // var choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
 
-    //calculate new speed
-    let newSpeed = me.baseSpeed;
-    if (choise == CONSTANT.RUNSTATE.EASE) {
-      newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
-    } else if (choise == CONSTANT.RUNSTATE.PUSHING) {
+    //make ai decide
+    if(dice < aggro) {
+      choise = CONSTANT.RUNSTATE.PUSHING;
       newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
+    } else if (dice > norm) {
+      choise = CONSTANT.RUNSTATE.EASE;
+      newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
+    } else {
+      choise = CONSTANT.RUNSTATE.NORMAL;
     }
 
     me.setSpeed(newSpeed);
-    me.state = choise;  //needed ???
+    me.state = choise;  
   }
 }
 
