@@ -31,7 +31,7 @@ body {
 
 #results-view {
   border: 1px solid black;
-  width: 450;
+  width: 500px;
   margin-left: 20px;
   float: left;
 }
@@ -45,6 +45,9 @@ body {
   color: lightgray;
 }
 
+div .player-name {
+  width: 100px;
+}
 /* #results-view::before {
   content: "Results:";
 } */

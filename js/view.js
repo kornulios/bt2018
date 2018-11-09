@@ -73,7 +73,7 @@ class View {
 		for (let r of results) {
 			tpl += '<div class="row">';
 			tpl += `<div style="width:30px;">${place}</div>`
-				+ me.drawCell(r.playerName, '100')
+				+ me.drawCell(r.playerName, 'player-name')
 				+ me.drawCell(r.team)
 				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
 				+ me.drawCell(Util.convertToMinutes(r.time));
@@ -140,8 +140,7 @@ class View {
 	}
 
 	drawCell(text, cls) {
-		// cls = cls || ''
-		return `<div class=${cls}'>${text}</div>`;
+		return (cls) ? `<div class=${cls}>${text}</div>` : `<div>${text}</div>`;
 	}
 
 	drawRow(args) {
