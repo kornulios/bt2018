@@ -31,12 +31,13 @@ class Race {
 
   run() {
     let me = this;
+
     if (me.status == 'Not started') {
       me.status = 'Started';
       return true;
     }
     if (me.status = 'Started') {
-      me.gameTimer += 0.1;
+      me.gameTimer = parseFloat((me.gameTimer + 0.1).toFixed(1));
       for (let p of me.players) {
         if (p.notstarted) {
           if (me.gameTimer >= p.startTimer) {
@@ -58,13 +59,21 @@ class Race {
 
   playerAct(p) {
     var me = this;
+    var recalcStats = (me.gameTimer % 1) == 0;
+
+    if (recalcStats) {
+      p.recalculateStatus();
+    }
+
     if (p.running) {
+
       var runStatus = p.run(me.track);
+
       if (runStatus.waypointPassed !== -1) {
         me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
-          console.log(p.name, p.fatigue);
+          console.log(p.name, p.fatigue.toFixed(2));
           p.stop();
         }
       }

@@ -93,7 +93,7 @@ class Game {
 		//used to skip race 
 		let me = this;
 		let gameRunning = true;
-
+		console.time();
 		do
 			gameRunning = me.championship.runRace();
 		while (gameRunning)
@@ -101,6 +101,7 @@ class Game {
 		me.view.showFinishScreen();
 		me.view.renderChampionshipView(me.championship);
 		me.view.renderResults(me.championship.getLastRace());
+		console.timeEnd();
 	}
 
 	setGameSpeed() {    //not implemented

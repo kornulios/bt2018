@@ -67,9 +67,6 @@ class Player {
 
   run(track) {
     //move distance
-    if (this.fatigue > 50) {
-      this.fatigue -= 0.002;
-    }
 
     if (this.penalty <= 0) {
       this.status = 'Running';
@@ -164,20 +161,23 @@ class Player {
     return this;
   }
 
+  recalculateStatus() {
+    //FATIGUE
+    if (this.fatigue > 0) {
+      this.fatigue = this.fatigue * (1 - 0.0002);
+    }
+  }
+
   //AI 
   makeDecision() {
     let me = this;
     let choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
+
     //calculate new speed
     let newSpeed = me.baseSpeed;
-    let speedModifier = 0;
     if (choise == CONSTANT.RUNSTATE.EASE) {
-      // speedModifier = (Util.rand(10, 1) / 100) * ((100 - me.strength) / 100);
-      // newSpeed = me.baseSpeed * (1 - speedModifier);
       newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
     } else if (choise == CONSTANT.RUNSTATE.PUSHING) {
-      // speedModifier = (Util.rand(10, 1) / 100) * (me.strength / 100);
-      // newSpeed = me.baseSpeed * (1 + speedModifier);
       newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
     }
 
