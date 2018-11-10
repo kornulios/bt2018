@@ -63,9 +63,9 @@ class Game {
 	}
 
 	render() {
-		let me = this;
-		me.view.renderPlayers(me.race);
-		me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+		// var me = this;
+		this.view.renderPlayers(this.championship.currentRace);
+		// me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
 	}
 
 	runGame(tFrame) {       //refactored with rAF
@@ -84,8 +84,8 @@ class Game {
 
 		if (!me.gameRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
-			// alert('Race finished in ' + (tFrame - tNow) + 'ms');
 			me.view.showFinishScreen();
+			alert('Race finished in ' + (tFrame - tNow) + 'ms');
 		}
 	}
 

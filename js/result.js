@@ -44,7 +44,6 @@ class Results {
         rangeResults.push(res.length);
       }
     }
-    console.log(rangeResults);
     return rangeResults.join('+');
   }
 
