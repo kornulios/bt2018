@@ -27,10 +27,12 @@ class Player {
     this.rangeNum = 0;
     this.currentRange = [];
     this.rifle = {};
+    this.speedMod = 1;
 
     //AI related
     this.aiBehaviour = args.aiBehaviour || CONSTANT.AI.NORMAL;
     this.state = CONSTANT.RUNSTATE.NORMAL;
+
   }
 
   getShortInfo() {
@@ -165,6 +167,7 @@ class Player {
   recalculateStatus() {
     //FATIGUE
     if (this.running) {
+      var newSpeed = this.baseSpeed * this.speedMod * Math.pow((this.fatigue / 100), 0.33);
       switch (this.state) {
         case CONSTANT.RUNSTATE.EASE:
           this.fatigue = this.fatigue * (1 - 0.0001);
@@ -176,6 +179,8 @@ class Player {
           this.fatigue = this.fatigue * (1 - 0.0004);
           break;
       }
+
+      this.setSpeed(newSpeed);
     }
 
     if (this.shooting) {
@@ -183,35 +188,35 @@ class Player {
     }
 
     if (debugProfiler[this.name]) {
-      debugProfiler[this.name].push([this.state, this.fatigue]);
+      debugProfiler[this.name].push([newSpeed, this.fatigue, this.currentSpeed]);
     } else {
-      debugProfiler[this.name] = [this.state, this.fatigue];
+      debugProfiler[this.name] = [newSpeed, this.fatigue];
     }
   }
 
   //AI 
   makeDecision() {
     var me = this,
-        newSpeed = me.baseSpeed,
-        dice = Util.rand(100),
-        aggro = me.aiBehaviour[0],
-        norm = aggro + me.aiBehaviour[1],
-        choise;
+      newSpeed = me.baseSpeed,
+      dice = Util.rand(100),
+      aggro = me.aiBehaviour[0],
+      norm = aggro + me.aiBehaviour[1],
+      choise;
     // var choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
 
     //make ai decide
-    if(dice < aggro) {
+    if (dice < aggro) {
       choise = CONSTANT.RUNSTATE.PUSHING;
-      newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
+      this.speedMod = 1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000));
+      // newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
     } else if (dice > norm) {
       choise = CONSTANT.RUNSTATE.EASE;
-      newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
+      this.speedMod = 1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000));
+      // newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
     } else {
       choise = CONSTANT.RUNSTATE.NORMAL;
     }
-
-    me.setSpeed(newSpeed);
-    me.state = choise;  
+    me.state = choise;
   }
 }
 

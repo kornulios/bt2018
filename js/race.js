@@ -60,7 +60,7 @@ class Race {
     for (var i = 0; i < debugProfiler['Player 1'].length; i += 60) {
       debD.push([i, debugProfiler['Player 1'][i][0], debugProfiler['Player 1'][i][1]]);
     }
-    console.table(debD);
+    // console.table(debD);
 
     me.status = 'Finished';
     return false;
