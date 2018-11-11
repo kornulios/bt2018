@@ -72,23 +72,27 @@ class Game {
 	}
 
 	runGame(tFrame) {       //refactored with rAF
-		let me = this;
+		var me = this,
+			gameSpeed = 200,
+			raceRunning = true;
 
-		if (!tNow) {
-			tNow = window.performance.now();
-		}
+		// if (!tNow) {
+		// 	tNow = window.performance.now();
+		// }
 
 		me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
-		for (let ticks = 0; ticks < 120; ticks++) {
-			me.gameRunning = me.championship.runRace();
+		for (var ticks = 0; ticks < gameSpeed; ticks++) {
+			raceRunning = me.championship.runRace();
+			if (!raceRunning) break;
 		}
 		me.render();
 
-		if (!me.gameRunning) {
+		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
 			me.view.showFinishScreen();
-			alert('Race finished in ' + (tFrame - tNow) + 'ms');
+			me.view.renderChampionshipView(me.championship);
+			// alert('Race finished in ' + (tFrame - tNow) + 'ms');
 		}
 	}
 

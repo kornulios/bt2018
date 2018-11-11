@@ -50,7 +50,7 @@ class View {
 		tpl += '<div>Race progress</div>';
 		for (var p of players) {
 			tpl += '<div class="row">';
-			tpl += `<div style="width:30px;">${p.number}</div>`
+			tpl += this.drawCell(p.number, 'player-number')
 				+ this.drawCell(p.name, 'player-name')
 				+ this.drawCell(p.team.shortName)
 				+ this.drawCell(p.baseSpeed)
