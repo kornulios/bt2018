@@ -18,11 +18,16 @@ class Game {
 		//AJAX will go there 
 		// getData();
 		var teams = this.teams,
+			playerCount = 208,
 			res = [];
 
-		for (var i = 0; i < 104; i++) {
+		for (var i = 0; i < playerCount; i++) {
 			// var p = { name: "Player " + i }   //mock for players
-			res.push({ name: "Player " + i, team: teams[Util.rand(teams.length - 1)] });
+			res.push({
+				name: "Player " + i,
+				gender: i % 2 == 0 ? 'men' : 'women',
+				team: teams[Util.rand(teams.length - 1)]
+			});
 		}
 		return res;
 	}
@@ -63,6 +68,7 @@ class Game {
 	}
 
 	prepareNextRace() {
+		this.view.renderRaceView(this.championship.currentRace);
 		this.view.showRunScreen();
 	}
 

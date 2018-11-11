@@ -15,11 +15,12 @@ class View {
 	renderRaceView(race) {
 		var players = race.getPlayers(),
 			playerTeam = game.getPlayerTeam(),
+			raceName = race.getRaceName(),
 			tpl = '';
 
 		this.clearMainView();
 
-		tpl += '<div>Race progress</div>';
+		tpl += `<div>Race progress - ${raceName}</div>`;
 		for (var p of players) {
 			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
 			tpl += '<div class="row ' + playerTeamCls + '">';
@@ -33,6 +34,10 @@ class View {
 		}
 
 		this.mainView.innerHTML = tpl;
+	}
+
+	renderStartView(race) {
+
 	}
 
 	renderDiv(text, cls) {      //not used, look for further implementation cases

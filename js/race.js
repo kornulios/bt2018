@@ -4,6 +4,7 @@ class Race {
   constructor(newTrack, gender) {
     this.track = new Track(newTrack, gender);
     this.players = [];
+    this.raceGender = gender;
     this.results = new Results(this);
     this.gameTimer = 0;
     this.status = 'Not started';
@@ -11,8 +12,7 @@ class Race {
     this.penaltyType = this.track.penaltyType;
 
     //misc data
-    this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km'
-    this.gender = gender;
+    this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km' + ' ' + this.raceGender;
   }
 
   initRoster(roster) {
@@ -86,7 +86,6 @@ class Race {
         me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
         p.makeDecision();
         if (p.getDistance() > me.track.trackLength) {
-          // console.log(p.name, p.fatigue.toFixed(2));
           p.stop();
         }
       }

@@ -31,6 +31,7 @@ class Championship {
       newArr.push(new Player({
         name: p.name,
         team: p.team,
+        gender: p.gender,
         speed: p.speed,
         accuracy: p.accuracy,
         startTimer: 0,
@@ -121,10 +122,12 @@ class Championship {
     //create start list based on racetype
     if (_nextRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
       for (let p of this.players) {
-        p.startTimer = startTime;
-        p.number = number++;
-        startTime += CONSTANT.START_TIME_INTERVAL;
-        roster.push(p);
+        if(p.gender == _nextRace.raceGender) {
+          p.startTimer = startTime;
+          p.number = number++;
+          startTime += CONSTANT.START_TIME_INTERVAL;
+          roster.push(p);
+        }
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.PURSUIT) {
       //search for sprint race type with same gender
@@ -164,7 +167,6 @@ class Championship {
   }
 
   runRace() {
-
     if (this.nextRace > this.races.length) {
       return false;
     }
