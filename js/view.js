@@ -75,7 +75,7 @@ class View {
 			tpl += `<div style="width:30px;">${place}</div>`
 				+ me.drawCell(r.playerName, 'player-name')
 				+ me.drawCell(r.team)
-				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')  
+				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')
 				+ me.drawCell(Util.convertToMinutes(r.time));
 
 			tpl += '</div>';
@@ -101,15 +101,21 @@ class View {
 
 	renderChampionshipView(championship) {
 		//TODO screen with player stats and points
-		let me = this;
-		let players = championship.getStandingsResults();
+		var me = this,
+			players = championship.getStandingsResults(),
+			playerTeam = game.getPlayerTeam();
+
 		this.clearMainView();
 
 		let tpl = '';
 		tpl += '<div>Championship standings</div>';
 		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {
-			tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
+			if (p.team.name == playerTeam) {
+				tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]], 'player-team');
+			} else {
+				tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
+			}
 		}
 
 		this.mainView.innerHTML = tpl;
@@ -139,17 +145,32 @@ class View {
 		document.getElementById('run-btn').classList.add('hidden');
 	}
 
+	enableTeamSelector(teams) {
+		var teamSelector = document.getElementById('team-select');
+		for (var i = 0; i < teams.length; i++) {
+			var el = document.createElement('option');
+			el.text = teams[i].name;
+			teamSelector.add(el);
+		}
+
+		teamSelector.disabled = false;
+		teamSelector.onchange = game.onChangeTeamSelect.bind(game);
+	}
+
 	drawCell(text, cls) {
 		return (cls) ? `<div class=${cls}>${text}</div>` : `<div>${text}</div>`;
 	}
 
-	drawRow(args) {
+	drawRow(args, cls) {
+		// cls - pass a string of classes
 		let tpl = '';
-		tpl += '<div class="row">'
+		tpl += cls ? '<div class="row ' + cls + '">' : '<div class="row">';
+
 		for (let a of args) {
 			tpl += this.drawCell(a);
 		}
-		tpl += '</div>'
+
+		tpl += '</div>';
 		return tpl;
 	}
 

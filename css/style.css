@@ -48,6 +48,10 @@ body {
 div .player-name {
   width: 100px;
 }
+
+div .player-team {
+  background: #ffe6c6;
+}
 /* #results-view::before {
   content: "Results:";
 } */

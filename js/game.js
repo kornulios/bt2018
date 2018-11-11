@@ -6,15 +6,18 @@ class Game {
 
 		this.view = new View();
 		this.championship = Object.create(null);
+
+		this.teams = this.loadTeams();
 		this.players = this.loadPlayers();
 
 		this.selectedResults = 0;
+		this.playerTeam = "";
 	}
 
 	loadPlayers() {
 		//AJAX will go there 
 		// getData();
-		var teams = this.loadTeams(),
+		var teams = this.teams,
 			res = [];
 
 		for (var i = 0; i < 104; i++) {
@@ -53,6 +56,7 @@ class Game {
 		if (this.players.length > 0) {
 			this.championship = this.createChampionship(this.players);
 			this.view.renderChampionshipView(this.championship);
+			this.view.enableTeamSelector(this.teams);
 		} else {
 			console.log('No players loaded.');
 		}
@@ -107,5 +111,14 @@ class Game {
 	setGameSpeed() {    //not implemented
 		debugger
 		this.gameSpeed = 10;
+	}
+
+	getPlayerTeam() {
+		return this.playerTeam;
+	}
+
+	onChangeTeamSelect(e) {
+		this.playerTeam = e.target.value;
+		this.view.renderChampionshipView(this.championship);
 	}
 }

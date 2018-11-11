@@ -25,19 +25,6 @@
       console.log('up and running');
       game = new Game();
 
-      // getData().then(function (res) {
-      //   let players = [];
-      //   for (let i=0; i<104; i++){
-      //     let p = { name: "Player " + i}
-      //     players.push(p);
-      //   }
-      //   // game.createChampionship(res.data.players);
-      //   game.createChampionship(players);
-      //   game.view.renderChampionshipView(game.championship);
-      // }).catch(function (err) {
-      //   console.log('Data load failed', err);
-      // });
-
       initEvents();
       // game.view.drawOnCanvas();
     });
@@ -50,20 +37,25 @@
       document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
       document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
     }
-
-
   </script>
+
   <div class='gray-back'>
-    <button id="start-btn">Start game</button>
-    <button id="next-btn" class="hidden">Next race</button>
-    <button id="run-btn" class="hidden">Run</button>
-    <button id="finish-btn" class="hidden">Finish</button>
+
     <div id="controls">
+      <button id="start-btn">Start game</button>
+      <button id="next-btn" class="hidden">Next race</button>
+      <button id="run-btn" class="hidden">Run</button>
+      <button id="finish-btn" class="hidden">Finish</button>
       <!-- <button>Pause</button> -->
       <!-- <span>Speed: </span> -->
       <!-- <button id="speed-normal" class="btn-ctrl">></button> -->
       <!-- <button id="speed-fast" class="btn-ctrl">>></button> -->
       <button id="calculate-btn">Calculate race</button>
+    </div>
+    <div class="cls-team">
+      <select id="team-select" disabled>
+        <option value="none">Team select...</option>
+      </select>
     </div>
   </div>
   <div id="track-info"></div>
