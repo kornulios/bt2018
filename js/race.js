@@ -25,7 +25,11 @@ class Race {
     return this.results.getWaypointResults(this.track.waypointsNum() - 1);
   }
 
-  getName() {
+  getPlayers() {
+    return this.players;
+  }
+
+  getRaceName() {
     return this.name;
   }
 

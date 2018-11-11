@@ -34,6 +34,36 @@ class View {
 		this.mainView.appendChild(mainDiv);
 	}
 
+	renderScreen(screenDiv) {
+		//render 
+		this.clearMainView();
+		this.mainView.appendChild(screenDiv);
+	}
+
+	renderRaceView(race) {
+		var players = race.getPlayers(),
+			playerTeam = game.getPlayerTeam(),
+			tpl = '';
+
+		this.clearMainView();
+
+		tpl += '<div>Race progress</div>';
+		for (var p of players) {
+			tpl += '<div class="row">';
+			tpl += `<div style="width:30px;">${p.number}</div>`
+				+ this.drawCell(p.name, 'player-name')
+				+ this.drawCell(p.team.shortName)
+				+ this.drawCell(p.baseSpeed)
+				+ this.drawCell(p.currentSpeed.toFixed(2))
+				+ this.drawCell(p.distance.toFixed(2));
+			tpl += '</div>';
+		}
+
+		this.mainView.innerHTML = tpl;
+		// mainDiv.appendChild(tpl);
+		// this.renderScreen(mainDiv);
+	}
+
 	renderDiv(text, cls) {      //not used, look for further implementation cases
 		let myDiv = document.createElement('div');
 		let newText = document.createTextNode(text);
@@ -61,7 +91,7 @@ class View {
 	renderResults(race, waypoint) { //should render sorted results per waypoint
 		// debugger
 		var me = this,
-			raceName = race.getName(),
+			raceName = race.getRaceName(),
 			results = race.getFinishResult(),
 			displayWp = waypoint || race.track.waypointsNum() - 1,
 			tpl = "",
@@ -124,10 +154,6 @@ class View {
 		document.getElementById('run-btn').classList.add('hidden');
 		document.getElementById('finish-btn').classList.add('hidden');
 		document.getElementById('next-btn').classList.remove('hidden');
-	}
-
-	renderRaceView(race) {
-		//TODO render race with players and results
 	}
 
 	clearMainView() {

@@ -67,8 +67,7 @@ class Game {
 	}
 
 	render() {
-		// var me = this;
-		this.view.renderPlayers(this.championship.currentRace);
+		this.view.renderRaceView(this.championship.currentRace);
 		// me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
 	}
 

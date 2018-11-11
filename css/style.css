@@ -11,12 +11,12 @@ body {
   color: red;
   margin-left: 5px;
 }
-
+/* 
 .row div:first-child {
   display: inline-block;
-  width: 150px;
+  width: 30px;
   color: green;
-}
+} */
 
 .row div {
   display: inline-block;
@@ -51,6 +51,9 @@ div .player-name {
 
 div .player-team {
   background: #ffe6c6;
+}
+div .player-number {
+	width: 30px;
 }
 /* #results-view::before {
   content: "Results:";
