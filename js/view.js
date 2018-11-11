@@ -6,34 +6,6 @@ class View {
 		this.resultView = document.querySelector('#results-view');
 	}
 
-	renderPlayers(race) {
-		let me = this;
-		// let mainDiv = document.createElement('div');
-		let mainDiv = document.createDocumentFragment();
-
-		for (let p of race.players) {
-			let rowDiv = document.createElement('div');
-			let spColor = (p.state == CONSTANT.RUNSTATE.NORMAL) ? 'black' : (p.state == CONSTANT.RUNSTATE.EASE) ? 'red' : 'green';
-			let shootTpl = (p.shooting) ? `[${race.results.getShootingResult(p.name, p.rangeNum)}]` : `(${race.results.getMissesByRange(p.name)})`;
-			//let pStatus = p.status;
-
-			let tpl = `<div>${p.number} ${p.name}</div>
-        <div>${p.baseSpeed}</div>
-        <div style="color: ${spColor}">${p.currentSpeed.toFixed(2)}</div>
-        <div>${p.status}</div>
-        <div>${shootTpl}</div>
-        <div>${p.distance.toFixed(2)}m</div>`;
-			tpl = `<div class="row">${tpl}</div>`;
-			rowDiv.innerHTML = tpl;
-
-			mainDiv.appendChild(rowDiv);
-		}
-
-		//render 
-		this.clearMainView();
-		this.mainView.appendChild(mainDiv);
-	}
-
 	renderScreen(screenDiv) {
 		//render 
 		this.clearMainView();
@@ -49,7 +21,8 @@ class View {
 
 		tpl += '<div>Race progress</div>';
 		for (var p of players) {
-			tpl += '<div class="row">';
+			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
+			tpl += '<div class="row ' + playerTeamCls + '">';
 			tpl += this.drawCell(p.number, 'player-number')
 				+ this.drawCell(p.name, 'player-name')
 				+ this.drawCell(p.team.shortName)
@@ -60,8 +33,6 @@ class View {
 		}
 
 		this.mainView.innerHTML = tpl;
-		// mainDiv.appendChild(tpl);
-		// this.renderScreen(mainDiv);
 	}
 
 	renderDiv(text, cls) {      //not used, look for further implementation cases
@@ -71,22 +42,6 @@ class View {
 		myDiv.appendChild(newText);
 		return myDiv;
 	}
-
-	// renderResults_old(results, waypoint) { //should render sorted results per waypoint
-	// 	let me = this;
-	// 	let tpl = "";
-	// 	let place = 1;
-
-	// 	//render controls
-	// 	tpl = `Standings at ${waypoint}`;
-	// 	for (let r of results) {
-	// 		tpl += '<div class="row">';
-	// 		tpl += `<div style="width:30px;">${place}</div>` + me.drawCell(r.playerName) + me.drawCell((r.resultTime));
-	// 		tpl += '</div>';
-	// 		place++;
-	// 	}
-	// 	me.resultView.innerHTML = tpl;
-	// }
 
 	renderResults(race, waypoint) { //should render sorted results per waypoint
 		// debugger
@@ -141,11 +96,15 @@ class View {
 		tpl += '<div>Championship standings</div>';
 		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {
-			if (p.team.name == playerTeam) {
-				tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]], 'player-team');
-			} else {
-				tpl += this.drawRow([p.name, p.team.shortName, p.baseSpeed, p.accuracy, p.strength, championship.points[p.name]]);
-			}
+			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
+			tpl += '<div class="row ' + playerTeamCls + '">';
+			tpl += this.drawCell(p.name, 'player-name');
+			tpl += this.drawCell(p.team.shortName);
+			tpl += this.drawCell(p.baseSpeed);
+			tpl += this.drawCell(p.accuracy);
+			tpl += this.drawCell(p.strength);
+			tpl += this.drawCell(championship.points[p.name]);
+			tpl += '</div>';
 		}
 
 		this.mainView.innerHTML = tpl;
