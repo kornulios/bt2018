@@ -1,6 +1,9 @@
 # BiaTech 2018
 Newest and coolest bia manager in the world.
-Plays on it own :)
+
+## Game goals
+Through careful team management player should try to achieve victory in Biathlon World Cup event. Team management will include mid-stages biathlonist's trainings and preparations, managing race performance by giving direct orders, trying to keep sportsman's optimal form to win race, balancing between speed and shooting accuracy.
+
 
 ## Views description:
 **Start** screen - user selects Start, Load game options, additional app configuration present. Logo and large biathlon themed picture is displayed on background. Starting game leads to Select Team screen.
