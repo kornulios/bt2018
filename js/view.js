@@ -93,26 +93,36 @@ class View {
 		//TODO screen with player stats and points
 		var me = this,
 			players = championship.getStandingsResults(),
-			playerTeam = game.getPlayerTeam();
+			playerTeam = game.getPlayerTeam(),
+			viewGender = game.getViewGender();
 
 		this.clearMainView();
 
+		var genSelector = '<div class="gender-select"><a id="gender-men" data="men">Men</a><a id="gender-woman">Women</a></div>';
+
 		var tpl = '';
+		tpl += genSelector;
 		tpl += '<div>Championship standings</div>';
 		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {
-			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
-			tpl += '<div class="row ' + playerTeamCls + '">';
-			tpl += this.drawCell(p.name, 'player-name');
-			tpl += this.drawCell(p.team.shortName);
-			tpl += this.drawCell(p.baseSpeed);
-			tpl += this.drawCell(p.accuracy);
-			tpl += this.drawCell(p.strength);
-			tpl += this.drawCell(championship.points[p.name]);
-			tpl += '</div>';
+			if (p.gender == viewGender) {
+				var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
+				tpl += '<div class="row ' + playerTeamCls + '">';
+				tpl += this.drawCell(p.name, 'player-name');
+				tpl += this.drawCell(p.team.shortName);
+				tpl += this.drawCell(p.baseSpeed);
+				tpl += this.drawCell(p.accuracy);
+				tpl += this.drawCell(p.strength);
+				tpl += this.drawCell(championship.points[p.name]);
+				tpl += '</div>';
+			}
 		}
 
 		this.mainView.innerHTML = tpl;
+
+		document.getElementsByClassName('gender-select')[0].addEventListener('click', function (e) {
+			game.onChangeViewGender(e);
+		});
 
 		document.getElementById('start-btn').classList.add('hidden');
 		document.getElementById('run-btn').classList.add('hidden');

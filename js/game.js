@@ -11,6 +11,7 @@ class Game {
 		this.players = this.loadPlayers();
 
 		this.selectedResults = 0;
+		this.selectedGender = 'men';
 		this.playerTeam = "";
 	}
 
@@ -25,7 +26,7 @@ class Game {
 			// var p = { name: "Player " + i }   //mock for players
 			res.push({
 				name: "Player " + i,
-				gender: i % 2 == 0 ? 'men' : 'women',
+				gender: i < playerCount / 2 ? 'men' : 'women',
 				team: teams[Util.rand(teams.length - 1)]
 			});
 		}
@@ -126,8 +127,17 @@ class Game {
 		return this.playerTeam;
 	}
 
+	getViewGender() {
+		return this.selectedGender;
+	}
+
 	onChangeTeamSelect(e) {
 		this.playerTeam = e.target.value;
+		this.view.renderChampionshipView(this.championship);
+	}
+
+	onChangeViewGender(e) {
+		this.selectedGender = e.target.text.toLowerCase();
 		this.view.renderChampionshipView(this.championship);
 	}
 }

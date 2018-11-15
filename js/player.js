@@ -4,7 +4,7 @@ class Player {
     this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200, 1600) / 100; // km/h
     this.name = args.name || 'unknown';
     this.team = args.team || 'Missing team';
-    this.gender = args.gender || 'unknown;'
+    this.gender = args.gender || 'unknown';
     this.index = args.index;
     this.accuracy = args.accuracy || Util.rand(99, 70);
     this.strength = args.strength || Util.rand(99, 75);
