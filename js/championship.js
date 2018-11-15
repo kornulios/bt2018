@@ -93,9 +93,13 @@ class Championship {
     return res;
   }
 
-  getTopResults(resultNum) {
+  getTopResults(resultNum, gender) {
     let res = [];
-    res = this.players.sort(
+    res = this.players.filter(function(p) {
+      return p.gender == gender;
+    });
+
+    res = res.sort(
       (a, b) => {
         return this.points[a.name] < this.points[b.name] ? 1 : -1
         return 0;
@@ -151,8 +155,8 @@ class Championship {
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
       //massstart - pick top 30 from championship ratings
-      let r = this.getTopResults(30);
-      for (let p of r) {
+      var r = this.getTopResults(30, _nextRace.raceGender);
+      for (var p of r) {
         p.number = number++;
       }
       roster = r;
