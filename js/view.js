@@ -97,7 +97,7 @@ class View {
 
 		this.clearMainView();
 
-		let tpl = '';
+		var tpl = '';
 		tpl += '<div>Championship standings</div>';
 		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {

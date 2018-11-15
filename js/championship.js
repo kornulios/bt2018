@@ -134,7 +134,7 @@ class Championship {
       var res;
       for (var r = 0; r < this.races.length; r++) {
         var race = this.races[r];
-        if (race.track.raceType == 'Sprint' && race.gender == _nextRace.gender) {
+        if (race.track.raceType == 'Sprint' && race.raceGender == _nextRace.raceGender) {
           res = race.getFinishResult().slice(0, 60);
           break;
         }
