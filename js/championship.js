@@ -27,7 +27,7 @@ class Championship {
       tempNum = 0,
       tempAI = [];
     for (let p of newPlayers) {
-      tempAI = (tempNum < 10) ? CONSTANT.AI.AGGRESSIVE : (tempNum > 90) ? CONSTANT.AI.WEAK : CONSTANT.AI.NORMAL;
+      tempAI = (tempNum < 20) ? CONSTANT.AI.AGGRESSIVE : (tempNum > 180) ? CONSTANT.AI.WEAK : CONSTANT.AI.NORMAL;
       newArr.push(new Player({
         name: p.name,
         team: p.team,
@@ -102,7 +102,6 @@ class Championship {
     res = res.sort(
       (a, b) => {
         return this.points[a.name] < this.points[b.name] ? 1 : -1
-        return 0;
       }
     ).slice(0, resultNum);
     return res;
