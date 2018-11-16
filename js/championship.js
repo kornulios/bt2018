@@ -1,5 +1,5 @@
 //TODO - remove all direct references to race results
-
+// controller
 class Championship {
   constructor(newPlayers, raceConfigs) {
     this.points = {};
@@ -90,6 +90,16 @@ class Championship {
       }
       return 0;
     });
+    return res;
+  }
+
+  getPlayers() {
+    var res = [];
+    for (var p of this.players) {
+      var tempPlayer = p;
+      p.points = this.points[p.name];
+      res.push(p);
+    }
     return res;
   }
 

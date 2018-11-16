@@ -6,6 +6,8 @@
 	<script src="js/view.js"></script>
 	<script src="js/view/start.js"></script>
 	<script src="js/view/select.js"></script>
+	<script src="js/view/championship.js"></script>
+	<script src="js/view/team.js"></script>
 
 	<script src="js/data.js"></script>
 	<script src="js/result.js"></script>
@@ -27,9 +29,9 @@
 
 		var tabMap = {
 			'start': startScreen,
-			'select': selectScreen
-			// 'championship': champScreen,
-			// 'team': teamManagementScreen
+			'select': selectScreen,
+			'championship': championshipScreen,
+			'team': teamScreen
 		};
 
 		document.addEventListener('DOMContentLoaded', function (e) {
@@ -60,7 +62,7 @@
 				console.log('No mapped function for ' + e.target.getAttribute('tab-value'));
 			}
 		}
-		
+
 	</script>
 
 	<div id='main-tabs'>

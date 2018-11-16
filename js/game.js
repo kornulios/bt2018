@@ -130,12 +130,17 @@ class Game {
 		return this.teams;
 	}
 
+	getPlayers() {
+		return this.championship.getPlayers();
+	}
+
 	getViewGender() {
 		return this.selectedGender;
 	}
 
 	onChangeTeamSelect(e) {
 		this.playerTeam = e.target.value;
+		this.startNewChampionship();
 		// this.view.renderChampionshipView(this.championship);
 	}
 

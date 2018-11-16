@@ -130,6 +130,33 @@ class View {
 		document.getElementById('next-btn').classList.remove('hidden');
 	}
 
+	renderTeamView() {
+		var team = game.getPlayerTeam(), 
+			players = game.getPlayers();
+
+		// this.mainView.clearMainView();
+
+		var tpl = '';
+		tpl += '<div>Team management</div>';
+		tpl += this.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
+
+		for (var p of players) {
+			if (p.team.name == team) {
+				// var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
+				tpl += '<div class="row">';
+				tpl += this.drawCell(p.name, 'player-name');
+				tpl += this.drawCell(p.team.shortName);
+				tpl += this.drawCell(p.baseSpeed);
+				tpl += this.drawCell(p.accuracy);
+				tpl += this.drawCell(p.strength);
+				tpl += this.drawCell(p.points);
+				tpl += '</div>';
+			}
+		}
+
+		return tpl;
+	}
+
 	clearMainView() {
 		this.mainView.innerHTML = "";
 		this.resultView.innerHTML = "";
