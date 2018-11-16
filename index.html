@@ -47,20 +47,20 @@
 			document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
 
 			document.getElementById('main-tabs').addEventListener('click', changeTab);
-
-			// document.getElementById('main-view').appendChild(startScreen());
 		}
 
 		function changeTab(e) {
-			// console.log(e.target.getAttribute('tab-value'));   checked
 			var mainDiv = document.getElementById('main-view');
+
 			mainDiv.innerHTML = "";
+
 			if (tabMap[e.target.getAttribute('tab-value')]) {
 				mainDiv.appendChild(tabMap[e.target.getAttribute('tab-value')]());
 			} else {
 				console.log('No mapped function for ' + e.target.getAttribute('tab-value'));
 			}
 		}
+		
 	</script>
 
 	<div id='main-tabs'>
@@ -82,11 +82,7 @@
 
 			<button id="calculate-btn">Calculate race</button>
 		</div>
-		<div class="cls-team">
-			<select id="team-select" disabled>
-				<option value="none">Team select...</option>
-			</select>
-		</div>
+		
 	</div>
 	<div id="track-info"></div>
 	<div id="main-view"></div>

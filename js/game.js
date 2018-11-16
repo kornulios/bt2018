@@ -62,7 +62,6 @@ class Game {
 		if (this.players.length > 0) {
 			this.championship = this.createChampionship(this.players);
 			this.view.renderChampionshipView(this.championship);
-			this.view.enableTeamSelector(this.teams);
 		} else {
 			console.log('No players loaded.');
 		}
@@ -127,13 +126,17 @@ class Game {
 		return this.playerTeam;
 	}
 
+	getTeams() {
+		return this.teams;
+	}
+
 	getViewGender() {
 		return this.selectedGender;
 	}
 
 	onChangeTeamSelect(e) {
 		this.playerTeam = e.target.value;
-		this.view.renderChampionshipView(this.championship);
+		// this.view.renderChampionshipView(this.championship);
 	}
 
 	onChangeViewGender(e) {

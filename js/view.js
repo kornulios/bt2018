@@ -145,17 +145,17 @@ class View {
 		document.getElementById('run-btn').classList.add('hidden');
 	}
 
-	enableTeamSelector(teams) {
-		var teamSelector = document.getElementById('team-select');
-		for (var i = 0; i < teams.length; i++) {
-			var el = document.createElement('option');
-			el.text = teams[i].name;
-			teamSelector.add(el);
-		}
+	// enableTeamSelector(teams) {
+	// 	var teamSelector = document.getElementById('team-select');
+	// 	for (var i = 0; i < teams.length; i++) {
+	// 		var el = document.createElement('option');
+	// 		el.text = teams[i].name;
+	// 		teamSelector.add(el);
+	// 	}
 
-		teamSelector.disabled = false;
-		teamSelector.onchange = game.onChangeTeamSelect.bind(game);
-	}
+	// 	teamSelector.disabled = false;
+	// 	teamSelector.onchange = game.onChangeTeamSelect.bind(game);
+	// }
 
 	drawCell(text, cls) {
 		return (cls) ? `<div class=${cls}>${text}</div>` : `<div>${text}</div>`;
