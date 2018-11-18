@@ -1,4 +1,14 @@
 // Championship View
 function championshipScreen() {
-    // game.view.renderChampionshipView(game.championship);
+    var view = game.view,
+        mainDiv = document.createElement('div');
+
+    view.clearMainView();
+
+    mainDiv.innerHTML = view.getChampionshipTpl();
+    mainDiv.addEventListener('click', function(e) {
+        game.onChangeViewGender(e);
+    });
+
+    return mainDiv;
 }

@@ -16,8 +16,10 @@ function selectScreen() {
         teamSelector.add(el);
     }
 
-    teamSelector.onchange = game.onChangeTeamSelect.bind(game);
-    
+    teamSelector.addEventListener('change', function(e){
+        game.onChangeTeamSelect(e);
+    });
+
     mainDiv.appendChild(teamSelector);
 
     return mainDiv;

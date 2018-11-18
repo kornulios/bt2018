@@ -48,19 +48,29 @@
 			document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
 			document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
 
-			document.getElementById('main-tabs').addEventListener('click', changeTab);
+			document.getElementById('main-tabs').addEventListener('click', function(e) {
+				changeTab(e.target.getAttribute('tab-value'));
+			});
 		}
 
-		function changeTab(e) {
+		function changeTab(tab) {
 			var mainDiv = document.getElementById('main-view');
 
 			mainDiv.innerHTML = "";
 
-			if (tabMap[e.target.getAttribute('tab-value')]) {
-				mainDiv.appendChild(tabMap[e.target.getAttribute('tab-value')]());
+			if (tabMap[tab]) {
+				mainDiv.appendChild(tabMap[tab]());
 			} else {
-				console.log('No mapped function for ' + e.target.getAttribute('tab-value'));
+				console.log('No mapped function for ' + tab);
 			}
+		}
+
+		function refreshTab(tabName) {
+			var mainDiv = document.getElementById('main-view');
+
+			mainDiv.innerHTML = "";
+
+			mainDiv.appendChild(tabMap[tabName]());
 		}
 
 	</script>
@@ -84,7 +94,7 @@
 
 			<button id="calculate-btn">Calculate race</button>
 		</div>
-		
+
 	</div>
 	<div id="track-info"></div>
 	<div id="main-view"></div>

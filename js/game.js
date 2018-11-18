@@ -61,7 +61,6 @@ class Game {
 	startNewChampionship() {
 		if (this.players.length > 0) {
 			this.championship = this.createChampionship(this.players);
-			this.view.renderChampionshipView(this.championship);
 		} else {
 			console.log('No players loaded.');
 		}
@@ -141,11 +140,11 @@ class Game {
 	onChangeTeamSelect(e) {
 		this.playerTeam = e.target.value;
 		this.startNewChampionship();
-		// this.view.renderChampionshipView(this.championship);
+		refreshTab('championship');
 	}
 
 	onChangeViewGender(e) {
 		this.selectedGender = e.target.text.toLowerCase();
-		this.view.renderChampionshipView(this.championship);
+		refreshTab('championship');
 	}
 }
