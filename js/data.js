@@ -140,3 +140,7 @@ var teamData = [
 	{ name: 'Germany', shortName: 'GER', flag: '', colors: [] },
 	{ name: 'Germany', shortName: 'GER', flag: '', colors: [] },
 ];
+
+var mockData = {
+	teamDesc: ' is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring this to victory.'
+};

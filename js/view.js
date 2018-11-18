@@ -97,7 +97,7 @@ class View {
 			playerTeam = game.getPlayerTeam(),
 			viewGender = game.getViewGender();
 
-		
+
 
 		var tpl = '';
 		tpl += '<div>Championship standings</div>';
@@ -130,14 +130,14 @@ class View {
 		document.getElementById('next-btn').classList.remove('hidden');
 	}
 
-	renderTeamView() {
-		var team = game.getPlayerTeam(), 
+	renderTeamView(team) {
+		var team = team || game.getPlayerTeam(),
 			players = game.getPlayers();
 
 		// this.mainView.clearMainView();
 
 		var tpl = '';
-		tpl += '<div id="team-mgmt">Team management</div>';
+		// tpl += '<div id="team-mgmt">Team management</div>';
 		tpl += this.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 
 		for (var p of players) {
@@ -166,8 +166,20 @@ class View {
 		return teamDiv
 	}
 
-	showTeamDetails(team) {
-		var teamDiv = document.getElementById('');
+	selectTeamDetails(team) {
+		var teamDiv = document.getElementById('select-team-view'),
+			tplDiv = document.getElementById('team-description-view') || document.createElement('div'),
+			tpl = '';
+
+		tplDiv.id = 'team-description-view';
+
+		tpl += `<h4>${team.name}</h4>`;
+		tpl += `<div>${team.description}</div>`;
+		tpl += `<h4>Team members:</h4>`;
+		tpl += this.renderTeamView(team.name);
+
+		tplDiv.innerHTML = tpl;
+		teamDiv.appendChild(tplDiv);
 	}
 
 	clearMainView() {

@@ -130,3 +130,7 @@ div .player-number {
 .tab-btn:hover {
   background: lightgray;
 }
+
+#team-description-view {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}

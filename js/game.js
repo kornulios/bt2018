@@ -43,7 +43,7 @@ class Game {
 				shortName: 'T' + i,
 				flag: '',
 				colors: [],
-				description: "Team description"
+				description: "Team " + i + mockData.teamDesc
 			});
 		}
 		return teams;
@@ -122,10 +122,10 @@ class Game {
 		console.timeEnd();
 	}
 
-	setGameSpeed() {    //not implemented
-		debugger
-		this.gameSpeed = 10;
-	}
+	// setGameSpeed() {    //not implemented
+	// 	debugger
+	// 	this.gameSpeed = 10;
+	// }
 
 	getPlayerTeam() {
 		return this.playerTeam;
@@ -144,9 +144,22 @@ class Game {
 	}
 
 	onChangeTeamSelect(e) {
-		this.playerTeam = e.target.textContent;
-		this.startNewChampionship();
-		refreshTab('championship');
+		var teamName = e.target.textContent;
+
+		this.startNewChampionship(); //should go to Start button
+
+		for (var i = 0; i < this.teams.length; i++) {
+			if (this.teams[i].name == teamName) {
+				this.playerTeam = e.target.textContent;
+				this.view.selectTeamDetails(this.teams[i]);
+			}
+		}
+		if (this.playerTeam = '') {
+			console.log('Selected team not defined');
+		}
+
+		// this.startNewChampionship();
+		// refreshTab('championship');
 	}
 
 	onChangeViewGender(e) {
