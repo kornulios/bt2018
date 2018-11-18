@@ -1,6 +1,6 @@
 function startScreen() {
     var mainDiv = document.createElement('div');
-    mainDiv.innerHTML = 'KEK LOL PVP';
+    mainDiv.innerHTML = 'Start game screen';
 
     return mainDiv;
 }

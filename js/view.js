@@ -137,7 +137,7 @@ class View {
 		// this.mainView.clearMainView();
 
 		var tpl = '';
-		tpl += '<div>Team management</div>';
+		tpl += '<div id="team-mgmt">Team management</div>';
 		tpl += this.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 
 		for (var p of players) {
