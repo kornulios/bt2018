@@ -97,10 +97,9 @@ class View {
 			playerTeam = game.getPlayerTeam(),
 			viewGender = game.getViewGender();
 
-		var genSelector = '<div class="gender-select"><a id="gender-men" data="men">Men</a><a id="gender-woman">Women</a></div>';
+		
 
 		var tpl = '';
-		tpl += genSelector;
 		tpl += '<div>Championship standings</div>';
 		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
 		for (let p of players) {

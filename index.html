@@ -50,6 +50,7 @@
 
 			document.getElementById('main-tabs').addEventListener('click', function(e) {
 				changeTab(e.target.getAttribute('tab-value'));
+				e.preventDefault();
 			});
 		}
 
