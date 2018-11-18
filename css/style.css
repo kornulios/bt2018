@@ -96,8 +96,16 @@ div .player-number {
   background: rebeccapurple;
 }
 
-.team-select {
-  
+.team-button {
+  width: 120px;
+  line-height: 50px;
+  margin-left: 45px;
+  margin-bottom: 10px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  background-image: linear-gradient(to bottom, #ffffff, #f3f3f3, #e8e8e8, #dcdcdc, #d1d1d1);
+  color: gray;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 #main-tabs {

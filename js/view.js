@@ -157,6 +157,19 @@ class View {
 		return tpl;
 	}
 
+	getTeamViewTpl(team) {
+		var teamDiv = document.createElement('button');
+
+		teamDiv.classList.add('team-button');
+		teamDiv.innerHTML = team.name;
+
+		return teamDiv
+	}
+
+	showTeamDetails(team) {
+		var teamDiv = document.getElementById('');
+	}
+
 	clearMainView() {
 		this.mainView.innerHTML = "";
 		this.resultView.innerHTML = "";

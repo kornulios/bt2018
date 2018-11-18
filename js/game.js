@@ -38,7 +38,13 @@ class Game {
 		var teamCount = 26;
 		var teams = [];
 		for (var i = 1; i < teamCount; i++) {
-			teams.push({ name: 'Team ' + i, shortName: 'T' + i, flag: '', colors: [] });
+			teams.push({
+				name: 'Team ' + i,
+				shortName: 'T' + i,
+				flag: '',
+				colors: [],
+				description: "Team description"
+			});
 		}
 		return teams;
 	}
@@ -138,7 +144,7 @@ class Game {
 	}
 
 	onChangeTeamSelect(e) {
-		this.playerTeam = e.target.value;
+		this.playerTeam = e.target.textContent;
 		this.startNewChampionship();
 		refreshTab('championship');
 	}
