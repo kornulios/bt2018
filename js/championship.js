@@ -8,7 +8,7 @@ class Championship {
     this.roster = [];
     this.nextRace = 0;
 
-    this.currentRace = this.getNextRace();
+    this.currentRace = this.getNextRace();;
     this.raceInProgress = false;
 
     this.pointsMap = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
@@ -184,14 +184,15 @@ class Championship {
       return false;
     }
 
+    if(this.currentRace.status == 'Finished') {
+      this.nextRace++;
+      this.currentRace = this.getNextRace();
+    }
+
     this.raceInProgress = this.currentRace.run();
     if (this.currentRace.status == 'Finished') {
       //update resuts
       this.calculatePoints(this.currentRace.getFinishResult());
-      this.nextRace++;
-      if (this.nextRace < this.races.length) {
-        this.currentRace = this.getNextRace();
-      }
     }
 
     return this.raceInProgress;

@@ -49,10 +49,6 @@ class Game {
 		return teams;
 	}
 
-	createChampionship(players) {
-		return new Championship(players, trackData);
-	}
-
 	mainScreen() {
 		let me = this;
 		me.view.renderChampionshipView(me.championship);
@@ -66,7 +62,7 @@ class Game {
 
 	startNewChampionship() {
 		if (this.players.length > 0) {
-			this.championship = this.createChampionship(this.players);
+			this.championship = new Championship(this.players, trackData);
 		} else {
 			console.log('No players loaded.');
 		}
