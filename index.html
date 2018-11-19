@@ -43,12 +43,12 @@
 		});
 
 		function initEvents() {
-			var startButton = document.getElementById('start-btn');
-			startButton.addEventListener('click', game.startNewChampionship.bind(game));
-			document.getElementById('run-btn').addEventListener('click', game.runGame.bind(game));
-			document.getElementById('next-btn').addEventListener('click', game.prepareNextRace.bind(game));
-			document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
-			document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
+			// var startButton = document.getElementById('start-btn');
+			// startButton.addEventListener('click', game.startNewChampionship.bind(game));
+			// document.getElementById('run-btn').addEventListener('click', game.runGame.bind(game));
+			// document.getElementById('next-btn').addEventListener('click', game.prepareNextRace.bind(game));
+			// document.getElementById('finish-btn').addEventListener('click', game.mainScreen.bind(game));
+			// document.getElementById('calculate-btn').addEventListener('click', game.calculateRace.bind(game));
 
 			document.getElementById('main-tabs').addEventListener('click', function(e) {
 				changeTab(e.target.getAttribute('tab-value'));
@@ -60,6 +60,12 @@
 			var mainDiv = document.getElementById('main-view');
 
 			mainDiv.innerHTML = "";
+
+			if(tab == 'race') {
+				game.view.currentScreen = new raceScreen();
+				mainDiv.appendChild(game.view.currentScreen.render());
+				return;
+			}
 
 			if (tabMap[tab]) {
 				mainDiv.appendChild(tabMap[tab]());
@@ -90,12 +96,12 @@
 	<div class='gray-back'>
 
 		<div id="controls">
-			<button id="start-btn">Start game</button>
+			<!-- <button id="start-btn">Start game</button>
 			<button id="next-btn" class="hidden">Next race</button>
 			<button id="run-btn" class="hidden">Run</button>
 			<button id="finish-btn" class="hidden">Finish</button>
 
-			<button id="calculate-btn">Calculate race</button>
+			<button id="calculate-btn">Calculate race</button> -->
 		</div>
 
 	</div>

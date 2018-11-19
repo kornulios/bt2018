@@ -12,13 +12,12 @@ class View {
 		this.mainView.appendChild(screenDiv);
 	}
 
-	renderRaceView(race) {
-		var players = race.getPlayers(),
+	renderRaceView() {
+		var race = game.getCurrentRace(),
+			players = race.getPlayers(),
 			playerTeam = game.getPlayerTeam(),
 			raceName = race.getRaceName(),
 			tpl = '';
-
-		this.clearMainView();
 
 		tpl += `<div>Race progress - ${raceName}</div>`;
 		for (var p of players) {
@@ -33,10 +32,10 @@ class View {
 			tpl += '</div>';
 		}
 
-		this.mainView.innerHTML = tpl;
+		return tpl;
 	}
 
-	renderStartView(race) {
+	renderStartView() {
 
 	}
 
@@ -92,12 +91,9 @@ class View {
 	getChampionshipTpl() {
 		//TODO screen with player stats and points
 		var me = this,
-			// players = championship.getStandingsResults(),
 			players = game.getPlayers(),
 			playerTeam = game.getPlayerTeam(),
 			viewGender = game.getViewGender();
-
-
 
 		var tpl = '';
 		tpl += '<div>Championship standings</div>';
@@ -116,25 +112,12 @@ class View {
 			}
 		}
 
-		// this.mainView.innerHTML = tpl;
-
 		return tpl;
-
-		document.getElementsByClassName('gender-select')[0].addEventListener('click', function (e) {
-			game.onChangeViewGender(e);
-		});
-
-		document.getElementById('start-btn').classList.add('hidden');
-		document.getElementById('run-btn').classList.add('hidden');
-		document.getElementById('finish-btn').classList.add('hidden');
-		document.getElementById('next-btn').classList.remove('hidden');
 	}
 
 	renderTeamView(team) {
 		var team = team || game.getPlayerTeam(),
 			players = game.getPlayers();
-
-		// this.mainView.clearMainView();
 
 		var tpl = '';
 		// tpl += '<div id="team-mgmt">Team management</div>';
@@ -196,18 +179,6 @@ class View {
 		document.getElementById('finish-btn').classList.remove('hidden');
 		document.getElementById('run-btn').classList.add('hidden');
 	}
-
-	// enableTeamSelector(teams) {
-	// 	var teamSelector = document.getElementById('team-select');
-	// 	for (var i = 0; i < teams.length; i++) {
-	// 		var el = document.createElement('option');
-	// 		el.text = teams[i].name;
-	// 		teamSelector.add(el);
-	// 	}
-
-	// 	teamSelector.disabled = false;
-	// 	teamSelector.onchange = game.onChangeTeamSelect.bind(game);
-	// }
 
 	drawCell(text, cls) {
 		return (cls) ? `<div class=${cls}>${text}</div>` : `<div>${text}</div>`;

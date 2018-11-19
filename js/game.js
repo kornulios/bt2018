@@ -78,7 +78,8 @@ class Game {
 	}
 
 	render() {
-		this.view.renderRaceView(this.championship.currentRace);
+		this.view.currentScreen.update();
+		// this.view.renderRaceView(this.championship.currentRace);
 		// me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
 	}
 
@@ -101,8 +102,8 @@ class Game {
 
 		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
-			me.view.showFinishScreen();
-			me.view.renderChampionshipView(me.championship);
+			// me.view.showFinishScreen();
+			// me.view.renderChampionshipView(me.championship);
 			// alert('Race finished in ' + (tFrame - tNow) + 'ms');
 		}
 	}
@@ -143,6 +144,10 @@ class Game {
 		return this.selectedGender;
 	}
 
+	getCurrentRace() {
+		return this.championship.currentRace;
+	}
+
 	onChangeTeamSelect(e) {
 		var teamName = e.target.textContent;
 
@@ -154,12 +159,9 @@ class Game {
 				this.view.selectTeamDetails(this.teams[i]);
 			}
 		}
-		if (this.playerTeam = '') {
+		if (this.playerTeam == '') {
 			console.log('Selected team not defined');
 		}
-
-		// this.startNewChampionship();
-		// refreshTab('championship');
 	}
 
 	onChangeViewGender(e) {
