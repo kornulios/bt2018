@@ -144,3 +144,22 @@ div .player-number {
   height: 600px;
   border: 1px solid red;
 }
+
+.control-buttons li {
+  list-style: none;
+  display: inline-block;
+  width: 160px;
+  padding: 5px;
+  /* line-height: 30px; */
+  background: white;
+  color: dodgerblue;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  margin: 2px;
+}
+
+.control-buttons li:hover {
+  background: lightgray;
+}

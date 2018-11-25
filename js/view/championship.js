@@ -19,11 +19,13 @@ function championshipScreen() {
         viewControls.appendChild(btn);
     });
 
+    viewControls.classList.add('control-buttons');
+
     viewControls.addEventListener('click', function (e) {
         game.onChangeViewGender(e);
     });
     
-    champDiv.innerHTML = view.getChampionshipTpl();
+    champDiv.innerHTML = '<div>' + view.getChampionshipTpl() + '</div>';
 
     mainDiv.appendChild(viewControls);
     mainDiv.appendChild(champDiv);
