@@ -125,7 +125,7 @@ class Game {
 	// }
 
 	getPlayerTeam() {
-		return this.playerTeam;
+		return this.playerTeam.name;
 	}
 
 	getTeams() {
@@ -151,7 +151,7 @@ class Game {
 
 		for (var i = 0; i < this.teams.length; i++) {
 			if (this.teams[i].name == teamName) {
-				this.playerTeam = e.target.textContent;
+				this.playerTeam = this.teams[i];
 				this.view.selectTeamDetails(this.teams[i]);
 			}
 		}

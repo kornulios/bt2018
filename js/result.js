@@ -5,15 +5,14 @@ class Results {
   constructor() {
     this.data = [];             // {name$, waypoint%, time!}
     this.shootingData = [];     // { name$, number%, result[ARR] }
-    this.relative = true; 
+    this.relative = true;
   }
 
   pushResult(player, wp, t) {
     var resObj = {
-	  playerName: player.name,
-	  number: player.number,
-	  team: player.team,
-	//   player: player,
+      playerName: player.name,
+      number: player.number,
+      team: player.team,
       waypoint: wp,
       time: t
     };
@@ -21,7 +20,7 @@ class Results {
   }
 
   pushShootingResult(player, range, result) {
-    this.shootingData.push({name: player.name, number: player.number, range: range, result: result});
+    this.shootingData.push({ name: player.name, number: player.number, range: range, result: result });
   }
 
   getShootingResult(name) {
@@ -37,7 +36,7 @@ class Results {
   getMissesByRange(name) {
     let rangeResults = [];
 
-    for (let i=1; i<4; i++) {
+    for (let i = 1; i < 4; i++) {
       let rng = this.getShootingResult(name, i);
       if (rng.length > 0) {
         let res = rng.filter(s => s == '-');
@@ -49,11 +48,11 @@ class Results {
 
   getWaypointResults(wp) {
     var me = this,
-        results = me.data.filter(function(res) {
-          if (res.waypoint == wp) return true;
-        });
+      results = me.data.filter(function (res) {
+        if (res.waypoint == wp) return true;
+      });
 
-    results.sort(function(a,b){
+    results.sort(function (a, b) {
       if (a.time > b.time) {
         return 1;
       }
@@ -61,18 +60,18 @@ class Results {
         return -1
       }
       return 0;
-	});
-	for (var i = 0; i < results.length; i++) {
-		var shooting = me.getShootingResult(results[i].playerName);
-		results[i].shooting = shooting;
-	}
+    });
+    for (var i = 0; i < results.length; i++) {
+      var shooting = me.getShootingResult(results[i].playerName);
+      results[i].shooting = shooting;
+    }
 
-	return results;
+    return results;
   }
 
   getPlayerResults(name) {
-    return this.data.filter(function(res, i){
-      if(res.playerName == name) return true;
+    return this.data.filter(function (res, i) {
+      if (res.playerName == name) return true;
     });
   }
 }

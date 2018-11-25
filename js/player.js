@@ -39,7 +39,7 @@ class Player {
   getShortInfo() {
     return {
       name: this.name,
-      team: this.team.shortName,
+      team: this.team,
       number: this.number
     };
   }
