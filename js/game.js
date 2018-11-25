@@ -161,7 +161,7 @@ class Game {
 	}
 
 	onChangeViewGender(e) {
-		this.selectedGender = e.target.text.toLowerCase();
+		this.selectedGender = e.target.getAttribute('data');
 		refreshTab('championship');
 	}
 }

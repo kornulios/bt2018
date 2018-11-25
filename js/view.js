@@ -17,9 +17,10 @@ class View {
 			players = race.getPlayers(),
 			playerTeam = game.getPlayerTeam(),
 			raceName = race.getRaceName(),
+			raceStatus = race.getRaceStatus(),
 			tpl = '';
 
-		tpl += `<div>Race progress - ${raceName}</div>`;
+		tpl += `<div>${raceStatus} - ${raceName}</div>`;
 		for (var p of players) {
 			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
 			tpl += '<div class="row ' + playerTeamCls + '">';
