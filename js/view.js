@@ -20,7 +20,7 @@ class View {
 			raceStatus = race.getRaceStatus(),
 			tpl = '';
 
-		tpl += `<div>${raceStatus} - ${raceName}</div>`;
+			tpl += `<div>${raceStatus} - ${raceName}</div>`;
 		for (var p of players) {
 			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
 			tpl += '<div class="row ' + playerTeamCls + '">';
@@ -34,6 +34,10 @@ class View {
 		}
 
 		return tpl;
+	}
+
+	updateRaceView() {
+
 	}
 
 	renderStartView() {
@@ -112,6 +116,20 @@ class View {
 				tpl += '</div>';
 			}
 		}
+
+		return tpl;
+	}
+
+	getRaceScheduleTpl() {
+		var me = this,
+			raceNames = game.championship.getRacesSchedule(),
+			tpl = '';
+
+		tpl = '<div>'
+		raceNames.forEach(function (raceData) {
+			tpl += `<div>${raceData.name} ${raceData.status}</div>`
+		});
+		tpl += '</div>'
 
 		return tpl;
 	}

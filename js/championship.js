@@ -124,6 +124,14 @@ class Championship {
     return this.races[raceNum].results;
   }
 
+  getRacesSchedule() {
+    var races = [];
+    this.races.forEach(function(race){
+      races.push({name: race.name, status: race.status});   // TODO add date, location etc.
+    });
+    return races;
+  }
+
   getNextRace() {
     // return next race object
     this.resetPlayers();

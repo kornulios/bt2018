@@ -1,11 +1,13 @@
 // Championship View
 function championshipScreen() {
     var view = game.view,
+        selectedGender = game.selectedGender,
         controlButtons = ['Men', 'Women', 'Schedule'],
         mainDiv = document.createElement('div'),
         champDiv = document.createElement('div'),
         // selectGenderDiv = document.createElement('div'),
-        viewControls = document.createElement('ul');
+        viewControls = document.createElement('ul'),
+        tpl;
 
     view.clearMainView();
 
@@ -24,8 +26,10 @@ function championshipScreen() {
     viewControls.addEventListener('click', function (e) {
         game.onChangeViewGender(e);
     });
+
+    tpl = (selectedGender == 'schedule') ? view.getRaceScheduleTpl() : view.getChampionshipTpl();
     
-    champDiv.innerHTML = '<div>' + view.getChampionshipTpl() + '</div>';
+    champDiv.innerHTML = '<div>' + tpl + '</div>';
 
     mainDiv.appendChild(viewControls);
     mainDiv.appendChild(champDiv);
