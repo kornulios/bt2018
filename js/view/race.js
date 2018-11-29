@@ -4,6 +4,7 @@ function raceScreen() {
 
     me.mainDiv = document.createElement('div');
     me.raceDiv = document.createElement('div');
+    me.playerTeamControls = document.createElement('div');
     var controlDiv = document.createElement('div');
 
     //create controls
@@ -27,13 +28,17 @@ function raceScreen() {
     //render main race div (what graphics will be used: canvas, svg, dom ???)
     me.raceDiv.id = 'race-view';
     me.raceDiv.innerHTML = view.renderRaceView();
+    me.playerTeamControls.id = 'player-controls-view';
+    me.playerTeamControls.innerHTML = view.getPlayerTeamControlsTpl();
 
     me.mainDiv.appendChild(controlDiv);
     me.mainDiv.appendChild(me.raceDiv);
+    me.mainDiv.appendChild(me.playerTeamControls);
 };
 
 raceScreen.prototype.update = function () {
     var view = game.view;
+    this.playerTeamControls.innerHTML = view.getPlayerTeamControlsTpl();
     this.raceDiv.innerHTML = view.renderRaceView();
 }
 

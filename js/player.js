@@ -44,6 +44,18 @@ class Player {
     };
   }
 
+  getRaceStats() {
+    return {
+      number: this.number,
+      name: this.name,
+      team: this.team,
+      status: this.status,
+      distance: this.distance.toFixed(2),
+      speed: this.currentSpeed.toFixed(2),
+      stamina: this.fatigue.toFixed(2)
+    }
+  }
+
   setSpeed(speed) {
     return this.currentSpeed = speed;
   }

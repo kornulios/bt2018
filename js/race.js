@@ -29,6 +29,18 @@ class Race {
 		return this.players;
 	}
 
+	getPlayerTeamMembers() {
+		var team = game.getPlayerTeam(), 
+		resArray = [];
+		
+		this.players.forEach(function(p) {
+			if (p.team.name == team) {
+				resArray.push(p);
+			}
+		});
+		return resArray;
+	}
+
 	getRaceName() {
 		return this.name;
 	}

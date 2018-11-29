@@ -74,6 +74,33 @@ class View {
 		return tpl;
 	}
 
+	getPlayerTeamControlsTpl() {
+		var playerTeam = game.getPlayerTeam(),
+			players = game.getCurrentRace().getPlayerTeamMembers(),
+			tpl = '<div>';
+
+		players.forEach(function(player) {
+			tpl += getControlTpl(player.getRaceStats());
+		});
+
+		function getControlTpl(p) {
+			var tpl = '<div class="player-control">';
+			tpl += `<ul><li>${p.number} ${p.name}</li>
+				<li>${p.status}</li>
+				<li>${p.distance}</li>
+				<li>Controls</li>
+				<li>SPD:${p.speed} STA:${p.stamina}</li>
+				</ul>`;
+			tpl += '</div>'
+			return tpl;
+		}
+
+		tpl += '</div>';
+		return tpl;
+	}
+
+	
+
 	// renderResults(race, waypoint) { //should render sorted results per waypoint
 	// 	// debugger
 	// 	var me = this,
