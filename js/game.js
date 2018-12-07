@@ -81,7 +81,7 @@ class Game {
 
 	runGame(tFrame) {       //refactored with rAF
 		var me = this,
-			gameSpeed = 200,
+			gameSpeed = 1,
 			raceRunning = true;
 
 		// if (!tNow) {

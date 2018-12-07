@@ -49,6 +49,10 @@ class Race {
 		return this.status;
 	}
 
+	getTime() {
+		return this.gameTimer / 100;
+	}
+
 	run() {
 		let me = this;
 
@@ -57,7 +61,8 @@ class Race {
 			return true;
 		}
 		if (me.status = 'Started') {
-			me.gameTimer = parseFloat((me.gameTimer + 0.1).toFixed(1));
+			// me.gameTimer = parseFloat((me.gameTimer + 0.1).toFixed(1));
+			me.gameTimer++;
 			for (let p of me.players) {
 				if (p.notstarted) {
 					if (me.gameTimer >= p.startTimer) {

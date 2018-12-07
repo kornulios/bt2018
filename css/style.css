@@ -139,7 +139,7 @@ div .player-number {
   overflow-y: auto;
   width: 800px;
   height: 600px;
-  border: 1px solid red;
+  border: 4px solid var(--main-color);
 }
 
 .control-buttons li {
