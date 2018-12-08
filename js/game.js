@@ -81,20 +81,21 @@ class Game {
 
 	runGame(tFrame) {       //refactored with rAF
 		var me = this,
-			gameSpeed = 1,
+			gameSpeed = 50,
+			gameTick = 1000 / 60,
 			raceRunning = true;
 
 		// if (!tNow) {
 		// 	tNow = window.performance.now();
 		// }
-
-		me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
-
+		
 		for (var ticks = 0; ticks < gameSpeed; ticks++) {
-			raceRunning = me.championship.runRace();
+			raceRunning = me.championship.runRace(gameTick);
 			if (!raceRunning) break;
 		}
 		me.render();
+
+		me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
 
 		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);

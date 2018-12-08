@@ -50,22 +50,21 @@ class Race {
 	}
 
 	getTime() {
-		return this.gameTimer / 100;
+		return (this.gameTimer / 1000).toFixed(1);
 	}
 
-	run() {
-		let me = this;
+	run(gameTick) {
+		var me = this;
 
 		if (me.status == 'Not started') {
 			me.status = 'Started';
 			return true;
 		}
 		if (me.status = 'Started') {
-			// me.gameTimer = parseFloat((me.gameTimer + 0.1).toFixed(1));
-			me.gameTimer++;
-			for (let p of me.players) {
+			me.gameTimer += gameTick;
+			for (var p of me.players) {
 				if (p.notstarted) {
-					if (me.gameTimer >= p.startTimer) {
+					if (me.getTime() >= p.startTimer) {
 						p.start();
 						if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework
 					}
@@ -81,19 +80,13 @@ class Race {
 			if (!p.finished) return true;
 		}
 
-		// var debD = [];
-		// for (var i = 0; i < debugProfiler['Player 1'].length; i += 60) {
-		//   debD.push([i, debugProfiler['Player 1'][i][0], debugProfiler['Player 1'][i][1]]);
-		// }
-		// console.table(debD);
-
 		me.status = 'Finished';
 		return false;
 	}
 
 	playerAct(p) {
 		var me = this;
-		var recalcStats = (me.gameTimer % 1) == 0;
+		var recalcStats = (me.gameTimer % 1) == 0;			// TODO refactor
 
 		if (recalcStats) {
 			p.recalculateStatus();
@@ -104,7 +97,7 @@ class Race {
 			var runStatus = p.run(me.track);
 
 			if (runStatus.waypointPassed !== -1) {
-				me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.gameTimer.toFixed(1) - p.startTimer + p.penaltyTime);
+				me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.getTime() - p.startTimer + p.penaltyTime);
 				p.makeDecision();
 				if (p.getDistance() > me.track.trackLength) {
 					p.stop();

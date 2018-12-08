@@ -187,7 +187,7 @@ class Championship {
     return this.races[this.nextRace - 1];
   }
 
-  runRace() {
+  runRace(gameTick) {
     if (this.nextRace > this.races.length) {
       return false;
     }
@@ -197,7 +197,7 @@ class Championship {
       this.currentRace = this.getNextRace();
     }
 
-    this.raceInProgress = this.currentRace.run();
+    this.raceInProgress = this.currentRace.run(gameTick);
     if (this.currentRace.status == 'Finished') {
       //update resuts
       this.calculatePoints(this.currentRace.getFinishResult());

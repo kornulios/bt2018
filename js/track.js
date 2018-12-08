@@ -40,11 +40,9 @@ class Track {
   }
 
   isWaypointPassed(newDist, diff) {    //return number of passed waypoint or -1
-    // debugger
     let prevDist = newDist - diff;
     for (var i = 0; i < this.waypoints.length; i++) {
       if ((newDist >= this.waypoints[i]) && (prevDist < this.waypoints[i])) {
-        // debugger
         return i;
       }
     }
@@ -54,9 +52,9 @@ class Track {
     return -1;  //no wp passed
   }
 
-  passShootingRange(newDist, prevDist) {
+  passShootingRange(newDistance, passedDistance) {
     for (let i = 0; i < this.shootingRange.length; i++) {
-      if (newDist > this.shootingRange[i] && (newDist - prevDist) <= this.shootingRange[i]) {
+      if (newDistance > this.shootingRange[i] && (newDistance - passedDistance) <= this.shootingRange[i]) {
         return i + 1;
       }
     }
