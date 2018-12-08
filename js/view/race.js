@@ -10,10 +10,12 @@ function raceScreen() {
     //create controls
     controlDiv.classList.add('gray-back');
     var btnStartList = controlDiv.appendChild(document.createElement('button')),
-        btnRunRace = controlDiv.appendChild(document.createElement('button'));
+        btnRunRace = controlDiv.appendChild(document.createElement('button')),
+        btnSkipRace = controlDiv.appendChild(document.createElement('button'));
 
     btnStartList.textContent = 'Start list';
     btnRunRace.textContent = 'Run race';
+    btnSkipRace.textContent = 'Skip race';
 
     btnStartList.addEventListener('click', function (e) {
         // me.update();
@@ -21,6 +23,10 @@ function raceScreen() {
 
     btnRunRace.addEventListener('click', function (e) {
         game.runGame();
+    });
+
+    btnSkipRace.addEventListener('click', function (e) {
+        game.calculateRace();
     });
 
     //render list

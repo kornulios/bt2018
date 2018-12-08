@@ -88,7 +88,7 @@ class Game {
 		// if (!tNow) {
 		// 	tNow = window.performance.now();
 		// }
-		
+
 		for (var ticks = 0; ticks < gameSpeed; ticks++) {
 			raceRunning = me.championship.runRace(gameTick);
 			if (!raceRunning) break;
@@ -107,16 +107,17 @@ class Game {
 
 	calculateRace() {
 		//used to skip race 
-		let me = this;
-		let gameRunning = true;
+		var me = this,
+			raceRunning = true;
 		console.time();
 		do
-			gameRunning = me.championship.runRace();
-		while (gameRunning)
+			raceRunning = me.championship.runRace(gameFps);
+		while (raceRunning)
 
-		me.view.showFinishScreen();
-		me.view.renderChampionshipView(me.championship);
-		me.view.renderResults(me.championship.getLastRace());
+		// me.view.showFinishScreen();
+		// me.view.renderChampionshipView(me.championship);
+		// me.view.renderResults(me.championship.getLastRace());
+		me.render();
 		console.timeEnd();
 	}
 
