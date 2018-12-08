@@ -33,18 +33,18 @@ class Results {
     return res;
   }
 
-  getMissesByRange(name) {
-    let rangeResults = [];
+  // getMissesByRange(name) {
+  //   let rangeResults = [];
 
-    for (let i = 1; i < 4; i++) {
-      let rng = this.getShootingResult(name, i);
-      if (rng.length > 0) {
-        let res = rng.filter(s => s == '-');
-        rangeResults.push(res.length);
-      }
-    }
-    return rangeResults.join('+');
-  }
+  //   for (let i = 1; i < 4; i++) {
+  //     let rng = this.getShootingResult(name, i);
+  //     if (rng.length > 0) {
+  //       let res = rng.filter(s => s == '-');
+  //       rangeResults.push(res.length);
+  //     }
+  //   }
+  //   return rangeResults.join('+');
+  // }
 
   getWaypointResults(wp) {
     var me = this,

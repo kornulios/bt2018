@@ -34,7 +34,7 @@ var Util = {
 			});
 			res.push(currentRange.length);
 		}
-		return res.join('+');
+		return res.length > 0 ? res.join('+') : '-';
 	}
 };
 
