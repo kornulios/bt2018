@@ -132,7 +132,7 @@ class Game {
 
 		race.setRaceStatus('Started');
 		do
-			raceRunning = me.championship.runRace(gameFps);
+			raceRunning = me.championship.runRace(gameFps * 100);
 		while (raceRunning)
 
 		me.finishRace();
