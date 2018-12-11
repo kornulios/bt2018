@@ -81,18 +81,21 @@ class Game {
 
 	runGame(tFrame) {       //refactored with rAF
 		var me = this,
-			gameSpeed = 50,
-			gameTick = 1000 / 60,
+			gameSpeed = 1,
+			frameCount = tFrame - tNow,
+			gameTick = isNaN(frameCount) ? 0 : frameCount,
 			raceRunning = true;
 
-		// if (!tNow) {
-		// 	tNow = window.performance.now();
-		// }
-
+		//update timer
+		tNow = tFrame;
+		
+		// UPDATE
 		for (var ticks = 0; ticks < gameSpeed; ticks++) {
 			raceRunning = me.championship.runRace(gameTick);
 			if (!raceRunning) break;
 		}
+
+		//RENDER
 		me.render();
 
 		me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
@@ -114,17 +117,9 @@ class Game {
 			raceRunning = me.championship.runRace(gameFps);
 		while (raceRunning)
 
-		// me.view.showFinishScreen();
-		// me.view.renderChampionshipView(me.championship);
-		// me.view.renderResults(me.championship.getLastRace());
 		me.render();
 		console.timeEnd();
 	}
-
-	// setGameSpeed() {    //not implemented
-	// 	debugger
-	// 	this.gameSpeed = 10;
-	// }
 
 	getPlayerTeam() {
 		return this.playerTeam.name;
@@ -144,6 +139,10 @@ class Game {
 
 	getCurrentRace() {
 		return this.championship.currentRace;
+	}
+
+	getChampionship() {
+		return this.championship;
 	}
 
 	onChangeTeamSelect(e) {

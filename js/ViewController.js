@@ -150,7 +150,8 @@ class View {
 	getChampionshipTpl() {
 		//TODO screen with player stats and points
 		var me = this,
-			players = game.getPlayers(),
+			championship = game.getChampionship(),
+			players = championship.getChampionshipStandings(),
 			playerTeam = game.getPlayerTeam(),
 			viewGender = game.getViewGender();
 

@@ -76,7 +76,7 @@ class Championship {
     }
   }
 
-  getStandingsResults() {
+  getChampionshipStandings() {
     //return sorted array of points object
     let res = [];
     for (let p of this.players) {

@@ -86,7 +86,7 @@ class Race {
 
 	playerAct(p) {
 		var me = this;
-		var recalcStats = (me.gameTimer % 1) == 0;			// TODO refactor
+		var recalcStats = (me.getTime() % 60) == 0;			// TODO refactor
 
 		if (recalcStats) {
 			p.recalculateStatus();
