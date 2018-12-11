@@ -8,7 +8,7 @@ class Championship {
     this.roster = [];
     this.nextRace = 0;
 
-    this.currentRace = this.getNextRace();;
+    this.currentRace = {};
     this.raceInProgress = false;
 
     this.pointsMap = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
@@ -105,7 +105,7 @@ class Championship {
 
   getTopResults(resultNum, gender) {
     let res = [];
-    res = this.players.filter(function(p) {
+    res = this.players.filter(function (p) {
       return p.gender == gender;
     });
 
@@ -126,24 +126,34 @@ class Championship {
 
   getRacesSchedule() {
     var races = [];
-    this.races.forEach(function(race){
-      races.push({name: race.name, status: race.status});   // TODO add date, location etc.
+    this.races.forEach(function (race) {
+      races.push({ name: race.name, status: race.status });   // TODO add date, location etc.
     });
     return races;
   }
 
-  getNextRace() {
+  getNextRaceIndex() {
+    for (var i = 0; i < this.races.length; i++) {
+      if (this.races[i].getRaceStatus() == 'Not started') {
+        return i;
+      }
+    }
+    return false;
+  }
+
+  prepareNextRace() {
     // return next race object
-    this.resetPlayers();
-    let roster = [];
-    let number = 1;
-    let startTime = 0;
-    let _nextRace = this.races[this.nextRace];
+    this.resetPlayers();      // should be peformed by race!
+
+    var roster = [],
+      number = 1,
+      startTime = 0,
+      _nextRace = this.races[this.getNextRaceIndex()];
 
     //create start list based on racetype
     if (_nextRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
-      for (let p of this.players) {
-        if(p.gender == _nextRace.raceGender) {
+      for (var p of this.players) {
+        if (p.gender == _nextRace.raceGender) {
           p.startTimer = startTime;
           p.number = number++;
           startTime += CONSTANT.START_TIME_INTERVAL;
@@ -160,7 +170,8 @@ class Championship {
           break;
         }
       }
-      let baseTime = res[0].time;
+
+      var baseTime = res[0].time;
       for (let i = 0; i < res.length; i++) {
         for (let p of this.players) {
           if (p.name == res[i].playerName) {
@@ -172,38 +183,30 @@ class Championship {
       }
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.ALL) {
       //massstart - pick top 30 from championship ratings
-      var r = this.getTopResults(30, _nextRace.raceGender);
-      for (var p of r) {
+      var top30 = this.getTopResults(30, _nextRace.raceGender);
+      for (var p of top30) {
         p.number = number++;
       }
-      roster = r;
+      roster = top30;
     }
 
     _nextRace.initRoster(roster);
-    return _nextRace;
+    this.currentRace = _nextRace;
   }
 
   getLastRace() {
-    return this.races[this.nextRace - 1];
+    return this.races[this.getNextRaceIndex() - 1];
   }
 
   runRace(gameTick) {
-    if (this.nextRace > this.races.length) {
-      return false;
-    }
+    var me = this;
 
-    if(this.currentRace.status == 'Finished') {
-      this.nextRace++;
-      this.currentRace = this.getNextRace();
-    }
+    me.raceInProgress = me.currentRace.run(gameTick);
 
-    this.raceInProgress = this.currentRace.run(gameTick);
-    if (this.currentRace.status == 'Finished') {
-      //update resuts
-      this.calculatePoints(this.currentRace.getFinishResult());
+    if (!me.raceInProgress) {
+      me.calculatePoints(me.currentRace.getFinishResult());
     }
-
-    return this.raceInProgress;
+    return me.raceInProgress;
   }
 
 }

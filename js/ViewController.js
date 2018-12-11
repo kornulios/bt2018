@@ -51,7 +51,7 @@ class View {
 
 	getResultsTpl(waypoint) {
 		var me = this,
-			race = game.getCurrentRace(),
+			race = game.championship.getLastRace(),
 			playerTeam = game.getPlayerTeam(),
 			raceName = race.getRaceName(),
 			results = race.getFinishResult(),

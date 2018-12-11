@@ -63,6 +63,7 @@ class Game {
 	startNewChampionship() {
 		if (this.players.length > 0) {
 			this.championship = new Championship(this.players, trackData);
+			this.championship.prepareNextRace();
 		} else {
 			console.log('No players loaded.');
 		}
@@ -84,13 +85,17 @@ class Game {
 	}
 
 	finishRace() {
-		var race = this.getCurrentRace();
+		var race = this.getCurrentRace(),
+			championship = this.championship;
+
 		race.setRaceStatus('Finished');
+		championship.prepareNextRace();
+		changeTab('results');				// TEMP
 	}
 
 	runGame(tFrame) {       //refactored with rAF
 		var me = this,
-			gameSpeed = 50,
+			gameSpeed = 100,
 			frameCount = tFrame - tNow,
 			gameTick = isNaN(frameCount) ? 0 : frameCount,
 			raceRunning = true;
@@ -99,10 +104,10 @@ class Game {
 		tNow = tFrame;
 		
 		// UPDATE
-		for (var ticks = 0; ticks < gameSpeed; ticks++) {
-			raceRunning = me.championship.runRace(gameTick);
-			if (!raceRunning) break;
-		}
+		// for (var ticks = 0; ticks < gameSpeed; ticks++) {
+			raceRunning = me.championship.runRace(gameTick * gameSpeed);
+			// if (!raceRunning) break;
+		// }
 
 		//RENDER
 		me.render();
@@ -112,22 +117,27 @@ class Game {
 		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
 			this.finishRace();
-			// me.view.showFinishScreen();
-			// me.view.renderChampionshipView(me.championship);
-			// alert('Race finished in ' + (tFrame - tNow) + 'ms');
+			
+			// me.render();
 		}
 	}
 
 	calculateRace() {
 		//used to skip race 
 		var me = this,
+			race = me.getCurrentRace(),
 			raceRunning = true;
+
 		console.time();
+
+		race.setRaceStatus('Started');
 		do
 			raceRunning = me.championship.runRace(gameFps);
 		while (raceRunning)
 
-		me.render();
+		me.finishRace();
+
+		// me.render();
 		console.timeEnd();
 	}
 
