@@ -75,13 +75,22 @@ class Game {
 
 	render() {
 		this.view.currentScreen.update();
-		// this.view.renderRaceView(this.championship.currentRace);
-		// me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+	}
+
+	startRace() {
+		var race = this.getCurrentRace();
+		race.setRaceStatus('Started');
+		this.runGame();
+	}
+
+	finishRace() {
+		var race = this.getCurrentRace();
+		race.setRaceStatus('Finished');
 	}
 
 	runGame(tFrame) {       //refactored with rAF
 		var me = this,
-			gameSpeed = 1,
+			gameSpeed = 50,
 			frameCount = tFrame - tNow,
 			gameTick = isNaN(frameCount) ? 0 : frameCount,
 			raceRunning = true;
@@ -102,6 +111,7 @@ class Game {
 
 		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
+			this.finishRace();
 			// me.view.showFinishScreen();
 			// me.view.renderChampionshipView(me.championship);
 			// alert('Race finished in ' + (tFrame - tNow) + 'ms');

@@ -30,10 +30,10 @@ class Race {
 	}
 
 	getPlayerTeamMembers() {
-		var team = game.getPlayerTeam(), 
-		resArray = [];
-		
-		this.players.forEach(function(p) {
+		var team = game.getPlayerTeam(),
+			resArray = [];
+
+		this.players.forEach(function (p) {
 			if (p.team.name == team) {
 				resArray.push(p);
 			}
@@ -49,39 +49,34 @@ class Race {
 		return this.status;
 	}
 
+	setRaceStatus(status) {
+		if (status) {
+			this.status = status;
+		}
+	}
+
 	getTime() {
 		return (this.gameTimer / 1000).toFixed(1);
 	}
 
-	run(gameTick) {
-		var me = this;
+	run(gameTick) {			// 1 tick race progress
+		var me = this,
+			runningPlayers = false;
 
-		if (me.status == 'Not started') {
-			me.status = 'Started';
-			return true;
-		}
-		if (me.status = 'Started') {
-			me.gameTimer += gameTick;
-			for (var p of me.players) {
-				if (p.notstarted) {
-					if (me.getTime() >= p.startTimer) {
-						p.start();
-						if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework
-					}
-				}
-				if (!p.finished) {
-					me.playerAct(p);
-				}
+		me.gameTimer += gameTick;
+
+		for (var p of me.players) {
+			if (!p.started && me.getTime() >= p.startTimer) {
+				p.start();
+				if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework ??????????
+			}
+			// main action
+			if (p.started && !p.finished) {
+				runningPlayers = me.playerAct(p);
 			}
 		}
+		return runningPlayers;
 
-		//check race end
-		for (let p of me.players) {
-			if (!p.finished) return true;
-		}
-
-		me.status = 'Finished';
-		return false;
 	}
 
 	playerAct(p) {
@@ -93,7 +88,6 @@ class Race {
 		}
 
 		if (p.running) {
-
 			var runStatus = p.run(me.track);
 
 			if (runStatus.waypointPassed !== -1) {
@@ -120,6 +114,6 @@ class Race {
 				}
 			}
 		}
-
+		return p.finished == false;
 	}
 }

@@ -22,7 +22,7 @@ function raceScreen() {
     });
 
     btnRunRace.addEventListener('click', function (e) {
-        game.runGame();
+        game.startRace();
     });
 
     btnSkipRace.addEventListener('click', function (e) {

@@ -20,7 +20,7 @@ class Player {
 
 		//race related
 		this.status = 'Not run';
-		this.notstarted = true;
+		this.started = false;
 		this.finished = false;
 		this.running = false;
 		this.shooting = false;
@@ -146,7 +146,7 @@ class Player {
 
 	start() {
 		this.running = true;
-		this.notstarted = false;
+		this.started = true;
 		this.finished = false;
 		this.shooting = false;
 	}
@@ -155,18 +155,16 @@ class Player {
 		this.running = false;
 		this.finished = true;
 		this.status = 'Finished';
-		// this._dp = 0;
-		return this.currentSpeed = 0;
+		this.currentSpeed = 0;
 	}
 
 	reset() {
 		this.currentSpeed = this.baseSpeed;
 		this.fatigue = 100;
 		this.distance = 0;
-		// this._dp = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
-		this.notstarted = true;
+		this.started = false;
 		this.finished = false;
 		this.running = false;
 		this.shooting = false;
