@@ -61,7 +61,8 @@ class Race {
 
 	run(gameTick) {			// 1 tick race progress
 		var me = this,
-			runningPlayers = false;
+			runningPlayers = false,
+			raceRunning = false;
 
 		me.gameTimer += gameTick;
 
@@ -72,14 +73,16 @@ class Race {
 			}
 			// main action
 			if (p.started && !p.finished) {
-				runningPlayers = me.playerAct(p);
+				runningPlayers = me.playerAct(p, gameTick);
+				if (runningPlayers) {
+					raceRunning = true;
+				}
 			}
 		}
-		return runningPlayers;
-
+		return raceRunning;
 	}
 
-	playerAct(p) {
+	playerAct(p, gameTick) {
 		var me = this;
 		var recalcStats = (me.getTime() % 60) == 0;			// TODO refactor
 
@@ -88,7 +91,7 @@ class Race {
 		}
 
 		if (p.running) {
-			var runStatus = p.run(me.track);
+			var runStatus = p.run(me.track, gameTick);
 
 			if (runStatus.waypointPassed !== -1) {
 				me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.getTime() - p.startTimer + p.penaltyTime);
@@ -101,7 +104,7 @@ class Race {
 				p.enterShootingRange(runStatus.shootingPassed);
 			}
 		} else if (p.shooting) {
-			var shootingStatus = p.shoot();
+			var shootingStatus = p.shoot(gameTick);
 			if (shootingStatus) {
 				if (shootingStatus.length == 5) {
 					me.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);

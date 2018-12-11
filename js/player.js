@@ -1,7 +1,7 @@
 class Player {
 	constructor(args) {
 		//base stats
-		this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2200, 1600) / 100; // km/h
+		this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2500, 1900) / 100; // km/h
 		this.name = args.name || 'unknown';
 		this.team = args.team || 'Missing team';
 		this.gender = args.gender || 'unknown';
@@ -81,9 +81,9 @@ class Player {
 		this.penaltyTime += time;
 	}
 
-	run(track) {
+	run(track, elapsedTime) {
 		//move forward on track
-		var fps = gameFps, 
+		var fps = elapsedTime, 
 		distancePassed = (this.currentSpeed / 3600) * fps;   // m/ms
 
 		if (this.penalty <= 0) {
@@ -124,9 +124,9 @@ class Player {
 		this.rifle = {};
 	}
 
-	shoot() {
+	shoot(elapsedTime) {
 		var hit;
-		this.rifle.aimTime -= gameFps;	// !!!!!
+		this.rifle.aimTime -= elapsedTime;	// !!!!!
 
 		if (this.rifle.aimTime > 0) {
 			return false;
