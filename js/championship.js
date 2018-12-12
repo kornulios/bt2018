@@ -3,12 +3,14 @@
 class Championship {
   constructor(newPlayers, raceConfigs) {
     this.points = {};
-    this.races = this.initRaces(raceConfigs);
+    this.stage = stageData[0];        // game.getStages()
+    this.races = this.initRaces(this.stage);
     this.players = this.initPlayers(newPlayers);
     this.roster = [];
     this.nextRace = 0;
 
     this.currentRace = {};
+    this.currentStage = 0;
     this.raceInProgress = false;
 
     this.pointsMap = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
@@ -48,12 +50,15 @@ class Championship {
     }
   }
 
-  initRaces(raceConfigs) {
+  initRaces(stage) {
     // TODO create array of races objects
-    var newRaces = [];
-    for (let i = 0; i < raceConfigs.length; i++) {
-      newRaces.push(new Race(raceConfigs[i], 'men'));
-      newRaces.push(new Race(raceConfigs[i], 'women'));
+    var newRaces = [], race;
+
+    for (var i = 0; i < stage.raceMap.length; i++) {
+      race = stage.raceMap[i];
+      race.stageName = stage.name;
+      newRaces.push(new Race(race, 'men'));
+      newRaces.push(new Race(race, 'women'));
     }
     return newRaces;
   }
@@ -78,9 +83,17 @@ class Championship {
 
   getChampionshipStandings() {
     //return sorted array of points object
-    let res = [];
-    for (let p of this.players) {
-      res.push({ name: p.name, team: p.team, points: this.points[p.name], baseSpeed: p.baseSpeed, accuracy: p.getAccuracy(), strength: p.strength, gender: p.gender });
+    var res = [];
+    for (var p of this.players) {
+      res.push({
+        name: p.name, 
+        team: p.team, 
+        points: this.points[p.name],
+        baseSpeed: p.baseSpeed,
+        accuracy: p.getAccuracy(),
+        strength: p.strength, 
+        gender: p.gender
+      });
     }
     res.sort((a, b) => {
       if (a.points > b.points) {
@@ -141,6 +154,20 @@ class Championship {
     return false;
   }
 
+  getStageName() {
+    return this.stage.name;
+  }
+
+  prepareNextStage() {
+    var me = this;
+debugger
+    me.currentStage++;
+    me.stage = stageData[me.currentStage];
+    me.races = me.initRaces(me.stage);
+
+    return me.currentStage;
+  }
+
   prepareNextRace() {
     // return next race object
     this.resetPlayers();      // should be peformed by race!
@@ -149,6 +176,10 @@ class Championship {
       number = 1,
       startTime = 0,
       _nextRace = this.races[this.getNextRaceIndex()];
+
+    if (!_nextRace) {
+      return false;
+    }
 
     //create start list based on racetype
     if (_nextRace.startType == CONSTANT.RACE_START_TYPE.SEPARATE) {
@@ -165,7 +196,7 @@ class Championship {
       var res;
       for (var r = 0; r < this.races.length; r++) {
         var race = this.races[r];
-        if (race.track.raceType == 'Sprint' && race.raceGender == _nextRace.raceGender) {
+        if (race.raceType == 'Sprint' && race.raceGender == _nextRace.raceGender) {
           res = race.getFinishResult().slice(0, 60);
           break;
         }
@@ -192,6 +223,7 @@ class Championship {
 
     _nextRace.initRoster(roster);
     this.currentRace = _nextRace;
+    return true;
   }
 
   getLastRace() {

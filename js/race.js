@@ -1,18 +1,20 @@
 //Game controller
 
 class Race {
-	constructor(newTrack, gender) {
-		this.track = new Track(newTrack, gender);
+	constructor(raceConfig, gender) {
+		this.track = new Track(raceConfig, gender);
 		this.players = [];
 		this.raceGender = gender;
 		this.results = new Results(this);
 		this.gameTimer = 0;
 		this.status = 'Not started';
-		this.startType = this.track.startType;
-		this.penaltyType = this.track.penaltyType;
+		this.raceType = raceConfig.type;
+		this.startType = raceConfig.startType;
+		this.penaltyType = raceConfig.penaltyType;
 
 		//misc data
-		this.name = newTrack.location + ' ' + this.track.raceType + ' ' + (this.track.getTrackLength() / 1000).toFixed(1) + 'km' + ' ' + this.raceGender;
+		this.name = raceConfig.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
+		// this.name = raceConfig.stageName;
 	}
 
 	initRoster(roster) {

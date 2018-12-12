@@ -62,17 +62,17 @@ class Game {
 
 	startNewChampionship() {
 		if (this.players.length > 0) {
-			this.championship = new Championship(this.players, trackData);
+			this.championship = new Championship(this.players);
 			this.championship.prepareNextRace();
 		} else {
 			console.log('No players loaded.');
 		}
 	}
 
-	prepareNextRace() {
-		this.view.renderRaceView(this.championship.currentRace);
-		this.view.showRunScreen();
-	}
+	// prepareNextRace() {
+	// 	this.view.renderRaceView(this.championship.currentRace);
+	// 	this.view.showRunScreen();
+	// }
 
 	render() {
 		this.view.currentScreen.update();
@@ -86,10 +86,16 @@ class Game {
 
 	finishRace() {
 		var race = this.getCurrentRace(),
-			championship = this.championship;
+			championship = this.championship,
+			nextRace;
 
 		race.setRaceStatus('Finished');
-		championship.prepareNextRace();
+		nextRace = championship.prepareNextRace();
+		if (!nextRace) {
+			championship.prepareNextStage();
+			changeTab('championship');
+			return;
+		}
 		changeTab('results');				// TEMP
 	}
 

@@ -178,9 +178,11 @@ class View {
 	getRaceScheduleTpl() {
 		var me = this,
 			raceNames = game.championship.getRacesSchedule(),
+			stageName = game.championship.getStageName(),
 			tpl = '';
 
-		tpl = '<div>'
+		tpl = '<div>';
+		tpl += `<h2>Stage: ${stageName}</h2>`;
 		raceNames.forEach(function (raceData) {
 			tpl += `<div>${raceData.name} ${raceData.status}</div>`
 		});
@@ -242,10 +244,10 @@ class View {
 		this.resultView.innerHTML = "";
 	}
 
-	showRunScreen() {
-		document.getElementById('run-btn').classList.remove('hidden');
-		document.getElementById('next-btn').classList.add('hidden');
-	}
+	// showRunScreen() {
+	// 	document.getElementById('run-btn').classList.remove('hidden');
+	// 	document.getElementById('next-btn').classList.add('hidden');
+	// }
 
 	showFinishScreen() {
 		document.getElementById('finish-btn').classList.remove('hidden');

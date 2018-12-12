@@ -106,30 +106,47 @@ var raceTypes = {
 		startType: CONSTANT.RACE_START_TYPE.ALL
 	},
 	relay: {
-
+		//WHOA!
 	}
 };
 
-var trackData = [
+// var trackData = [
+// 	{
+// 		location: 'Ruhpolding',
+// 		coordsMap: [],
+// 		stats: raceTypes.individual
+// 	},
+// 	{
+// 		location: 'Ruhpolding',
+// 		coordsMap: [],
+// 		stats: raceTypes.sprint
+// 	},
+// 	{
+// 		location: 'Ruhpolding',
+// 		coordsMap: [],
+// 		stats: raceTypes.pursuit
+// 	},
+// 	{
+// 		location: 'Ruhpolding',
+// 		coordsMap: [],
+// 		stats: raceTypes.massStart
+// 	}
+// ];
+
+
+//Season consists of 9 stages and 1 World Cup event
+var stageData = [
 	{
-		location: 'Ruhpolding',
-		coordsMap: [],
-		stats: raceTypes.sprint
+		name: 'Pokljuka',
+		raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit]
 	},
 	{
-		location: 'Ruhpolding',
-		coordsMap: [],
-		stats: raceTypes.pursuit
+		name: 'Hochfilzen',
+		raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay]
 	},
 	{
-		location: 'Ruhpolding',
-		coordsMap: [],
-		stats: raceTypes.massStart
-	},
-	{
-		location: 'Ruhpolding',
-		coordsMap: [],
-		stats: raceTypes.individual
+		name: 'Nove Mesto',
+		raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart]
 	}
 ];
 
@@ -142,5 +159,5 @@ var teamData = [
 ];
 
 var mockData = {
-	teamDesc: ' is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring this to victory.'
+	teamDesc: ' is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.'
 };
