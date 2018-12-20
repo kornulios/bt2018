@@ -106,7 +106,7 @@ var raceTypes = {
 		startType: CONSTANT.RACE_START_TYPE.ALL
 	},
 	relay: {
-		//WHOA!
+		//WHOA!		4x6 women; 4x7,5 men
 	}
 };
 
