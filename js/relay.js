@@ -13,18 +13,24 @@ class RelayRace extends Race {
 
   initRoster(roster) {
     // roster - [ {team: %id, %name, [ $players ]} ]
-    var newTeam = {};
+    var number = 0;
     for (var team of roster) {
+      var newTeam = {};
       newTeam.id = team.id;
       newTeam.name = team.name;
       newTeam.players = team.players;
       newTeam.leg = 0;
       newTeam.started = false;
       newTeam.switching = false;
+      newTeam.number = number++;
 
       this.teams.push(newTeam);
     }
   }
+
+  getPlayers() {
+		return this.teams.map(team => { return team.players[team.leg] });
+	}
 
   run(gameTick) {
     var teamRunning = false;
@@ -33,7 +39,7 @@ class RelayRace extends Race {
     this.gameTimer += gameTick;
 
     //need to start using legs
-    for (var team of me.teams) {
+    for (var team of this.teams) {
       if (!team.started) {
         team.started = true;
         team.players[team.leg].start();

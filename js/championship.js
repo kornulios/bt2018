@@ -235,9 +235,12 @@ class Championship {
       }
       roster = top30;
     } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.RELAY) {
-      for (var t of game.getTeams()) {
-        var p;
-        _nextRace.raceGender == 'men' ? p = this.getTeam(t.name).men : p = this.getTeam(t.name).women;
+      for (var team of game.getTeams()) {
+        var teamMembers = [];
+        _nextRace.raceGender == 'men' ? teamMembers = this.getTeam(team.name).men : teamMembers = this.getTeam(team.name).women;
+        if (teamMembers.length > 4) {
+          roster.push({ name: team.name, id: 1, players: teamMembers.slice(0, 4) })
+        }
       }
     }
 

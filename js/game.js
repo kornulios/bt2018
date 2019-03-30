@@ -108,11 +108,11 @@ class Game {
 
 		//update timer
 		tNow = tFrame;
-		
+
 		// UPDATE
 		// for (var ticks = 0; ticks < gameSpeed; ticks++) {
-			raceRunning = me.championship.runRace(gameTick * gameSpeed);
-			// if (!raceRunning) break;
+		raceRunning = me.championship.runRace(gameTick * gameSpeed);
+		// if (!raceRunning) break;
 		// }
 
 		//RENDER
@@ -123,8 +123,6 @@ class Game {
 		if (!raceRunning) {
 			window.cancelAnimationFrame(me.stopTimer);
 			this.finishRace();
-			
-			// me.render();
 		}
 	}
 

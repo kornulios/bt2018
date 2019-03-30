@@ -15,20 +15,20 @@ class View {
 	renderRaceView() {
 		var race = game.getCurrentRace(),
 			players = race.getPlayers(),
-			playerTeam = game.getPlayerTeam(),
+			playerTeam = game.getPlayerTeam() || '',
 			raceName = race.getRaceName(),
 			raceStatus = race.getRaceStatus(),
-			raceTimer = Util.convertToMinutes(race.getTime()),
+			raceTimer = Util.convertToMinutes(race.getRaceTime()),
 			raceResults = race.results,
 			tpl = '';
 
 		tpl += `<div>${raceStatus} - ${raceName} Gametime: ${raceTimer}</div>`;
 		for (var p of players) {
-			var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '',
+			var playerTeamCls = (playerTeam == p.team.name) ? 'player-team' : '',
 			shootingResult = raceResults.getShootingResult(p.name);
 
 			tpl += '<div class="row ' + playerTeamCls + '">';
-			tpl += this.drawCell(p.number, 'player-number')
+			tpl += this.drawCell(p.number || 0, 'player-number')
 				+ this.drawCell(p.name, 'player-name')
 				+ this.drawCell(p.team.shortName)
 				+ this.drawCell('(' + Util.convertToShootingString(shootingResult) + ')')
