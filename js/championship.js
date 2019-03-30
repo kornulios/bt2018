@@ -57,8 +57,13 @@ class Championship {
     for (var i = 0; i < stage.raceMap.length; i++) {
       race = stage.raceMap[i];
       race.stageName = stage.name;
-      newRaces.push(new Race(race, 'men'));
-      newRaces.push(new Race(race, 'women'));
+      if (race.type == 'Relay') {
+        newRaces.push(new RelayRace(race, 'men'));
+        newRaces.push(new RelayRace(race, 'women'));
+      } else {
+        newRaces.push(new Race(race, 'men'));
+        newRaces.push(new Race(race, 'women'));
+      }
     }
     return newRaces;
   }
@@ -86,12 +91,12 @@ class Championship {
     var res = [];
     for (var p of this.players) {
       res.push({
-        name: p.name, 
-        team: p.team, 
+        name: p.name,
+        team: p.team,
         points: this.points[p.name],
         baseSpeed: p.baseSpeed,
         accuracy: p.getAccuracy(),
-        strength: p.strength, 
+        strength: p.strength,
         gender: p.gender
       });
     }
@@ -114,6 +119,16 @@ class Championship {
       res.push(p);
     }
     return res;
+  }
+
+  getTeam(teamName) {
+    var men = [], women = [];
+    for (var p of this.players) {
+      if (p.team.name == teamName) {
+        p.gender == 'men' ? men.push(p) : women.push(p);
+      }
+    }
+    return { men: men, women: women };
   }
 
   getTopResults(resultNum, gender) {
@@ -160,7 +175,7 @@ class Championship {
 
   prepareNextStage() {
     var me = this;
-debugger
+
     me.currentStage++;
     me.stage = stageData[me.currentStage];
     me.races = me.initRaces(me.stage);
@@ -219,6 +234,11 @@ debugger
         p.number = number++;
       }
       roster = top30;
+    } else if (_nextRace.startType == CONSTANT.RACE_START_TYPE.RELAY) {
+      for (var t of game.getTeams()) {
+        var p;
+        _nextRace.raceGender == 'men' ? p = this.getTeam(t.name).men : p = this.getTeam(t.name).women;
+      }
     }
 
     _nextRace.initRoster(roster);

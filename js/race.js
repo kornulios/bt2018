@@ -1,7 +1,7 @@
 //Game controller
 
 class Race {
-	constructor(raceConfig, gender) {
+	constructor(raceConfig, gender) {					// refactor with object for arguments
 		this.track = new Track(raceConfig, gender);
 		this.players = [];
 		this.raceGender = gender;
@@ -57,7 +57,7 @@ class Race {
 		}
 	}
 
-	getTime() {
+	getRaceTime() {
 		return (this.gameTimer / 1000).toFixed(1);
 	}
 
@@ -69,7 +69,7 @@ class Race {
 		me.gameTimer += gameTick;
 
 		for (var p of me.players) {
-			if (!p.started && me.getTime() >= p.startTimer) {
+			if (!p.started && me.getRaceTime() >= p.startTimer) {
 				p.start();
 				if (me.startType == CONSTANT.RACE_START_TYPE.PURSUIT) p.startTimer = 0;   //TODO rework ??????????
 			}
@@ -86,7 +86,7 @@ class Race {
 
 	playerAct(p, gameTick) {
 		var me = this;
-		var recalcStats = (me.getTime() % 60) == 0;			// TODO refactor
+		var recalcStats = (me.getRaceTime() % 60) == 0;			// ???? TODO refactor
 
 		if (recalcStats) {
 			p.recalculateStatus();
@@ -96,7 +96,7 @@ class Race {
 			var runStatus = p.run(me.track, gameTick);
 
 			if (runStatus.waypointPassed !== -1) {
-				me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.getTime() - p.startTimer + p.penaltyTime);
+				me.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.getRaceTime() - p.startTimer + p.penaltyTime);
 				p.makeDecision();
 				if (p.getDistance() > me.track.trackLength) {
 					p.stop();
@@ -105,6 +105,9 @@ class Race {
 			if (runStatus.shootingPassed) {
 				p.enterShootingRange(runStatus.shootingPassed);
 			}
+			// Add Finish check here
+
+			//
 		} else if (p.shooting) {
 			var shootingStatus = p.shoot(gameTick);
 			if (shootingStatus) {

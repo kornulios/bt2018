@@ -43,7 +43,8 @@ var CONSTANT = {
 	RACE_START_TYPE: {
 		ALL: 1,
 		SEPARATE: 2,
-		PURSUIT: 3
+		PURSUIT: 3,
+		RELAY: 4
 	},
 
 	//AI behaviour constants
@@ -107,6 +108,13 @@ var raceTypes = {
 	},
 	relay: {
 		//WHOA!		4x6 women; 4x7,5 men
+		lapLength: { men: 2500, women: 2000 },
+		waypoints: 25,
+		laps: 12,
+		shootings: 8,
+		type: 'Relay',
+		penaltyType: CONSTANT.PENALTY_TYPE.LAP,
+		startType: CONSTANT.RACE_START_TYPE.RELAY
 	}
 };
 
@@ -138,7 +146,7 @@ var raceTypes = {
 var stageData = [
 	{
 		name: 'Pokljuka',
-		raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit]
+		raceMap: [raceTypes.relay, raceTypes.sprint, raceTypes.pursuit]
 	},
 	{
 		name: 'Hochfilzen',

@@ -14,6 +14,10 @@ class Track {
     return this.trackLength;
   }
 
+  getLapLength() {
+    return this.lapLength;
+  }
+
   getTrackLengthKm() {
     return (this.trackLength / 1000).toFixed(1);
   }

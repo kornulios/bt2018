@@ -72,6 +72,10 @@ class Player {
 		return this.distance;
 	}
 
+	setDistance(newDistance) {		//required for relay placement
+		this.distance = newDistance;
+	}
+
 	addPenalty(length) {
 		this.penalty += length;
 		return this.penalty;
@@ -101,7 +105,7 @@ class Player {
 		return runStatus;
 	}
 
-	enterShootingRange(range) {
+	enterShootingRange(range, relay) {
 		//enter range
 		var shootingStatus = true;
 		if (!this.shooting) {
@@ -111,7 +115,7 @@ class Player {
 			this.status = 'Range';
 			this.running = false;
 			this.rifle = {
-				ammo: 5,
+				ammo: relay ? 8 : 5,
 				aimTime: 20 * 60
 			}
 			return shootingStatus;
@@ -124,7 +128,7 @@ class Player {
 		this.rifle = {};
 	}
 
-	shoot(elapsedTime) {
+	shoot(elapsedTime, relay) {
 		var hit;
 		this.rifle.aimTime -= elapsedTime;	// !!!!!
 
