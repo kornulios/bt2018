@@ -111,9 +111,9 @@ class Race {
 		} else if (p.shooting) {
 			var shootingStatus = p.shoot(gameTick);
 			if (shootingStatus) {
-				if (shootingStatus.length == 5) {
-					me.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);
-					shootingStatus.forEach(shotRes => {
+				if (shootingStatus.finishedShooting) {
+					me.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus.result);
+					shootingStatus.result.forEach(shotRes => {
 						if (!shotRes) {
 							me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);
 						}

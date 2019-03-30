@@ -27,11 +27,10 @@ class RelayRace extends Race {
   }
 
   run(gameTick) {
-    var me = this,
-      runningPlayers = false,
-      raceRunning = false;
+    var teamRunning = false;
+    var raceRunning = false;
 
-    me.gameTimer += gameTick;
+    this.gameTimer += gameTick;
 
     //need to start using legs
     for (var team of me.teams) {
@@ -48,8 +47,8 @@ class RelayRace extends Race {
       // main action
       var p = team.players[team.leg];
       if (p.started && !p.finished) {
-        teamFinished = me.playerAct(team, p, gameTick);
-        if (!teamFinished) raceRunning = true;
+        teamRunning = this.playerAct(team, p, gameTick);
+        if (teamRunning) raceRunning = true;
       }
     }
     return raceRunning;
@@ -67,7 +66,7 @@ class RelayRace extends Race {
         this.results.pushRelayResult(runStatus.waypointPassed, player.number, player.name, team.name, this.getRaceTime());
 
         player.makeDecision(); // ???
-        
+
         if (runStatus.shootingPassed) {
           player.enterShootingRange(runStatus.shootingPassed, true);
         }
@@ -88,19 +87,22 @@ class RelayRace extends Race {
 
     } else if (player.shooting) {
       var shootingStatus = player.shoot(gameTick, true);
+
       if (shootingStatus) {
-        if (shootingStatus.length == 5) {
-          me.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);
-          shootingStatus.forEach(shotRes => {
-            if (!shotRes) {
-              me.penaltyType ? p.addPenalty(me.track.penaltyLength) : p.addPenaltyTime(CONSTANT.PENALTY_MINUTE);
+        if (shootingStatus.finished) {
+          // this.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);
+          this.results.pushShootingResultRelay(player.rangeNum, player.name, team.name, shootingStatus.result);
+          shootingStatus.result.forEach(shootRes => {
+            if (!shootRes) {
+              player.addPenalty(this.track.penaltyLength);
             }
           });
-          p.quitShootingRange();
+          player.quitShootingRange();
         }
       }
     }
-    return p.finished == false;
+
+    return true;
   }
 
 }

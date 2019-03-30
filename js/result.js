@@ -19,8 +19,28 @@ class Results {
     this.data.push(resObj);
   }
 
+  pushRelayResult(wp, number, playerName, teamName, time) {
+    var resObj = {
+      waypoint: wp,
+      playerName: playerName,
+      number: number,
+      team: teamName,
+      time: time,
+    };
+    this.data.push(resObj);
+  }
+
   pushShootingResult(player, range, result) {
     this.shootingData.push({ name: player.name, number: player.number, range: range, result: result });
+  }
+
+  pushShootingResultRelay(range, playerName, teamName, result) {
+    this.shootingData.push({
+      range: range,
+      name: playerName,
+      team: teamName,
+      result: result,
+    });
   }
 
   getShootingResult(name) {
@@ -32,19 +52,6 @@ class Results {
     }
     return res;
   }
-
-  // getMissesByRange(name) {
-  //   let rangeResults = [];
-
-  //   for (let i = 1; i < 4; i++) {
-  //     let rng = this.getShootingResult(name, i);
-  //     if (rng.length > 0) {
-  //       let res = rng.filter(s => s == '-');
-  //       rangeResults.push(res.length);
-  //     }
-  //   }
-  //   return rangeResults.join('+');
-  // }
 
   getWaypointResults(wp) {
     var me = this,
