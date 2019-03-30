@@ -43,6 +43,10 @@ class Race {
 		return resArray;
 	}
 
+	getResults() {
+		return this.results;
+	}
+
 	getRaceName() {
 		return this.name;
 	}

@@ -139,7 +139,7 @@ class Player {
 		this.status = 'Shooting';
 		this.rifle.ammo -= 1;
 		this.rifle.aimTime = Util.rand(6, 2) * 60;
-		if (Util.rand(100, 0) > this.accuracy) {
+		if (Util.rand(100, 0) < this.accuracy) {
 			this.currentRange[this.rifle.ammo] = 1;
 		}
 

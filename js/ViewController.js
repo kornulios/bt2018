@@ -19,7 +19,7 @@ class View {
 			raceName = race.getRaceName(),
 			raceStatus = race.getRaceStatus(),
 			raceTimer = Util.convertToMinutes(race.getRaceTime()),
-			raceResults = race.results,
+			raceResults = race.getResults(),
 			tpl = '';
 
 		tpl += `<div>${raceStatus} - ${raceName} Gametime: ${raceTimer}</div>`;
