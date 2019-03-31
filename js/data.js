@@ -76,6 +76,7 @@ var raceTypes = {
 		//WHOA!		4x6 women; 4x7,5 men
 		lapLength: { men: 2500, women: 2000 },
 		waypoints: 25,
+		// waypointsPerLap: 3, // 3 is finish
 		laps: 12,
 		shootings: 8,
 		type: 'Relay',
@@ -112,7 +113,7 @@ var raceTypes = {
 var stageData = [
 	{
 		name: 'Pokljuka',
-		raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay]
+		raceMap: [raceTypes.relay, raceTypes.sprint, raceTypes.pursuit]
 	},
 	{
 		name: 'Hochfilzen',

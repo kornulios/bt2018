@@ -68,7 +68,6 @@ class RelayRace extends Race {
       var runStatus = player.run(this.track, gameTick);
 
       if (runStatus.waypointPassed !== -1) {
-        // this.results.pushResult(p.getShortInfo(), runStatus.waypointPassed, this.getRaceTime() - p.startTimer + p.penaltyTime);
         this.results.pushRelayResult(runStatus.waypointPassed, player.number, player.name, team.name, this.getRaceTime());
 
         player.makeDecision(); // ???
@@ -84,6 +83,7 @@ class RelayRace extends Race {
             return false;
           } else {
             player.stop();
+            console.log(player.name + ' switchgin at ' + player.getDistance());
             team.leg++;
             team.switching = true;
             return true;
@@ -95,7 +95,7 @@ class RelayRace extends Race {
       var shootingStatus = player.shoot(gameTick, true);
 
       if (shootingStatus) {
-        if (shootingStatus.finished) {
+        if (shootingStatus.finishedShooting) {
           // this.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);
           this.results.pushShootingResultRelay(player.rangeNum, player.name, team.name, shootingStatus.result);
           shootingStatus.result.forEach(shootRes => {

@@ -3,11 +3,12 @@ class Track {
     this.lapLength = data.lapLength[gen];
     this.trackLength = Math.ceil(data.lapLength[gen] * data.laps);    //overall track distance
     this.penaltyLength = 150;
-    this.shootingRange = [];              //specify distances for shooting ranges
-    this.waypoints = this.setupWaypoints(this.trackLength, data.waypoints);   // TODO waypoints model should be refactored
+    this.type = data.type;
     this.laps = data.laps;
+    this.waypointsPerLap = 3;
 
-    this.setupShootinRanges();
+    this.waypoints = this.setupWaypoints();   // TODO waypoints model should be refactored
+    this.shootingRange = this.setupShootinRanges();
   }
 
   getTrackLength() {
@@ -23,17 +24,26 @@ class Track {
   }
 
   setupShootinRanges() {
+    var resWp = [];
     for (let i = 1; i < this.laps; i++) {
-      this.shootingRange.push(i * this.lapLength);
+      if (this.type !== 'Relay') {
+        resWp.push(i * this.lapLength);
+      } else {
+        if ((this.lapLength * i) % (this.lapLength * this.waypointsPerLap ) !== 0) {
+          resWp.push(i * this.lapLength);
+        }
+      }
     }
+    return resWp;
   }
 
-  setupWaypoints(tlen, num) {
-    let resArr = [];
-    for (let step = tlen / num; step <= tlen; step += tlen / num) {
-      resArr.push(Math.ceil(step));
+  setupWaypoints() {
+    var resWp = [];
+    var step = this.lapLength / this.waypointsPerLap;
+    for (var i = 0; i < this.laps * this.waypointsPerLap; i++) {
+      resWp.push(Math.ceil(step * (i + 1)));
     }
-    return resArr;
+    return resWp;
   }
 
   waypointsNum() {
