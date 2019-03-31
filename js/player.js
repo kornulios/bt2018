@@ -110,7 +110,8 @@ class Player {
 		var shootingStatus = true;
 		if (!this.shooting) {
 			this.rangeNum = range;
-			this.currentRange = [0,0,0,0,0];
+      this.currentRange = [0,0,0,0,0];
+      this.nextTarget = 0;
 			this.shooting = true;
 			this.status = 'Range';
 			this.running = false;
@@ -128,7 +129,7 @@ class Player {
 		this.rifle = {};
 	}
 
-	shoot(elapsedTime) {
+	shoot(elapsedTime, relay) {
 		var finishedShooting = false;
 		this.rifle.aimTime -= elapsedTime;	// !!!!!
 
@@ -140,8 +141,14 @@ class Player {
 		this.rifle.ammo -= 1;
 		this.rifle.aimTime = Util.rand(6, 2) * 60;
 		if (Util.rand(100, 0) < this.accuracy) {
-			this.currentRange[this.rifle.ammo] = 1;
-		}
+      this.currentRange[this.nextTarget] = 1; /// GOOD!
+    }
+    
+    if (relay && this.rifle.ammo <= 3 && this.currentRange.indexOf(0) > -1) {
+      this.nextTarget = this.currentRange.indexOf(0);
+    } else {
+      this.nextTarget++;
+    }
 
     //leaves range only if all targets are closed OR run out of ammo
     if (this.currentRange.indexOf(0) === -1 || this.rifle.ammo < 1) finishedShooting = true;
