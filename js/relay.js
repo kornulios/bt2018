@@ -30,6 +30,15 @@ class RelayRace extends Race {
 
   getPlayers() {
 		return this.teams.map(team => { return team.players[team.leg] });
+  }
+
+  getRaceName() {
+    var length = (this.track.getLapLength() * 3) / 1000;
+		return this.stageName + ' ' + length + 'x4km ' + this.raceGender;
+	}
+  
+  getFinishResult() {
+		return this.results.getRelayResults(this.track.waypointsNum() - 1);
 	}
 
   run(gameTick) {
@@ -40,7 +49,7 @@ class RelayRace extends Race {
 
     //need to start using legs
     for (var team of this.teams) {
-      if (!team.started) {
+      if (!team.started && team.leg === 0) {
         team.started = true;
         team.players[team.leg].start();
       }
@@ -83,7 +92,6 @@ class RelayRace extends Race {
             return false;
           } else {
             player.stop();
-            console.log(player.name + ' switchgin at ' + player.getDistance());
             team.leg++;
             team.switching = true;
             return true;
@@ -96,7 +104,6 @@ class RelayRace extends Race {
 
       if (shootingStatus) {
         if (shootingStatus.finishedShooting) {
-          // this.results.pushShootingResult(p.getShortInfo(), p.rangeNum, shootingStatus);
           this.results.pushShootingResultRelay(player.rangeNum, player.name, team.name, shootingStatus.result);
           shootingStatus.result.forEach(shootRes => {
             if (!shootRes) {

@@ -51,7 +51,7 @@ class View {
 
 	getResultsTpl(waypoint) {
 		var me = this,
-			race = game.championship.getLastRace(),
+			race = game.championship.getLastRace(),  /// NO WAY!
 			playerTeam = game.getPlayerTeam(),
 			raceName = race.getRaceName(),
 			results = race.getFinishResult(),
@@ -134,7 +134,7 @@ class View {
 
 	renderTrackInfo(race) {
 		let tpl = '';
-		tpl = `<div>${race.name}</div>`;
+		tpl = `<div>${race.getRaceName()}</div>`;
 		this.trackView.innerHTML = tpl;
 		for (let i = 0; i < race.track.waypoints.length; i++) {
 			let newLink = document.createElement('a');
@@ -176,8 +176,7 @@ class View {
 	}
 
 	getRaceScheduleTpl() {
-		var me = this,
-			raceNames = game.championship.getRacesSchedule(),
+		var raceNames = game.championship.getRacesSchedule(),
 			stageName = game.championship.getStageName(),
 			tpl = '';
 

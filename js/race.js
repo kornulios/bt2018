@@ -2,6 +2,7 @@
 
 class Race {
 	constructor(raceConfig, gender) {					// refactor with object for arguments
+		this.stageName = raceConfig.stageName;
 		this.track = new Track(raceConfig, gender);
 		this.players = [];
 		this.raceGender = gender;
@@ -13,7 +14,7 @@ class Race {
 		this.penaltyType = raceConfig.penaltyType;
 
 		//misc data
-		this.name = raceConfig.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
+		this.name = this.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
 		// this.name = raceConfig.stageName;
 	}
 

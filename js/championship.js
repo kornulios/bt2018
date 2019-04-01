@@ -3,9 +3,11 @@
 class Championship {
   constructor(newPlayers, raceConfigs) {
     this.points = {};
+    this.pointsNations = {};
     this.stage = stageData[0];        // game.getStages()
     this.races = this.initRaces(this.stage);
     this.players = this.initPlayers(newPlayers);
+    this.teams = game.getTeams();
     this.roster = [];
     this.nextRace = 0;
 
@@ -20,6 +22,9 @@ class Championship {
     this.pointsMapMS = [60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
       30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
       20, 18, 16, 14, 12, 10, 8, 6, 4, 2];
+    this.pointsMapNations = [420, 390, 360, 330, 310, 290, 270, 250,
+      230, 220, 210, 200, 190, 180, 170, 160, 150, 140, 130, 120, 110,
+      100, 90, 80, 70, 60, 50, 40, 30, 20];
 
     this.initResults();
   }
@@ -72,17 +77,30 @@ class Championship {
     for (let p of this.players) {
       this.points[p.name] = 0;
     }
+    for (var t of game.teams) {
+      this.pointsNations[t.name] = 0;
+    }
   }
 
   calculatePoints(res) {
-    if (res.length == 30) {
-      for (let i = 0; i < this.pointsMapMS.length; i++) {
-        this.points[res[i].playerName] += this.pointsMapMS[i];
-      }
-    } else {
-      for (let i = 0; i < this.pointsMap.length; i++) {
-        this.points[res[i].playerName] += this.pointsMap[i];
-      }
+    switch (this.currentRace.raceType) {
+      case 'Relay':
+        for (var i = 0; i < this.pointsMapNations.length; i++) {
+          if (res[i]) {
+            this.pointsNations[res[i].team] += this.pointsMapNations[i];
+          }
+        }
+        return;
+      case 'Mass Start':
+        for (let i = 0; i < this.pointsMapMS.length; i++) {
+          this.points[res[i].playerName] += this.pointsMapMS[i];
+        }
+        return;
+      default:
+        for (let i = 0; i < this.pointsMap.length; i++) {
+          this.points[res[i].playerName] += this.pointsMap[i];
+        }
+        return;
     }
   }
 
@@ -155,7 +173,7 @@ class Championship {
   getRacesSchedule() {
     var races = [];
     this.races.forEach(function (race) {
-      races.push({ name: race.name, status: race.status });   // TODO add date, location etc.
+      races.push({ name: race.getRaceName(), status: race.status });   // TODO add date, location etc.
     });
     return races;
   }

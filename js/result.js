@@ -81,4 +81,11 @@ class Results {
       if (res.playerName == name) return true;
     });
   }
+
+  getRelayResults(waypoint) {
+    var res = this.data.filter(item => {
+      return item.waypoint == waypoint;
+    });
+    return res;
+  }
 }
