@@ -256,7 +256,7 @@ class Championship {
       for (var team of game.getTeams()) {
         var teamMembers = [];
         _nextRace.raceGender == 'men' ? teamMembers = this.getTeam(team.name).men : teamMembers = this.getTeam(team.name).women;
-        if (teamMembers.length > 4) {
+        if (teamMembers.length >= 4) {
           roster.push({ name: team.name, id: 1, players: teamMembers.slice(0, 4) })
         }
       }
