@@ -19,7 +19,7 @@ class Game {
     //AJAX will go there 
     // getData();
     var teams = this.teams,
-      playerCount = 208,
+      // playerCount = 208,
       teamMemberCount = 8,
       counter = 1,
       players = [];
@@ -73,11 +73,6 @@ class Game {
     }
   }
 
-  // prepareNextRace() {
-  // 	this.view.renderRaceView(this.championship.currentRace);
-  // 	this.view.showRunScreen();
-  // }
-
   render() {
     this.view.currentScreen.update();
   }
@@ -105,7 +100,7 @@ class Game {
 
   runGame(tFrame) {       //refactored with rAF
     var me = this,
-      gameSpeed = 1,
+      gameSpeed = 100,
       frameCount = tFrame - tNow,
       gameTick = isNaN(frameCount) ? 0 : frameCount,
       raceRunning = true;
