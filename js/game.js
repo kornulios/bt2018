@@ -19,18 +19,13 @@ class Game {
     //AJAX will go there 
     // getData();
     var teams = this.teams,
-      // playerCount = 208,
       teamMemberCount = 8,
       counter = 1,
       players = [];
 
     for (var i = 0; i <= teams.length; i++) {
       for (var k = 0; k < teamMemberCount; k++) {
-        players.push({
-          name: 'Player ' + counter,
-          team: teams[i],
-          gender: k < teamMemberCount / 2 ? 'men' : 'women'
-        });
+        players.push(Player.create('Player ' + counter, teams[i], k < teamMemberCount / 2 ? 'men' : 'women'));
         counter++;
       }
     }
@@ -109,10 +104,7 @@ class Game {
     tNow = tFrame;
 
     // UPDATE
-    // for (var ticks = 0; ticks < gameSpeed; ticks++) {
     raceRunning = me.championship.runRace(gameTick * gameSpeed);
-    // if (!raceRunning) break;
-    // }
 
     //RENDER
     me.render();

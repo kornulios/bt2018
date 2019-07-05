@@ -36,6 +36,10 @@ class Player {
 
 	}
 
+	static create(name, team, gender) {
+		return new Player({name, team, gender});
+	}
+
 	getShortInfo() {
 		return {
 			name: this.name,
