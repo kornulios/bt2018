@@ -8,6 +8,6 @@ class Team {
     }
 
     static create(name, shortName, color, flag, description) {
-        return new Team(name, shortName, color, flag);
+        return new Team(name, shortName, color, flag, description);
     }
 }

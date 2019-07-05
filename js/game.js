@@ -23,7 +23,7 @@ class Game {
       counter = 1,
       players = [];
 
-    for (var i = 0; i <= teams.length; i++) {
+    for (var i = 0; i < teams.length; i++) {
       for (var k = 0; k < teamMemberCount; k++) {
         players.push(Player.create('Player ' + counter, teams[i], k < teamMemberCount / 2 ? 'men' : 'women'));
         counter++;
