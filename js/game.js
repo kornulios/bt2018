@@ -34,16 +34,10 @@ class Game {
 
   loadTeams() {
     //mock for teams
-    var teamCount = 26;
-    var teams = [];
-    for (var i = 1; i <= teamCount; i++) {
-      teams.push({
-        name: 'Team ' + i,
-        shortName: 'T' + i,
-        flag: '',
-        colors: [],
-        description: "Team " + i + mockData.teamDesc
-      });
+    const teamCount = 26;
+    const teams = [];
+    for (let i = 1; i <= teamCount; i++) {
+      teams.push(Team.create('Team ' + i, 'T' + i, '', [], 'Team ' + i + mockData.teamDesc));
     }
     return teams;
   }

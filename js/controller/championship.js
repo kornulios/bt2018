@@ -28,27 +28,7 @@ class Championship {
 
     this.initResults();
   }
-
-  // initPlayers(newPlayers) {
-  //   var newArr = [],
-  //     tempNum = 0,
-  //     tempAI = [];
-  //   for (let p of newPlayers) {
-  //     tempAI = (tempNum < 20) ? CONSTANT.AI.AGGRESSIVE : (tempNum > 180) ? CONSTANT.AI.WEAK : CONSTANT.AI.NORMAL;
-  //     newArr.push(new Player({
-  //       name: p.name,
-  //       team: p.team,
-  //       gender: p.gender,
-  //       speed: p.speed,
-  //       accuracy: p.accuracy,
-  //       startTimer: 0,
-  //       aiBehaviour: tempAI
-  //     }));
-  //     tempNum++;
-  //   }
-  //   return newArr;
-  // }
-
+  
   resetPlayers() {
     for (let p of this.players) {
       p.reset();
