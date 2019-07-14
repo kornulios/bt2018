@@ -20,6 +20,7 @@
 	<script src="js/controller/race.js"></script>
 	<script src="js/controller/relay.js"></script>
 	<script src="js/controller/championship.js"></script>
+	<script src="js/App.js"></script>
 	<script src="js/game.js"></script>
 
 	<link rel="stylesheet" href="css/style.css">
@@ -45,6 +46,7 @@
 		document.addEventListener('DOMContentLoaded', function (e) {
 			console.log('up and running');
 			game = new Game();
+			App.render(document.querySelector('#main-view'));
 			initEvents();
 		});
 
@@ -85,6 +87,8 @@
 
 			mainDiv.appendChild(tabMap[tabName]());
 		}
+
+		
 
 	</script>
 
