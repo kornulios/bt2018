@@ -7,6 +7,8 @@ class Game {
     this.view = new View();
     this.championship = Object.create(null);
 
+    this.raceMap = gameData.stageData;
+
     this.teams = this.loadTeams();
     this.players = this.loadPlayers();
 
@@ -55,10 +57,10 @@ class Game {
 
   startNewChampionship() {
     if (this.players.length > 0) {
-      this.championship = new Championship(this.players);
-      this.championship.prepareNextRace();
+      this.championship = new Championship();
+      // this.championship.prepareNextRace();
     } else {
-      console.log('No players loaded.');
+      // console.log('No players loaded.');
     }
   }
 

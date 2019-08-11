@@ -8,7 +8,7 @@ class RelayRace extends Race {
     this.teams = [];
 
     // this.players = [];
-    window.myRace = this;
+    window.myRace = this;   //debugg
   }
 
   initRoster(roster) {

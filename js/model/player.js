@@ -11,6 +11,7 @@ class Player {
 		this.stamina = args.stamina || Util.rand(99, 30);
 		this.fatigue = 100;
 		this.technique = args.technique || Util.rand(99, 50);
+		this.points = 0;
 
 		//distance related
 		this.distance = 0;
