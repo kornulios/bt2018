@@ -7,6 +7,8 @@ class Game {
     this.view = new View();
     this.championship = Object.create(null);
 
+    this.raceMap = gameData.stageData;
+
     this.teams = this.loadTeams();
     this.players = this.loadPlayers();
 
@@ -55,10 +57,10 @@ class Game {
 
   startNewChampionship() {
     if (this.players.length > 0) {
-      this.championship = new Championship(this.players);
-      this.championship.prepareNextRace();
+      this.championship = new Championship();
+      // this.championship.prepareNextRace();
     } else {
-      console.log('No players loaded.');
+      // console.log('No players loaded.');
     }
   }
 
@@ -155,19 +157,19 @@ class Game {
   }
 
   onChangeTeamSelect(e) {
-    var teamName = e.target.textContent;
+    // var teamName = e.target.textContent;
 
     this.startNewChampionship(); //should go to Start button
 
-    for (var i = 0; i < this.teams.length; i++) {
-      if (this.teams[i].name == teamName) {
-        this.playerTeam = this.teams[i];
-        this.view.selectTeamDetails(this.teams[i]);
-      }
-    }
-    if (this.playerTeam == '') {
-      console.log('Selected team not defined');
-    }
+    // for (var i = 0; i < this.teams.length; i++) {
+    //   if (this.teams[i].name == teamName) {
+    //     this.playerTeam = this.teams[i];
+    //     this.view.selectTeamDetails(this.teams[i]);
+    //   }
+    // }
+    // if (this.playerTeam == '') {
+    //   console.log('Selected team not defined');
+    // }
   }
 
   onChangeViewGender(e) {
