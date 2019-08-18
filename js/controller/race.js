@@ -1,8 +1,8 @@
 //Game controller
 
 class Race {
-	constructor(raceConfig, gender) {					// refactor with object for arguments
-		this.stageName = raceConfig.stageName;
+	constructor(stageName, raceConfig, gender) {					// refactor with object for arguments
+		this.stageName = stageName;
 		this.track = new Track(raceConfig, gender);
 		this.players = [];
 		this.raceGender = gender;
@@ -14,8 +14,18 @@ class Race {
 		this.penaltyType = raceConfig.penaltyType;
 
 		//misc data
+
+		//should be removed on refactor
 		this.name = this.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
 		// this.name = raceConfig.stageName;
+	}
+
+	get fullName() {
+		return this.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
+	}
+
+	get shortName() {
+		return this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
 	}
 
 	initRoster(roster) {
@@ -45,7 +55,8 @@ class Race {
 	}
 
 	getResults() {
-		return this.results;
+		const results = { ...this.results }
+		return JSON.parse(JSON.stringify(results));
 	}
 
 	getRaceName() {
@@ -64,6 +75,17 @@ class Race {
 
 	getRaceTime() {
 		return (this.gameTimer / 1000).toFixed(1);
+	}
+
+	skipRace() {
+		let raceRunning = false;
+		this.status = 'Started';
+		do {
+			raceRunning = this.run(100);
+		}
+		while (raceRunning);
+		alert('race finished');
+		this.status = 'Finished';
 	}
 
 	run(gameTick) {			// 1 tick race progress

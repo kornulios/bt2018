@@ -128,7 +128,11 @@ const gameData = {
   stageData: [
     {
       name: 'Pokljuka',
-      raceMap: [raceTypes.relay, raceTypes.sprint, raceTypes.pursuit]
+      raceMap: [
+        raceTypes.individual,
+        raceTypes.sprint,
+        raceTypes.pursuit
+      ]
     },
     {
       name: 'Hochfilzen',
@@ -140,3 +144,25 @@ const gameData = {
     }
   ]
 };
+
+const createRaceList = () => {
+  let res = [];
+  for (let stage of gameData.stageData) {
+    for (let race of stage.raceMap) {
+      res.push({
+        stageName: stage.name,
+        raceType: race,
+        raceGender: 'men',
+        results: null
+      });
+      res.push({
+        stageName: stage.name,
+        raceType: race,
+        raceGender: 'women',
+        results: null
+      });
+    }
+  }
+  return res;
+};
+
