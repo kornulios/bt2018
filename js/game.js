@@ -1,3 +1,5 @@
+import { Player } from './model/player';
+
 class Game {
   constructor() {
     this.gameSpeed = 1000 / 60;      //50 ticks per second

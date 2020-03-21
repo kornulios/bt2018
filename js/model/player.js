@@ -1,4 +1,4 @@
-class Player {
+export class Player {
 	constructor(args) {
 		//base stats
 		this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2500, 1900) / 100; // km/h
@@ -177,7 +177,7 @@ class Player {
 
 	reset() {
 		this.currentSpeed = this.baseSpeed;
-		this.fatigue = 100;
+		this.fatigue = 100;ś
 		this.distance = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
@@ -229,22 +229,22 @@ class Player {
 			dice = Util.rand(100),
 			aggro = me.aiBehaviour[0],
 			norm = aggro + me.aiBehaviour[1],
-			choise;
+			choice;
 		// var choise = Math.floor(Math.random() * Object.keys(CONSTANT.RUNSTATE).length);
 
 		//make ai decide
 		if (dice < aggro) {
-			choise = CONSTANT.RUNSTATE.PUSHING;
+			choice = CONSTANT.RUNSTATE.PUSHING;
 			this.speedMod = 1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000));
 			// newSpeed = me.baseSpeed * (1 + (CONSTANT.BASE_SPEED_MOD + (me.strength / 1000)));
 		} else if (dice > norm) {
-			choise = CONSTANT.RUNSTATE.EASE;
+			choice = CONSTANT.RUNSTATE.EASE;
 			this.speedMod = 1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000));
 			// newSpeed = me.baseSpeed * (1 - (CONSTANT.BASE_SPEED_MOD + ((100 - me.strength) / 1000)));
 		} else {
-			choise = CONSTANT.RUNSTATE.NORMAL;
+			choice = CONSTANT.RUNSTATE.NORMAL;
 		}
-		me.state = choise;
+		me.state = choice;
 	}
 }
 
