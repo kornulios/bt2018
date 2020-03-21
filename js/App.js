@@ -1,11 +1,5 @@
-class App {
-    constructor() {
-        this.tabs = [];
-        this.name = 'Application'
-        this.activeTab = '';
-    };
+import { Game } from './game.js';
 
-    static render(domNode) {
-        // console.log(domNode.innerHTML);
-    }
-}
+const game = new Game();
+
+game.simulatePlayer();

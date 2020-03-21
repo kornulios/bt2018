@@ -1,4 +1,4 @@
-var Util = {
+export const Utils = {
 	rand: function (max, min) {
 		min = min || 0;
 		max++;
