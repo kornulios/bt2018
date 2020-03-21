@@ -1,16 +1,19 @@
+import { Utils } from '../utils/Utils.js';
+import * as Constants from '../constants/constants.js';
+ 
 export class Player {
 	constructor(args) {
 		//base stats
-		this.baseSpeed = this.currentSpeed = args.speed || Util.rand(2500, 1900) / 100; // km/h
+		this.baseSpeed = this.currentSpeed = args ? args.speed : Utils.rand(2500, 1900) / 100; // km/h
 		this.name = args.name || 'unknown';
 		this.team = args.team || 'Missing team';
 		this.gender = args.gender || 'unknown';
 		this.index = args.index;
-		this.accuracy = args.accuracy || Util.rand(99, 70);
-		this.strength = args.strength || Util.rand(99, 75);
-		this.stamina = args.stamina || Util.rand(99, 30);
+		this.accuracy = args.accuracy || Utils.rand(99, 70);
+		this.strength = args.strength || Utils.rand(99, 75);
+		this.stamina = args.stamina || Utils.rand(99, 30);
 		this.fatigue = 100;
-		this.technique = args.technique || Util.rand(99, 50);
+		this.technique = args.technique || Utils.rand(99, 50);
 		this.points = 0;
 
 		//distance related
@@ -32,13 +35,13 @@ export class Player {
 		this.speedMod = 1;
 
 		//AI related
-		this.aiBehaviour = args.aiBehaviour || CONSTANT.AI.NORMAL;
-		this.state = CONSTANT.RUNSTATE.NORMAL;
+		this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
+		this.state = Constants.PLAYER_RUN_STATUS.NORMAL;
 
 	}
 
 	static create(name, team, gender) {
-		return new Player({name, team, gender});
+		return new Player({ name, team, gender });
 	}
 
 	getShortInfo() {
@@ -92,8 +95,8 @@ export class Player {
 
 	run(track, elapsedTime) {
 		//move forward on track
-		var fps = elapsedTime, 
-		distancePassed = (this.currentSpeed / 3600) * fps;   // m/ms
+		var fps = elapsedTime,
+			distancePassed = (this.currentSpeed / 3600) * fps;   // m/ms
 
 		if (this.penalty <= 0) {
 			this.status = 'Running';
@@ -115,8 +118,8 @@ export class Player {
 		var shootingStatus = true;
 		if (!this.shooting) {
 			this.rangeNum = range;
-      this.currentRange = [0,0,0,0,0];
-      this.nextTarget = 0;
+			this.currentRange = [0, 0, 0, 0, 0];
+			this.nextTarget = 0;
 			this.shooting = true;
 			this.status = 'Range';
 			this.running = false;
@@ -144,21 +147,21 @@ export class Player {
 
 		this.status = 'Shooting';
 		this.rifle.ammo -= 1;
-		this.rifle.aimTime = Util.rand(6, 2) * 60;
-		if (Util.rand(100, 0) < this.accuracy) {
-      this.currentRange[this.nextTarget] = 1; /// GOOD!
-    }
-    
-    if (relay && this.rifle.ammo <= 3 && this.currentRange.indexOf(0) > -1) {
-      this.nextTarget = this.currentRange.indexOf(0);
-    } else {
-      this.nextTarget++;
-    }
+		this.rifle.aimTime = Utils.rand(6, 2) * 60;
+		if (Utils.rand(100, 0) < this.accuracy) {
+			this.currentRange[this.nextTarget] = 1; /// GOOD!
+		}
 
-    //leaves range only if all targets are closed OR run out of ammo
-    if (this.currentRange.indexOf(0) === -1 || this.rifle.ammo < 1) finishedShooting = true;
+		if (relay && this.rifle.ammo <= 3 && this.currentRange.indexOf(0) > -1) {
+			this.nextTarget = this.currentRange.indexOf(0);
+		} else {
+			this.nextTarget++;
+		}
 
-		return {finishedShooting: finishedShooting, result: this.currentRange};
+		//leaves range only if all targets are closed OR run out of ammo
+		if (this.currentRange.indexOf(0) === -1 || this.rifle.ammo < 1) finishedShooting = true;
+
+		return { finishedShooting: finishedShooting, result: this.currentRange };
 	}
 
 	start() {
@@ -177,7 +180,7 @@ export class Player {
 
 	reset() {
 		this.currentSpeed = this.baseSpeed;
-		this.fatigue = 100;ś
+		this.fatigue = 100; ś
 		this.distance = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
@@ -226,7 +229,7 @@ export class Player {
 	makeDecision() {
 		var me = this,
 			newSpeed = me.baseSpeed,
-			dice = Util.rand(100),
+			dice = Utils.rand(100),
 			aggro = me.aiBehaviour[0],
 			norm = aggro + me.aiBehaviour[1],
 			choice;

@@ -1,22 +1,28 @@
-import { Player } from './model/player';
+import { Player } from './model/player.js';
+import * as gameData from './data.js';
 
-class Game {
+export class Game {
   constructor() {
     this.gameSpeed = 1000 / 60;      //50 ticks per second
     this.gameTimer;
     this.gameRunning = false;
 
-    this.view = new View();
+    // this.view = new View();
     this.championship = Object.create(null);
 
     this.raceMap = gameData.stageData;
 
-    this.teams = this.loadTeams();
-    this.players = this.loadPlayers();
+    // this.teams = this.loadTeams();
+    // this.players = this.loadPlayers();
 
     this.selectedResults = 0;
     this.selectedGender = 'men';
     this.playerTeam = "";
+  }
+
+  simulatePlayer() {
+    const player = new Player({});
+    console.log(player);
   }
 
   loadPlayers() {
