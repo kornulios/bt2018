@@ -1,5 +1,6 @@
 import { Player } from './model/player.js';
 import * as gameData from './data.js';
+import { Utils } from './utils/Utils.js';
 
 export class Game {
   constructor() {
@@ -24,12 +25,17 @@ export class Game {
     const player = new Player({});
     console.log(player);
     const trackDistance = 7500;
+
     for (var i = 0; player.distance < trackDistance; i++) {
-      player.run(100);
+      player.run(1);
     }
-    console.log(i);
+    
+    console.log(Utils.convertToMinutes(i / 1000));
 
   }
+
+
+  // OBSOLETE CODE for refactoring
 
   loadPlayers() {
     //AJAX will go there 
