@@ -32,8 +32,9 @@ export class Game {
       player.run(1);
     }
 
-    console.log(Utils.convertToMinutes(i / 1000));
+    const time = Utils.convertToMinutes(i/1000);
 
+    document.querySelector('#run').innerHTML = `<div>Shooting entry: ${time}</div>`;
   }
 
 

@@ -1,6 +1,6 @@
 export class Track {
   constructor() {
-    this.length = 7500;
+    this.length = 2500;
     this.laps = 3;
     this.penaltyLength = 150;
     this.waypointsPerLap = 3;
