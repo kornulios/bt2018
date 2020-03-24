@@ -4,6 +4,7 @@ export class Track {
     this.laps = 3;
     this.penaltyLength = 150;
     this.waypointsPerLap = 3;
+    this.shootingEntry = this.length / this.laps;
     
     // this.lapLength = data.lapLength[gen];
     // this.trackLength = Math.ceil(data.lapLength[gen] * data.laps);    //overall track distance

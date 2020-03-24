@@ -1,6 +1,7 @@
 import { Player } from './model/player.js';
 import * as gameData from './data.js';
 import { Utils } from './utils/Utils.js';
+import { Track } from './model/track.js';
 
 export class Game {
   constructor() {
@@ -22,14 +23,15 @@ export class Game {
   }
 
   simulatePlayer() {
-    const player = new Player({});
-    console.log(player);
-    const trackDistance = 7500;
+    const speed = document.querySelector('#spd1').value;
+    
+    const player = new Player({speed});
+    const track = new Track();
 
-    for (var i = 0; player.distance < trackDistance; i++) {
+    for (var i = 0; player.distance < track.length; i++) {
       player.run(1);
     }
-    
+
     console.log(Utils.convertToMinutes(i / 1000));
 
   }
