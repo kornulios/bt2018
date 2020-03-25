@@ -54,20 +54,11 @@ class Results {
   }
 
   getWaypointResults(wp) {
-    var me = this,
-      results = me.data.filter(function (res) {
-        if (res.waypoint == wp) return true;
-      });
+    // var me = this,
+    const results = this.data
+      .filter(res => res.waypoint === wp)
+      .sort((a, b) => a.time > b.time ? 1 : -1);
 
-    results.sort(function (a, b) {
-      if (a.time > b.time) {
-        return 1;
-      }
-      if (a.time < b.time) {
-        return -1
-      }
-      return 0;
-    });
     for (var i = 0; i < results.length; i++) {
       var shooting = me.getShootingResult(results[i].playerName);
       results[i].shooting = shooting;
@@ -77,15 +68,10 @@ class Results {
   }
 
   getPlayerResults(name) {
-    return this.data.filter(function (res, i) {
-      if (res.playerName == name) return true;
-    });
+    return this.data.filter(res => res.playerName === name);
   }
 
   getRelayResults(waypoint) {
-    var res = this.data.filter(item => {
-      return item.waypoint == waypoint;
-    });
-    return res;
+    return this.data.filter(item => item.waypoint === waypoint);
   }
 }

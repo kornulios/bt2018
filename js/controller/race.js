@@ -1,6 +1,6 @@
 //Game controller
 
-class Race {
+export class Race {
 	constructor(stageName, raceConfig, gender) {					// refactor with object for arguments
 		this.stageName = stageName;
 		this.track = new Track(raceConfig, gender);
