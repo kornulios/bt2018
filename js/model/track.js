@@ -1,18 +1,18 @@
 export class Track {
   constructor() {
-    this.length = 2500;
+    this.length = 7500;
     this.laps = 3;
     this.penaltyLength = 150;
     this.waypointsPerLap = 3;
     this.shootingEntry = this.length / this.laps;
     
-    // this.lapLength = data.lapLength[gen];
-    // this.trackLength = Math.ceil(data.lapLength[gen] * data.laps);    //overall track distance
+    this.lapLength = 2500;
+    this.trackLength = 7500; //Math.ceil(data.lapLength[gen] * data.laps);    //overall track distance
     // this.type = data.type;
     // this.laps = data.laps;
 
-    // this.waypoints = this.setupWaypoints();   // TODO waypoints model should be refactored
-    // this.shootingRange = this.setupShootinRanges();
+    this.waypoints = this.setupWaypoints();   // TODO waypoints model should be refactored
+    this.shootingRange = this.setupShootinRanges();
   }
 
   getTrackLength() {
@@ -25,6 +25,17 @@ export class Track {
 
   getTrackLengthKm() {
     return (this.trackLength / 1000).toFixed(1);
+  }
+
+  getWaypointName = (waypointId) => {
+    const waypointDistance = this.waypoints[waypointId];
+    if (waypointDistance === this.trackLength) {
+      return 'Finish';
+    } else if ((waypointDistance % this.lapLength) === 0) {
+      return `S${waypointDistance / this.lapLength}`;
+    } else {
+      return `${(waypointDistance / 1000).toFixed(1)}km`;
+    }
   }
 
   setupShootinRanges() {
@@ -58,8 +69,8 @@ export class Track {
     return Math.ceil(distance / this.trackLength);
   }
 
-  isWaypointPassed(newDist, diff) {    //return number of passed waypoint or -1
-    let prevDist = newDist - diff;
+  isWaypointPassed(newDist, prevDist) {    //return number of passed waypoint or -1
+    // let prevDist = newDist - diff;
     for (var i = 0; i < this.waypoints.length; i++) {
       if ((newDist >= this.waypoints[i]) && (prevDist < this.waypoints[i])) {
         return i;
@@ -68,7 +79,7 @@ export class Track {
     if (newDist >= this.trackLength) {
       return this.waypoints.length - 1;
     }
-    return -1;  //no wp passed
+    return false;  //no wp passed
   }
 
   passShootingRange(newDistance, passedDistance) {

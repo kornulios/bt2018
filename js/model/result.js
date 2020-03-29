@@ -1,21 +1,27 @@
 // MAJOR REFACTORING UNDERWAY 17.10.2018
 // V2. 21.10.2018 Refac part 2 done
 
-class Results {
+export class Result {
   constructor() {
     this.data = [];             // {name$, waypoint%, time!}
     this.shootingData = [];     // { name$, number%, result[ARR] }
     this.relative = true;
   }
 
-  pushResult(player, wp, t) {
-    var resObj = {
-      playerName: player.name,
-      number: player.number,
-      team: player.team,
-      waypoint: wp,
-      time: t
-    };
+  // pushResult(player, wp, t) {
+  //   var resObj = {
+  //     playerName: player.name,
+  //     number: player.number,
+  //     team: player.team,
+  //     waypoint: wp,
+  //     time: t
+  //   };
+  //   this.data.push(resObj);
+  // }
+
+  pushResult(resultData) {
+    var resObj = { ...resultData };
+
     this.data.push(resObj);
   }
 

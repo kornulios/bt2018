@@ -2,6 +2,7 @@ import { Player } from './model/player.js';
 import * as gameData from './data.js';
 import { Utils } from './utils/Utils.js';
 import { Track } from './model/track.js';
+import { Result } from './model/result.js';
 
 export class Game {
   constructor() {
@@ -24,19 +25,39 @@ export class Game {
 
   simulatePlayer() {
     const speed = document.querySelector('#spd1').value;
-    
-    const player = new Player({speed});
+
+    const player = new Player({ speed });
     const track = new Track();
+    const result = new Result();
 
-    for (var i = 0; player.distance < track.length; i++) {
+    for (var i = 0; player.distance <= track.length; i++) {
+      const playerPrevDistance = player.distance;
       player.run(1);
+      const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
+      if (passedWaypoint !== false) {
+        const payload = {
+          playerName: player.name,
+          playerNumber: player.number,
+          team: player.team,
+          waypoint: passedWaypoint,
+          time: i,
+        };
+        result.pushResult(payload);
+      }
     }
+window.track = track;
+    const time = Utils.convertToMinutes(i / 1000);
+console.log(result);
+    const results = result.data.map(data => {
+      return `<div>${track.getWaypointName(data.waypoint)}: ${Utils.convertToMinutes(data.time / 1000)}</div>`;
+    });
 
-    const time = Utils.convertToMinutes(i/1000);
-
-    document.querySelector('#run').innerHTML = `<div>Shooting entry: ${time}</div>`;
+    document.querySelector('#run').innerHTML = results;
   }
 
+
+
+  // ********************************************************************
 
   // OBSOLETE CODE for refactoring
 
