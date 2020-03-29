@@ -35,7 +35,6 @@ export class Game {
       player.run(1);
       const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
       if (passedWaypoint !== false) {
-        console.log(i);
         const payload = {
           playerName: player.name,
           playerNumber: player.number,
