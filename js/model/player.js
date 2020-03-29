@@ -5,9 +5,9 @@ export class Player {
 	constructor(args) {
 		//base stats
 		this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2500, 1900) / 100; // km/h
-		this.name = args.name || 'unknown';
-		this.team = args.team || 'Missing team';
-		this.gender = args.gender || 'unknown';
+		this.name = args.name || 'Player';
+		this.team = args.team || 'Team 1';
+		this.gender = args.gender || 'male';
 		this.index = args.index;
 		this.accuracy = args.accuracy || Utils.rand(99, 70);
 		this.strength = args.strength || Utils.rand(99, 75);
