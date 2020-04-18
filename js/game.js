@@ -21,39 +21,88 @@ export class Game {
     this.selectedResults = 0;
     this.selectedGender = 'men';
     this.playerTeam = "";
+
+
+  }
+
+  createPlayers(number) {
+    var res = [];
+    for (var i = 1; i <= number; i++) {
+      res.push(new Player({ name: "Player " + i, number: i, speed: 19 + i }))
+    }
+    return res;
+  }
+
+  logPlayerResult(resultStore, player, passedWaypoint, time) {
+    const payload = {
+      playerName: player.name,
+      playerNumber: player.number,
+      team: player.team,
+      waypoint: passedWaypoint,
+      time: time,
+    };
+    resultStore.pushResult(payload);
   }
 
   simulatePlayer() {
     const speed = document.querySelector('#spd1').value;
 
-    const player = new Player({ speed });
+    const players = this.createPlayers(5);
     const track = new Track();
-    const result = new Result();
+    const results = new Result();
 
-    for (var i = 0; player.distance <= track.length; i++) {
-      const playerPrevDistance = player.distance;
-      player.run(1);
-      const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
-      if (passedWaypoint !== false) {
-        const payload = {
-          playerName: player.name,
-          playerNumber: player.number,
-          team: player.team,
-          waypoint: passedWaypoint,
-          time: i,
-        };
-        result.pushResult(payload);
+    let raceFinished = false;
+    let timer = 0;
+
+    do {
+
+      for (let i = 0; i < players.length; i++) {
+        const player = players[i];
+        if (!player.finished) {
+          const playerPrevDistance = player.distance;
+          player.run(1);
+          const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
+
+          if (passedWaypoint) {
+            this.logPlayerResult(results, player, passedWaypoint, timer);
+          }
+        }
+
+        player.finished = player.distance >= track.length;
       }
-    }
-    const time = Utils.convertToMinutes(i / 1000);
 
-    const results = result.data.map(data => {
-      return `<div>${track.getWaypointName(data.waypoint)}: 
-      ${Utils.convertToMinutes(data.time / 1000)}</div>`;
-    });
+      raceFinished = players.every(player => player.finished);
+      timer++;
 
-    document.querySelector('#run').innerHTML = results.join(' ');
+    } while (!raceFinished)
+
+    console.log('race finished');
+
+
+    //results display
+    const playerResults = results.data.reduce((acc, result) => {
+      const name = result.playerName;
+      if (!acc[name]) {
+        acc[name] = [];
+      }
+
+      return { ...acc, [name]: [...acc[name], { wpName: track.getWaypointName(result.waypoint), time: Utils.convertToMinutes(result.time / 1000) }] }
+    }, {});
+
+    //html
+    const htmlResults = Object.keys(playerResults).map(name => {
+
+      const res = playerResults[name].map(r => {
+        const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`
+        return `<li class="result-list-item">${item}</li>`
+      })
+      const list = `<div>${name}<ul class="result-list">${res.join('')}</ul></div>`;
+      return list;
+    }).join('');
+
+    document.querySelector('#run').innerHTML = `<div class="results">${htmlResults}</div>`;
   }
+
 
 
 

@@ -1,0 +1,20 @@
+body {
+  font-family: "Consolas";
+}
+
+.results {
+  /* width: 380px; */
+  display: flex;
+}
+
+.result-list {
+  list-style: none;
+  width: 170px;
+  padding: 0;
+  margin: 10px;
+}
+
+.result-list-item {
+  display: flex;
+  justify-content: space-between;
+}
