@@ -43,11 +43,20 @@ export class Game {
       waypoint: passedWaypoint,
       time: time,
     };
+
     resultStore.pushResult(payload);
   }
 
   logShootingResult(resultStore, player, range, result) {
+    const payload = {
+      playerName: player.name,
+      playerNumber: player.number,
+      team: player.team,
+      range: range,
+      result: result,
+    };
 
+    resultStore.pushShootingResult(payload);
   }
 
   simulatePlayer() {
@@ -133,14 +142,28 @@ export class Game {
       return { ...acc, [name]: [...acc[name], { wpName: track.getWaypointName(result.waypoint), time: Utils.convertToMinutes(result.time / 1000) }] }
     }, {});
 
+    const rangeResults = results.shootingData.reduce((acc, result) => {
+      const name = result.playerName;
+      if (!acc[name]) {
+        acc[name] = [];
+      }
+
+      return { ...acc, [name]: [...acc[name], { range: result.range, result: result.result }] }
+    }, {});
+
     //html
     const htmlResults = Object.keys(playerResults).map(name => {
-
-      const res = playerResults[name].map(r => {
+      const resultItems = playerResults[name].map(r => {
         const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`
         return `<li class="result-list-item">${item}</li>`
-      })
-      const list = `<div>${name}<ul class="result-list">${res.join('')}</ul></div>`;
+      });
+      const rangeItems = rangeResults[name].map(r => {
+        const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`
+        return `<div>${item}</div>`
+      });
+
+      const list = `<div>${name}<ul class="result-list">${resultItems.join('')}</ul>${rangeItems.join('')}</div>`;
+
       return list;
     }).join('');
 

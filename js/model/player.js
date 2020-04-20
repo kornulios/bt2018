@@ -136,14 +136,14 @@ export class Player {
 		}
 
 		//uncomment after debugging
-		// this.rifle.aimTime = Utils.rand(6, 2) * 60;
-		this.rifle.aimTime = 3000;		// 3 - 5s
+		this.rifle.aimTime = Utils.rand(6, 3) * 600;
+		// this.rifle.aimTime = 3000;		// 3 - 5s
 
 		//uncomment after debugging
-		// if (Utils.rand(100, 0) < this.accuracy) {
-		// 	this.currentRange[this.shotCount] = 1; // HIT
-		// }
-		this.currentRange = [1, 1, 1, 1, 1];
+		if (Utils.rand(100, 0) < this.accuracy) {
+			this.currentRange[this.shotCount] = 1; // HIT
+		}
+		// this.currentRange = [1, 0, 0, 1, 1];
 
 		this.shotCount++;
 

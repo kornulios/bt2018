@@ -36,8 +36,14 @@ export class Result {
     this.data.push(resObj);
   }
 
-  pushShootingResult(player, range, result) {
-    this.shootingData.push({ name: player.name, number: player.number, range: range, result: result });
+  // pushShootingResult(player, range, result) {
+  //   this.shootingData.push({ name: player.name, number: player.number, range: range, result: result });
+  // }
+
+  pushShootingResult(resultData) {
+    var resObj = { ...resultData };
+
+    this.shootingData.push(resObj);
   }
 
   pushShootingResultRelay(range, playerName, teamName, result) {
