@@ -22,3 +22,10 @@ export const PENALTY_MINUTE = 100;
 
 export const BASE_SPEED_MOD = 0.05;
 
+export const PLAYER_STATUS = {
+  NOT_STARTED: 1,
+  RUNNING: 2,
+  SHOOTING: 3,
+  PENALTY: 4,
+  FINISHED: 5,
+};

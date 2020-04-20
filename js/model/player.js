@@ -1,5 +1,7 @@
 import { Utils } from '../utils/Utils.js';
 import * as Constants from '../constants/constants.js';
+import { PLAYER_STATUS } from '../constants/constants.js';
+
 
 export class Player {
 	constructor(args) {
@@ -18,23 +20,21 @@ export class Player {
 
 		//distance related
 		this.distance = 0;
-		// this._dp = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
 
 		//race related
-		this.status = 'Not run';
-		this.started = false;
-		this.finished = false;
-		this.running = false;
-		this.shooting = false;
+		this.status = PLAYER_STATUS.NOT_STARTED;
 		this.startTimer = args.startTimer;
+
+		//shooting related
 		this.rangeNum = 0;
 		this.currentRange = [];
 		this.rifle = {};
-		this.speedMod = 1;
+		this.shotCount = 0;
 
 		//AI related
+		this.speedMod = 1;
 		this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
 		this.state = Constants.PLAYER_RUN_STATUS.NORMAL;
 
@@ -101,87 +101,87 @@ export class Player {
 		this.distance += distancePassed;
 	}
 
+	runPenaltyLap(elapsedTime) {
+		const fps = elapsedTime;
+		const distancePassed = (this.currentSpeed / 3600) * fps;   // m/ms
+
+		this.penalty -= distancePassed;
+	}
+
 	enterShootingRange(range, relay) {
 		//enter range
-		var shootingStatus = true;
 		if (!this.shooting) {
 			this.rangeNum = range;
 			this.currentRange = [0, 0, 0, 0, 0];
 			this.nextTarget = 0;
-			this.shooting = true;
-			this.status = 'Range';
-			this.running = false;
+			this.shotCount = 0;
+
+			//load rifle
 			this.rifle = {
-				ammo: relay ? 8 : 5,
-				aimTime: 20 * 60
+				aimTime: 35000,			// 35 - 45s
 			}
-			return shootingStatus;
 		}
 	}
 
-	quitShootingRange() {
-		this.shooting = false;
-		this.running = true;
+	quitShootingRange(penaltyLaps) {
+		this.status = penaltyLaps ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
 		this.rifle = {};
 	}
 
 	shoot(elapsedTime, relay) {
-		var finishedShooting = false;
-		this.rifle.aimTime -= elapsedTime;	// !!!!!
+		this.rifle.aimTime -= elapsedTime;
 
 		if (this.rifle.aimTime > 0) {
 			return false;
 		}
 
-		this.status = 'Shooting';
-		this.rifle.ammo -= 1;
-		this.rifle.aimTime = Utils.rand(6, 2) * 60;
-		if (Utils.rand(100, 0) < this.accuracy) {
-			this.currentRange[this.nextTarget] = 1; /// GOOD!
-		}
+		//uncomment after debugging
+		// this.rifle.aimTime = Utils.rand(6, 2) * 60;
+		this.rifle.aimTime = 3000;		// 3 - 5s
 
-		if (relay && this.rifle.ammo <= 3 && this.currentRange.indexOf(0) > -1) {
-			this.nextTarget = this.currentRange.indexOf(0);
-		} else {
-			this.nextTarget++;
-		}
+		//uncomment after debugging
+		// if (Utils.rand(100, 0) < this.accuracy) {
+		// 	this.currentRange[this.shotCount] = 1; // HIT
+		// }
+		this.currentRange = [1, 1, 1, 1, 1];
 
-		//leaves range only if all targets are closed OR run out of ammo
-		if (this.currentRange.indexOf(0) === -1 || this.rifle.ammo < 1) finishedShooting = true;
+		this.shotCount++;
 
-		return { finishedShooting: finishedShooting, result: this.currentRange };
 	}
 
-	start() {
-		this.running = true;
-		this.started = true;
-		this.finished = false;
-		this.shooting = false;
-	}
+	//REFACTOR!
 
-	stop() {
-		this.running = false;
-		this.finished = true;
-		this.status = 'Finished';
-		this.currentSpeed = 0;
-	}
+	// start() {
+	// 	this.running = true;
+	// 	this.started = true;
+	// 	this.finished = false;
+	// 	this.shooting = false;
+	// }
+
+	// stop() {
+	// 	this.running = false;
+	// 	this.finished = true;
+	// 	this.status = 'Finished';
+	// 	this.currentSpeed = 0;
+	// }
 
 	reset() {
 		this.currentSpeed = this.baseSpeed;
-		this.fatigue = 100; ś
+		this.fatigue = 100;
 		this.distance = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
-		this.started = false;
-		this.finished = false;
-		this.running = false;
-		this.shooting = false;
+		// this.started = false;
+		// this.finished = false;
+		// this.running = false;
+		// this.shooting = false;
 		this.rangeNum = 0;
 		this.rifle = {};
 		this.state = CONSTANT.RUNSTATE.NORMAL;
-		this.status = 'Not run';
-		return this;
+		this.status = PLAYER_STATUS.NOT_STARTED;
 	}
+
+	// CHECK LATER
 
 	recalculateStatus() {
 		//FATIGUE
