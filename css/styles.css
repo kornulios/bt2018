@@ -5,6 +5,7 @@ body {
 .results {
   /* width: 380px; */
   display: flex;
+  flex-wrap: wrap;
 }
 
 .result-list {
@@ -17,4 +18,8 @@ body {
 .result-list-item {
   display: flex;
   justify-content: space-between;
+}
+
+.result-block {
+  margin-top: 20px
 }

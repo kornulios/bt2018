@@ -30,7 +30,7 @@ export class Game {
   createPlayers(number) {
     var res = [];
     for (var i = 1; i <= number; i++) {
-      res.push(new Player({ name: "Player " + i, number: i, speed: 19 + i }))
+      res.push(new Player({ name: "Player " + i, number: i, speed: 19 + (i / 10) }))
     }
     return res;
   }
@@ -61,7 +61,7 @@ export class Game {
 
   simulatePlayer() {
 
-    const players = this.createPlayers(5);
+    const players = this.createPlayers(10);
     const track = new Track();
     const results = new Result();
 
@@ -162,7 +162,7 @@ export class Game {
         return `<div>${item}</div>`
       });
 
-      const list = `<div>${name}<ul class="result-list">${resultItems.join('')}</ul>${rangeItems.join('')}</div>`;
+      const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join('')}</ul>${rangeItems.join('')}</div>`;
 
       return list;
     }).join('');
@@ -172,45 +172,45 @@ export class Game {
 
   // ********************************************************************
 
-  // OBSOLETE CODE for refactoring
+  // OBSOLETE GOWNO for refactoring
 
-  loadPlayers() {
-    //AJAX will go there 
-    // getData();
-    var teams = this.teams,
-      teamMemberCount = 8,
-      counter = 1,
-      players = [];
+  // loadPlayers() {
+  //   //AJAX will go there 
+  //   // getData();
+  //   var teams = this.teams,
+  //     teamMemberCount = 8,
+  //     counter = 1,
+  //     players = [];
 
-    for (var i = 0; i < teams.length; i++) {
-      for (var k = 0; k < teamMemberCount; k++) {
-        players.push(Player.create('Player ' + counter, teams[i], k < teamMemberCount / 2 ? 'men' : 'women'));
-        counter++;
-      }
-    }
-    return players;
-  }
+  //   for (var i = 0; i < teams.length; i++) {
+  //     for (var k = 0; k < teamMemberCount; k++) {
+  //       players.push(Player.create('Player ' + counter, teams[i], k < teamMemberCount / 2 ? 'men' : 'women'));
+  //       counter++;
+  //     }
+  //   }
+  //   return players;
+  // }
 
-  loadTeams() {
-    //mock for teams
-    const teamCount = 26;
-    const teams = [];
-    for (let i = 1; i <= teamCount; i++) {
-      teams.push(Team.create('Team ' + i, 'T' + i, '', [], 'Team ' + i + mockData.teamDesc));
-    }
-    return teams;
-  }
+  // loadTeams() {
+  //   //mock for teams
+  //   const teamCount = 26;
+  //   const teams = [];
+  //   for (let i = 1; i <= teamCount; i++) {
+  //     teams.push(Team.create('Team ' + i, 'T' + i, '', [], 'Team ' + i + mockData.teamDesc));
+  //   }
+  //   return teams;
+  // }
 
-  mainScreen() {
-    let me = this;
-    me.view.renderChampionshipView(me.championship);
-  }
+  // mainScreen() {
+  //   let me = this;
+  //   me.view.renderChampionshipView(me.championship);
+  // }
 
-  setResultView(viewNum) {
-    let me = this;
-    me.selectedResults = viewNum;
-    me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
-  }
+  // setResultView(viewNum) {
+  //   let me = this;
+  //   me.selectedResults = viewNum;
+  //   me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
+  // }
 
   startNewChampionship() {
     if (this.players.length > 0) {

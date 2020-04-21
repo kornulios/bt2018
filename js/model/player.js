@@ -136,14 +136,14 @@ export class Player {
 		}
 
 		//uncomment after debugging
-		this.rifle.aimTime = Utils.rand(6, 3) * 600;
-		// this.rifle.aimTime = 3000;		// 3 - 5s
+		// this.rifle.aimTime = Utils.rand(6, 3) * 600;
+		this.rifle.aimTime = 3000;		// 3 - 5s
 
 		//uncomment after debugging
-		if (Utils.rand(100, 0) < this.accuracy) {
-			this.currentRange[this.shotCount] = 1; // HIT
-		}
-		// this.currentRange = [1, 0, 0, 1, 1];
+		// if (Utils.rand(100, 0) < this.accuracy) {
+		// 	this.currentRange[this.shotCount] = 1; // HIT
+		// }
+		this.currentRange = [1, 0, 0, 1, 1];
 
 		this.shotCount++;
 
@@ -151,19 +151,6 @@ export class Player {
 
 	//REFACTOR!
 
-	// start() {
-	// 	this.running = true;
-	// 	this.started = true;
-	// 	this.finished = false;
-	// 	this.shooting = false;
-	// }
-
-	// stop() {
-	// 	this.running = false;
-	// 	this.finished = true;
-	// 	this.status = 'Finished';
-	// 	this.currentSpeed = 0;
-	// }
 
 	reset() {
 		this.currentSpeed = this.baseSpeed;
@@ -171,10 +158,7 @@ export class Player {
 		this.distance = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
-		// this.started = false;
-		// this.finished = false;
-		// this.running = false;
-		// this.shooting = false;
+		
 		this.rangeNum = 0;
 		this.rifle = {};
 		this.state = CONSTANT.RUNSTATE.NORMAL;
