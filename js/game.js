@@ -61,7 +61,7 @@ export class Game {
 
   simulatePlayer() {
 
-    const players = this.createPlayers(10);
+    const players = this.createPlayers(5);
     const track = new Track();
     const results = new Result();
 
@@ -112,7 +112,7 @@ export class Game {
             player.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
           }
 
-          if (player.distance >= track.length) player.status = PLAYER_STATUS.FINISHED;
+          if (player.distance >= track.trackLength) player.status = PLAYER_STATUS.FINISHED;
 
         }
 
@@ -125,7 +125,6 @@ export class Game {
     } while (!raceFinished)
 
     console.log('race finished', timer);
-
 
     this.renderResults(results, track);
   }
