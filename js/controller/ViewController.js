@@ -1,275 +1,67 @@
-// renders one player
-class View {
+import { Utils } from '../utils/Utils.js';
+
+export class View {
 	constructor() {
 		this.trackView = document.querySelector('#track-info');
 		this.mainView = document.querySelector('#main-view');
 		this.resultView = document.querySelector('#results-view');
 	}
 
-	renderScreen(screenDiv) {
-		//render 
-		this.clearMainView();
-		this.mainView.appendChild(screenDiv);
-	}
+	renderShortResults(results, track) {
+		const playerResults = results.data
+			.filter(res => res.waypoint === track.getFinishWaypoint())
+			.sort((t1, t2) => t1.time >= t2.time ? 1 : -1);
 
-	renderRaceView() {
-		var race = game.getCurrentRace(),
-			players = race.getPlayers(),
-			playerTeam = game.getPlayerTeam() || '',
-			raceName = race.getRaceName(),
-			raceStatus = race.getRaceStatus(),
-			raceTimer = Util.convertToMinutes(race.getRaceTime()),
-			raceResults = race.getResults(),
-			tpl = '';
-
-		tpl += `<div>${raceStatus} - ${raceName} Gametime: ${raceTimer}</div>`;
-		for (var p of players) {
-			var playerTeamCls = (playerTeam == p.team.name) ? 'player-team' : '',
-			shootingResult = raceResults.getShootingResult(p.name);
-
-			tpl += '<div class="row ' + playerTeamCls + '">';
-			tpl += this.drawCell(p.number || 0, 'player-number')
-				+ this.drawCell(p.name, 'player-name')
-				+ this.drawCell(p.team.shortName)
-				+ this.drawCell('(' + Util.convertToShootingString(shootingResult) + ')')
-				+ this.drawCell(p.baseSpeed)
-				+ this.drawCell(p.currentSpeed.toFixed(2))
-				+ this.drawCell(p.distance.toFixed(2));
-			tpl += '</div>';
-		}
-
-		return tpl;
-	}
-
-	renderDiv(text, cls) {      //not used, look for further implementation cases
-		let myDiv = document.createElement('div');
-		let newText = document.createTextNode(text);
-		myDiv.classList.add(cls);
-		myDiv.appendChild(newText);
-		return myDiv;
-	}
-
-	getResultsTpl(waypoint) {
-		var me = this,
-			race = game.championship.getLastRace(),  /// NO WAY!
-			playerTeam = game.getPlayerTeam(),
-			raceName = race.getRaceName(),
-			results = race.getFinishResult(),
-			displayWp = waypoint || race.track.waypointsNum() - 1,
-			tpl = '', place = 1;
-
-		if (race.status !== 'Finished') {
-			return '<div>No results available</div>';
-		}
-
-		tpl = `Standings at finish`;
-		tpl += `<div>${raceName}</div>`;
-		for (var r of results) {
-			var playerTeamCls = playerTeam == r.team.name ? 'player-team' : '';
-			tpl += '<div class="row ' + playerTeamCls + '">';
-			tpl += `<div style="width:30px;">${place}</div>`
-				+ me.drawCell(r.playerName, 'player-name')
-				+ me.drawCell(r.team.shortName)
-				+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')
-				+ me.drawCell(Util.convertToMinutes(r.time));
-			tpl += '</div>';
-			place++;
-		}
-		tpl = `<div>${tpl}</div>`;
-		return tpl;
-	}
-
-	getPlayerTeamControlsTpl() {
-		var playerTeam = game.getPlayerTeam(),
-			players = game.getCurrentRace().getPlayerTeamMembers(),
-			tpl = '<div>';
-
-		players.forEach(function(player) {
-			tpl += getControlTpl(player.getRaceStats());
+		const htmlResults = playerResults.map((result, i) => {
+			return `<div class="result-row"><span>${i + 1}</span> 
+			<span>${result.playerName}</span>
+			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
+			</div>`
 		});
 
-		function getControlTpl(p) {
-			var tpl = '<div class="player-control">';
-			tpl += `<ul><li>${p.number} ${p.name}</li>
-				<li>${p.status}</li>
-				<li>${p.distance}</li>
-				<li>Controls</li>
-				<li>SPD:${p.speed} STA:${p.stamina}</li>
-				</ul>`;
-			tpl += '</div>'
-			return tpl;
-		}
-
-		tpl += '</div>';
-		return tpl;
+		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
 	}
 
-	
+	renderResults(results, track) {
+		//results fetch
+		const playerResults = results.data.reduce((acc, result) => {
+			const name = result.playerName;
+			if (!acc[name]) {
+				acc[name] = [];
+			}
 
-	// renderResults(race, waypoint) { //should render sorted results per waypoint
-	// 	// debugger
-	// 	var me = this,
-	// 		raceName = race.getRaceName(),
-	// 		results = race.getFinishResult(),
-	// 		displayWp = waypoint || race.track.waypointsNum() - 1,
-	// 		tpl = "",
-	// 		place = 1;
+			return { ...acc, [name]: [...acc[name], { wpName: track.getWaypointName(result.waypoint), time: Utils.convertToMinutes(result.time / 1000) }] }
+		}, {});
 
-	// 	//render controls
-	// 	tpl = `Standings at ${displayWp}`;
-	// 	tpl += `<div>${raceName}</div>`;
-	// 	for (let r of results) {
-	// 		tpl += '<div class="row">';
-	// 		tpl += `<div style="width:30px;">${place}</div>`
-	// 			+ me.drawCell(r.playerName, 'player-name')
-	// 			+ me.drawCell(r.team)
-	// 			+ me.drawCell('(' + Util.convertToShootingString(r.shooting) + ')')
-	// 			+ me.drawCell(Util.convertToMinutes(r.time));
+		const rangeResults = results.shootingData.reduce((acc, result) => {
+			const name = result.playerName;
+			if (!acc[name]) {
+				acc[name] = [];
+			}
 
-	// 		tpl += '</div>';
-	// 		place++;
-	// 	}
-	// 	me.resultView.innerHTML = tpl;
-	// }
+			return { ...acc, [name]: [...acc[name], { range: result.range, result: result.result }] }
+		}, {});
 
-	renderTrackInfo(race) {
-		let tpl = '';
-		tpl = `<div>${race.getRaceName()}</div>`;
-		this.trackView.innerHTML = tpl;
-		for (let i = 0; i < race.track.waypoints.length; i++) {
-			let newLink = document.createElement('a');
-			newLink.classList.add('res-link');
-			newLink.innerHTML = race.track.waypoints[i].toFixed(0);
-			newLink.addEventListener('click', function () {
-				game.setResultView(i);
+		//html
+		const htmlResults = Object.keys(playerResults).map(name => {
+			const resultItems = playerResults[name].map(r => {
+				const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`
+				return `<li class="result-list-item">${item}</li>`
 			});
-			this.trackView.appendChild(newLink);
-		}
+			const rangeItems = rangeResults[name].map(r => {
+				const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`
+				return `<div>${item}</div>`
+			});
+
+			const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join('')}</ul>${rangeItems.join('')}</div>`;
+
+			return list;
+		}).join('');
+
+		document.querySelector('#run').innerHTML = `<div class="results">${htmlResults}</div>`;
 	}
 
-	getChampionshipTpl() {
-		//TODO screen with player stats and points
-		var me = this,
-			championship = game.getChampionship(),
-			players = championship.getChampionshipStandings(),
-			playerTeam = game.getPlayerTeam(),
-			viewGender = game.getViewGender();
-
-		var tpl = '';
-		tpl += '<div>Championship standings</div>';
-		tpl += me.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
-		for (let p of players) {
-			if (p.gender == viewGender) {
-				var playerTeamCls = playerTeam == p.team.name ? 'player-team' : '';
-				tpl += '<div class="row ' + playerTeamCls + '">';
-				tpl += this.drawCell(p.name, 'player-name');
-				tpl += this.drawCell(p.team.shortName);
-				tpl += this.drawCell(p.baseSpeed);
-				tpl += this.drawCell(p.accuracy);
-				tpl += this.drawCell(p.strength);
-				tpl += this.drawCell(p.points);
-				tpl += '</div>';
-			}
-		}
-
-		return tpl;
-	}
-
-	getRaceScheduleTpl() {
-		var raceNames = game.championship.getRacesSchedule(),
-			stageName = game.championship.getStageName(),
-			tpl = '';
-
-		tpl = '<div>';
-		tpl += `<h2>Stage: ${stageName}</h2>`;
-		raceNames.forEach(function (raceData) {
-			tpl += `<div>${raceData.name} ${raceData.status}</div>`
-		});
-		tpl += '</div>'
-
-		return tpl;
-	}
-
-	getMyTeamViewTpl(team) {
-		var team = team || game.getPlayerTeam(),
-			players = game.getPlayers();
-
-		var tpl = '';
-		tpl += this.drawRow(['Name', 'Team', 'SPD', 'ACC', 'STR', 'Points']);
-
-		for (var p of players) {
-			if (p.team.name == team) {
-				tpl += '<div class="row">';
-				tpl += this.drawCell(p.name, 'player-name');
-				tpl += this.drawCell(p.team.shortName);
-				tpl += this.drawCell(p.baseSpeed);
-				tpl += this.drawCell(p.accuracy);
-				tpl += this.drawCell(p.strength);
-				tpl += this.drawCell(p.points);
-				tpl += '</div>';
-			}
-		}
-
-		return tpl;
-	}
-
-	getTeamViewTpl(team) {
-		var teamDiv = document.createElement('button');
-
-		teamDiv.classList.add('team-button');
-		teamDiv.innerHTML = team.name;
-
-		return teamDiv
-	}
-
-	selectTeamDetails(team) {
-		var teamDiv = document.getElementById('select-team-view'),
-			tplDiv = document.getElementById('team-description-view') || document.createElement('div'),
-			tpl = '';
-
-		tplDiv.id = 'team-description-view';
-
-		tpl += `<h4>${team.name}</h4>`;
-		tpl += `<div>${team.description}</div>`;
-		tpl += `<h4>Team members:</h4>`;
-		tpl += this.getMyTeamViewTpl(team.name);
-
-		tplDiv.innerHTML = tpl;
-		teamDiv.appendChild(tplDiv);
-	}
-
-	clearMainView() {
-		this.mainView.innerHTML = "";
-		this.resultView.innerHTML = "";
-	}
-
-	// showRunScreen() {
-	// 	document.getElementById('run-btn').classList.remove('hidden');
-	// 	document.getElementById('next-btn').classList.add('hidden');
-	// }
-
-	showFinishScreen() {
-		document.getElementById('finish-btn').classList.remove('hidden');
-		document.getElementById('run-btn').classList.add('hidden');
-	}
-
-	drawCell(text, cls) {
-		return (cls) ? `<div class=${cls}>${text}</div>` : `<div>${text}</div>`;
-	}
-
-	drawRow(args, cls) {
-		// cls - pass a string of classes
-		let tpl = '';
-		tpl += cls ? '<div class="row ' + cls + '">' : '<div class="row">';
-
-		for (let a of args) {
-			tpl += this.drawCell(a);
-		}
-
-		tpl += '</div>';
-		return tpl;
-	}
-
+	// for future race draw
 	drawOnCanvas() {
 		let myCanvas = document.querySelector('#main-canvas');
 		let context = myCanvas.getContext("2d");

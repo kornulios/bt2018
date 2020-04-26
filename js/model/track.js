@@ -52,6 +52,10 @@ export class Track {
 
   }
 
+  getFinishWaypoint() {
+    return this.waypoints.length - 1;
+  }
+
   // setupShootinRanges() {
   //   var resWp = [];
   //   for (let i = 1; i < this.laps; i++) {

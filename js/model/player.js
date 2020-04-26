@@ -6,7 +6,7 @@ import { PLAYER_STATUS } from '../constants/constants.js';
 export class Player {
 	constructor(args) {
 		//base stats
-		this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2500, 1900) / 100; // km/h
+		this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2600, 1800) / 100; // km/h
 		this.name = args.name || 'Player';
 		this.team = args.team || 'Team 1';
 		this.gender = args.gender || 'male';
@@ -136,14 +136,14 @@ export class Player {
 		}
 
 		//uncomment after debugging
-		// this.rifle.aimTime = Utils.rand(6, 3) * 600;
-		this.rifle.aimTime = 3000;		// 3 - 5s
+		this.rifle.aimTime = Utils.rand(6, 3) * 600;
+		// this.rifle.aimTime = 3000;		// 3 - 5s
 
 		//uncomment after debugging
-		// if (Utils.rand(100, 0) < this.accuracy) {
-		// 	this.currentRange[this.shotCount] = 1; // HIT
-		// }
-		this.currentRange = [1, 0, 0, 1, 1];
+		if (Utils.rand(100, 0) < this.accuracy) {
+			this.currentRange[this.shotCount] = 1; // HIT
+		}
+		// this.currentRange = [1, 0, 0, 1, 1];
 
 		this.shotCount++;
 
@@ -158,7 +158,7 @@ export class Player {
 		this.distance = 0;
 		this.penalty = 0;
 		this.penaltyTime = 0;
-		
+
 		this.rangeNum = 0;
 		this.rifle = {};
 		this.state = CONSTANT.RUNSTATE.NORMAL;

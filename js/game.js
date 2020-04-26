@@ -5,6 +5,7 @@ import { Track } from './model/track.js';
 import { Result } from './model/result.js';
 
 import * as Constants from './constants/constants.js';
+import { View } from './controller/ViewController.js';
 
 export class Game {
   constructor() {
@@ -61,7 +62,8 @@ export class Game {
 
   simulatePlayer() {
 
-    const players = this.createPlayers(5);
+    const players = [];
+    const playerCount = 109;
     const track = new Track();
     const results = new Result();
 
@@ -71,14 +73,25 @@ export class Game {
 
     const { PLAYER_STATUS } = Constants;
 
+    for (var i = 1; i <= playerCount; i++) {
+      players.push(new Player({
+        name: "Player " + i,
+        number: i,
+        // speed: 19 + (i / 10),
+        startTimer: (i - 1) * 30000
+      }));
+    }
+
     do {
 
       for (let i = 0; i < players.length; i++) {
         const player = players[i];
 
-        if (player.status === PLAYER_STATUS.NOT_STARTED) player.status = PLAYER_STATUS.RUNNING;
-
         if (player.status !== PLAYER_STATUS.FINISHED) {
+
+          if (player.status === PLAYER_STATUS.NOT_STARTED && timer >= player.startTimer) {
+            player.status = PLAYER_STATUS.RUNNING;
+          };
 
           if (player.status === PLAYER_STATUS.RUNNING) {
             const playerPrevDistance = player.distance;
@@ -88,7 +101,7 @@ export class Game {
             const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
             if (passedWaypoint) {
-              this.logPlayerResult(results, player, passedWaypoint, timer);
+              this.logPlayerResult(results, player, passedWaypoint, timer + player.penaltyTime - player.startTimer);
             }
 
             if (passedRange) {
@@ -103,13 +116,9 @@ export class Game {
               this.logShootingResult(results, player, player.rangeNum, player.currentRange);
               const penaltyCount = player.currentRange.filter(r => r === 0).length;
 
-              player.penalty = penaltyCount * track.penaltyLapLength;
-              player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+              player.penaltyTime += penaltyCount * 60000;
+              player.status = PLAYER_STATUS.RUNNING;
             }
-          }
-          else if (player.status === PLAYER_STATUS.PENALTY) {
-            player.runPenaltyLap(frameRate);
-            player.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
           }
 
           if (player.distance >= track.trackLength) player.status = PLAYER_STATUS.FINISHED;
@@ -126,48 +135,14 @@ export class Game {
 
     console.log('race finished', timer);
 
-    this.renderResults(results, track);
+    const view = new View();
+    view.renderShortResults(results, track);
   }
 
 
-  renderResults(results, track) {
-    //results fetch
-    const playerResults = results.data.reduce((acc, result) => {
-      const name = result.playerName;
-      if (!acc[name]) {
-        acc[name] = [];
-      }
 
-      return { ...acc, [name]: [...acc[name], { wpName: track.getWaypointName(result.waypoint), time: Utils.convertToMinutes(result.time / 1000) }] }
-    }, {});
 
-    const rangeResults = results.shootingData.reduce((acc, result) => {
-      const name = result.playerName;
-      if (!acc[name]) {
-        acc[name] = [];
-      }
 
-      return { ...acc, [name]: [...acc[name], { range: result.range, result: result.result }] }
-    }, {});
-
-    //html
-    const htmlResults = Object.keys(playerResults).map(name => {
-      const resultItems = playerResults[name].map(r => {
-        const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`
-        return `<li class="result-list-item">${item}</li>`
-      });
-      const rangeItems = rangeResults[name].map(r => {
-        const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`
-        return `<div>${item}</div>`
-      });
-
-      const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join('')}</ul>${rangeItems.join('')}</div>`;
-
-      return list;
-    }).join('');
-
-    document.querySelector('#run').innerHTML = `<div class="results">${htmlResults}</div>`;
-  }
 
   // ********************************************************************
 

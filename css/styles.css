@@ -23,3 +23,9 @@ body {
 .result-block {
   margin-top: 20px
 }
+
+.result-row {
+  display: flex;
+  width: 280px;
+  justify-content: space-between;
+}
