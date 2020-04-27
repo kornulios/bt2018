@@ -63,7 +63,7 @@ export class Game {
   simulatePlayer() {
 
     const players = [];
-    const playerCount = 109;
+    const playerCount = 1;
     const track = new Track();
     const results = new Result();
 

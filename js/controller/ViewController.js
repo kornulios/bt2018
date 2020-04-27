@@ -8,13 +8,31 @@ export class View {
 	}
 
 	renderShortResults(results, track) {
+
 		const playerResults = results.data
 			.filter(res => res.waypoint === track.getFinishWaypoint())
 			.sort((t1, t2) => t1.time >= t2.time ? 1 : -1);
+		// .map(res => {
+		// 	const shootingTotal = results.shootingData.filter(r => r.playerName === res.playerName).reduce((acc, range) => {acc += range}, 0);
+		// 	res.shootingTotal = shootingTotal;
+		// 	return res;
+		// });
+
+		const rangeResult = results.shootingData.reduce((acc, result) => {
+			const name = result.playerName;
+			if (!acc[name]) {
+				acc[name] = 0;
+			}
+
+			const shootingTotal = result.result.filter(q => q === 0).length;
+
+			return { ...acc, [name]: acc[name] + shootingTotal }
+		}, {});
 
 		const htmlResults = playerResults.map((result, i) => {
 			return `<div class="result-row"><span>${i + 1}</span> 
 			<span>${result.playerName}</span>
+			<span>${rangeResult[result.playerName]}</span>
 			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
 			</div>`
 		});
