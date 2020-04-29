@@ -25,18 +25,51 @@ export class View {
 	}
 
 	renderRelayResults(results, track) {
-		const teamResults = results.data
-			.filter(res => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
 
-		const htmlResults = teamResults.map((result, i) => {
+		const teamTotalResults = results.data
+			.filter(res => res.waypoint === track.getFinishWaypoint() && res.leg === 4)
+			.reduce((acc, result) => {
+				const teamName = result.team;
+				if (!acc[teamName]) acc[teamName] = [];
+
+				return { ...acc, [teamName]: result.time };
+			}, {});
+
+		const teamPlayerResults = results.data
+			.filter(res => res.waypoint === track.getFinishWaypoint())
+			.reduce((acc, result) => {
+				const teamName = result.team;
+				if (!acc[teamName]) acc[teamName] = [];
+
+				return {
+					...acc,
+					[teamName]:
+						[...acc[teamName], { playerName: result.playerName, time: result.time, leg: result.leg }]
+				};
+			}, {});
+
+		// console.log(teamTotalResults);
+		// console.log(teamPlayerResults);
+		const htmlResults = Object.keys(teamTotalResults).map(teamName => {
+			const playerItems = teamPlayerResults[teamName].map(player => {
+				return `<div><span>${player.playerName}</span> <span>${Utils.convertToMinutes(player.time / 1000)}</span></div>`
+			});
+
 			const item = `<div>
-			<span>${i + 1}</span>
-			<span>${result.team}</span>
-			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
+				<span>${teamName}</span>
+				<span>${Utils.convertToMinutes(teamTotalResults[teamName] / 1000)}</span>
+				<div class="relay-player-items">${playerItems.join('')}</div>
 			</div>`;
 
 			return item;
+
 		});
+
+		// const htmlResults = teamResults.map((result, i) => {
+
+
+		// 	return item;
+		// });
 
 		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
 	}
@@ -47,11 +80,6 @@ export class View {
 		const playerResults = results.data
 			.filter(res => res.waypoint === track.getFinishWaypoint())
 			.sort((t1, t2) => t1.time >= t2.time ? 1 : -1);
-		// .map(res => {
-		// 	const shootingTotal = results.shootingData.filter(r => r.playerName === res.playerName).reduce((acc, range) => {acc += range}, 0);
-		// 	res.shootingTotal = shootingTotal;
-		// 	return res;
-		// });
 
 		const rangeResult = results.shootingData.reduce((acc, result) => {
 			const name = result.playerName;

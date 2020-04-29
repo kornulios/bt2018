@@ -29,3 +29,8 @@ body {
   width: 280px;
   justify-content: space-between;
 }
+
+.relay-player-items {
+  padding-left: 10px;
+  font-size: 0.85rem;
+}
