@@ -63,7 +63,7 @@ export class Game {
   simulatePlayer() {
 
     const players = [];
-    const playerCount = 1;
+    const playerCount = 60;
     const track = new Track();
     const results = new Result();
 
@@ -77,8 +77,9 @@ export class Game {
       players.push(new Player({
         name: "Player " + i,
         number: i,
-        // speed: 19 + (i / 10),
-        startTimer: (i - 1) * 30000
+        speed: 21,
+        startTimer: (i - 1) * 30000,
+        accuracy: 99,
       }));
     }
 
