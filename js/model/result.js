@@ -25,11 +25,12 @@ export class Result {
     this.data.push(resObj);
   }
 
-  pushRelayResult(wp, number, playerName, teamName, time) {
+  pushRelayResult(wp, number, playerName, teamName, time, leg) {
     var resObj = {
       waypoint: wp,
       playerName: playerName,
       number: number,
+      leg: leg,
       team: teamName,
       time: time,
     };
@@ -46,12 +47,13 @@ export class Result {
     this.shootingData.push(resObj);
   }
 
-  pushShootingResultRelay(range, playerName, teamName, result) {
+  pushShootingResultRelay(range, playerName, teamName, result, ammo) {
     this.shootingData.push({
       range: range,
       name: playerName,
       team: teamName,
       result: result,
+      ammo: ammo,
     });
   }
 

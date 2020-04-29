@@ -6,16 +6,19 @@ export const Utils = {
 	},
 
 	convertToMinutes: function (time) {
-		var minutes = Math.floor(time / 60),
-			seconds = time - minutes * 60,
-			forwardZero = (seconds < 10 && minutes > 0) ? '0' : '',
-			millis = seconds.toFixed(1).split('.')[1],
-			timeStr = "";
+		const hours = Math.floor(time / 3600);
+		const minutes = Math.floor(time / 60);
+		const seconds = time - minutes * 60;
+
+		const forwardZero = (seconds < 10 && minutes > 0) ? '0' : '';
+		const millis = seconds.toFixed(1).split('.')[1];
+		let timeStr = "";
 
 		//apply formatting
-		seconds = forwardZero + Math.floor(seconds);
-		minutes = (minutes > 0) ? minutes + ':' : '';
-		timeStr = minutes + seconds + '.' + millis;
+		const secondsStr = forwardZero + Math.floor(seconds);
+		const minutesStr = (minutes > 0) ? (minutes - hours * 60) + ':' : '';
+		const hoursStr = hours > 0 ? hours + ':' : '';
+		timeStr = hoursStr + minutesStr + secondsStr + '.' + millis;
 
 		return timeStr;
 	},

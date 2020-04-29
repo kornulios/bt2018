@@ -7,6 +7,41 @@ export class View {
 		this.resultView = document.querySelector('#results-view');
 	}
 
+	renderShortRelayResults(results, track) {
+		const teamResults = results.data
+			.filter(res => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
+
+		const htmlResults = teamResults.map((result, i) => {
+			const item = `<div>
+			<span>${i + 1}</span>
+			<span>${result.team}</span>
+			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
+			</div>`;
+
+			return item;
+		});
+
+		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
+	}
+
+	renderRelayResults(results, track) {
+		const teamResults = results.data
+			.filter(res => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
+
+		const htmlResults = teamResults.map((result, i) => {
+			const item = `<div>
+			<span>${i + 1}</span>
+			<span>${result.team}</span>
+			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
+			</div>`;
+
+			return item;
+		});
+
+		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
+	}
+
+
 	renderShortResults(results, track) {
 
 		const playerResults = results.data
@@ -30,6 +65,7 @@ export class View {
 		}, {});
 
 		const htmlResults = playerResults.map((result, i) => {
+
 			return `<div class="result-row"><span>${i + 1}</span> 
 			<span>${result.playerName}</span>
 			<span>${rangeResult[result.playerName]}</span>
@@ -63,11 +99,13 @@ export class View {
 		//html
 		const htmlResults = Object.keys(playerResults).map(name => {
 			const resultItems = playerResults[name].map(r => {
-				const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`
+				const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`;
+
 				return `<li class="result-list-item">${item}</li>`
 			});
 			const rangeItems = rangeResults[name].map(r => {
-				const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`
+				const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`;
+
 				return `<div>${item}</div>`
 			});
 

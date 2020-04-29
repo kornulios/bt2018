@@ -66,6 +66,7 @@ export class Game {
     const playerCount = 60;
     const track = new Track();
     const results = new Result();
+    const teams = [];
 
     let raceFinished = false;
     let timer = 0;
@@ -73,28 +74,39 @@ export class Game {
 
     const { PLAYER_STATUS } = Constants;
 
-    for (var i = 1; i <= playerCount; i++) {
-      players.push(new Player({
-        name: "Player " + i,
-        number: i,
-        speed: 21,
-        startTimer: (i - 1) * 30000,
-        accuracy: 99,
-      }));
+    for (var t = 0; t < 2; t++) {
+      teams[t] = {};
+      teams[t].players = [];
+      teams[t].leg = 0;
+      teams[t].name = 'Team ' + (t + 1);
+      teams[t].status = PLAYER_STATUS.NOT_STARTED;
+
+      for (var i = 1; i <= 4; i++) {
+        teams[t].players.push(new Player({
+          name: "Player " + (t + 1) + "-" + i,
+          team: teams[t].name,
+          number: (t + 1) + ' ' + i,
+          speed: 21,
+          // startTimer: (i - 1) * 30000,
+          // accuracy: 20,
+        }));
+      }
     }
 
     do {
 
-      for (let i = 0; i < players.length; i++) {
-        const player = players[i];
+      for (let i = 0; i < teams.length; i++) {
+        const team = teams[i];
 
-        if (player.status !== PLAYER_STATUS.FINISHED) {
+        if (team.status !== PLAYER_STATUS.FINISHED) {
 
-          if (player.status === PLAYER_STATUS.NOT_STARTED && timer >= player.startTimer) {
-            player.status = PLAYER_STATUS.RUNNING;
+          if (team.status === PLAYER_STATUS.NOT_STARTED) {
+            team.status = PLAYER_STATUS.RUNNING;
           };
 
-          if (player.status === PLAYER_STATUS.RUNNING) {
+          const player = team.players[team.leg];
+
+          if (team.status === PLAYER_STATUS.RUNNING) {
             const playerPrevDistance = player.distance;
             player.run(1);
 
@@ -102,33 +114,47 @@ export class Game {
             const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
             if (passedWaypoint) {
-              this.logPlayerResult(results, player, passedWaypoint, timer + player.penaltyTime - player.startTimer);
+              // this.logPlayerResult(results, player, passedWaypoint, timer + player.penaltyTime - player.startTimer);
+              results.pushRelayResult(passedWaypoint, player.number, player.name, team.name, timer, team.leg + 1);
             }
 
             if (passedRange) {
-              player.status = PLAYER_STATUS.SHOOTING;
+              team.status = PLAYER_STATUS.SHOOTING;
               player.enterShootingRange(passedRange);
             }
           }
-          else if (player.status === PLAYER_STATUS.SHOOTING) {
+          else if (team.status === PLAYER_STATUS.SHOOTING) {
             player.shoot(frameRate);
 
-            if (player.shotCount === 5) {
-              this.logShootingResult(results, player, player.rangeNum, player.currentRange);
+            if (player.shotCount === 8 || player.currentRange.indexOf(0) === -1) {
+              results.pushShootingResultRelay(player.rangeNum, player.name, team.name, player.currentRange, player.shotCount - 5);
               const penaltyCount = player.currentRange.filter(r => r === 0).length;
 
-              player.penaltyTime += penaltyCount * 60000;
-              player.status = PLAYER_STATUS.RUNNING;
+              player.penalty = penaltyCount * track.penaltyLapLength;
+              team.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
             }
           }
+          else if (team.status === PLAYER_STATUS.PENALTY) {
+            player.runPenaltyLap(frameRate);
+            team.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+          }
 
-          if (player.distance >= track.trackLength) player.status = PLAYER_STATUS.FINISHED;
+
+          if (player.distance >= track.getTrackLength()) {
+            // replace leg
+            console.log(team.name + ' switching leg to ' + (team.leg + 1));
+            if (team.leg >= 3) {
+              team.status = PLAYER_STATUS.FINISHED;
+            } else {
+              team.leg++;
+            }
+          };
 
         }
 
       }
 
-      raceFinished = players.every(player => player.status === PLAYER_STATUS.FINISHED);
+      raceFinished = teams.every(t => t.status === PLAYER_STATUS.FINISHED);
 
       timer += frameRate;
 
@@ -137,7 +163,7 @@ export class Game {
     console.log('race finished', timer);
 
     const view = new View();
-    view.renderShortResults(results, track);
+    view.renderRelayResults(results, track);
   }
 
 

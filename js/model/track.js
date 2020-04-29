@@ -11,25 +11,30 @@ export class Track {
     // this.type = data.type;
     // this.laps = data.laps;
 
+    //sprint
     // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500]
     // this.shootingRange = [0, 2450, 4950];
 
+    //indi
+    // this.waypoints =
+    //   [0,
+    //     1500, 2300, 2950, 3000,
+    //     4500, 5300, 5950, 6000,
+    //     7500, 8300, 8950, 9000,
+    //     10500, 11300, 11950, 12000,
+    //     13500, 14300, 15000
+    //   ]
 
-    this.waypoints =
-      [0,
-        1500, 2300, 2950, 3000,
-        4500, 5300, 5950, 6000,
-        7500, 8300, 8950, 9000,
-        10500, 11300, 11950, 12000,
-        13500, 14300, 15000
-      ]
+    // this.shootingRange = [0, 2950, 5950, 8950, 11950];
 
-    this.shootingRange = [0, 2950, 5950, 8950, 11950];
+    //relay
+    this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500];
+    this.shootingRange = [0, 2450, 4950];
 
   }
 
   getTrackLength() {
-    return this.trackLength;
+    return this.waypoints[this.waypoints.length - 1];
   }
 
   getLapLength() {
