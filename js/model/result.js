@@ -52,7 +52,7 @@ export class Result {
       range: range,
       name: playerName,
       team: teamName,
-      result: result,
+      result: result.filter(r => r === 0).length,
       ammo: ammo,
     });
   }

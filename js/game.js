@@ -74,7 +74,7 @@ export class Game {
 
     const { PLAYER_STATUS } = Constants;
 
-    for (var t = 0; t < 2; t++) {
+    for (var t = 0; t < 27; t++) {
       teams[t] = {};
       teams[t].players = [];
       teams[t].leg = 0;
@@ -86,8 +86,7 @@ export class Game {
           name: "Player " + (t + 1) + "-" + i,
           team: teams[t].name,
           number: (t + 1) + ' ' + i,
-          speed: 21,
-          // startTimer: (i - 1) * 30000,
+          // speed: 21,
           // accuracy: 20,
         }));
       }
@@ -114,7 +113,6 @@ export class Game {
             const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
             if (passedWaypoint) {
-              // this.logPlayerResult(results, player, passedWaypoint, timer + player.penaltyTime - player.startTimer);
               results.pushRelayResult(passedWaypoint, player.number, player.name, team.name, timer, team.leg + 1);
             }
 

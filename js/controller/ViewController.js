@@ -35,6 +35,14 @@ export class View {
 				return { ...acc, [teamName]: result.time };
 			}, {});
 
+		const teamTotalShooting = results.shootingData
+			.reduce((acc, result) => {
+				const teamName = result.team;
+				if (!acc[teamName]) acc[teamName] = { misses: 0, ammo: 0 };
+
+				return { ...acc, [teamName]: { misses: acc[teamName].misses + result.result, ammo: acc[teamName].ammo + result.ammo } }
+			}, {});
+
 		const teamPlayerResults = results.data
 			.filter(res => res.waypoint === track.getFinishWaypoint())
 			.reduce((acc, result) => {
@@ -48,8 +56,6 @@ export class View {
 				};
 			}, {});
 
-		// console.log(teamTotalResults);
-		// console.log(teamPlayerResults);
 		const htmlResults = Object.keys(teamTotalResults).map(teamName => {
 			const playerItems = teamPlayerResults[teamName].map(player => {
 				return `<div><span>${player.playerName}</span> <span>${Utils.convertToMinutes(player.time / 1000)}</span></div>`
@@ -57,6 +63,7 @@ export class View {
 
 			const item = `<div>
 				<span>${teamName}</span>
+				<span>${teamTotalShooting[teamName].misses}+${teamTotalShooting[teamName].ammo}</span>
 				<span>${Utils.convertToMinutes(teamTotalResults[teamName] / 1000)}</span>
 				<div class="relay-player-items">${playerItems.join('')}</div>
 			</div>`;
@@ -64,12 +71,6 @@ export class View {
 			return item;
 
 		});
-
-		// const htmlResults = teamResults.map((result, i) => {
-
-
-		// 	return item;
-		// });
 
 		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
 	}
