@@ -36,3 +36,21 @@ li.fail:before {
   padding-right: 5px;
 }
 
+.test-passed:before {
+  content: "\2713";
+  padding-right: 5px;
+}
+
+.test-failed:before {
+  content: "\2717";
+  padding-right: 5px;
+}
+
+.test-passed {
+  color: green;
+}
+
+.test-failed {
+  color: red;
+
+}

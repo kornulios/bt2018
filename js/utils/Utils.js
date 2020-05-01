@@ -5,19 +5,24 @@ export const Utils = {
 		return Math.floor(Math.random() * (max - min) + min);
 	},
 
-	convertToMinutes: function (time) {
+	convertToMinutes: (time) => {
 		const hours = Math.floor(time / 3600);
-		const minutes = Math.floor(time / 60);
-		const seconds = time - minutes * 60;
+		const minutes = Math.floor(time / 60) - hours * 60;
+		const seconds = time - Math.floor(time / 60) * 60;
 
-		const forwardZero = (seconds < 10 && minutes > 0) ? '0' : '';
+		const forwardZero = (seconds < 10 && (minutes > 0 || hours > 0)) ? '0' : '';
 		const millis = seconds.toFixed(1).split('.')[1];
 		let timeStr = "";
 
 		//apply formatting
 		const secondsStr = forwardZero + Math.floor(seconds);
-		const minutesStr = (minutes > 0) ? (minutes - hours * 60) + ':' : '';
+		const minutesStr = hours > 0 ?
+			(minutes < 10) ? `0${minutes}:` : `${minutes}:`
+			: (minutes > 0) ? `${minutes}:` : '';
+
 		const hoursStr = hours > 0 ? hours + ':' : '';
+
+
 		timeStr = hoursStr + minutesStr + secondsStr + '.' + millis;
 
 		return timeStr;

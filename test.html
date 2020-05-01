@@ -1,43 +1,24 @@
 <html>
 
 <head>
-  <script src="./node_modules/axios/dist/axios.js"></script>
-  <script src="js/ViewController.js"></script>
-  <script src='js/Util.js'></script>
-  <script src="js/view/start.js"></script>
-	<script src="js/view/select.js"></script>
-	<script src="js/view/championship.js"></script>
-	<script src="js/view/team.js"></script>
-	<script src="js/view/raceScreen.js"></script>
-	<script src="js/view/results.js"></script>
-	
-	<script src="js/data.js"></script>
-	<script src="js/result.js"></script>
-	<script src="js/track.js"></script>
-	<script src="js/player.js"></script>
-	<script src="js/race.js"></script>
-	<script src="js/relay.js"></script>
-	<script src="js/championship.js"></script>
-	<script src="js/game.js"></script>
-
-  <script src="js/test/game.t.js"></script>
-  <script src="js/test/test.js"></script>
+  <script type="module" src="js/test/utils.t.js"></script>
 
   <link rel="stylesheet" href="js/test/style.t.css">
 
 </head>
 
 <body>
-  <script>
-    document.addEventListener('DOMContentLoaded', function (e) {
+  <!-- <script>
+    // document.addEventListener('DOMContentLoaded', function (e) {
 
-    });
+    // });
 
-  </script>
+  </script> -->
   <div class='gray-back'>
     <h3 style="color:white; padding:5px;">BT2018 testing suite</h3>
   </div>
-  <div>
+  <div id="main-test">
+    Utils module unit tests
     <ul id="test-results"></ul>
   </div>
 
