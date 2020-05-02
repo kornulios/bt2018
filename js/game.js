@@ -9,6 +9,7 @@ import { RelayRace } from './controller/RelayRace.js';
 
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
+import { Graphic2D } from './view/Graphic2D.js';
 
 let oldTimeStamp = 0;
 
@@ -20,9 +21,9 @@ export class Game {
     this.gameRunning = false;
 
     // this.view = new View();
-    this.championship = Object.create(null);
+    // this.championship = Object.create(null);
 
-    this.raceMap = gameData.stageData;
+    // this.raceMap = gameData.stageData;
 
     // this.teams = this.loadTeams();
     // this.players = this.loadPlayers();
@@ -34,6 +35,8 @@ export class Game {
 
     this.race = new SprintRace();
     this.view = new View();
+
+    this.canvas = new Graphic2D();
 
     this.stopTimer = null;
   }
@@ -47,8 +50,8 @@ export class Game {
   }
 
   runGame(timeStamp) {       //refactored with rAF X2
+    const gameSpeed = 50;
 
-    const gameSpeed = 10;
     const gameTick = timeStamp - oldTimeStamp;
 
     //update timer
@@ -58,19 +61,46 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //RENDER
-    this.view.renderProgress(this.race);
+    this.canvas.drawMapBeta(this.getPlayerCoords(this.race.players));
+    // this.view.renderProgress(this.race);
+
 
     this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
 
     if (this.race.raceFinished) {
       window.cancelAnimationFrame(this.stopTimer);
       console.log('race finished', timeStamp);
+      this.view.renderShortResults(this.race.results, this.race.track);
     }
   }
 
+  getPlayerCoords(players) {
+    const pixelRatio = 15;
+    const coords = players.map(player => {
+      if (player.status !== Constants.PLAYER_STATUS.NOT_STARTED) {
+        return {
+          name: player.name,
+          number: player.number,
+          x: 50 + (player.distance / pixelRatio),
+          y: 50,
+        }
+      } else {
+        return false;
+      }
+    });
+    return coords;
+  }
+
   simulatePlayer() {
+    oldTimeStamp = performance.now();
+    this.canvas.drawMapBeta(this.getPlayerCoords(this.race.players));
+    // this.view.renderProgress(this.race);
 
     window.requestAnimationFrame(this.runGame.bind(this));
+
+    // const canvas = new Graphic2D();
+    // canvas.drawMapBeta();
+
     // const tNow = Date.now();
 
     // const race = new SprintRace();
