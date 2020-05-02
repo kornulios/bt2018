@@ -1,23 +1,62 @@
 //Game controller
+import { View } from './ViewController.js';
+import { Track } from '../model/track.js';
+import { Result } from '../model/result.js';
 
 export class Race {
-	constructor(stageName, raceConfig, gender) {					// refactor with object for arguments
-		this.stageName = stageName;
-		this.track = new Track(raceConfig, gender);
-		this.players = [];
-		this.raceGender = gender;
-		this.results = new Results(this);
-		this.gameTimer = 0;
-		this.status = 'Not started';
-		this.raceType = raceConfig.type;
-		this.startType = raceConfig.startType;
-		this.penaltyType = raceConfig.penaltyType;
+	// constructor(stageName, raceConfig, gender) {					// refactor with object for arguments
+	// this.stageName = stageName;
+	// this.track = new Track(raceConfig, gender);
+	// this.players = [];
+	// this.raceGender = gender;
+	// this.results = new Results(this);
+	// this.gameTimer = 0;
+	// this.status = 'Not started';
+	// this.raceType = raceConfig.type;
+	// this.startType = raceConfig.startType;
+	// this.penaltyType = raceConfig.penaltyType;
 
-		//misc data
+	//misc data
 
-		//should be removed on refactor
-		this.name = this.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
-		// this.name = raceConfig.stageName;
+	//should be removed on refactor
+	// this.name = this.stageName + ' ' + this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
+	// this.name = raceConfig.stageName;
+	// }
+
+	constructor() {
+		this.track = new Track();
+		this.results = new Result();
+		
+	}
+
+	renderResults(results, track) {
+		const view = new View();
+		view.renderResults(results, track);
+	}
+
+
+	logPlayerResult(resultStore, player, passedWaypoint, time) {
+		const payload = {
+			playerName: player.name,
+			playerNumber: player.number,
+			team: player.team,
+			waypoint: passedWaypoint,
+			time: time,
+		};
+
+		resultStore.pushResult(payload);
+	}
+
+	logShootingResult(resultStore, player, range, result) {
+		const payload = {
+			playerName: player.name,
+			playerNumber: player.number,
+			team: player.team,
+			range: range,
+			result: result,
+		};
+
+		resultStore.pushShootingResult(payload);
 	}
 
 	get fullName() {
@@ -28,11 +67,6 @@ export class Race {
 		return this.raceType + ' ' + this.track.getTrackLengthKm() + 'km' + ' ' + this.raceGender;
 	}
 
-	initRoster(roster) {
-		for (let p of roster) {
-			this.players.push(p);
-		}
-	}
 
 	getFinishResult() {
 		return this.results.getWaypointResults(this.track.waypointsNum() - 1);
@@ -55,8 +89,9 @@ export class Race {
 	}
 
 	getResults() {
-		const results = { ...this.results }
-		return JSON.parse(JSON.stringify(results));
+		// const results = { ...this.results }
+		// return JSON.parse(JSON.stringify(results));
+		return this.results;
 	}
 
 	getRaceName() {
