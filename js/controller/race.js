@@ -27,6 +27,9 @@ export class Race {
 		this.track = new Track();
 		this.results = new Result();
 		this.frameRate = 100;
+		this.raceTimer = 0;
+		this.raceFinished = false;
+
 	}
 
 	renderResults(results, track) {

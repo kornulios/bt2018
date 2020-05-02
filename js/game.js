@@ -10,7 +10,10 @@ import { RelayRace } from './controller/RelayRace.js';
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
 
+let oldTimeStamp = 0;
+
 export class Game {
+
   constructor() {
     this.gameSpeed = 1000 / 60;      //50 ticks per second
     this.gameTimer;
@@ -29,6 +32,10 @@ export class Game {
     this.playerTeam = "";
 
 
+    this.race = new SprintRace();
+    this.view = new View();
+
+    this.stopTimer = null;
   }
 
   createPlayers(number) {
@@ -39,16 +46,40 @@ export class Game {
     return res;
   }
 
+  runGame(timeStamp) {       //refactored with rAF X2
+
+    const gameSpeed = 10;
+    const gameTick = timeStamp - oldTimeStamp;
+
+    //update timer
+    oldTimeStamp = timeStamp;
+
+    // UPDATE
+    this.race.run(gameTick * gameSpeed);
+
+    //RENDER
+    this.view.renderProgress(this.race);
+
+    this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
+
+    if (this.race.raceFinished) {
+      window.cancelAnimationFrame(this.stopTimer);
+      console.log('race finished', timeStamp);
+    }
+  }
+
   simulatePlayer() {
-    const tNow = Date.now();
 
-    const race = new RelayRace();
-    const view = new View();
+    window.requestAnimationFrame(this.runGame.bind(this));
+    // const tNow = Date.now();
 
-    race.run();
+    // const race = new SprintRace();
+    // const view = new View();
+
+    // race.run();
 
     // view.renderShortResults(race.results, race.track);
-    view.renderShortRelayResults(race.results, race.track);
+    // view.renderShortRelayResults(race.results, race.track);
 
     // let r = 0;
     // for (var i = 0; i < 109; i++) {
@@ -56,8 +87,8 @@ export class Game {
     //     r++;
     //   }
     // }
-    const tDiff = Date.now() - tNow;
-    console.log((tDiff / 1000) + 's');
+    // const tDiff = Date.now() - tNow;
+    // console.log((tDiff / 1000) + 's');
 
   }
 
@@ -70,43 +101,6 @@ export class Game {
 
   // OBSOLETE GOWNO for refactoring
 
-  // loadPlayers() {
-  //   //AJAX will go there 
-  //   // getData();
-  //   var teams = this.teams,
-  //     teamMemberCount = 8,
-  //     counter = 1,
-  //     players = [];
-
-  //   for (var i = 0; i < teams.length; i++) {
-  //     for (var k = 0; k < teamMemberCount; k++) {
-  //       players.push(Player.create('Player ' + counter, teams[i], k < teamMemberCount / 2 ? 'men' : 'women'));
-  //       counter++;
-  //     }
-  //   }
-  //   return players;
-  // }
-
-  // loadTeams() {
-  //   //mock for teams
-  //   const teamCount = 26;
-  //   const teams = [];
-  //   for (let i = 1; i <= teamCount; i++) {
-  //     teams.push(Team.create('Team ' + i, 'T' + i, '', [], 'Team ' + i + mockData.teamDesc));
-  //   }
-  //   return teams;
-  // }
-
-  // mainScreen() {
-  //   let me = this;
-  //   me.view.renderChampionshipView(me.championship);
-  // }
-
-  // setResultView(viewNum) {
-  //   let me = this;
-  //   me.selectedResults = viewNum;
-  //   me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
-  // }
 
   startNewChampionship() {
     if (this.players.length > 0) {
@@ -142,7 +136,7 @@ export class Game {
     changeTab('results');				// TEMP
   }
 
-  runGame(tFrame) {       //refactored with rAF
+  runGameOld(tFrame) {       //refactored with rAF
     var me = this,
       gameSpeed = 100,
       frameCount = tFrame - tNow,

@@ -7,15 +7,35 @@ export class View {
 		this.resultView = document.querySelector('#results-view');
 	}
 
+	renderProgress(race) {
+		const players = race.players;
+		const raceFinished = race.raceFinished;
+		const timer = Utils.convertToMinutes(race.raceTimer / 1000);
+
+		const htmlProgress = players.map(player => {
+			return `<div>${player.name} ${player.status} ${player.distance.toFixed(1)}</div>`;
+		}).join('');
+
+		const htmlRace = `<div>Race finished: ${raceFinished}</div>
+		<div>Race timer: ${timer}</div>
+		<div>${htmlProgress}</div>`;
+
+		document.querySelector('#run').innerHTML = `<div>${htmlRace}</div>`;
+	};
+
 	renderShortRelayResults(results, track) {
 		const teamResults = results.data
 			.filter(res => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
 
 		const htmlResults = teamResults.map((result, i) => {
+			const timeStr = i > 0 ?
+				'+' + Utils.convertToMinutes((result.time - teamResults[0].time) / 1000)
+				: Utils.convertToMinutes(result.time / 1000);
+
 			const item = `<div>
 			<span>${i + 1}</span>
 			<span>${result.team}</span>
-			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
+			<span>${timeStr}</span>
 			</div>`;
 
 			return item;
