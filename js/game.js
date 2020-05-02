@@ -5,6 +5,7 @@ import { Track } from './model/track.js';
 import { Result } from './model/result.js';
 
 import { SprintRace } from './controller/SprintRace.js';
+import { RelayRace } from './controller/RelayRace.js';
 
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
@@ -63,6 +64,7 @@ export class Game {
   // }
 
   simulatePlayer() {
+    const tNow = Date.now();
 
     const race = new SprintRace();
     const view = new View();
@@ -70,6 +72,17 @@ export class Game {
     race.run();
 
     view.renderShortResults(race.results, race.track);
+    // view.renderShortRelayResults(race.results, race.track);
+
+    // let r = 0;
+    // for (var i = 0; i < 109; i++) {
+    //   for (var j = 0; j < 10; j ++) {
+    //     r++;
+    //   }
+    // }
+
+    const tDiff = Date.now() - tNow;
+    console.log((tDiff / 1000) + 's');
 
   }
 

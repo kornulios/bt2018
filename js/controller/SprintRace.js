@@ -9,7 +9,7 @@ export class SprintRace extends Race {
 
   run() {
     const players = [];
-    const playerCount = 5;
+    const playerCount = 105;
     const { track, results } = this;
 
     // const track = new Track();
@@ -17,7 +17,7 @@ export class SprintRace extends Race {
 
     let raceFinished = false;
     let timer = 0;
-    const frameRate = 1;
+    const frameRate = 100;
 
     for (var i = 1; i <= playerCount; i++) {
       players.push(new Player({
@@ -39,11 +39,11 @@ export class SprintRace extends Race {
           player.status = PLAYER_STATUS.RUNNING;
         };
 
-        if (player.status !== PLAYER_STATUS.FINISHED) {
+        if (player.status !== PLAYER_STATUS.FINISHED && player.status !== PLAYER_STATUS.NOT_STARTED) {
 
           if (player.status === PLAYER_STATUS.RUNNING) {
             const playerPrevDistance = player.distance;
-            player.run(1);
+            player.run(frameRate);
 
             const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
             const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);

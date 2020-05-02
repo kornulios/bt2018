@@ -61,29 +61,6 @@ export class Track {
     return this.waypoints.length - 1;
   }
 
-  // setupShootinRanges() {
-  //   var resWp = [];
-  //   for (let i = 1; i < this.laps; i++) {
-  //     if (this.type !== 'Relay') {
-  //       resWp.push(i * this.lapLength);
-  //     } else {
-  //       if ((this.lapLength * i) % (this.lapLength * this.waypointsPerLap) !== 0) {
-  //         resWp.push(i * this.lapLength);
-  //       }
-  //     }
-  //   }
-  //   return resWp;
-  // }
-
-  // setupWaypoints() {
-  //   var resWp = [];
-  //   var step = this.lapLength / this.waypointsPerLap;
-  //   for (var i = 0; i < this.laps * this.waypointsPerLap; i++) {
-  //     resWp.push(Math.ceil(step * (i + 1)));
-  //   }
-  //   return resWp;
-  // }
-
   waypointsNum() {
     return this.waypoints.length;
   }
@@ -115,12 +92,4 @@ export class Track {
     return false;
   }
 
-  // passShootingRange(newDistance, passedDistance) {
-  //   for (let i = 0; i < this.shootingRange.length; i++) {
-  //     if (newDistance > this.shootingRange[i] && (newDistance - passedDistance) <= this.shootingRange[i]) {
-  //       return i + 1;
-  //     }
-  //   }
-  //   return false;
-  // }
 }

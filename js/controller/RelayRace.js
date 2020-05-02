@@ -1,15 +1,14 @@
 import { Race } from './Race.js';
-import { Track } from '../model/track.js';
-import { Result } from '../model/result.js';
+import { Player } from '../model/player.js';
+import * as Constants from '../constants/constants.js';
 
 export class RelayRace extends Race {
 
-  simulatePlayer() {
+  run() {
 
-    const players = [];
-    const playerCount = 60;
-    const track = new Track();
-    const results = new Result();
+    // const track = new Track();
+    // const results = new Result();
+    const { track, results } = this;
     const teams = [];
 
     let raceFinished = false;
@@ -104,8 +103,6 @@ export class RelayRace extends Race {
 
     console.log('race finished', timer);
 
-    const view = new View();
-    view.renderRelayResults(results, track);
   }
 
 
