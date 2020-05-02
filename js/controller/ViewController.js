@@ -7,6 +7,10 @@ export class View {
 		this.resultView = document.querySelector('#results-view');
 	}
 
+	drawMapBeta() {
+
+	}
+
 	renderProgress(race) {
 		const players = race.players;
 		const raceFinished = race.raceFinished;
@@ -122,7 +126,7 @@ export class View {
 			</div>`
 		});
 
-		document.querySelector('#run').innerHTML = `<div>${htmlResults.join('')}</div>`;
+		document.querySelector('#finish-results').innerHTML = `<div>${htmlResults.join('')}</div>`;
 	}
 
 	renderResults(results, track) {

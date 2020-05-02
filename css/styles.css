@@ -2,6 +2,10 @@ body {
   font-family: "Consolas";
 }
 
+canvas {
+  border: 1px solid black;
+}
+
 .results {
   /* width: 380px; */
   display: flex;
