@@ -10,14 +10,14 @@ export class SprintRace extends Race {
   run() {
     const players = [];
     const playerCount = 105;
-    const { track, results } = this;
+    const { track, results, frameRate } = this;
 
     // const track = new Track();
     // const results = new Result();
 
     let raceFinished = false;
     let timer = 0;
-    const frameRate = 100;
+    // const frameRate = 100;
 
     for (var i = 1; i <= playerCount; i++) {
       players.push(new Player({

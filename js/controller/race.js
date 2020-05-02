@@ -26,7 +26,7 @@ export class Race {
 	constructor() {
 		this.track = new Track();
 		this.results = new Result();
-
+		this.frameRate = 100;
 	}
 
 	renderResults(results, track) {

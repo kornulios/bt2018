@@ -42,13 +42,13 @@ export class Game {
   simulatePlayer() {
     const tNow = Date.now();
 
-    const race = new SprintRace();
+    const race = new RelayRace();
     const view = new View();
 
     race.run();
 
-    view.renderShortResults(race.results, race.track);
-    // view.renderShortRelayResults(race.results, race.track);
+    // view.renderShortResults(race.results, race.track);
+    view.renderShortRelayResults(race.results, race.track);
 
     // let r = 0;
     // for (var i = 0; i < 109; i++) {

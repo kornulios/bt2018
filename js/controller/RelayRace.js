@@ -8,12 +8,12 @@ export class RelayRace extends Race {
 
     // const track = new Track();
     // const results = new Result();
-    const { track, results } = this;
+    const { track, results, frameRate } = this;
     const teams = [];
 
     let raceFinished = false;
     let timer = 0;
-    const frameRate = 1;
+    // const frameRate = 1;
 
     const { PLAYER_STATUS } = Constants;
 
@@ -50,7 +50,7 @@ export class RelayRace extends Race {
 
           if (team.status === PLAYER_STATUS.RUNNING) {
             const playerPrevDistance = player.distance;
-            player.run(1);
+            player.run(frameRate);
 
             const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
             const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
