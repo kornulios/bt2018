@@ -26,7 +26,7 @@ export class Race {
 	constructor() {
 		this.track = new Track();
 		this.results = new Result();
-		
+
 	}
 
 	renderResults(results, track) {
@@ -53,7 +53,7 @@ export class Race {
 			playerNumber: player.number,
 			team: player.team,
 			range: range,
-			result: result,
+			result: result.filter(r => r === 0).length,
 		};
 
 		resultStore.pushShootingResult(payload);

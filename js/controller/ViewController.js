@@ -88,7 +88,7 @@ export class View {
 				acc[name] = 0;
 			}
 
-			const shootingTotal = result.result.filter(q => q === 0).length;
+			const shootingTotal = result.result;
 
 			return { ...acc, [name]: acc[name] + shootingTotal }
 		}, {});
@@ -133,7 +133,7 @@ export class View {
 				return `<li class="result-list-item">${item}</li>`
 			});
 			const rangeItems = rangeResults[name].map(r => {
-				const item = `<div>Range ${r.range}: ${r.result.filter(q => q === 0).length}</div>`;
+				const item = `<div>Range ${r.range}: ${r.result}</div>`;
 
 				return `<div>${item}</div>`
 			});

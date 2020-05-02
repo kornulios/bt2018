@@ -39,30 +39,6 @@ export class Game {
     return res;
   }
 
-  // logPlayerResult(resultStore, player, passedWaypoint, time) {
-  //   const payload = {
-  //     playerName: player.name,
-  //     playerNumber: player.number,
-  //     team: player.team,
-  //     waypoint: passedWaypoint,
-  //     time: time,
-  //   };
-
-  //   resultStore.pushResult(payload);
-  // }
-
-  // logShootingResult(resultStore, player, range, result) {
-  //   const payload = {
-  //     playerName: player.name,
-  //     playerNumber: player.number,
-  //     team: player.team,
-  //     range: range,
-  //     result: result,
-  //   };
-
-  //   resultStore.pushShootingResult(payload);
-  // }
-
   simulatePlayer() {
     const tNow = Date.now();
 
@@ -80,7 +56,6 @@ export class Game {
     //     r++;
     //   }
     // }
-
     const tDiff = Date.now() - tNow;
     console.log((tDiff / 1000) + 's');
 
