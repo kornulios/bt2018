@@ -7,6 +7,7 @@ import { Result } from './model/result.js';
 import { SprintRace } from './controller/SprintRace.js';
 import { RelayRace } from './controller/RelayRace.js';
 import { IndividualRace } from './controller/IndividualRace.js';
+import { MassStartRace } from './controller/MassStartRace.js';
 
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
@@ -35,7 +36,7 @@ export class Game {
     this.playerTeam = "";
 
 
-    this.race = new IndividualRace();
+    this.race = new MassStartRace();
     this.view = new View();
 
     this.canvas = new Graphic2D();
@@ -66,8 +67,8 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track.coordsMap);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
     this.canvas.drawGameTick(gameTick);
-    this.view.renderShortResults(this.race.results, this.race.track);
-    // this.view.renderProgress(this.race);
+    // this.view.renderShortResults(this.race.results, this.race.track);
+    this.view.renderProgress(this.race);
 
 
 
@@ -103,9 +104,9 @@ export class Game {
 
     oldTimeStamp = performance.now();
     this.canvas.drawMapBeta(race.track.coordsMap);
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(2500) }]);
     window.requestAnimationFrame(this.runGame.bind(this));
-
+    
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(2500) }]); -- debugger for player placement
 
     // this.view.renderProgress(this.race);
 
