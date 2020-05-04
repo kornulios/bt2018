@@ -2,41 +2,37 @@ import { Vector } from '../view/Vector.js';
 
 export class Track {
   constructor() {
-    // this.length = 15000;
-    // this.laps = 3;
     this.penaltyLapLength = 150;
-    // this.waypointsPerLap = 3;
-    // this.shootingEntry = this.length / this.laps;
-
-    this.lapLength = 2500;
-    //this.trackLength = 15000; //Math.ceil(data.lapLength[gen] * data.laps);    //overall track distance
-    // this.type = data.type;
-    // this.laps = data.laps;
-
+    this.lapLength = 3000;
+    
     //sprint
     // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500]
     // this.shootingRange = [0, 2450, 4950];
+    
+    //individual / pursuit / mass start
+    this.waypoints =
+      [0,
+        1500, 2300, 2950, 3000,
+        4500, 5300, 5950, 6000,
+        7500, 8300, 8950, 9000,
+        10500, 11300, 11950, 12000,
+        13500, 14300, 15000
+      ]
 
-    //indi
-    // this.waypoints =
-    //   [0,
-    //     1500, 2300, 2950, 3000,
-    //     4500, 5300, 5950, 6000,
-    //     7500, 8300, 8950, 9000,
-    //     10500, 11300, 11950, 12000,
-    //     13500, 14300, 15000
-    //   ]
+    this.shootingRange = [0, 2950, 5950, 8950, 11950];
 
-    // this.shootingRange = [0, 2950, 5950, 8950, 11950];
-
-    //relay
-    this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500];
-    this.shootingRange = [0, 2450, 4950];
+    //relay / sprint 
+    // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500];
+    // this.shootingRange = [0, 2450, 4950];
 
     this.coords = [
       new Vector(205, 210),
       new Vector(10, 210),
-      new Vector(10, 10),
+      // new Vector(10, 10),
+      new Vector(10, 30),
+      // new Vector(16, 25),
+      // new Vector(23, 20),
+      new Vector(28, 15),
       new Vector(195, 100),
       new Vector(410, 10),
       new Vector(410, 210),
@@ -45,7 +41,6 @@ export class Track {
 
     this.coordsMap = this.initCoordsMap();
     this.pixelRatio = this.getPixelRatio();
-
 
   }
 
@@ -68,7 +63,7 @@ export class Track {
 
       return acc += item.l;
     }, 0);
-    
+
     return this.getLapLength() / trackLengthPixels;
   }
 
@@ -133,7 +128,7 @@ export class Track {
         return i;
       }
     }
-    
+
     return false;  //no wp passed
   }
 

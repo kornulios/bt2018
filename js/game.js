@@ -6,6 +6,7 @@ import { Result } from './model/result.js';
 
 import { SprintRace } from './controller/SprintRace.js';
 import { RelayRace } from './controller/RelayRace.js';
+import { IndividualRace } from './controller/IndividualRace.js';
 
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
@@ -34,7 +35,7 @@ export class Game {
     this.playerTeam = "";
 
 
-    this.race = new SprintRace();
+    this.race = new IndividualRace();
     this.view = new View();
 
     this.canvas = new Graphic2D();
@@ -64,6 +65,8 @@ export class Game {
     //RENDER
     this.canvas.drawMapBeta(this.race.track.coordsMap);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
+    this.canvas.drawGameTick(gameTick);
+    this.view.renderShortResults(this.race.results, this.race.track);
     // this.view.renderProgress(this.race);
 
 
@@ -73,7 +76,7 @@ export class Game {
     if (this.race.raceFinished) {
       window.cancelAnimationFrame(this.stopTimer);
       console.log('race finished', timeStamp);
-      this.view.renderShortResults(this.race.results, this.race.track);
+      this.view.renderResults(this.race.results, this.race.track);
     }
   }
 

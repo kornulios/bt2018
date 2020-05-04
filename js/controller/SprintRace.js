@@ -5,7 +5,7 @@ import * as Constants from '../constants/constants.js';
 
 export class SprintRace extends Race {
   constructor() {
-    const playerCount = 10;
+    const playerCount = 105;
 
     super();
 

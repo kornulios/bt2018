@@ -1,81 +1,80 @@
+import { Race } from './Race.js';
+import { Player } from '../model/player.js'
+
+import * as Constants from '../constants/constants.js';
+
 export class IndividualRace extends Race {
-  
-  run() {
-
-    const players = [];
+  constructor() {
     const playerCount = 10;
-    const track = new Track();
-    const results = new Result();
 
-    let raceFinished = false;
-    let timer = 0;
-    const frameRate = 1;
+    super();
 
-    const { PLAYER_STATUS } = Constants;
+    this.players = [];
 
     for (var i = 1; i <= playerCount; i++) {
-      players.push(new Player({
+      this.players.push(new Player({
         name: "Player " + i,
         number: i,
         // speed: 19 + (i / 10),
-        startTimer: (i - 1) * 30000
+        startTimer: (i - 1) * 30000,
       }));
     }
+  }
 
-    do {
 
-      for (let i = 0; i < players.length; i++) {
-        const player = players[i];
+  run(gameTick) {
 
-        if (player.status !== PLAYER_STATUS.FINISHED) {
+    const { players, track, results } = this;
 
-          if (player.status === PLAYER_STATUS.NOT_STARTED && timer >= player.startTimer) {
-            player.status = PLAYER_STATUS.RUNNING;
-          };
+    this.raceTimer += gameTick;
 
-          if (player.status === PLAYER_STATUS.RUNNING) {
-            const playerPrevDistance = player.distance;
-            player.run(1);
+    const { PLAYER_STATUS } = Constants;
 
-            const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
-            const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
 
-            if (passedWaypoint) {
-              this.logPlayerResult(results, player, passedWaypoint, timer + player.penaltyTime - player.startTimer);
-            }
+      if (player.status === PLAYER_STATUS.NOT_STARTED && this.raceTimer >= player.startTimer) {
+        player.status = PLAYER_STATUS.RUNNING;
+      };
 
-            if (passedRange) {
-              player.status = PLAYER_STATUS.SHOOTING;
-              player.enterShootingRange(passedRange);
-            }
-          }
-          else if (player.status === PLAYER_STATUS.SHOOTING) {
-            player.shoot(frameRate);
+      if (player.status !== PLAYER_STATUS.FINISHED) {
 
-            if (player.shotCount === 5) {
-              this.logShootingResult(results, player, player.rangeNum, player.currentRange);
-              const penaltyCount = player.currentRange.filter(r => r === 0).length;
+        if (player.status === PLAYER_STATUS.RUNNING) {
+          const playerPrevDistance = player.distance;
+          player.run(gameTick);
 
-              player.penaltyTime += penaltyCount * 60000;
-              player.status = PLAYER_STATUS.RUNNING;
-            }
+          const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
+          const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
+
+          if (passedWaypoint) {
+            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer + player.penaltyTime - player.startTimer);
           }
 
-          if (player.distance >= track.getTrackLength()) player.status = PLAYER_STATUS.FINISHED;
-
+          if (passedRange) {
+            player.status = PLAYER_STATUS.SHOOTING;
+            player.enterShootingRange(passedRange);
+          }
         }
+        else if (player.status === PLAYER_STATUS.SHOOTING) {
+          player.shoot(gameTick);
+
+          if (player.shotCount === 5) {
+            this.logShootingResult(results, player, player.rangeNum, player.currentRange);
+            const penaltyCount = player.currentRange.filter(r => r === 0).length;
+
+            player.penaltyTime += penaltyCount * 60000;
+            player.status = PLAYER_STATUS.RUNNING;
+          }
+        }
+
+        if (player.distance >= track.getTrackLength()) player.status = PLAYER_STATUS.FINISHED;
 
       }
 
-      raceFinished = players.every(player => player.status === PLAYER_STATUS.FINISHED);
+    }
 
-      timer += frameRate;
-
-    } while (!raceFinished)
-
-    console.log('race finished', timer);
-
-    const view = new View();
-    view.renderShortResults(results, track);
+    this.raceFinished = players.every(player => player.status === PLAYER_STATUS.FINISHED);
   }
+
+  //END OF CLASS
 }
