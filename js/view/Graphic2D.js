@@ -4,10 +4,20 @@ let canvas = document.querySelector('#main-canvas');
 
 export class Graphic2D {
 
+  drawGameTick(tick) {
+    let ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#000000";
+    ctx.fillText('FPS: ' + (1000 / tick), 620, 50);
+  }
+
   drawMapBeta(trackCoords) {
     let ctx = canvas.getContext("2d");
+    let img = new Image();
+    img.src = '../../static/map.gif';
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
 
 
     ctx.beginPath();
@@ -55,7 +65,7 @@ export class Graphic2D {
           ctx.fillText(i + 1, x - 7, y + 3.25);
         } else if (i >= 99) {
           ctx.font = '10px Consolas';
-          ctx.fillText(i + 1, x - 7, 53.75);
+          ctx.fillText(i + 1, x - 7, y + 3.25);
         }
       }
     }
