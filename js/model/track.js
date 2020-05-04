@@ -4,11 +4,11 @@ export class Track {
   constructor() {
     this.penaltyLapLength = 150;
     this.lapLength = 3000;
-    
+
     //sprint
     // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500]
     // this.shootingRange = [0, 2450, 4950];
-    
+
     //individual / pursuit / mass start
     this.waypoints =
       [0,
@@ -39,8 +39,18 @@ export class Track {
       new Vector(205, 210),
     ];
 
+    this.penaltyLapCoords = [
+      new Vector(215, 200),
+      new Vector(215, 185),
+      new Vector(245, 185),
+      new Vector(245, 200),
+      new Vector(215, 200),
+    ];
+
     this.coordsMap = this.initCoordsMap();
-    this.pixelRatio = this.getPixelRatio();
+    this.penaltyCoordsMap = this.initPenaltyCoordsMap();
+    this.pixelRatio = this.getPixelRatio(this.coordsMap, this.getLapLength());
+    this.penaltyPixelRatio = this.getPixelRatio(this.penaltyCoordsMap, this.penaltyLapLength);
 
   }
 
@@ -58,13 +68,27 @@ export class Track {
     return res;
   }
 
-  getPixelRatio() {
-    const trackLengthPixels = this.coordsMap.reduce((acc, item) => {
+  initPenaltyCoordsMap() {
+    const res = this.penaltyLapCoords.map((vec, i, arr) => {
+      const lastElement = i === arr.length - 1;
+
+      const l = lastElement ? 0 : vec.substract(arr[i + 1]).getLength();
+      const direction = lastElement ? new Vector(0, 0) : arr[i + 1].substract(vec).normalize();
+
+      return { coords: new Vector(vec.x, vec.y), l, direction };
+    });
+
+    console.log(res);
+    return res;
+  }
+
+  getPixelRatio(coordsArray, lapLength) {
+    const trackLengthPixels = coordsArray.reduce((acc, item) => {
 
       return acc += item.l;
     }, 0);
 
-    return this.getLapLength() / trackLengthPixels;
+    return lapLength / trackLengthPixels;
   }
 
   getCoordinates(dist) {
@@ -78,6 +102,23 @@ export class Track {
 
         return new Vector(this.coordsMap[i].coords.x + actualDistance * this.coordsMap[i].direction.x,
           this.coordsMap[i].coords.y + actualDistance * this.coordsMap[i].direction.y);
+      }
+    }
+    console.log('invalid distance', d);
+  }
+
+  getPenaltyCoordinates(dist) {
+    // const d = (dist - (this.lapLength * (this.getLapNumber(dist) - 1))) / this.pixelRatio;
+    const d = (150 * Math.ceil(dist / 150) - dist) / this.penaltyPixelRatio;
+    let totalLength = 0;
+
+    for (let i = 0; i < this.penaltyCoordsMap.length; i++) {
+      totalLength += this.penaltyCoordsMap[i].l;
+      if (d <= totalLength) {
+        const actualDistance = d - (totalLength - this.penaltyCoordsMap[i].l);
+
+        return new Vector(this.penaltyCoordsMap[i].coords.x + actualDistance * this.penaltyCoordsMap[i].direction.x,
+          this.penaltyCoordsMap[i].coords.y + actualDistance * this.penaltyCoordsMap[i].direction.y);
       }
     }
     console.log('invalid distance', d);

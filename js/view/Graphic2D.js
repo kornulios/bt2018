@@ -10,7 +10,7 @@ export class Graphic2D {
     ctx.fillText('FPS: ' + (1000 / tick), 620, 50);
   }
 
-  drawMapBeta(trackCoords) {
+  drawMapBeta(trackCoords, penaltyCoords) {
     let ctx = canvas.getContext("2d");
     let img = new Image();
     img.src = '../../static/map.gif';
@@ -28,6 +28,16 @@ export class Graphic2D {
     }
     ctx.lineTo(trackCoords[0].coords.x, trackCoords[0].coords.y);
     ctx.strokeStyle = "#ffdd00";
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
+
+    for (let i = 1; i < penaltyCoords.length; i++) {
+      ctx.lineTo(penaltyCoords[i].coords.x, penaltyCoords[i].coords.y);
+    }
+    ctx.lineTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
+    ctx.strokeStyle = "green";
     ctx.stroke();
 
     ctx.beginPath();
