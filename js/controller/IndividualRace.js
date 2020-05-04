@@ -61,7 +61,7 @@ export class IndividualRace extends Race {
             }
           }
 
-          if (player.distance >= track.trackLength) player.status = PLAYER_STATUS.FINISHED;
+          if (player.distance >= track.getTrackLength()) player.status = PLAYER_STATUS.FINISHED;
 
         }
 

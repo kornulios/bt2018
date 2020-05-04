@@ -10,6 +10,7 @@ import { RelayRace } from './controller/RelayRace.js';
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
 import { Graphic2D } from './view/Graphic2D.js';
+import { Vector } from './view/Vector.js';
 
 let oldTimeStamp = 0;
 
@@ -61,7 +62,8 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //RENDER
-    this.canvas.drawMapBeta(this.getPlayerCoords(this.race.players));
+    this.canvas.drawMapBeta(this.race.track.coordsMap);
+    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
     // this.view.renderProgress(this.race);
 
 
@@ -75,28 +77,34 @@ export class Game {
   }
 
   getPlayerCoords(players) {
-    const pixelRatio = 15;
-    const coords = players.map(player => {
+
+    const res = players.map(player => {
       if (player.status !== Constants.PLAYER_STATUS.NOT_STARTED) {
+
         return {
           name: player.name,
           number: player.number,
-          x: 50 + (player.distance / pixelRatio),
-          y: 50,
+          coords: this.race.track.getCoordinates(player.distance),
         }
       } else {
         return false;
       }
     });
-    return coords;
+
+    return res;
   }
 
   simulatePlayer() {
+    const { race } = this;
+
     oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(this.getPlayerCoords(this.race.players));
+    this.canvas.drawMapBeta(race.track.coordsMap);
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(2500) }]);
+    window.requestAnimationFrame(this.runGame.bind(this));
+
+
     // this.view.renderProgress(this.race);
 
-    window.requestAnimationFrame(this.runGame.bind(this));
 
     // const canvas = new Graphic2D();
     // canvas.drawMapBeta();
