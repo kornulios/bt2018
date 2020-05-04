@@ -67,6 +67,7 @@ export class Game {
     // this.view.renderProgress(this.race);
 
 
+
     this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
 
     if (this.race.raceFinished) {
