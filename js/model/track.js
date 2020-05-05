@@ -9,6 +9,10 @@ export class Track {
     // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500]
     // this.shootingRange = [0, 2450, 4950];
 
+    this.baseLineX = 205;
+    this.baseLineY = 210;
+    this.finishLineLength = 200; // meters
+
     //individual / pursuit / mass start
     this.waypoints =
       [0,
@@ -47,15 +51,27 @@ export class Track {
       new Vector(215, 200),
     ];
 
-    this.coordsMap = this.initCoordsMap();
-    this.penaltyCoordsMap = this.initPenaltyCoordsMap();
+
+
+    this.coordsMap = this.initCoordsMap(this.coords);
     this.pixelRatio = this.getPixelRatio(this.coordsMap, this.getLapLength());
+
+    this.penaltyCoordsMap = this.initCoordsMap(this.penaltyLapCoords);
     this.penaltyPixelRatio = this.getPixelRatio(this.penaltyCoordsMap, this.penaltyLapLength);
 
+    this.finishCoords = [
+      new Vector(this.getFinishEntrance(), this.baseLineY),
+      new Vector(this.getFinishEntrance(), this.baseLineY + 20),
+      new Vector(this.baseLineX + 20, this.baseLineY + 20),
+    ];
+    this.finishCoordsMap = this.initCoordsMap(this.finishCoords);
+
+    // this.finishPixelRation = this.getPixelRatio(this.finishCoordsMap, 150);
+
   }
 
-  initCoordsMap() {
-    const res = this.coords.map((vec, i, arr) => {
+  initCoordsMap(coords) {
+    const res = coords.map((vec, i, arr) => {
       const lastElement = i === arr.length - 1;
 
       const l = lastElement ? 0 : vec.substract(arr[i + 1]).getLength();
@@ -64,21 +80,6 @@ export class Track {
       return { coords: new Vector(vec.x, vec.y), l, direction };
     });
 
-    console.log(res);
-    return res;
-  }
-
-  initPenaltyCoordsMap() {
-    const res = this.penaltyLapCoords.map((vec, i, arr) => {
-      const lastElement = i === arr.length - 1;
-
-      const l = lastElement ? 0 : vec.substract(arr[i + 1]).getLength();
-      const direction = lastElement ? new Vector(0, 0) : arr[i + 1].substract(vec).normalize();
-
-      return { coords: new Vector(vec.x, vec.y), l, direction };
-    });
-
-    console.log(res);
     return res;
   }
 
@@ -122,6 +123,27 @@ export class Track {
       }
     }
     console.log('invalid distance', d);
+  }
+
+  getFinishCoordinates(dist) {
+    const d = (this.finishLineLength - (this.getTrackLength() - dist)) / this.pixelRatio;
+    let totalLength = 0;
+
+    for (let i = 0; i < this.finishCoordsMap.length; i++) {
+      totalLength += this.finishCoordsMap[i].l;
+      if (d <= totalLength) {
+        const actualDistance = d - (totalLength - this.finishCoordsMap[i].l);
+
+        return new Vector(this.finishCoordsMap[i].coords.x + actualDistance * this.finishCoordsMap[i].direction.x,
+          this.finishCoordsMap[i].coords.y + actualDistance * this.finishCoordsMap[i].direction.y);
+      }
+    }
+    console.log('invalid distance', d);
+  }
+
+  getFinishEntrance() {
+    //200m of distance
+    return this.getCoordinates(this.getTrackLength() - this.finishLineLength).x;
   }
 
 

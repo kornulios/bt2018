@@ -10,7 +10,21 @@ export class Graphic2D {
     ctx.fillText('FPS: ' + (1000 / tick), 620, 50);
   }
 
-  drawMapBeta(trackCoords, penaltyCoords) {
+  drawCoordinatesMap(coordsMap, color) {
+    let ctx = canvas.getContext("2d");
+    ctx.beginPath();
+
+    ctx.moveTo(coordsMap[0].coords.x, coordsMap[0].coords.y);
+
+    for (let i = 1; i < coordsMap.length; i++) {
+      ctx.lineTo(coordsMap[i].coords.x, coordsMap[i].coords.y);
+    }
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
+
+  drawMapBeta(track) {
+    const { coordsMap, penaltyCoordsMap, finishCoordsMap } = track;
     let ctx = canvas.getContext("2d");
     let img = new Image();
     img.src = '../../static/map.gif';
@@ -19,27 +33,31 @@ export class Graphic2D {
 
     ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
 
+    this.drawCoordinatesMap(coordsMap, "#ffdd00");
+    this.drawCoordinatesMap(penaltyCoordsMap, "green");
+    this.drawCoordinatesMap(finishCoordsMap, "red");
 
-    ctx.beginPath();
-    ctx.moveTo(trackCoords[0].coords.x, trackCoords[0].coords.y);
+    // ctx.beginPath();
+    // ctx.moveTo(coordsMap[0].coords.x, coordsMap[0].coords.y);
 
-    for (let i = 1; i < trackCoords.length; i++) {
-      ctx.lineTo(trackCoords[i].coords.x, trackCoords[i].coords.y);
-    }
-    ctx.lineTo(trackCoords[0].coords.x, trackCoords[0].coords.y);
-    ctx.strokeStyle = "#ffdd00";
-    ctx.stroke();
+    // for (let i = 1; i < coordsMap.length; i++) {
+    //   ctx.lineTo(coordsMap[i].coords.x, coordsMap[i].coords.y);
+    // }
+    // ctx.strokeStyle = "#ffdd00";
+    // ctx.stroke();
 
-    ctx.beginPath();
-    ctx.moveTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
+    // ctx.beginPath();
+    // ctx.moveTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
 
-    for (let i = 1; i < penaltyCoords.length; i++) {
-      ctx.lineTo(penaltyCoords[i].coords.x, penaltyCoords[i].coords.y);
-    }
-    ctx.lineTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
-    ctx.strokeStyle = "green";
-    ctx.stroke();
+    // for (let i = 1; i < penaltyCoords.length; i++) {
+    //   ctx.lineTo(penaltyCoords[i].coords.x, penaltyCoords[i].coords.y);
+    // }
+    // ctx.lineTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
+    // ctx.strokeStyle = "green";
+    // ctx.stroke();
 
+
+    //start / finish line
     ctx.beginPath();
     ctx.strokeStyle = "#000000";
     ctx.fillStyle = "#000000";
@@ -49,6 +67,16 @@ export class Graphic2D {
     ctx.fillRect(205.5, 207, 3, 3);
     ctx.fillRect(202.5, 210, 3, 3);
     ctx.fillRect(205.5, 213, 3, 3);
+
+    ctx.beginPath();
+    ctx.strokeStyle = "#000000";
+    ctx.fillStyle = "#000000";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(222.5, 224.5, 6, 12);
+    ctx.fillRect(222.5, 224, 3, 3);
+    ctx.fillRect(225.5, 227, 3, 3);
+    ctx.fillRect(222.5, 230, 3, 3);
+    ctx.fillRect(225.5, 233, 3, 3);
   }
 
 

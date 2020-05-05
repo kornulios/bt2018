@@ -53,7 +53,7 @@ export class Game {
   }
 
   runGame(timeStamp) {       //refactored with rAF X2
-    const gameSpeed = 20;
+    const gameSpeed = 50;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -64,11 +64,11 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //RENDER
-    this.canvas.drawMapBeta(this.race.track.coordsMap, this.race.track.penaltyCoordsMap);
+    this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
     this.canvas.drawGameTick(gameTick);
     this.view.renderShortResults(this.race.results, this.race.track);
-    this.view.renderProgress(this.race);
+    // this.view.renderProgress(this.race);
 
 
 
@@ -92,7 +92,15 @@ export class Game {
             number: player.number,
             coords: this.race.track.getPenaltyCoordinates(player.penalty),
           }
+        } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
+
+          return {
+            name: player.name,
+            number: player.number,
+            coords: this.race.track.getFinishCoordinates(player.distance),
+          }
         }
+
         return {
           name: player.name,
           number: player.number,
@@ -111,11 +119,11 @@ export class Game {
     const { race } = this;
 
     oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track.coordsMap, race.track.penaltyCoordsMap);
+    this.canvas.drawMapBeta(race.track);
     window.requestAnimationFrame(this.runGame.bind(this));
-
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getPenaltyCoordinates(320) }]); // -- debugger for player placement
-
+    
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(14799) }]); // -- debugger for player placement
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
     // this.view.renderProgress(this.race);
 
 

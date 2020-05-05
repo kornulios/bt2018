@@ -6,7 +6,7 @@ import { PLAYER_STATUS } from '../constants/constants.js';
 export class Player {
 	constructor(args) {
 		//base stats
-		this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2600, 1800) / 100; // km/h
+		this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2500, 2300) / 100; // km/h
 		this.name = args.name || 'Player';
 		this.team = args.team || 'Team 1';
 		this.gender = args.gender || 'male';
@@ -103,7 +103,7 @@ export class Player {
 
 	runPenaltyLap(elapsedTime) {
 		const fps = elapsedTime;
-		const distancePassed = (this.currentSpeed / 3600) * fps;   // m/ms
+		const distancePassed = ((this.currentSpeed * 0.9) / 3600) * fps;   // m/ms
 
 		this.penalty -= distancePassed;
 	}

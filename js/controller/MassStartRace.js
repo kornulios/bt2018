@@ -69,7 +69,10 @@ export class MassStartRace extends Race {
           player.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
         }
 
-        if (player.distance >= track.getTrackLength()) player.status = PLAYER_STATUS.FINISHED;
+        if (player.distance >= track.getTrackLength()) {
+          player.status = PLAYER_STATUS.FINISHED;
+          player.distance = track.getTrackLength();
+        };
 
       }
 
