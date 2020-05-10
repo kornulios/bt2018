@@ -1,75 +1,172 @@
-class Game {
+import { Player } from './model/player.js';
+import * as gameData from './data.js';
+import { Utils } from './utils/Utils.js';
+import { Track } from './model/track.js';
+import { Result } from './model/result.js';
+
+import { SprintRace } from './controller/SprintRace.js';
+import { RelayRace } from './controller/RelayRace.js';
+import { IndividualRace } from './controller/IndividualRace.js';
+import { MassStartRace } from './controller/MassStartRace.js';
+
+import * as Constants from './constants/constants.js';
+import { View } from './controller/ViewController.js';
+import { Graphic2D } from './view/Graphic2D.js';
+import { Vector } from './view/Vector.js';
+
+let oldTimeStamp = 0;
+
+export class Game {
+
   constructor() {
     this.gameSpeed = 1000 / 60;      //50 ticks per second
     this.gameTimer;
     this.gameRunning = false;
 
-    this.view = new View();
-    this.championship = Object.create(null);
+    // this.view = new View();
+    // this.championship = Object.create(null);
 
-    this.teams = this.loadTeams();
-    this.players = this.loadPlayers();
+    // this.raceMap = gameData.stageData;
+
+    // this.teams = this.loadTeams();
+    // this.players = this.loadPlayers();
 
     this.selectedResults = 0;
     this.selectedGender = 'men';
     this.playerTeam = "";
+
+
+    this.race = new MassStartRace();
+    this.view = new View();
+
+    this.canvas = new Graphic2D();
+
+    this.stopTimer = null;
   }
 
-  loadPlayers() {
-    //AJAX will go there 
-    // getData();
-    var teams = this.teams,
-      // playerCount = 208,
-      teamMemberCount = 8,
-      counter = 1,
-      players = [];
+  createPlayers(number) {
+    var res = [];
+    for (var i = 1; i <= number; i++) {
+      res.push(new Player({ name: "Player " + i, number: i, speed: 19 + (i / 10) }))
+    }
+    return res;
+  }
 
-    for (var i = 0; i <= teams.length; i++) {
-      for (var k = 0; k < teamMemberCount; k++) {
-        players.push({
-          name: 'Player ' + counter,
-          team: teams[i],
-          gender: k < teamMemberCount / 2 ? 'men' : 'women'
-        });
-        counter++;
+  runGame(timeStamp) {       //refactored with rAF X2
+    const gameSpeed = 50;
+
+    const gameTick = timeStamp - oldTimeStamp;
+
+    //update timer
+    oldTimeStamp = timeStamp;
+
+    // UPDATE
+    this.race.run(gameTick * gameSpeed);
+
+    //RENDER
+    this.canvas.drawMapBeta(this.race.track);
+    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
+    this.canvas.drawGameTick(gameTick);
+    this.view.renderShortResults(this.race.results, this.race.track);
+    // this.view.renderProgress(this.race);
+
+
+
+    this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
+
+    if (this.race.raceFinished) {
+      window.cancelAnimationFrame(this.stopTimer);
+      console.log('race finished', timeStamp);
+      this.view.renderResults(this.race.results, this.race.track);
+    }
+  }
+
+  getPlayerCoords(players) {
+
+    const res = players.map(player => {
+      if (player.status !== Constants.PLAYER_STATUS.NOT_STARTED) {
+        if (player.status === Constants.PLAYER_STATUS.PENALTY) {
+
+          return {
+            name: player.name,
+            number: player.number,
+            coords: this.race.track.getPenaltyCoordinates(player.penalty),
+          }
+        } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
+
+          return {
+            name: player.name,
+            number: player.number,
+            coords: this.race.track.getFinishCoordinates(player.distance),
+          }
+        }
+
+        return {
+          name: player.name,
+          number: player.number,
+          coords: this.race.track.getCoordinates(player.distance),
+        }
+      } else {
+
+        return false;
       }
-    }
-    return players;
+    });
+
+    return res;
   }
 
-  loadTeams() {
-    //mock for teams
-    var teamCount = 26;
-    var teams = [];
-    for (var i = 1; i <= teamCount; i++) {
-      teams.push({
-        name: 'Team ' + i,
-        shortName: 'T' + i,
-        flag: '',
-        colors: [],
-        description: "Team " + i + mockData.teamDesc
-      });
-    }
-    return teams;
+  simulatePlayer() {
+    const { race } = this;
+
+    oldTimeStamp = performance.now();
+    this.canvas.drawMapBeta(race.track);
+    window.requestAnimationFrame(this.runGame.bind(this));
+    
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(14799) }]); // -- debugger for player placement
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
+    // this.view.renderProgress(this.race);
+
+
+    // const canvas = new Graphic2D();
+    // canvas.drawMapBeta();
+
+    // const tNow = Date.now();
+
+    // const race = new SprintRace();
+    // const view = new View();
+
+    // race.run();
+
+    // view.renderShortResults(race.results, race.track);
+    // view.renderShortRelayResults(race.results, race.track);
+
+    // let r = 0;
+    // for (var i = 0; i < 109; i++) {
+    //   for (var j = 0; j < 10; j ++) {
+    //     r++;
+    //   }
+    // }
+    // const tDiff = Date.now() - tNow;
+    // console.log((tDiff / 1000) + 's');
+
   }
 
-  mainScreen() {
-    let me = this;
-    me.view.renderChampionshipView(me.championship);
-  }
 
-  setResultView(viewNum) {
-    let me = this;
-    me.selectedResults = viewNum;
-    me.view.renderResults(me.race.results.getWaypointResults(me.selectedResults), me.selectedResults);
-  }
+
+
+
+
+  // ********************************************************************
+
+  // OBSOLETE GOWNO for refactoring
+
 
   startNewChampionship() {
     if (this.players.length > 0) {
-      this.championship = new Championship(this.players);
-      this.championship.prepareNextRace();
+      this.championship = new Championship();
+      // this.championship.prepareNextRace();
     } else {
-      console.log('No players loaded.');
+      // console.log('No players loaded.');
     }
   }
 
@@ -98,7 +195,7 @@ class Game {
     changeTab('results');				// TEMP
   }
 
-  runGame(tFrame) {       //refactored with rAF
+  runGameOld(tFrame) {       //refactored with rAF
     var me = this,
       gameSpeed = 100,
       frameCount = tFrame - tNow,
@@ -109,10 +206,7 @@ class Game {
     tNow = tFrame;
 
     // UPDATE
-    // for (var ticks = 0; ticks < gameSpeed; ticks++) {
     raceRunning = me.championship.runRace(gameTick * gameSpeed);
-    // if (!raceRunning) break;
-    // }
 
     //RENDER
     me.render();
@@ -169,19 +263,19 @@ class Game {
   }
 
   onChangeTeamSelect(e) {
-    var teamName = e.target.textContent;
+    // var teamName = e.target.textContent;
 
     this.startNewChampionship(); //should go to Start button
 
-    for (var i = 0; i < this.teams.length; i++) {
-      if (this.teams[i].name == teamName) {
-        this.playerTeam = this.teams[i];
-        this.view.selectTeamDetails(this.teams[i]);
-      }
-    }
-    if (this.playerTeam == '') {
-      console.log('Selected team not defined');
-    }
+    // for (var i = 0; i < this.teams.length; i++) {
+    //   if (this.teams[i].name == teamName) {
+    //     this.playerTeam = this.teams[i];
+    //     this.view.selectTeamDetails(this.teams[i]);
+    //   }
+    // }
+    // if (this.playerTeam == '') {
+    //   console.log('Selected team not defined');
+    // }
   }
 
   onChangeViewGender(e) {

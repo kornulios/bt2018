@@ -1,0 +1,40 @@
+body {
+  font-family: "Consolas";
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+.results {
+  /* width: 380px; */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.result-list {
+  list-style: none;
+  width: 170px;
+  padding: 0;
+  margin: 10px;
+}
+
+.result-list-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result-block {
+  margin-top: 20px
+}
+
+.result-row {
+  display: flex;
+  width: 280px;
+  justify-content: space-between;
+}
+
+.relay-player-items {
+  padding-left: 10px;
+  font-size: 0.85rem;
+}

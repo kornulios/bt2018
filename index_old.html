@@ -1,0 +1,122 @@
+<html>
+
+<head>
+	<script src="./node_modules/axios/dist/axios.js"></script>
+
+	<script src="js/controller/ViewController.js"></script>
+	<script src='js/Util.js'></script>
+	<script src="js/view/start.js"></script>
+	<script src="js/view/select.js"></script>
+	<script src="js/view/championship.js"></script>
+	<script src="js/view/team.js"></script>
+	<script src="js/view/raceScreen.js"></script>
+	<script src="js/view/results.js"></script>
+	
+	<script src="js/data.js"></script>
+	<script src="js/model/result.js"></script>
+	<script src="js/model/track.js"></script>
+	<script src="js/model/player.js"></script>
+	<script src="js/model/team.js"></script>
+	<script src="js/controller/race.js"></script>
+	<script src="js/controller/relay.js"></script>
+	<script src="js/controller/championship.js"></script>
+	<script src="js/App.js"></script>
+	<script src="js/game.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+	<script>
+		//main game object
+		var game;
+		var tNow;
+		var gameFps = 1000 / 60;
+
+		var tabMap = {
+			'start': startScreen,
+			'select': selectScreen,
+			'championship': championshipScreen,
+			'team': teamScreen,
+			'race': raceScreen,
+			'results': resultsScreen
+		};
+
+		document.addEventListener('DOMContentLoaded', function (e) {
+			console.log('up and running');
+			game = new Game();
+			App.render(document.querySelector('#main-view'));
+			initEvents();
+		});
+
+		function initEvents() {
+			document.getElementById('main-tabs').addEventListener('click', function (e) {
+				changeTab(e.target.getAttribute('tab-value'));
+				e.preventDefault();
+			});
+		}
+
+		function changeTab(tab) {
+			var mainDiv = document.getElementById('main-view'),
+				view = game.view;
+
+			mainDiv.innerHTML = "";
+
+			if (tab == 'race') {
+				view.currentScreen = new raceScreen();
+				mainDiv.appendChild(view.currentScreen.render());
+				return;
+			} else if (tab == 'results') {
+				view.currentScreen = new resultsScreen();
+				mainDiv.appendChild(view.currentScreen.render());
+				return;
+			}
+
+			if (tabMap[tab]) {
+				mainDiv.appendChild(tabMap[tab]());
+			} else {
+				console.log('No mapped function for ' + tab);
+			}
+		}
+
+		function refreshTab(tabName) {
+			var mainDiv = document.getElementById('main-view');
+
+			mainDiv.innerHTML = "";
+
+			mainDiv.appendChild(tabMap[tabName]());
+		}
+
+		
+
+	</script>
+
+	<div id='main-tabs'>
+		<div class='tab-btn' tab-value='start'>Start game</div>
+		<div class='tab-btn' tab-value='select'>Select team</div>
+		<div class='tab-btn' tab-value='championship'>Championship</div>
+		<div class='tab-btn' tab-value='team'>Team</div>
+		<div class='tab-btn' tab-value='race'>Race</div>
+		<div class='tab-btn' tab-value='results'>Results</div>
+	</div>
+
+	<div class='gray-back'>
+
+		<div id="controls">
+			<!-- <button id="start-btn">Start game</button>
+			<button id="next-btn" class="hidden">Next race</button>
+			<button id="run-btn" class="hidden">Run</button>
+			<button id="finish-btn" class="hidden">Finish</button>
+
+			<button id="calculate-btn">Calculate race</button> -->
+		</div>
+
+	</div>
+	<div id="track-info"></div>
+	<div id="main-view"></div>
+	<div id="results-view"></div>
+	<!-- <canvas id="main-canvas"></canvas> -->
+</body>
+
+</html>
