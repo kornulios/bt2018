@@ -1,4 +1,6 @@
-class Championship {
+
+
+export class Championship {
   constructor() {
     this.stages = { ...gameData.stageData };
     this.results = [];

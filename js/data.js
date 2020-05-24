@@ -112,12 +112,13 @@ var raceTypes = {
 //Season consists of 9 stages and 1 World Cup event
 
 
-var teamData = [
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
-  { name: 'Ukraine', shortName: 'UKR', flag: '', colors: [] },
-  { name: 'Bielarus', shortName: 'BEL', flag: '', colors: [] },
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
+export const teamData = [
+  { name: 'Germany', shortName: 'GER', flag: '', colors: [], raceQuota: { men: 6, women: 6 }, stageQuota: { men: 8, women: 8 } },
+  { name: 'Ukraine', shortName: 'UKR', flag: '', colors: [], raceQuota: { men: 5, women: 4 }, stageQuota: { men: 7, women: 6 } },
+  { name: 'Belarus', shortName: 'BEL', flag: '', colors: [], raceQuota: { men: 5, women: 4 }, stageQuota: { men: 7, women: 6 } },
+  { name: 'Norway', shortName: 'NOR', flag: '', colors: [], raceQuota: { men: 4, women: 4 }, stageQuota: { men: 6, women: 6 } },
+  { name: 'France', shortName: 'FRA', flag: '', colors: [], raceQuota: { men: 6, women: 6 }, stageQuota: { men: 8, women: 8 } },
+  { name: 'Finland', shortName: 'FIN', flag: '', colors: [], raceQuota: { men: 6, women: 6 }, stageQuota: { men: 8, women: 8 } },
 ];
 
 var mockData = {

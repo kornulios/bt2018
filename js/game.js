@@ -3,6 +3,7 @@ import * as gameData from './data.js';
 import { Utils } from './utils/Utils.js';
 import { Track } from './model/track.js';
 import { Result } from './model/result.js';
+import { Team } from './model/Team.js';
 
 import { SprintRace } from './controller/SprintRace.js';
 import { RelayRace } from './controller/RelayRace.js';
@@ -12,7 +13,6 @@ import { MassStartRace } from './controller/MassStartRace.js';
 import * as Constants from './constants/constants.js';
 import { View } from './controller/ViewController.js';
 import { Graphic2D } from './view/Graphic2D.js';
-import { Vector } from './view/Vector.js';
 
 let oldTimeStamp = 0;
 
@@ -23,33 +23,18 @@ export class Game {
     this.gameTimer;
     this.gameRunning = false;
 
-    // this.view = new View();
-    // this.championship = Object.create(null);
-
-    // this.raceMap = gameData.stageData;
-
-    // this.teams = this.loadTeams();
-    // this.players = this.loadPlayers();
-
     this.selectedResults = 0;
     this.selectedGender = 'men';
     this.playerTeam = "";
 
-
+    this.teams = [];
+    this.totalPlayerCount = 0; //temp
     this.race = new MassStartRace();
     this.view = new View();
 
     this.canvas = new Graphic2D();
 
     this.stopTimer = null;
-  }
-
-  createPlayers(number) {
-    var res = [];
-    for (var i = 1; i <= number; i++) {
-      res.push(new Player({ name: "Player " + i, number: i, speed: 19 + (i / 10) }))
-    }
-    return res;
   }
 
   runGame(timeStamp) {       //refactored with rAF X2
@@ -70,16 +55,17 @@ export class Game {
     this.view.renderShortResults(this.race.results, this.race.track);
     // this.view.renderProgress(this.race);
 
-
-
+    //REQUEST NEXT FRAME
     this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
 
+    //FINISH THE RACE
     if (this.race.raceFinished) {
       window.cancelAnimationFrame(this.stopTimer);
       console.log('race finished', timeStamp);
       this.view.renderResults(this.race.results, this.race.track);
     }
   }
+
 
   getPlayerCoords(players) {
 
@@ -120,39 +106,44 @@ export class Game {
 
     oldTimeStamp = performance.now();
     this.canvas.drawMapBeta(race.track);
-    window.requestAnimationFrame(this.runGame.bind(this));
     
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(14799) }]); // -- debugger for player placement
+    //START RACE
+    // window.requestAnimationFrame(this.runGame.bind(this));
+
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
     // this.view.renderProgress(this.race);
 
-
-    // const canvas = new Graphic2D();
-    // canvas.drawMapBeta();
-
-    // const tNow = Date.now();
-
-    // const race = new SprintRace();
-    // const view = new View();
-
-    // race.run();
-
-    // view.renderShortResults(race.results, race.track);
-    // view.renderShortRelayResults(race.results, race.track);
-
-    // let r = 0;
-    // for (var i = 0; i < 109; i++) {
-    //   for (var j = 0; j < 10; j ++) {
-    //     r++;
-    //   }
-    // }
-    // const tDiff = Date.now() - tNow;
-    // console.log((tDiff / 1000) + 's');
+    //GENERATE TEAMS
+    this.simulateTeams();
+    this.view.renderTeamList(this.teams);
 
   }
 
+  simulateTeams() {
+    // generate teams and players
+    const { teamData } = gameData;
 
+    for (let i = 0; i < teamData.length; i++) {
 
+      const team = new Team(teamData[i]);
+
+      for (let j = 0; j < team.stageQuota.men + 2; j++) {
+        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'male' });
+        team.setPlayer(newPlayer);
+        this.totalPlayerCount++;
+      }
+
+      for (let j = 0; j < team.stageQuota.women + 2; j++) {
+        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'female' });
+        team.setPlayer(newPlayer);
+        this.totalPlayerCount++;
+      }
+
+      this.teams.push(team);
+    }
+
+  }
 
 
 
@@ -195,48 +186,7 @@ export class Game {
     changeTab('results');				// TEMP
   }
 
-  runGameOld(tFrame) {       //refactored with rAF
-    var me = this,
-      gameSpeed = 100,
-      frameCount = tFrame - tNow,
-      gameTick = isNaN(frameCount) ? 0 : frameCount,
-      raceRunning = true;
 
-    //update timer
-    tNow = tFrame;
-
-    // UPDATE
-    raceRunning = me.championship.runRace(gameTick * gameSpeed);
-
-    //RENDER
-    me.render();
-
-    me.stopTimer = window.requestAnimationFrame(me.runGame.bind(me));
-
-    if (!raceRunning) {
-      window.cancelAnimationFrame(me.stopTimer);
-      this.finishRace();
-    }
-  }
-
-  calculateRace() {
-    //used to skip race 
-    var me = this,
-      race = me.getCurrentRace(),
-      raceRunning = true;
-
-    console.time();
-
-    race.setRaceStatus('Started');
-    do
-      raceRunning = me.championship.runRace(gameFps * 100);
-    while (raceRunning)
-
-    me.finishRace();
-
-    // me.render();
-    console.timeEnd();
-  }
 
   getPlayerTeam() {
     return this.playerTeam.name;

@@ -32,10 +32,7 @@ export class Track {
     this.coords = [
       new Vector(205, 210),
       new Vector(10, 210),
-      // new Vector(10, 10),
       new Vector(10, 30),
-      // new Vector(16, 25),
-      // new Vector(23, 20),
       new Vector(28, 15),
       new Vector(195, 100),
       new Vector(410, 10),
@@ -65,8 +62,6 @@ export class Track {
       new Vector(this.baseLineX + 20, this.baseLineY + 20),
     ];
     this.finishCoordsMap = this.initCoordsMap(this.finishCoords);
-
-    // this.finishPixelRation = this.getPixelRatio(this.finishCoordsMap, 150);
 
   }
 
@@ -109,7 +104,6 @@ export class Track {
   }
 
   getPenaltyCoordinates(dist) {
-    // const d = (dist - (this.lapLength * (this.getLapNumber(dist) - 1))) / this.pixelRatio;
     const d = (150 * Math.ceil(dist / 150) - dist) / this.penaltyPixelRatio;
     let totalLength = 0;
 

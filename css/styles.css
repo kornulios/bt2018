@@ -38,3 +38,7 @@ canvas {
   padding-left: 10px;
   font-size: 0.85rem;
 }
+
+.player-list {
+  display: flex;
+}
