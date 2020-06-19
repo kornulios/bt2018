@@ -38,7 +38,7 @@ export class Game {
   }
 
   runGame(timeStamp) {       //refactored with rAF X2
-    const gameSpeed = 50;
+    const gameSpeed = 10;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -105,7 +105,7 @@ export class Game {
     const { race } = this;
 
     oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
+    // this.canvas.drawMapBeta(race.track);
     
     //START RACE
     // window.requestAnimationFrame(this.runGame.bind(this));
@@ -115,12 +115,12 @@ export class Game {
     // this.view.renderProgress(this.race);
 
     //GENERATE TEAMS
-    this.simulateTeams();
+    this.generateTeams();
     this.view.renderTeamList(this.teams);
 
   }
 
-  simulateTeams() {
+  generateTeams() {
     // generate teams and players
     const { teamData } = gameData;
 
@@ -142,6 +142,15 @@ export class Game {
 
       this.teams.push(team);
     }
+
+  }
+
+  prepareNextRace() {
+
+  }
+
+  setupRaceList() {
+    // setup race players list depending on race type
 
   }
 

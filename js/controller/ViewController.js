@@ -174,12 +174,12 @@ export class View {
 		const htmlResults = teams.map(team => {
 			const maleList = team.getMalePlayers().map(player => {
 
-				return `<li>${player.name}</li>`
+				return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`
 			}).join('');
 
 			const femaleList = team.getFemalePlayers().map(player => {
 
-				return `<li>${player.name}</li>`
+				return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`
 			}).join('');
 
 			return `<div>${team.name}</div>
