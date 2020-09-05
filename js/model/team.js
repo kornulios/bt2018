@@ -1,4 +1,4 @@
-export class Team {
+export class TeamAI {
   constructor(team) {
     this.name = team.name;
     this.shortName = team.shortName;
@@ -23,6 +23,10 @@ export class Team {
 
   setPlayerControlled() {
     this.playerControlled = true;
+  }
+
+  getTeamPlayers(players) {
+    return players.filter(player => player.team === this.shortName);
   }
 
   getMalePlayers() {

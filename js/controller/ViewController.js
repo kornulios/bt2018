@@ -192,4 +192,14 @@ export class View {
 		document.querySelector('#run').innerHTML = `<div>${htmlResults}</div>`;
 	}
 
+	renderPlayerList(players) {
+		const playerListHtml = players.map(player => {
+			return `<li>${player.name} ${player.team} ${player.gender === 'male' ? 'M' : 'F'} S:${player.baseSpeed} A:${player.accuracy}</li>`
+		});
+
+		const list = `<ul>${playerListHtml.join('')}</ul>`;
+
+		document.querySelector('#run').innerHTML = `<div>${list}</div>`;
+	}
+
 }

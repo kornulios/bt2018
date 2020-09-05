@@ -6,7 +6,10 @@ export class Championship {
     this.results = [];
     this.players = [];
     this.currentRace;
-    this.raceList = createRaceList();
+    // this.raceList = createRaceList();
+
+    this.playerPoints = {};
+    this.nationPoints = {};
 
     this._initPlayers(game.players);
 
@@ -16,10 +19,7 @@ export class Championship {
   }
 
   _initPlayers(players) {
-    players.forEach(player => {
-      player.points = 0;
-      this.players.push(player);
-    });
+    
   }
 
   initNextRace() {

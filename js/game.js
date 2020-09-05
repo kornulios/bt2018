@@ -3,7 +3,7 @@ import * as gameData from './data.js';
 import { Utils } from './utils/Utils.js';
 import { Track } from './model/track.js';
 import { Result } from './model/result.js';
-import { Team } from './model/Team.js';
+import { TeamAI } from './model/Team.js';
 
 import { SprintRace } from './controller/SprintRace.js';
 import { RelayRace } from './controller/RelayRace.js';
@@ -28,6 +28,7 @@ export class Game {
     this.playerTeam = "";
 
     this.teams = [];
+    this.players = [];
     this.totalPlayerCount = 0; //temp
     this.race = new MassStartRace();
     this.view = new View();
@@ -116,7 +117,9 @@ export class Game {
 
     //GENERATE TEAMS
     this.generateTeams();
-    this.view.renderTeamList(this.teams);
+    this.view.renderPlayerList(this.players);
+    // this.view.renderTeamList(this.teams);
+    // console.log(this.players);
 
   }
 
@@ -126,17 +129,19 @@ export class Game {
 
     for (let i = 0; i < teamData.length; i++) {
 
-      const team = new Team(teamData[i]);
+      const team = new TeamAI(teamData[i]);
 
       for (let j = 0; j < team.stageQuota.men + 2; j++) {
-        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'male' });
-        team.setPlayer(newPlayer);
+        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'male', team: team.shortName });
+        // team.setPlayer(newPlayer);
+        this.players.push(newPlayer);
         this.totalPlayerCount++;
       }
 
       for (let j = 0; j < team.stageQuota.women + 2; j++) {
-        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'female' });
-        team.setPlayer(newPlayer);
+        const newPlayer = new Player({ id: this.totalPlayerCount + 1, gender: 'female', team: team.shortName });
+        // team.setPlayer(newPlayer);
+        this.players.push(newPlayer);
         this.totalPlayerCount++;
       }
 
