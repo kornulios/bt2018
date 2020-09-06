@@ -39,7 +39,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 10;
+    const gameSpeed = 50;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -51,10 +51,11 @@ export class Game {
 
     //RENDER
     this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.players));
-    this.canvas.drawGameTick(gameTick);
-    this.view.renderShortResults(this.race.results, this.race.track);
-    this.view.renderProgress(this.race);
+    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
+    this.canvas.drawGameTick(gameTick); // FPS
+
+    // this.view.renderShortResults(this.race.results, this.race.track);
+    // this.view.renderProgress(this.race);
 
     //REQUEST NEXT FRAME
     this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));

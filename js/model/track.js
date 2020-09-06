@@ -3,7 +3,7 @@ import { Vector } from "../view/Vector.js";
 export class Track {
   constructor() {
     this.penaltyLapLength = 150;
-    this.lapLength = 3000;
+    this.lapLength = null;
 
     //sprint
     // this.waypoints = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500]

@@ -8,6 +8,8 @@ export class Race {
   constructor(config) {
     this.track = new Track();
     this.results = new Result();
+    this.players = [];
+
     this.frameRate = 100;
     this.raceTimer = 0;
     this.raceFinished = false;
@@ -15,17 +17,23 @@ export class Race {
     if (config.raceType === 1) {
       this.track.waypoints = Constants.WAYPOINTS_TYPE_1;
       this.track.shootingRange = Constants.RANGE_TYPE_1;
+      this.track.lapLength = 3000;
     } else {
       this.track.waypoints = Constants.WAYPOINTS_TYPE_2;
       this.track.shootingRange = Constants.RANGE_TYPE_2;
+      this.track.lapLength = 2500;
     }
 
     this.track.initTrack();
   }
 
-  renderResults(results, track) {
-    const view = new View();
-    view.renderResults(results, track);
+  // renderResults(results, track) {
+  //   const view = new View();
+  //   view.renderResults(results, track);
+  // }
+
+  getPlayers() {
+    return this.players;
   }
 
   logPlayerResult(resultStore, player, passedWaypoint, time) {
@@ -129,5 +137,4 @@ export class Race {
     alert("race finished");
     this.status = "Finished";
   }
-
 }
