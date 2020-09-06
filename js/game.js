@@ -101,7 +101,7 @@ export class Game {
   }
 
   simulatePlayer() {
-    this.race = new MassStartRace();
+    this.race = new RelayRace();
 
     const { race } = this;
 
@@ -113,7 +113,7 @@ export class Game {
 
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
-    this.view.renderProgress(this.race);
+    // this.view.renderProgress(this.race);
 
     //GENERATE TEAMS
     // this.generateTeams();
@@ -122,6 +122,32 @@ export class Game {
     // this.view.renderTeamList(this.teams);
     // console.log(this.players);
   }
+
+  //#region Racing Sims
+  simulateSprint() {
+    this.race = new SprintRace();
+
+    const { race } = this;
+
+    oldTimeStamp = performance.now();
+    this.canvas.drawMapBeta(race.track);
+
+    //START RACE
+    window.requestAnimationFrame(this.runGame.bind(this));
+  }
+
+  simulateRelay() {
+    this.race = new RelayRace();
+
+    const { race } = this;
+
+    oldTimeStamp = performance.now();
+    this.canvas.drawMapBeta(race.track);
+
+    //START RACE
+    window.requestAnimationFrame(this.runGame.bind(this));
+  }
+  //#endregion
 
   generateTeams() {
     // generate teams and players
