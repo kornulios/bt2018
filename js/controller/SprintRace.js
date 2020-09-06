@@ -7,7 +7,7 @@ export class SprintRace extends Race {
   constructor() {
     const playerCount = 105;
 
-    super();
+    super({ raceType: Constants.RACE_TYPE_SHORT });
 
     this.players = [];
 

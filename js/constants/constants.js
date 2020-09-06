@@ -29,3 +29,20 @@ export const PLAYER_STATUS = {
   PENALTY: 4,
   FINISHED: 5,
 };
+
+//individual / pursuit / mass start
+export const WAYPOINTS_TYPE_1 = [0,
+  1500, 2300, 2950, 3000,
+  4500, 5300, 5950, 6000,
+  7500, 8300, 8950, 9000,
+  10500, 11300, 11950, 12000,
+  13500, 14300, 15000
+];
+export const RANGE_TYPE_1 = [0, 2950, 5950, 8950, 11950];
+
+// relay / sprint
+export const WAYPOINTS_TYPE_2 = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500];
+export const RANGE_TYPE_2 = [0, 2450, 4950];
+
+export const RACE_TYPE_LONG = 1;
+export const RACE_TYPE_SHORT = 2;

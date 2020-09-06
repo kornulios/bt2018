@@ -29,8 +29,6 @@ export class RelayRace extends Race {
           name: "Player " + (t + 1) + "-" + i,
           team: teams[t].name,
           number: (t + 1) + ' ' + i,
-          // speed: 21,
-          // accuracy: 20,
         }));
       }
     }
