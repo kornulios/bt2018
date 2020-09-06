@@ -15,7 +15,6 @@ export class SprintRace extends Race {
       this.players.push(new Player({
         name: "Player " + i,
         number: i,
-        // speed: 19 + (i / 10),
         startTimer: (i - 1) * 30000,
       }));
     }
