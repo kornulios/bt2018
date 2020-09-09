@@ -70,32 +70,35 @@ export class Game {
 
   getPlayerCoords(players) {
     const res = players.map((player) => {
-      if (player.status !== Constants.PLAYER_STATUS.NOT_STARTED) {
-        if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-          return {
-            name: player.name,
-            number: player.number,
-            coords: this.race.track.getPenaltyCoordinates(player.penalty),
-          };
-        } else if (
-          player.distance >=
-          this.race.track.getTrackLength() - this.race.track.finishLineLength
-        ) {
-          return {
-            name: player.name,
-            number: player.number,
-            coords: this.race.track.getFinishCoordinates(player.distance),
-          };
-        }
+      if (
+        player.status === Constants.PLAYER_STATUS.NOT_STARTED ||
+        player.status === Constants.PLAYER_STATUS.FINISHED
+      ) {
+        return false;
+      }
 
+      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
         return {
           name: player.name,
           number: player.number,
-          coords: this.race.track.getCoordinates(player.distance),
+          coords: this.race.track.getPenaltyCoordinates(player.penalty),
         };
-      } else {
-        return false;
+      } else if (
+        player.distance >=
+        this.race.track.getTrackLength() - this.race.track.finishLineLength
+      ) {
+        return {
+          name: player.name,
+          number: player.number,
+          coords: this.race.track.getFinishCoordinates(player.distance),
+        };
       }
+
+      return {
+        name: player.name,
+        number: player.number,
+        coords: this.race.track.getCoordinates(player.distance),
+      };
     });
 
     return res;
