@@ -170,23 +170,36 @@ export class View {
 		document.querySelector('#run').innerHTML = `<div class="results">${htmlResults}</div>`;
 	}
 
-	// for future race draw
-	drawOnCanvas() {
-		let myCanvas = document.querySelector('#main-canvas');
-		let context = myCanvas.getContext("2d");
+	renderTeamList(teams) {
+		const htmlResults = teams.map(team => {
+			const maleList = team.getMalePlayers().map(player => {
 
-		var width = 125;  // Triangle Width
-		var height = 105; // Triangle Height
-		var padding = 20;
+				return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`
+			}).join('');
 
-		context.beginPath();
-		context.moveTo(padding + width / 2, padding);        // Top Corner
-		context.lineTo(padding + width, height + padding); // Bottom Right
-		context.lineTo(padding, height + padding);         // Bottom Left
-		context.closePath();
+			const femaleList = team.getFemalePlayers().map(player => {
 
-		context.fillStyle = "#ffc821";
-		context.fill();
+				return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`
+			}).join('');
+
+			return `<div>${team.name}</div>
+			<div class="player-list">
+				<ul>${maleList}</ul>
+				<ul>${femaleList}</ul>
+			</div>`;
+		}).join('');
+
+		document.querySelector('#run').innerHTML = `<div>${htmlResults}</div>`;
+	}
+
+	renderPlayerList(players) {
+		const playerListHtml = players.map(player => {
+			return `<li>${player.name} ${player.team} ${player.gender === 'male' ? 'M' : 'F'} S:${player.baseSpeed} A:${player.accuracy}</li>`
+		});
+
+		const list = `<ul>${playerListHtml.join('')}</ul>`;
+
+		document.querySelector('#run').innerHTML = `<div>${list}</div>`;
 	}
 
 }

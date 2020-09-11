@@ -1,5 +1,5 @@
 function getData() {
-  return axios.get('http://localhost:3000/data');
+  return axios.get("http://localhost:3000/data");
 }
 
 var debugProfiler = {};
@@ -10,7 +10,7 @@ var CONSTANT = {
     ALL: 1,
     SEPARATE: 2,
     PURSUIT: 3,
-    RELAY: 4
+    RELAY: 4,
   },
 
   //AI behaviour constants
@@ -22,14 +22,13 @@ var CONSTANT = {
 
   RUNSTATE: { NORMAL: 0, EASE: 1, PUSHING: 2 },
 
-  START_TIME_INTERVAL: 30,		// in seconds
+  START_TIME_INTERVAL: 30, // in seconds
   PURSUIT_PLAYERS_NUM: 60,
   PENALTY_LAP_LENGTH: 150,
   PENALTY_MINUTE: 100,
 
-  BASE_SPEED_MOD: 0.05
-
-}
+  BASE_SPEED_MOD: 0.05,
+};
 
 Object.freeze(CONSTANT);
 
@@ -39,18 +38,18 @@ var raceTypes = {
     waypoints: 25,
     laps: 3,
     shootings: 2,
-    type: 'Sprint',
+    type: "Sprint",
     penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE
+    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
   },
   individual: {
     lapLength: { men: 4000, women: 3000 },
     waypoints: 25,
     laps: 5,
     shootings: 4,
-    type: 'Individual',
+    type: "Individual",
     penaltyType: CONSTANT.PENALTY_TYPE.MINUTE,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE
+    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
   },
   pursuit: {
     //60 best of sprint race, intervals are taken from spint
@@ -58,9 +57,9 @@ var raceTypes = {
     waypoints: 25,
     laps: 5,
     shootings: 4,
-    type: 'Pursuit',
+    type: "Pursuit",
     penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.PURSUIT
+    startType: CONSTANT.RACE_START_TYPE.PURSUIT,
   },
   massStart: {
     // 30 top ranked championship players
@@ -68,9 +67,9 @@ var raceTypes = {
     waypoints: 25,
     laps: 5,
     shootings: 4,
-    type: 'Mass Start',
+    type: "Mass Start",
     penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.ALL
+    startType: CONSTANT.RACE_START_TYPE.ALL,
   },
   relay: {
     //WHOA!		4x6 women; 4x7,5 men
@@ -79,10 +78,10 @@ var raceTypes = {
     // waypointsPerLap: 3, // 3 is finish
     laps: 12,
     shootings: 8,
-    type: 'Relay',
+    type: "Relay",
     penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.RELAY
-  }
+    startType: CONSTANT.RACE_START_TYPE.RELAY,
+  },
 };
 
 // var trackData = [
@@ -108,41 +107,79 @@ var raceTypes = {
 // 	}
 // ];
 
-
 //Season consists of 9 stages and 1 World Cup event
 
-
-var teamData = [
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
-  { name: 'Ukraine', shortName: 'UKR', flag: '', colors: [] },
-  { name: 'Bielarus', shortName: 'BEL', flag: '', colors: [] },
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
-  { name: 'Germany', shortName: 'GER', flag: '', colors: [] },
+export const teamData = [
+  {
+    name: "Germany",
+    shortName: "GER",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 6, women: 6 },
+    stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Ukraine",
+    shortName: "UKR",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 5, women: 4 },
+    stageQuota: { men: 7, women: 6 },
+  },
+  {
+    name: "Belarus",
+    shortName: "BLR",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 5, women: 4 },
+    stageQuota: { men: 7, women: 6 },
+  },
+  {
+    name: "Norway",
+    shortName: "NOR",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 6, women: 6 },
+    stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "France",
+    shortName: "FRA",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 6, women: 6 },
+    stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Finland",
+    shortName: "FIN",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 6, women: 6 },
+    stageQuota: { men: 8, women: 8 },
+  },
 ];
 
 var mockData = {
-  teamDesc: ' is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.'
+  teamDesc:
+    " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
 };
 
 const gameData = {
   stageData: [
     {
-      name: 'Pokljuka',
-      raceMap: [
-        raceTypes.individual,
-        raceTypes.sprint,
-        raceTypes.pursuit
-      ]
+      name: "Pokljuka",
+      raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit],
     },
     {
-      name: 'Hochfilzen',
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay]
+      name: "Hochfilzen",
+      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
     },
     {
-      name: 'Nove Mesto',
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart]
-    }
-  ]
+      name: "Nove Mesto",
+      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
+    },
+  ],
 };
 
 const createRaceList = () => {
@@ -152,17 +189,16 @@ const createRaceList = () => {
       res.push({
         stageName: stage.name,
         raceType: race,
-        raceGender: 'men',
-        results: null
+        raceGender: "men",
+        results: null,
       });
       res.push({
         stageName: stage.name,
         raceType: race,
-        raceGender: 'women',
-        results: null
+        raceGender: "women",
+        results: null,
       });
     }
   }
   return res;
 };
-

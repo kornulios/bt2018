@@ -1,10 +1,13 @@
-class Championship {
+export class Championship {
   constructor() {
     this.stages = { ...gameData.stageData };
     this.results = [];
     this.players = [];
     this.currentRace;
-    this.raceList = createRaceList();
+    // this.raceList = createRaceList();
+
+    this.playerPoints = {};
+    this.nationPoints = {};
 
     this._initPlayers(game.players);
 
@@ -13,31 +16,20 @@ class Championship {
     window.myRace = this.currentRace;
   }
 
-  _initPlayers(players) {
-    players.forEach(player => {
-      player.points = 0;
-      this.players.push(player);
-    });
-  }
+  _initPlayers(players) {}
 
   initNextRace() {
     for (let race of this.raceList) {
-      if (race.results === null) 
-        this.currentRace = new Race(race.stageName, race.raceType, race.raceGender);
+      if (race.results === null)
+        this.currentRace = new Race(
+          race.stageName,
+          race.raceType,
+          race.raceGender
+        );
     }
   }
 
-  onRaceFinish() {
-    for (let race of this.raceList) {
-      if (race.results === null) 
-        race.results = this.currentRace.getResults();
-        return;
-    }
-  }
+  onRaceFinish(results) {}
 
-  createRaceRoster() {
-
-  }
-
-
+  createRaceRoster() {}
 }

@@ -1,26 +1,25 @@
 <html>
+  <head>
+    <script type="module" src="./js/App.js"></script>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
 
-<head>
-  <script type="module" src="./js/App.js"></script>
-  <link rel="stylesheet" href="./css/styles.css" />
-</head>
+  <body>
+    <div class="main">
+      <div class="header"><h1>Biatech 2020</h1></div>
 
-<body>
-  <div class="main">I'm a new BTech
-    <div><span>Speed: </span>
-      <input id="spd1" type="text" />
+      <div>
+        <button type="button" id="race-sprint">Sprint Race</button>
+        <button type="button" id="race-pursuit">Pursuit Race</button>
+        <button type="button" id="race-mass">Mass Start Race</button>
+        <button type="button" id="race-indi">Individual Race</button>
+        <button type="button" id="race-relay">Relay Race</button>
+      </div>
+
+      <div>Test run</div>
+      <div id="run"></div>
     </div>
-    <div><span>Accuracy:</span>
-      <input id="acc1" type="text" />
-    </div>
-    <div><button type="button" id="go">Go</button></div>
-
-    <div>Test run</div>
-    <div id="run"></div>
-  </div>
-  <canvas width="700px" height="400px" id="main-canvas">
-  </canvas>
-  <div id="finish-results"></div>
-</body>
-
+    <canvas width="700px" height="400px" id="main-canvas"> </canvas>
+    <div id="finish-results"></div>
+  </body>
 </html>

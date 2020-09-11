@@ -1,13 +1,10 @@
-
-let canvas = document.querySelector('#main-canvas');
-
+let canvas = document.querySelector("#main-canvas");
 
 export class Graphic2D {
-
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
-    ctx.fillText('FPS: ' + (1000 / tick), 620, 50);
+    ctx.fillText("FPS: " + 1000 / tick, 620, 50);
   }
 
   drawCoordinatesMap(coordsMap, color) {
@@ -27,7 +24,7 @@ export class Graphic2D {
     const { coordsMap, penaltyCoordsMap, finishCoordsMap } = track;
     let ctx = canvas.getContext("2d");
     let img = new Image();
-    img.src = '../../static/map.gif';
+    img.src = "../../static/map.gif";
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -56,7 +53,6 @@ export class Graphic2D {
     // ctx.strokeStyle = "green";
     // ctx.stroke();
 
-
     //start / finish line
     ctx.beginPath();
     ctx.strokeStyle = "#000000";
@@ -79,36 +75,36 @@ export class Graphic2D {
     ctx.fillRect(225.5, 233, 3, 3);
   }
 
-
   drawPlayersBeta(playerCoords) {
     let ctx = canvas.getContext("2d");
 
     for (let i = 0; i < playerCoords.length; i++) {
-      if (playerCoords[i]) {
-        const { x, y } = playerCoords[i].coords;
-        ctx.beginPath();
-        ctx.arc(x, y, 8, 0, Math.PI * 2);
+      if (playerCoords[i].coords) {
+        try {
+          const { x, y } = playerCoords[i].coords;
+          ctx.beginPath();
+          ctx.arc(x, y, 8, 0, Math.PI * 2);
 
-        ctx.fillStyle = "#ffc7f0";
-        ctx.strokeStyle = "#000000";
+          ctx.fillStyle = "#ffc7f0";
+          ctx.strokeStyle = "#000000";
 
-        ctx.fill();
-        ctx.stroke();
+          ctx.fill();
+          ctx.stroke();
 
-        ctx.fillStyle = "#000000";
-        ctx.font = '12px Consolas';
-        if (i <= 8) {
-          ctx.fillText(i + 1, x - 3.25, y + 3.25);
-        } else if (i > 8 && i < 99) {
-          ctx.fillText(i + 1, x - 7, y + 3.25);
-        } else if (i >= 99) {
-          ctx.font = '10px Consolas';
-          ctx.fillText(i + 1, x - 7, y + 3.25);
+          ctx.fillStyle = "#000000";
+          ctx.font = "12px Consolas";
+          if (i <= 8) {
+            ctx.fillText(i + 1, x - 3.25, y + 3.25);
+          } else if (i > 8 && i < 99) {
+            ctx.fillText(i + 1, x - 7, y + 3.25);
+          } else if (i >= 99) {
+            ctx.font = "10px Consolas";
+            ctx.fillText(i + 1, x - 7, y + 3.25);
+          }
+        } catch {
+          debugger;
         }
       }
     }
-
-
   }
-
 }
