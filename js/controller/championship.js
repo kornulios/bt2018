@@ -1,32 +1,55 @@
+// import { racesData } from '../data.js';
+
 export class Championship {
   constructor() {
-    this.stages = { ...gameData.stageData };
+    // this.stages = { ...gameData.stageData };
     this.results = [];
-    this.players = [];
-    this.currentRace;
+    this.raceCalendar = [];
+    //this.players = [];
+    //this.currentRace;
     // this.raceList = createRaceList();
 
     this.playerPoints = {};
     this.nationPoints = {};
 
-    this._initPlayers(game.players);
+    // this._initPlayers(game.players);
 
-    this.initNextRace();
-    this.currentRace.initRoster(this.players);
-    window.myRace = this.currentRace;
+    // this.initNextRace();
+    // this.currentRace.initRoster(this.players);
+    // window.myRace = this.currentRace;
   }
 
-  _initPlayers(players) {}
+  createRaceList(racesData) {
+    let raceIndex = 1;
+    let res = [];
 
-  initNextRace() {
-    for (let race of this.raceList) {
-      if (race.results === null)
-        this.currentRace = new Race(
-          race.stageName,
-          race.raceType,
-          race.raceGender
-        );
+    for (let stage of racesData) {
+      for (let race of stage.raceMap) {
+        res.push({
+          index: raceIndex,
+          stageName: stage.name,
+          raceType: race,
+          raceGender: "men",
+          results: null,
+        });
+        raceIndex++;
+  
+        res.push({
+          index: raceIndex,
+          stageName: stage.name,
+          raceType: race,
+          raceGender: "women",
+          results: null,
+        });
+        raceIndex++;
+      }
     }
+    
+    this.raceCalendar = res;
+  };
+
+  get calendar() {
+    return this.raceCalendar;
   }
 
   onRaceFinish(results) {}

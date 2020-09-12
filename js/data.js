@@ -32,7 +32,7 @@ var CONSTANT = {
 
 Object.freeze(CONSTANT);
 
-var raceTypes = {
+export const raceTypes = {
   sprint: {
     lapLength: { men: 3333.33, women: 2500 },
     waypoints: 25,
@@ -165,8 +165,8 @@ var mockData = {
     " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
 };
 
-const gameData = {
-  stageData: [
+export const racesData = 
+ [
     {
       name: "Pokljuka",
       raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit],
@@ -179,25 +179,30 @@ const gameData = {
       name: "Nove Mesto",
       raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
     },
-  ],
-};
+  ];
 
 const createRaceList = () => {
+  let raceIndex = 1;
   let res = [];
   for (let stage of gameData.stageData) {
     for (let race of stage.raceMap) {
       res.push({
+        index: raceIndex,
         stageName: stage.name,
         raceType: race,
         raceGender: "men",
         results: null,
       });
+      raceIndex++;
+
       res.push({
+        index: raceIndex,
         stageName: stage.name,
         raceType: race,
         raceGender: "women",
         results: null,
       });
+      raceIndex++;
     }
   }
   return res;

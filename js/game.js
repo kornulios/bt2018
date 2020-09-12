@@ -13,6 +13,7 @@ import { MassStartRace } from "./controller/MassStartRace.js";
 import * as Constants from "./constants/constants.js";
 import { View } from "./controller/ViewController.js";
 import { Graphic2D } from "./view/Graphic2D.js";
+import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 
@@ -105,15 +106,20 @@ export class Game {
   }
 
   simulatePlayer() {
-    this.race = new RelayRace();
 
-    const { race } = this;
+    const championship = new Championship();
+    championship.createRaceList(gameData.racesData);
 
-    oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
+    console.log(championship.calendar);
+    // this.race = new RelayRace();
+
+    // const { race } = this;
+
+    // oldTimeStamp = performance.now();
+    // this.canvas.drawMapBeta(race.track);
 
     //START RACE
-    window.requestAnimationFrame(this.runGame.bind(this));
+    // window.requestAnimationFrame(this.runGame.bind(this));
 
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
