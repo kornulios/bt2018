@@ -33,55 +33,56 @@ var CONSTANT = {
 Object.freeze(CONSTANT);
 
 export const raceTypes = {
-  sprint: {
-    lapLength: { men: 3333.33, women: 2500 },
-    waypoints: 25,
-    laps: 3,
-    shootings: 2,
+  sprint_men: {
     type: "Sprint",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
+    name: "Men 10km Sprint",
+    gender: "men",
   },
-  individual: {
-    lapLength: { men: 4000, women: 3000 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
-    type: "Individual",
-    penaltyType: CONSTANT.PENALTY_TYPE.MINUTE,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
+  sprint_women: {
+    type: "Sprint",
+    name: "Women 7.5km Sprint",
+    gender: "women"
   },
-  pursuit: {
-    //60 best of sprint race, intervals are taken from spint
-    lapLength: { men: 2500, women: 2000 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
+  individual_men: {
+    type: "Individial",
+    name: "Men 20km Individual",
+    gender: "men"
+  },
+  individual_women: {
+    type: "Individial",
+    name: "Women 15km Individual",
+    gender: "women"
+  },
+  pursuit_men: {
     type: "Pursuit",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.PURSUIT,
+    name: "Men 12.5km Pursuit",
+    gender: "men"
   },
-  massStart: {
-    // 30 top ranked championship players
-    lapLength: { men: 3000, women: 2500 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
-    type: "Mass Start",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.ALL,
+  pursuit_women: {
+    type: "Pursuit",
+    name: "Women 10km Pursuit",
+    gender: "women"
   },
-  relay: {
-    //WHOA!		4x6 women; 4x7,5 men
-    lapLength: { men: 2500, women: 2000 },
-    waypoints: 25,
-    // waypointsPerLap: 3, // 3 is finish
-    laps: 12,
-    shootings: 8,
+  massStart_men: {
+    type: "Mass-start",
+    name: "Men 15km Mass-start",
+    gender: "men"
+  },
+  massStart_women: {
+    type: "Mass-start",
+    name: "Women 12.5km Mass-start",
+    gender: "women"
+  },
+  relay_men: {
     type: "Relay",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.RELAY,
+    name: "Men 4x7.5km Relay",
+    gender: "men"
   },
+  relay_women: {
+    type: "Relay",
+    name: "Women 4x6km Relay",
+    gender: "women"
+  }
 };
 
 // var trackData = [
@@ -165,20 +166,24 @@ var mockData = {
     " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
 };
 
-export const racesData = 
- [
+export const racesData =
+  [
     {
       name: "Pokljuka",
-      raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit],
+      raceMap: [
+        raceTypes.individual_men,
+        raceTypes.individual_women,
+        raceTypes.sprint_men, 
+        raceTypes.sprint_women, ],
     },
-    {
-      name: "Hochfilzen",
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
-    },
-    {
-      name: "Nove Mesto",
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
-    },
+    // {
+    //   name: "Hochfilzen",
+    //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
+    // },
+    // {
+    //   name: "Nove Mesto",
+    //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
+    // },
   ];
 
 const createRaceList = () => {

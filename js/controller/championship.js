@@ -28,17 +28,8 @@ export class Championship {
         res.push({
           index: raceIndex,
           stageName: stage.name,
-          raceType: race,
-          raceGender: "men",
-          results: null,
-        });
-        raceIndex++;
-  
-        res.push({
-          index: raceIndex,
-          stageName: stage.name,
-          raceType: race,
-          raceGender: "women",
+          raceType: race.type,
+          raceGender: race.gender,
           results: null,
         });
         raceIndex++;
