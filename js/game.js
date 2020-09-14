@@ -36,6 +36,7 @@ export class Game {
     this.canvas = new Graphic2D();
 
     this.stopTimer = null;
+    this.paused = false;
   }
 
   runGame(timeStamp) {
@@ -59,13 +60,30 @@ export class Game {
     // this.view.renderProgress(this.race);
 
     //REQUEST NEXT FRAME
-    this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
+    this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
 
     //FINISH THE RACE
     if (this.race.raceFinished) {
-      window.cancelAnimationFrame(this.stopTimer);
+      cancelAnimationFrame(this.stopTimer);
       console.log("race finished", timeStamp);
       this.view.renderResults(this.race.results, this.race.track);
+    }
+  }
+
+  pauseGame() {
+    const button = document.querySelector("#pause");
+
+    if (!this.paused) {
+      //stop
+      this.paused = true;
+      cancelAnimationFrame(this.stopTimer);
+      button.innerText = 'Resume';
+    } else {
+      //resume
+      this.paused = false;
+      oldTimeStamp = performance.now();
+      requestAnimationFrame(this.runGame.bind(this));
+      button.innerText = 'Pause';
     }
   }
 
@@ -142,7 +160,7 @@ export class Game {
     this.canvas.drawMapBeta(race.track);
 
     //START RACE
-    window.requestAnimationFrame(this.runGame.bind(this));
+    requestAnimationFrame(this.runGame.bind(this));
   }
 
   simulateRelay() {
@@ -154,7 +172,7 @@ export class Game {
     this.canvas.drawMapBeta(race.track);
 
     //START RACE
-    window.requestAnimationFrame(this.runGame.bind(this));
+    requestAnimationFrame(this.runGame.bind(this));
   }
   //#endregion
 

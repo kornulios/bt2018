@@ -24,6 +24,10 @@ const initEvents = () => {
   document
     .querySelector("#champ-races")
     .addEventListener("click", game.showChampionshipRaces.bind(game));
+
+  document
+    .querySelector("#pause")
+    .addEventListener("click", game.pauseGame.bind(game));
 };
 
 document.addEventListener("DOMContentLoaded", initEvents);
