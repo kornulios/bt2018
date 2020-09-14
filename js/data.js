@@ -85,29 +85,6 @@ export const raceTypes = {
   }
 };
 
-// var trackData = [
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.individual
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.sprint
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.pursuit
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.massStart
-// 	}
-// ];
-
 //Season consists of 9 stages and 1 World Cup event
 
 export const teamData = [
@@ -186,29 +163,4 @@ export const racesData =
     // },
   ];
 
-const createRaceList = () => {
-  let raceIndex = 1;
-  let res = [];
-  for (let stage of gameData.stageData) {
-    for (let race of stage.raceMap) {
-      res.push({
-        index: raceIndex,
-        stageName: stage.name,
-        raceType: race,
-        raceGender: "men",
-        results: null,
-      });
-      raceIndex++;
 
-      res.push({
-        index: raceIndex,
-        stageName: stage.name,
-        raceType: race,
-        raceGender: "women",
-        results: null,
-      });
-      raceIndex++;
-    }
-  }
-  return res;
-};

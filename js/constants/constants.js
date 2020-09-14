@@ -30,6 +30,12 @@ export const PLAYER_STATUS = {
   FINISHED: 5,
 };
 
+export const RACE_STATUS = {
+  NOT_STARTED: 1,
+  IN_PROGRESS: 2,
+  FINISHED: 3,
+}
+
 //individual / pursuit / mass start
 export const WAYPOINTS_TYPE_1 = [0,
   1500, 2300, 2950, 3000,

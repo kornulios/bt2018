@@ -1,22 +1,14 @@
 // import { racesData } from '../data.js';
+import { RACE_STATUS } from '../constants/constants.js';
 
 export class Championship {
   constructor() {
     // this.stages = { ...gameData.stageData };
     this.results = [];
     this.raceCalendar = [];
-    //this.players = [];
-    //this.currentRace;
-    // this.raceList = createRaceList();
 
     this.playerPoints = {};
     this.nationPoints = {};
-
-    // this._initPlayers(game.players);
-
-    // this.initNextRace();
-    // this.currentRace.initRoster(this.players);
-    // window.myRace = this.currentRace;
   }
 
   createRaceList(racesData) {
@@ -31,11 +23,12 @@ export class Championship {
           raceType: race.type,
           raceGender: race.gender,
           results: null,
+          status: RACE_STATUS.NOT_STARTED,
         });
         raceIndex++;
       }
     }
-    
+
     this.raceCalendar = res;
   };
 
@@ -43,7 +36,7 @@ export class Championship {
     return this.raceCalendar;
   }
 
-  onRaceFinish(results) {}
+  onRaceFinish(results) { }
 
-  createRaceRoster() {}
+  createRaceRoster() { }
 }

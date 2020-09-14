@@ -159,6 +159,8 @@ export class Game {
   }
   //#endregion
 
+
+  //don't like it
   generateTeams() {
     // generate teams and players
     const { teamData } = gameData;
