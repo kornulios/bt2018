@@ -41,48 +41,48 @@ export const raceTypes = {
   sprint_women: {
     type: "Sprint",
     name: "Women 7.5km Sprint",
-    gender: "women"
+    gender: "women",
   },
   individual_men: {
     type: "Individial",
     name: "Men 20km Individual",
-    gender: "men"
+    gender: "men",
   },
   individual_women: {
     type: "Individial",
     name: "Women 15km Individual",
-    gender: "women"
+    gender: "women",
   },
   pursuit_men: {
     type: "Pursuit",
     name: "Men 12.5km Pursuit",
-    gender: "men"
+    gender: "men",
   },
   pursuit_women: {
     type: "Pursuit",
     name: "Women 10km Pursuit",
-    gender: "women"
+    gender: "women",
   },
   massStart_men: {
     type: "Mass-start",
     name: "Men 15km Mass-start",
-    gender: "men"
+    gender: "men",
   },
   massStart_women: {
     type: "Mass-start",
     name: "Women 12.5km Mass-start",
-    gender: "women"
+    gender: "women",
   },
   relay_men: {
     type: "Relay",
     name: "Men 4x7.5km Relay",
-    gender: "men"
+    gender: "men",
   },
   relay_women: {
     type: "Relay",
     name: "Women 4x6km Relay",
-    gender: "women"
-  }
+    gender: "women",
+  },
 };
 
 //Season consists of 9 stages and 1 World Cup event
@@ -143,24 +143,33 @@ var mockData = {
     " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
 };
 
-export const racesData =
-  [
-    {
-      name: "Pokljuka",
-      raceMap: [
-        raceTypes.individual_men,
-        raceTypes.individual_women,
-        raceTypes.sprint_men, 
-        raceTypes.sprint_women, ],
-    },
-    // {
-    //   name: "Hochfilzen",
-    //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
-    // },
-    // {
-    //   name: "Nove Mesto",
-    //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
-    // },
-  ];
-
-
+export const racesData = [
+  {
+    name: "Pokljuka",
+    raceMap: [
+      raceTypes.individual_men,
+      raceTypes.individual_women,
+      raceTypes.sprint_men,
+      raceTypes.sprint_women,
+    ],
+  },
+  {
+    name: "Estersund",
+    raceMap: [
+      raceTypes.sprint_men,
+      raceTypes.sprint_women,
+      raceTypes.pursuit_men,
+      raceTypes.relay_women,
+      raceTypes.relay_men,
+      raceTypes.pursuit_women,
+    ],
+  },
+  // {
+  //   name: "Hochfilzen",
+  //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
+  // },
+  // {
+  //   name: "Nove Mesto",
+  //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
+  // },
+];

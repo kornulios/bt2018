@@ -20,6 +20,7 @@ export class Championship {
         res.push({
           index: raceIndex,
           stageName: stage.name,
+          name: race.name,
           raceType: race.type,
           raceGender: race.gender,
           results: null,
@@ -39,4 +40,8 @@ export class Championship {
   onRaceFinish(results) { }
 
   createRaceRoster() { }
+
+  getRaceList() {
+    return this.raceCalendar;
+  }
 }

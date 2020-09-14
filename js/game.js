@@ -106,7 +106,6 @@ export class Game {
   }
 
   simulatePlayer() {
-
     const championship = new Championship();
     championship.createRaceList(gameData.racesData);
 
@@ -159,7 +158,6 @@ export class Game {
   }
   //#endregion
 
-
   //don't like it
   generateTeams() {
     // generate teams and players
@@ -198,6 +196,14 @@ export class Game {
 
   setupRaceList() {
     // setup race players list depending on race type
+  }
+
+  showChampionshipRaces() {
+    const championship = new Championship();
+    championship.createRaceList(gameData.racesData);
+
+    const races = championship.getRaceList();
+    this.view.renderRaceList(races);
   }
 
   // ********************************************************************

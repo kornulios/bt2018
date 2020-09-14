@@ -42,3 +42,11 @@ canvas {
 .player-list {
   display: flex;
 }
+
+.control-group {
+  margin-bottom: 12px;
+}
+
+.game-group {
+  display: flex;
+}
