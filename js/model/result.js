@@ -68,7 +68,6 @@ export class Result {
   }
 
   getWaypointResults(wp) {
-    // var me = this,
     const results = this.data
       .filter((res) => res.waypoint === wp)
       .sort((a, b) => (a.time > b.time ? 1 : -1));

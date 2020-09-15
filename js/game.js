@@ -71,7 +71,6 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
     this.canvas.drawGameTick(gameTick); // FPS
 
-    // this.view.renderShortResults(this.race.results, this.race.track);
     // this.view.renderProgress(this.race);
 
     //REQUEST NEXT FRAME
@@ -83,6 +82,15 @@ export class Game {
       console.log("race finished", timeStamp);
       this.view.renderShortResults(this.race.getFinishResult());
     }
+  }
+
+  simulateRace() {
+    do {
+      this.race.run(100);
+    } while (!this.race.raceFinished);
+
+    console.log("race finished");
+    this.view.renderShortResults(this.race.getFinishResult());
   }
 
   pauseGame() {
@@ -178,7 +186,7 @@ export class Game {
     // create new race with players list
     this.race = new SprintRace(playerRoster);
 
-    this.startNextRace();
+    this.simulateRace();
   }
 
   startNextRace() {
