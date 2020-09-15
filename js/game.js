@@ -81,6 +81,7 @@ export class Game {
       cancelAnimationFrame(this.stopTimer);
       console.log("race finished", timeStamp);
       this.view.renderShortResults(this.race.getFinishResult());
+      this.championship.onRaceFinish(this.race.id, this.race.results);
     }
   }
 
@@ -91,6 +92,7 @@ export class Game {
 
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
+    this.championship.onRaceFinish(this.race);
   }
 
   pauseGame() {
@@ -160,7 +162,9 @@ export class Game {
       .flat();
 
     // create new race with players list
-    this.race = new SprintRace(playerRoster);
+    this.race = new SprintRace();
+    this.race.initRaceData(nextRace);
+    this.race.initPlayers(playerRoster);
   }
 
   startNextRace() {

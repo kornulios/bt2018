@@ -43,45 +43,31 @@ export const RACE_STATUS = {
 
 //individual / pursuit / mass start
 export const WAYPOINTS_TYPE_1 = [
-  0,
-  1500,
-  2300,
-  2950,
-  3000,
-  4500,
-  5300,
-  5950,
-  6000,
-  7500,
-  8300,
-  8950,
-  9000,
-  10500,
-  11300,
-  11950,
-  12000,
-  13500,
-  14300,
-  15000,
-];
+  0,  1500,  2300,  2950,  3000,  4500,
+  5300,  5950,  6000,  7500,  8300,  8950,
+  9000,  10500,  11300,  11950,  12000,
+  13500,  14300,  15000];
 export const RANGE_TYPE_1 = [0, 2950, 5950, 8950, 11950];
 
 // relay / sprint
-export const WAYPOINTS_TYPE_2 = [
-  0,
-  800,
-  1600,
-  2450,
-  2500,
-  3300,
-  4100,
-  4950,
-  5000,
-  5800,
-  6600,
-  7500,
-];
+export const WAYPOINTS_TYPE_2 = [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500];
 export const RANGE_TYPE_2 = [0, 2450, 4950];
 
 export const RACE_TYPE_LONG = 1;
 export const RACE_TYPE_SHORT = 2;
+
+export const RACE_POINTS_MAP = [
+  60, 54, 48, 43, 40, 38, 36, 34, 32, 31, 30, 29, 
+  28, 27, 26, 25, 24, 23, 22, 21, 20, 19,
+  18, 17, 16, 15, 14, 13, 12, 11, 10, 9,
+  8, 7, 6, 5, 4, 3, 2, 1
+];
+
+export const RELAY_POINTS_MAP = [];
+
+export const MASS_START_POINTS_MAP = [
+  60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
+  30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+  20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1
+];
+export const NATION_POINTS_MAP = [];

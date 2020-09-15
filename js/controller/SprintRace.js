@@ -4,13 +4,11 @@ import { Player } from "../model/player.js";
 import * as Constants from "../constants/constants.js";
 
 export class SprintRace extends Race {
-  constructor(players) {
-    if (!players) {
-      throw "No players provided for race";
-    }
-
+  constructor() {
     super({ raceType: Constants.RACE_TYPE_SHORT });
+  }
 
+  initPlayers(players) {
     //prepare players
     this.players = players.map((player, i) => {
       player.number = i + 1;
@@ -30,37 +28,20 @@ export class SprintRace extends Race {
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
 
-      if (
-        player.status === PLAYER_STATUS.NOT_STARTED &&
-        this.raceTimer >= player.startTimer
-      ) {
+      if (player.status === PLAYER_STATUS.NOT_STARTED && this.raceTimer >= player.startTimer) {
         player.status = PLAYER_STATUS.RUNNING;
       }
 
-      if (
-        player.status !== PLAYER_STATUS.FINISHED &&
-        player.status !== PLAYER_STATUS.NOT_STARTED
-      ) {
+      if (player.status !== PLAYER_STATUS.FINISHED && player.status !== PLAYER_STATUS.NOT_STARTED) {
         if (player.status === PLAYER_STATUS.RUNNING) {
           const playerPrevDistance = player.distance;
           player.run(gameTick);
 
-          const passedWaypoint = track.isWaypointPassed(
-            player.distance,
-            playerPrevDistance
-          );
-          const passedRange = track.isShootingEntrancePassed(
-            player.distance,
-            playerPrevDistance
-          );
+          const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
+          const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
           if (passedWaypoint) {
-            this.logPlayerResult(
-              results,
-              player,
-              passedWaypoint,
-              this.raceTimer - player.startTimer
-            );
+            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer - player.startTimer);
           }
 
           if (passedRange) {
@@ -71,34 +52,22 @@ export class SprintRace extends Race {
           player.shoot(gameTick);
 
           if (player.shotCount === 5) {
-            this.logShootingResult(
-              results,
-              player,
-              player.rangeNum,
-              player.currentRange
-            );
-            const penaltyCount = player.currentRange.filter((r) => r === 0)
-              .length;
+            this.logShootingResult(results, player, player.rangeNum, player.currentRange);
+            const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            player.status = penaltyCount
-              ? PLAYER_STATUS.PENALTY
-              : PLAYER_STATUS.RUNNING;
+            player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
           }
         } else if (player.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);
-          player.status =
-            player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+          player.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
         }
 
-        if (player.distance >= track.getTrackLength())
-          player.status = PLAYER_STATUS.FINISHED;
+        if (player.distance >= track.getTrackLength()) player.status = PLAYER_STATUS.FINISHED;
       }
     }
 
-    this.raceFinished = players.every(
-      (player) => player.status === PLAYER_STATUS.FINISHED
-    );
+    this.raceFinished = players.every((player) => player.status === PLAYER_STATUS.FINISHED);
   }
 
   //END OF CLASS

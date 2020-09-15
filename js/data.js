@@ -102,7 +102,7 @@ export const teamData = [
     name: "Ukraine",
     shortName: "UKR",
     flag: "",
-    colors: ["#ffcc00", "#0066cc"],
+    colors: ["#ffcc00", "#030bff"],
     raceQuota: { men: 5, women: 4 },
     stageQuota: { men: 7, women: 6 },
   },
