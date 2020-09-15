@@ -4,22 +4,28 @@ import { Player } from "../model/player.js";
 import * as Constants from "../constants/constants.js";
 
 export class SprintRace extends Race {
-  constructor() {
-    const playerCount = 105;
+  constructor(players) {
+    // const playerCount = 105;
 
     super({ raceType: Constants.RACE_TYPE_SHORT });
 
-    this.players = [];
+    //prepare players
+    this.players = players.map((player, i) => {
+      player.number = i + 1;
+      player.startTimer = i * 30000;
 
-    for (var i = 1; i <= playerCount; i++) {
-      this.players.push(
-        new Player({
-          name: "Player " + i,
-          number: i,
-          startTimer: (i - 1) * 30000,
-        })
-      );
-    }
+      return player;
+    });
+
+    // for (var i = 1; i <= playerCount; i++) {
+    //   this.players.push(
+    //     new Player({
+    //       name: "Player " + i,
+    //       number: i,
+    //       startTimer: (i - 1) * 30000,
+    //     })
+    //   );
+    // }
   }
 
   run(gameTick) {

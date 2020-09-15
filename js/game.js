@@ -174,14 +174,22 @@ export class Game {
         return team.getNextRacePlayers(this.players, Constants.GENDER.MALE);
       })
       .flat();
-    // console.log(playerRoster.flat());
 
     // create new race with players list
     this.race = new SprintRace(playerRoster);
+
+    this.startNextRace();
   }
 
   startNextRace() {
     // start predefined race
+    const { race } = this;
+    // READY!
+    oldTimeStamp = performance.now();
+    // SET!
+    this.canvas.drawMapBeta(race.track);
+    // GO!!!
+    requestAnimationFrame(this.runGame.bind(this));
   }
 
   showChampionshipRaces() {
