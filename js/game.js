@@ -37,6 +37,21 @@ export class Game {
 
     this.stopTimer = null;
     this.paused = false;
+
+    this.initGameData(); // tmp generator
+    this.initChampionship();
+  }
+
+  initChampionship() {
+    this.championship = new Championship();
+    this.championship.createRaceList(gameData.racesData);
+  }
+
+  initGameData() {
+    this.teams = gameData.teamData.map((team) => {
+      return new TeamAI(team);
+    });
+    this.players = gameData.generateTeams(); //temporary players generator
   }
 
   runGame(timeStamp) {
@@ -77,13 +92,13 @@ export class Game {
       //stop
       this.paused = true;
       cancelAnimationFrame(this.stopTimer);
-      button.innerText = 'Resume';
+      button.innerText = "Resume";
     } else {
       //resume
       this.paused = false;
       oldTimeStamp = performance.now();
       requestAnimationFrame(this.runGame.bind(this));
-      button.innerText = 'Pause';
+      button.innerText = "Pause";
     }
   }
 
@@ -123,33 +138,6 @@ export class Game {
     return res;
   }
 
-  simulatePlayer() {
-    const championship = new Championship();
-    championship.createRaceList(gameData.racesData);
-
-    console.log(championship.calendar);
-    // this.race = new RelayRace();
-
-    // const { race } = this;
-
-    // oldTimeStamp = performance.now();
-    // this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    // window.requestAnimationFrame(this.runGame.bind(this));
-
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
-    // this.view.renderProgress(this.race);
-
-    //GENERATE TEAMS
-    // this.generateTeams();
-    // this.view.renderPlayerList(this.players);
-
-    // this.view.renderTeamList(this.teams);
-    // console.log(this.players);
-  }
-
   //#region Racing Sims
   simulateSprint() {
     this.race = new SprintRace();
@@ -176,91 +164,82 @@ export class Game {
   }
   //#endregion
 
-  //don't like it
-  generateTeams() {
-    // generate teams and players
-    const { teamData } = gameData;
+  prepareNextRace() {
+    // get next race definition from championship
+    const nextRace = this.championship.getNextRace();
 
-    for (let i = 0; i < teamData.length; i++) {
-      const team = new TeamAI(teamData[i]);
+    // get players from teamAI as per quotas
+    const playerRoster = this.teams
+      .map((team) => {
+        return team.getNextRacePlayers(this.players, Constants.GENDER.MALE);
+      })
+      .flat();
+    // console.log(playerRoster.flat());
 
-      for (let j = 0; j < team.stageQuota.men + 2; j++) {
-        const newPlayer = new Player({
-          id: this.totalPlayerCount + 1,
-          gender: "male",
-          team: team.shortName,
-        });
-        // team.setPlayer(newPlayer);
-        this.players.push(newPlayer);
-        this.totalPlayerCount++;
-      }
-
-      for (let j = 0; j < team.stageQuota.women + 2; j++) {
-        const newPlayer = new Player({
-          id: this.totalPlayerCount + 1,
-          gender: "female",
-          team: team.shortName,
-        });
-        // team.setPlayer(newPlayer);
-        this.players.push(newPlayer);
-        this.totalPlayerCount++;
-      }
-
-      this.teams.push(team);
-    }
+    // create new race with players list
+    this.race = new SprintRace(playerRoster);
   }
 
-  prepareNextRace() {}
-
-  setupRaceList() {
-    // setup race players list depending on race type
+  startNextRace() {
+    // start predefined race
   }
 
   showChampionshipRaces() {
-    const championship = new Championship();
-    championship.createRaceList(gameData.racesData);
-
-    const races = championship.getRaceList();
+    const races = this.championship.getRaceList();
     this.view.renderRaceList(races);
+  }
+
+  showPlayersList() {
+    // console.log(this.teams[0].getTeamPlayers(this.players));
+    this.prepareNextRace();
+  }
+
+  simulatePlayer() {
+    //debugging function
+    // this.race = new RelayRace();
+    // const { race } = this;
+    // oldTimeStamp = performance.now();
+    // this.canvas.drawMapBeta(race.track);
+    //START RACE
+    // window.requestAnimationFrame(this.runGame.bind(this));
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
+    // this.view.renderProgress(this.race);
+    //GENERATE TEAMS
+    // this.generateTeams();
+    // this.view.renderPlayerList(this.players);
+    // this.view.renderTeamList(this.teams);
+    // console.log(this.players);
   }
 
   // ********************************************************************
 
   // OBSOLETE GOWNO for refactoring
 
-  startNewChampionship() {
-    if (this.players.length > 0) {
-      this.championship = new Championship();
-      // this.championship.prepareNextRace();
-    } else {
-      // console.log('No players loaded.');
-    }
-  }
+  // render() {
+  //   this.view.currentScreen.update();
+  // }
 
-  render() {
-    this.view.currentScreen.update();
-  }
+  // startRace() {
+  //   var race = this.getCurrentRace();
+  //   race.setRaceStatus("Started");
+  //   this.runGame();
+  // }
 
-  startRace() {
-    var race = this.getCurrentRace();
-    race.setRaceStatus("Started");
-    this.runGame();
-  }
+  // finishRace() {
+  //   var race = this.getCurrentRace(),
+  //     championship = this.championship,
+  //     nextRace;
 
-  finishRace() {
-    var race = this.getCurrentRace(),
-      championship = this.championship,
-      nextRace;
-
-    race.setRaceStatus("Finished");
-    nextRace = championship.prepareNextRace();
-    if (!nextRace) {
-      championship.prepareNextStage();
-      changeTab("championship");
-      return;
-    }
-    changeTab("results"); // TEMP
-  }
+  //   race.setRaceStatus("Finished");
+  //   nextRace = championship.prepareNextRace();
+  //   if (!nextRace) {
+  //     championship.prepareNextStage();
+  //     changeTab("championship");
+  //     return;
+  //   }
+  //   changeTab("results"); // TEMP
+  // }
 
   getPlayerTeam() {
     return this.playerTeam.name;

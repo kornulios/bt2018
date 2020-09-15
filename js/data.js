@@ -1,3 +1,5 @@
+import { Player } from "./model/player.js";
+
 function getData() {
   return axios.get("http://localhost:3000/data");
 }
@@ -136,6 +138,14 @@ export const teamData = [
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
   },
+  {
+    name: "Romania",
+    shortName: "ROM",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 2, women: 2 },
+    stageQuota: { men: 4, women: 4 },
+  },
 ];
 
 var mockData = {
@@ -164,12 +174,36 @@ export const racesData = [
       raceTypes.pursuit_women,
     ],
   },
-  // {
-  //   name: "Hochfilzen",
-  //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
-  // },
-  // {
-  //   name: "Nove Mesto",
-  //   raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
-  // },
 ];
+
+//don't like it
+export const generateTeams = () => {
+  // generate teams and players
+  let players = [];
+  let playerCount = 0;
+
+  for (let i = 0; i < teamData.length; i++) {
+    const team = teamData[i];
+
+    for (let j = 0; j < team.stageQuota.men; j++) {
+      playerCount++;
+      const newPlayer = new Player({
+        id: playerCount,
+        gender: "male",
+        team: team.shortName,
+      });
+      players.push(newPlayer);
+    }
+
+    for (let j = 0; j < team.stageQuota.women; j++) {
+      playerCount++;
+      const newPlayer = new Player({
+        id: playerCount,
+        gender: "female",
+        team: team.shortName,
+      });
+      players.push(newPlayer);
+    }
+  }
+  return players;
+};

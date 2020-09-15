@@ -28,6 +28,11 @@ const initEvents = () => {
   document
     .querySelector("#pause")
     .addEventListener("click", game.pauseGame.bind(game));
+
+  document
+    .querySelector("#champ-standings")
+    .addEventListener("click", game.showPlayersList.bind(game));
 };
 
 document.addEventListener("DOMContentLoaded", initEvents);
+//champ-standings

@@ -1,5 +1,5 @@
 // import { racesData } from '../data.js';
-import { RACE_STATUS } from '../constants/constants.js';
+import { RACE_STATUS } from "../constants/constants.js";
 
 export class Championship {
   constructor() {
@@ -31,17 +31,25 @@ export class Championship {
     }
 
     this.raceCalendar = res;
-  };
+  }
 
   get calendar() {
     return this.raceCalendar;
   }
 
-  onRaceFinish(results) { }
+  onRaceFinish(results) {}
 
-  createRaceRoster() { }
+  createRaceRoster() {}
 
   getRaceList() {
     return this.raceCalendar;
+  }
+
+  getNextRace() {
+    for (let race in this.raceCalendar) {
+      if (race.status === RACE_STATUS.NOT_STARTED) {
+        return race;
+      }
+    }
   }
 }
