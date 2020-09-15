@@ -56,7 +56,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 50;
+    const gameSpeed = 500;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -81,7 +81,7 @@ export class Game {
     if (this.race.raceFinished) {
       cancelAnimationFrame(this.stopTimer);
       console.log("race finished", timeStamp);
-      this.view.renderResults(this.race.results, this.race.track);
+      this.view.renderShortResults(this.race.getFinishResult());
     }
   }
 

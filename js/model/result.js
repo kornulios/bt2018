@@ -3,8 +3,8 @@
 
 export class Result {
   constructor() {
-    this.data = [];             // {name$, waypoint%, time!}
-    this.shootingData = [];     // { name$, number%, result[ARR] }
+    this.data = []; // {name$, waypoint%, time!}
+    this.shootingData = []; // { name$, number%, result[ARR] }
     this.relative = true;
   }
 
@@ -52,7 +52,7 @@ export class Result {
       range: range,
       name: playerName,
       team: teamName,
-      result: result.filter(r => r === 0).length,
+      result: result.filter((r) => r === 0).length,
       ammo: ammo,
     });
   }
@@ -60,7 +60,7 @@ export class Result {
   getShootingResult(name) {
     var res = [];
     for (var i = 0; i < this.shootingData.length; i++) {
-      if (this.shootingData[i].name == name) {
+      if (this.shootingData[i].playerName === name) {
         res.push(this.shootingData[i].result);
       }
     }
@@ -70,11 +70,11 @@ export class Result {
   getWaypointResults(wp) {
     // var me = this,
     const results = this.data
-      .filter(res => res.waypoint === wp)
-      .sort((a, b) => a.time > b.time ? 1 : -1);
+      .filter((res) => res.waypoint === wp)
+      .sort((a, b) => (a.time > b.time ? 1 : -1));
 
     for (var i = 0; i < results.length; i++) {
-      var shooting = me.getShootingResult(results[i].playerName);
+      var shooting = this.getShootingResult(results[i].playerName);
       results[i].shooting = shooting;
     }
 
@@ -82,10 +82,10 @@ export class Result {
   }
 
   getPlayerResults(name) {
-    return this.data.filter(res => res.playerName === name);
+    return this.data.filter((res) => res.playerName === name);
   }
 
   getRelayResults(waypoint) {
-    return this.data.filter(item => item.waypoint === waypoint);
+    return this.data.filter((item) => item.waypoint === waypoint);
   }
 }

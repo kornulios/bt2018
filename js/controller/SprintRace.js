@@ -5,7 +5,9 @@ import * as Constants from "../constants/constants.js";
 
 export class SprintRace extends Race {
   constructor(players) {
-    // const playerCount = 105;
+    if (!players) {
+      throw "No players provided for race";
+    }
 
     super({ raceType: Constants.RACE_TYPE_SHORT });
 
@@ -16,16 +18,6 @@ export class SprintRace extends Race {
 
       return player;
     });
-
-    // for (var i = 1; i <= playerCount; i++) {
-    //   this.players.push(
-    //     new Player({
-    //       name: "Player " + i,
-    //       number: i,
-    //       startTimer: (i - 1) * 30000,
-    //     })
-    //   );
-    // }
   }
 
   run(gameTick) {

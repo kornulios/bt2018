@@ -27,11 +27,6 @@ export class Race {
     this.track.initTrack();
   }
 
-  // renderResults(results, track) {
-  //   const view = new View();
-  //   view.renderResults(results, track);
-  // }
-
   getPlayers() {
     return this.players;
   }

@@ -125,26 +125,30 @@ export class View {
     )}</div>`;
   }
 
-  renderShortResults(results, track) {
-    const playerResults = results.data
-      .filter((res) => res.waypoint === track.getFinishWaypoint())
-      .sort((t1, t2) => (t1.time >= t2.time ? 1 : -1));
+  renderShortResults(results) {
+    // const playerResults = results.data
+    //   .filter((res) => res.waypoint === track.getFinishWaypoint())
+    //   .sort((t1, t2) => (t1.time >= t2.time ? 1 : -1));
 
-    const rangeResult = results.shootingData.reduce((acc, result) => {
-      const name = result.playerName;
-      if (!acc[name]) {
-        acc[name] = 0;
-      }
+    // const rangeResult = results.shooting.reduce((acc, result) => {
+    //   const name = result.playerName;
+    //   if (!acc[name]) {
+    //     acc[name] = 0;
+    //   }
 
-      const shootingTotal = result.result;
+    //   const shootingTotal = result.result;
 
-      return { ...acc, [name]: acc[name] + shootingTotal };
-    }, {});
+    //   return { ...acc, [name]: acc[name] + shootingTotal };
+    // }, {});
+    // <span>${rangeResult[result.playerName]}</span>
 
-    const htmlResults = playerResults.map((result, i) => {
+    const htmlResults = results.map((result, i) => {
+			const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
+			
       return `<div class="result-row"><span>${i + 1}</span> 
 			<span>${result.playerName}</span>
-			<span>${rangeResult[result.playerName]}</span>
+			<span>${result.team}</span>
+			<span>${shootingResult}</span>
 			<span>${Utils.convertToMinutes(result.time / 1000)}</span>
 			</div>`;
     });
@@ -209,7 +213,7 @@ export class View {
       .join("");
 
     document.querySelector(
-      "#run"
+      "#finish-results"
     ).innerHTML = `<div class="results">${htmlResults}</div>`;
   }
 
