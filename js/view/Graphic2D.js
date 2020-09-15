@@ -90,7 +90,7 @@ export class Graphic2D {
 
           //render player bub
           ctx.beginPath();
-          ctx.arc(x, y, 8, 0, Math.PI * 2);
+          ctx.arc(x, y, 9, 0, Math.PI * 2);
 
           ctx.fillStyle = colors[0] || "#ffc7f0";
           ctx.strokeStyle = "#000000";
@@ -99,14 +99,15 @@ export class Graphic2D {
           ctx.stroke();
 
           //render text
+          ctx.strokeWidth = "2px";
           ctx.fillStyle = colors[1] || "#000000";
-          ctx.font = "12px Consolas";
+          ctx.font = "bold 10px Verdana";
           if (i <= 8) {
-            ctx.fillText(i + 1, x - 3.25, y + 3.25);
+            ctx.fillText(i + 1, x - 3.5, y + 3.25);
           } else if (i > 8 && i < 99) {
-            ctx.fillText(i + 1, x - 7, y + 3.25);
+            ctx.fillText(i + 1, x - 7.5, y + 3.25);
           } else if (i >= 99) {
-            ctx.font = "10px Consolas";
+            ctx.font = "8px Verdana";
             ctx.fillText(i + 1, x - 7, y + 3.25);
           }
         } catch {

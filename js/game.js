@@ -119,7 +119,7 @@ export class Game {
       let playerData = {
         name: player.name,
         number: player.number,
-        colors: this.getPlayerTeam(player).getColors(),
+        colors: player.colors,
       };
 
       if (player.status === Constants.PLAYER_STATUS.PENALTY) {

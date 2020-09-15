@@ -110,7 +110,8 @@ export const teamData = [
     name: "Belarus",
     shortName: "BLR",
     flag: "",
-    colors: ["#19a303", "#ff1500"],
+    // colors: ["#19a303", "#ff1500"],
+    colors: ["#FFFFFF", "#ff1500"],
     raceQuota: { men: 5, women: 4 },
     stageQuota: { men: 7, women: 6 },
   },
@@ -118,15 +119,25 @@ export const teamData = [
     name: "Norway",
     shortName: "NOR",
     flag: "",
-    colors: ["#c71000", "#1e00e3"],
+    // colors: ["#c71000", "#1e00e3"],
+    colors: ["#960c00", "#FFFFFF"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Austria",
+    shortName: "AUT",
+    flag: "",
+    colors: ["#ff230f", "#ffffff"],
+    raceQuota: { men: 5, women: 6 },
+    stageQuota: { men: 7, women: 8 },
   },
   {
     name: "France",
     shortName: "FRA",
     flag: "",
-    colors: ["#0055A4", "#EF4135"],
+    // colors: ["#0055A4", "#EF4135"],
+    colors: ["#0055A4", "#FFFFFF"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
   },
@@ -194,6 +205,7 @@ export const generateTeams = () => {
         id: playerCount,
         gender: "male",
         team: team.shortName,
+        colors: team.colors,
       });
       players.push(newPlayer);
     }
@@ -204,6 +216,7 @@ export const generateTeams = () => {
         id: playerCount,
         gender: "female",
         team: team.shortName,
+        colors: team.colors,
       });
       players.push(newPlayer);
     }

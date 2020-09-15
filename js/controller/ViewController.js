@@ -130,6 +130,7 @@ export class View {
       const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
 
       return `<div class="result-row"><span>${i + 1}</span> 
+
 			<span>${result.playerName}</span>
 			<span>${result.team}</span>
 			<span>${shootingResult}</span>
