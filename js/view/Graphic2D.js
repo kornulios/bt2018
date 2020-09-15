@@ -1,6 +1,11 @@
 let canvas = document.querySelector("#main-canvas");
 
 export class Graphic2D {
+  constructor() {
+    this.img = new Image();
+    this.img.src = "../../static/map.gif";
+  }
+
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
@@ -23,8 +28,7 @@ export class Graphic2D {
   drawMapBeta(track) {
     const { coordsMap, penaltyCoordsMap, finishCoordsMap } = track;
     let ctx = canvas.getContext("2d");
-    let img = new Image();
-    img.src = "../../static/map.gif";
+    const { img } = this;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

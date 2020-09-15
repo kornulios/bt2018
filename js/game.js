@@ -56,7 +56,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 500;
+    const gameSpeed = 50;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -148,27 +148,13 @@ export class Game {
 
   //#region Racing Sims
   simulateSprint() {
-    this.race = new SprintRace();
-
-    const { race } = this;
-
-    oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    requestAnimationFrame(this.runGame.bind(this));
+    this.prepareNextRace();
+    this.startNextRace();
   }
 
   simulateRelay() {
-    this.race = new RelayRace();
-
-    const { race } = this;
-
-    oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    requestAnimationFrame(this.runGame.bind(this));
+    this.prepareNextRace();
+    this.startNextRace();
   }
   //#endregion
 
@@ -185,8 +171,6 @@ export class Game {
 
     // create new race with players list
     this.race = new SprintRace(playerRoster);
-
-    this.simulateRace();
   }
 
   startNextRace() {
@@ -206,8 +190,8 @@ export class Game {
   }
 
   showPlayersList() {
-    // console.log(this.teams[0].getTeamPlayers(this.players));
     this.prepareNextRace();
+    this.simulateRace();
   }
 
   simulatePlayer() {
