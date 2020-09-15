@@ -86,16 +86,20 @@ export class Graphic2D {
       if (playerCoords[i].coords) {
         try {
           const { x, y } = playerCoords[i].coords;
+          const { colors } = playerCoords[i];
+
+          //render player bub
           ctx.beginPath();
           ctx.arc(x, y, 8, 0, Math.PI * 2);
 
-          ctx.fillStyle = "#ffc7f0";
+          ctx.fillStyle = colors[0] || "#ffc7f0";
           ctx.strokeStyle = "#000000";
 
           ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = "#000000";
+          //render text
+          ctx.fillStyle = colors[1] || "#000000";
           ctx.font = "12px Consolas";
           if (i <= 8) {
             ctx.fillText(i + 1, x - 3.25, y + 3.25);

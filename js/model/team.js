@@ -2,7 +2,7 @@ export class TeamAI {
   constructor(team) {
     this.name = team.name;
     this.shortName = team.shortName;
-    this.color = team.color;
+    this.colors = team.colors;
     this.flag = team.flag;
     this.description = team.description;
 
@@ -13,6 +13,10 @@ export class TeamAI {
     this.reservePlayers = [];
 
     this.playerControlled = false;
+  }
+
+  getColors() {
+    return this.colors;
   }
 
   setPlayer(player) {

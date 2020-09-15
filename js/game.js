@@ -56,7 +56,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 50;
+    const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -111,39 +111,29 @@ export class Game {
   }
 
   getPlayerCoords(players) {
-    const res = players.map((player) => {
-      if (
-        player.status === Constants.PLAYER_STATUS.NOT_STARTED ||
-        player.status === Constants.PLAYER_STATUS.FINISHED
-      ) {
+    const playersData = players.map((player) => {
+      if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
         return false;
       }
 
-      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-        return {
-          name: player.name,
-          number: player.number,
-          coords: this.race.track.getPenaltyCoordinates(player.penalty),
-        };
-      } else if (
-        player.distance >=
-        this.race.track.getTrackLength() - this.race.track.finishLineLength
-      ) {
-        return {
-          name: player.name,
-          number: player.number,
-          coords: this.race.track.getFinishCoordinates(player.distance),
-        };
-      }
-
-      return {
+      let playerData = {
         name: player.name,
         number: player.number,
-        coords: this.race.track.getCoordinates(player.distance),
+        colors: this.getPlayerTeam(player).getColors(),
       };
+
+      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
+        playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
+      } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
+        playerData.coords = this.race.track.getFinishCoordinates(player.distance);
+      } else {
+        playerData.coords = this.race.track.getCoordinates(player.distance);
+      }
+
+      return playerData;
     });
 
-    return res;
+    return playersData;
   }
 
   //#region Racing Sims
@@ -194,6 +184,10 @@ export class Game {
     this.simulateRace();
   }
 
+  getPlayerTeam(player) {
+    return this.teams.find((team) => team.shortName === player.team);
+  }
+
   simulatePlayer() {
     //debugging function
     // this.race = new RelayRace();
@@ -241,29 +235,29 @@ export class Game {
   //   changeTab("results"); // TEMP
   // }
 
-  getPlayerTeam() {
-    return this.playerTeam.name;
-  }
+  // getPlayerTeam() {
+  //   return this.playerTeam.name;
+  // }
 
-  getTeams() {
-    return this.teams;
-  }
+  // getTeams() {
+  //   return this.teams;
+  // }
 
-  getPlayers() {
-    return this.championship.getPlayers();
-  }
+  // getPlayers() {
+  //   return this.championship.getPlayers();
+  // }
 
-  getViewGender() {
-    return this.selectedGender;
-  }
+  // getViewGender() {
+  //   return this.selectedGender;
+  // }
 
-  getCurrentRace() {
-    return this.championship.currentRace;
-  }
+  // getCurrentRace() {
+  //   return this.championship.currentRace;
+  // }
 
-  getChampionship() {
-    return this.championship;
-  }
+  // getChampionship() {
+  //   return this.championship;
+  // }
 
   onChangeTeamSelect(e) {
     // var teamName = e.target.textContent;
