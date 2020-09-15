@@ -146,6 +146,14 @@ export const teamData = [
     raceQuota: { men: 2, women: 2 },
     stageQuota: { men: 4, women: 4 },
   },
+  {
+    name: "Sweden",
+    shortName: "SWE",
+    flag: "",
+    colors: [],
+    raceQuota: { men: 5, women: 6 },
+    stageQuota: { men: 7, women: 8 },
+  },
 ];
 
 var mockData = {
