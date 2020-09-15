@@ -25,13 +25,14 @@ canvas {
 }
 
 .result-block {
-  margin-top: 20px
+  margin-top: 20px;
 }
 
 .result-row {
   display: flex;
   width: 280px;
   justify-content: space-between;
+  margin: 1px 0;
 }
 
 .relay-player-items {
@@ -49,4 +50,27 @@ canvas {
 
 .game-group {
   display: flex;
+}
+
+.player-bub {
+  border: 1px solid black;
+  border-radius: 50%;
+  min-width: 18px;
+  line-height: 16px;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+}
+
+.player-name {
+  width: 100px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-cell-small {
+  width: 20px;
 }

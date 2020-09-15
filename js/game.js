@@ -188,6 +188,10 @@ export class Game {
     return this.teams.find((team) => team.shortName === player.team);
   }
 
+  getTeamColors(teamName) {
+    return this.teams.find((team) => team.shortName === teamName).colors;
+  }
+
   simulatePlayer() {
     //debugging function
     // this.race = new RelayRace();
