@@ -157,12 +157,12 @@ export class Game {
     // get players from teamAI as per quotas
     const playerRoster = this.teams
       .map((team) => {
-        return team.getNextRacePlayers(this.players, Constants.GENDER.MALE);
+        return team.getNextRacePlayers(this.players, nextRace.raceGender);
       })
       .flat();
 
     // create new race with players list
-    this.race = new SprintRace();
+    this.race = new IndividualRace();
     this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
@@ -195,6 +195,8 @@ export class Game {
   getTeamColors(teamName) {
     return this.teams.find((team) => team.shortName === teamName).colors;
   }
+
+  getPlayerByName() {}
 
   simulatePlayer() {
     //debugging function
@@ -267,24 +269,24 @@ export class Game {
   //   return this.championship;
   // }
 
-  onChangeTeamSelect(e) {
-    // var teamName = e.target.textContent;
+  // onChangeTeamSelect(e) {
+  // var teamName = e.target.textContent;
 
-    this.startNewChampionship(); //should go to Start button
+  // this.startNewChampionship(); //should go to Start button
 
-    // for (var i = 0; i < this.teams.length; i++) {
-    //   if (this.teams[i].name == teamName) {
-    //     this.playerTeam = this.teams[i];
-    //     this.view.selectTeamDetails(this.teams[i]);
-    //   }
-    // }
-    // if (this.playerTeam == '') {
-    //   console.log('Selected team not defined');
-    // }
-  }
+  // for (var i = 0; i < this.teams.length; i++) {
+  //   if (this.teams[i].name == teamName) {
+  //     this.playerTeam = this.teams[i];
+  //     this.view.selectTeamDetails(this.teams[i]);
+  //   }
+  // }
+  // if (this.playerTeam == '') {
+  //   console.log('Selected team not defined');
+  // }
+  // }
 
-  onChangeViewGender(e) {
-    this.selectedGender = e.target.getAttribute("data");
-    refreshTab("championship");
-  }
+  // onChangeViewGender(e) {
+  //   this.selectedGender = e.target.getAttribute("data");
+  //   refreshTab("championship");
+  // }
 }

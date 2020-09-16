@@ -121,6 +121,10 @@ export class Race {
     return (this.gameTimer / 1000).toFixed(1);
   }
 
+  getRaceGender() {
+    return this.raceGender;
+  }
+
   // skipRace() {
   //   let raceRunning = false;
   //   this.status = "Started";

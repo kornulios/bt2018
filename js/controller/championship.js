@@ -1,6 +1,6 @@
 // import { racesData } from '../data.js';
 
-import { RACE_STATUS, RACE_POINTS_MAP } from "../constants/constants.js";
+import { RACE_STATUS, RACE_POINTS_MAP, GENDER } from "../constants/constants.js";
 
 export class Championship {
   constructor() {
@@ -8,8 +8,23 @@ export class Championship {
     this.results = [];
     this.raceCalendar = [];
 
-    this.playerPoints = {};
-    this.nationPoints = {};
+    this.standingsMen = {};
+    this.standingsWomen = {};
+    this.nationPoints = {}; //postponed for future releases
+  }
+
+  getPlayersStandings(gender) {
+    const points = gender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
+
+    const standings = Object.keys(points)
+      .map((player) => {
+        return { name: player, points: points[player] };
+      })
+      .sort((p1, p2) => {
+        return p1.points > p2.points ? -1 : 1;
+      });
+
+    return standings;
   }
 
   createRaceList(racesData) {
@@ -37,6 +52,7 @@ export class Championship {
   onRaceFinish(race) {
     const finishedRace = this.getRaceById(race.id);
     const results = race.getFinishResult().slice(0, 40);
+    const standings = race.raceGender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
 
     finishedRace.status = RACE_STATUS.FINISHED;
     finishedRace.results = race.results;
@@ -44,14 +60,16 @@ export class Championship {
     for (let i = 0; i < results.length; i++) {
       const playerName = results[i].playerName;
 
-      if (!this.playerPoints[playerName]) this.playerPoints[playerName] = 0;
-      this.playerPoints[playerName] += RACE_POINTS_MAP[i];
+      if (!standings[playerName]) standings[playerName] = 0;
+      standings[playerName] += RACE_POINTS_MAP[i];
 
-      if (isNaN(this.playerPoints[playerName])) {
-        debugger;
-      }
+      //debugger ----------------
+      // if (isNaN(this.playerPoints[playerName])) {
+      //   debugger;
+      // }
+      //------------------
     }
-    console.log(this.playerPoints);
+    console.log(this.getPlayersStandings(race.raceGender));
   }
 
   getRaceList() {

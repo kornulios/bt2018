@@ -1,4 +1,5 @@
 import { Player } from "./model/player.js";
+import * as Constants from "./constants/constants.js";
 
 function getData() {
   return axios.get("http://localhost:3000/data");
@@ -38,52 +39,52 @@ export const raceTypes = {
   sprint_men: {
     type: "Sprint",
     name: "Men 10km Sprint",
-    gender: "men",
+    gender: Constants.GENDER.MALE,
   },
   sprint_women: {
     type: "Sprint",
     name: "Women 7.5km Sprint",
-    gender: "women",
+    gender: Constants.GENDER.FEMALE,
   },
   individual_men: {
     type: "Individial",
     name: "Men 20km Individual",
-    gender: "men",
+    gender: Constants.GENDER.MALE,
   },
   individual_women: {
     type: "Individial",
     name: "Women 15km Individual",
-    gender: "women",
+    gender: Constants.GENDER.FEMALE,
   },
   pursuit_men: {
     type: "Pursuit",
     name: "Men 12.5km Pursuit",
-    gender: "men",
+    gender: Constants.GENDER.MALE,
   },
   pursuit_women: {
     type: "Pursuit",
     name: "Women 10km Pursuit",
-    gender: "women",
+    gender: Constants.GENDER.FEMALE,
   },
   massStart_men: {
     type: "Mass-start",
     name: "Men 15km Mass-start",
-    gender: "men",
+    gender: Constants.GENDER.MALE,
   },
   massStart_women: {
     type: "Mass-start",
     name: "Women 12.5km Mass-start",
-    gender: "women",
+    gender: Constants.GENDER.FEMALE,
   },
   relay_men: {
     type: "Relay",
     name: "Men 4x7.5km Relay",
-    gender: "men",
+    gender: Constants.GENDER.MALE,
   },
   relay_women: {
     type: "Relay",
     name: "Women 4x6km Relay",
-    gender: "women",
+    gender: Constants.GENDER.FEMALE,
   },
 };
 
@@ -203,7 +204,7 @@ export const generateTeams = () => {
       playerCount++;
       const newPlayer = new Player({
         id: playerCount,
-        gender: "male",
+        gender: Constants.GENDER.MALE,
         team: team.shortName,
         colors: team.colors,
       });
@@ -214,7 +215,7 @@ export const generateTeams = () => {
       playerCount++;
       const newPlayer = new Player({
         id: playerCount,
-        gender: "female",
+        gender: Constants.GENDER.FEMALE,
         team: team.shortName,
         colors: team.colors,
       });
