@@ -85,11 +85,10 @@ export class Game {
   }
 
   simulateRace() {
-    
     do {
       this.race.run(100);
     } while (!this.race.raceFinished);
-    
+
     if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
     this.endRace();
   }
@@ -263,7 +262,7 @@ export class Game {
     const stage = nextRace.stageName;
     const calendar = this.championship.getRaceList();
     const prevSprint = calendar.find((race) => {
-      return race.stageName === stage && race.raceType === "Sprint";
+      return race.stageName === stage && race.raceType === "Sprint" && race.raceGender === nextRace.raceGender;
     });
 
     if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
