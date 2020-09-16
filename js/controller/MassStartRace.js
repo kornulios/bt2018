@@ -42,7 +42,7 @@ export class MassStartRace extends Race {
           const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
           if (passedWaypoint) {
-            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer - player.startTimer);
+            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer);
           }
 
           if (passedRange) {

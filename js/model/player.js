@@ -80,10 +80,10 @@ export class Player {
     return this.distance;
   }
 
-  setDistance(newDistance) {
-    //required for relay placement
-    this.distance = newDistance;
-  }
+  // setDistance(newDistance) {
+  //   //required for relay placement
+  //   this.distance = newDistance;
+  // }
 
   addPenalty(length) {
     this.penalty += length;

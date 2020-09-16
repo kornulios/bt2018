@@ -46,6 +46,7 @@ export class Championship {
         raceId++;
       }
     }
+    res[0].status = RACE_STATUS.RACE_NEXT;
 
     this.raceCalendar = res;
   }
@@ -60,31 +61,38 @@ export class Championship {
     finishedRace.results = race.results;
     finishedRace.finish = race.getFinishResult();
 
+    //points calculation
     for (let i = 0; i < results.length; i++) {
       const playerName = results[i].playerName;
 
       if (!standings[playerName]) standings[playerName] = 0;
       standings[playerName] += RACE_POINTS_MAP[i];
-
-      //debugger ----------------
-      // if (isNaN(this.playerPoints[playerName])) {
-      //   debugger;
-      // }
-      //------------------
     }
+
+    this._setNextRace();
+
     console.log(this.getPlayersStandings(race.raceGender));
   }
 
-  getRaceList() {
-    return this.raceCalendar;
+  _setNextRace() {
+    for (let race of this.raceCalendar) {
+      if (race.status === RACE_STATUS.NOT_STARTED) {
+        race.status = RACE_STATUS.RACE_NEXT;
+        return;
+      }
+    }
   }
 
   getNextRace() {
     for (let race of this.raceCalendar) {
-      if (race.status === RACE_STATUS.NOT_STARTED) {
+      if (race.status === RACE_STATUS.RACE_NEXT) {
         return race;
       }
     }
+  }
+
+  getRaceList() {
+    return this.raceCalendar;
   }
 
   getRaceById(raceId) {

@@ -37,7 +37,8 @@ Routes:
 **RC 1**
 - ~~individual race setup (1)~~
 - ~~mass-start race setup (1)~~
-- pursuit race setup (3)
+- ~~pursuit race setup (3)~~
+- relay race setup (5)
 - switch for playes ID in results (5)
 - implement start roster scheduling (5)
 
@@ -51,3 +52,5 @@ Routes:
 - add more teams with colors (3)
 - implement map creator (8)
 
+- enable player team interaction (8)
+- biathletes traits! (8)

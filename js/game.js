@@ -41,6 +41,8 @@ export class Game {
 
     this.initGameData(); // tmp generator
     this.initChampionship();
+
+    this.view.renderRaceList(this.championship.getRaceList());
   }
 
   initChampionship() {
@@ -81,6 +83,7 @@ export class Game {
       console.log("race finished", timeStamp);
       this.view.renderShortResults(this.race.getFinishResult());
       this.championship.onRaceFinish(this.race);
+      this.view.renderRaceList(this.championship.getRaceList());
     }
   }
 
@@ -92,6 +95,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
+    this.view.renderRaceList(this.championship.getRaceList());
   }
 
   pauseGame() {

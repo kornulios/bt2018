@@ -39,6 +39,7 @@ export const RACE_STATUS = {
   NOT_STARTED: 1,
   IN_PROGRESS: 2,
   FINISHED: 3,
+  RACE_NEXT: 4,
 };
 
 //individual / pursuit / mass start

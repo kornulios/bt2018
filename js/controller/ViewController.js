@@ -1,5 +1,6 @@
 import { Utils } from "../utils/Utils.js";
 import { teamData } from "../data.js";
+import { RACE_STATUS } from "../constants/constants.js";
 
 export class View {
   constructor() {
@@ -7,8 +8,6 @@ export class View {
     this.mainView = document.querySelector("#main-view");
     this.resultView = document.querySelector("#results-view");
   }
-
-  drawMapBeta() {}
 
   renderProgress(race) {
     const players = race.players;
@@ -118,9 +117,7 @@ export class View {
 
       return `<div class="result-row">
       <div class="player-cell-small">${i + 1}</div> 
-      <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${
-        result.playerNumber
-      }</div>
+      <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
 			<div class="player-name">${result.playerName}</div>
 			<div>${result.team}</div>
 			<div>${shootingResult}</div>
@@ -229,22 +226,35 @@ export class View {
   }
 
   renderRaceList(races) {
-    const container = document.querySelector("#game-div");
+    const container = document.querySelector("#race-schedule");
 
     const stages = races.reduce((acc, result) => {
       const stage = result.stageName;
 
       if (!acc[stage]) acc[stage] = [];
 
-      return { ...acc, [stage]: [...acc[stage], result.name] };
+      return { ...acc, [stage]: [...acc[stage], result] };
     }, {});
 
     const racesListHtml = Object.keys(stages).map((stage) => {
       const races = stages[stage].map((race) => {
-        return `<li>${race}</li>`;
+        let liClass;
+        switch (race.status) {
+          case RACE_STATUS.RACE_NEXT:
+            liClass = "list-race-next";
+            break;
+          case RACE_STATUS.FINISHED:
+            liClass = "list-race-finished";
+            break;
+          default:
+            liClass = "";
+        }
+
+        return `<li class=${liClass}>${race.name}</li>`;
       });
 
-      return `<p>${stage}</p><ul>${races.join("")}</ul>`;
+      return `<div class="race-list-header">${stage}</div>
+      <ul class="race-list-ul">${races.join("")}</ul>`;
     });
 
     container.innerHTML = `<div>${racesListHtml.join("")}</div>`;
