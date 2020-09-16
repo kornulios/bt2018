@@ -194,7 +194,6 @@ export const racesData = [
     name: "Pokljuka",
     raceMap: [
       raceTypes.individual_men,
-      raceTypes.massStart_men,
       raceTypes.individual_women,
       raceTypes.sprint_men,
       raceTypes.sprint_women,

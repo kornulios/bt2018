@@ -50,8 +50,9 @@ export class Championship {
   }
 
   onRaceFinish(race) {
+    const pointResultsNumber = race.raceType === "Mass-start" ? 30 : 40;
     const finishedRace = this.getRaceById(race.id);
-    const results = race.getFinishResult().slice(0, 40);
+    const results = race.getFinishResult().slice(0, pointResultsNumber);
     const standings = race.raceGender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
 
     finishedRace.status = RACE_STATUS.FINISHED;

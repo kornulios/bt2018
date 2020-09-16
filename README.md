@@ -39,9 +39,11 @@ Routes:
 - mass-start race setup (1) in progress
 - pursuit race setup (3)
 - switch for playes ID in results (5)
+- implement start roster scheduling (5)
 
 - start-line players route (3)
 - race switch (5)
+- stage switch (5)
 - enlarge map view (2)
 - pause on browser tab switch (3)
 - display real-time shootings (5)

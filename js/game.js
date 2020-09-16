@@ -56,7 +56,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 30;
+    const gameSpeed = 500;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -81,7 +81,7 @@ export class Game {
       cancelAnimationFrame(this.stopTimer);
       console.log("race finished", timeStamp);
       this.view.renderShortResults(this.race.getFinishResult());
-      this.championship.onRaceFinish(this.race.id, this.race.results);
+      this.championship.onRaceFinish(this.race);
     }
   }
 
@@ -153,16 +153,29 @@ export class Game {
   prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
+    let playerRoster = [];
 
+    switch (nextRace.raceType) {
+      case "Individual":
+        playerRoster = this.aiSelectRacePlayers(nextRace);
+        this.race = new IndividualRace();
+        break;
+      case "Mass-start":
+        playerRoster = this.aiSelectMassStartPlayers(nextRace);
+        this.race = new MassStartRace();
+        break;
+      case "Sprint":
+        playerRoster = this.aiSelectRacePlayers(nextRace);
+        this.race = new SprintRace();
+        break;
+      case "Pursuit":
+        break;
+      default:
+        console.log("couldnt find racetype");
+    }
     // get players from teamAI as per quotas
-    const playerRoster = this.teams
-      .map((team) => {
-        return team.getNextRacePlayers(this.players, nextRace.raceGender);
-      })
-      .flat();
-
     // create new race with players list
-    this.race = new IndividualRace();
+
     this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
@@ -196,7 +209,26 @@ export class Game {
     return this.teams.find((team) => team.shortName === teamName).colors;
   }
 
-  getPlayerByName() {}
+  getPlayerByName(name) {
+    return this.players.find((player) => player.name === name);
+  }
+
+  aiSelectRacePlayers(nextRace) {
+    return this.teams
+      .map((team) => {
+        return team.getNextRacePlayers(this.players, nextRace.raceGender);
+      })
+      .flat();
+  }
+
+  aiSelectMassStartPlayers(nextRace) {
+    const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
+    const eligiblePlayers = standings.map((result) => {
+      return this.getPlayerByName(result.name);
+    });
+
+    return eligiblePlayers;
+  }
 
   simulatePlayer() {
     //debugging function
