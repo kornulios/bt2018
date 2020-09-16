@@ -30,3 +30,19 @@ Routes:
 **Race view** - main game screen shows track, player's team, controls, intermediate results (option to switch between checkpoints). After race finish Race results screen is shown
 
 **Race result** - shows on top of Race view, shows resutls and next button that leads to Championship screen
+
+
+## Biatech roadmap:
+
+**RC 1**
+- ~~individual race setup (1)~~
+- mass-start race setup (1)
+- pursuit race setup (3)
+
+- start-line players route (3)
+- race switch (5)
+- enlarge map view (2)
+- display real-time shootings (5)
+
+- add more teams with colors (3)
+- implement map creator (8)
