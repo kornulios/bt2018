@@ -191,24 +191,19 @@ var mockData = {
 
 export const racesData = [
   {
-    name: "Pokljuka",
-    raceMap: [
-      raceTypes.individual_men,
-      raceTypes.individual_women,
-      raceTypes.sprint_men,
-      raceTypes.sprint_women,
-    ],
-  },
-  {
     name: "Estersund",
     raceMap: [
       raceTypes.sprint_men,
-      raceTypes.sprint_women,
       raceTypes.pursuit_men,
+      raceTypes.sprint_women,
+      raceTypes.pursuit_women,
       raceTypes.relay_women,
       raceTypes.relay_men,
-      raceTypes.pursuit_women,
     ],
+  },
+  {
+    name: "Pokljuka",
+    raceMap: [raceTypes.individual_men, raceTypes.individual_women, raceTypes.sprint_men, raceTypes.sprint_women],
   },
 ];
 

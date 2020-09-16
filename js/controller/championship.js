@@ -40,6 +40,7 @@ export class Championship {
           raceType: race.type,
           raceGender: race.gender,
           results: null,
+          finish: null,
           status: RACE_STATUS.NOT_STARTED,
         });
         raceId++;
@@ -57,6 +58,7 @@ export class Championship {
 
     finishedRace.status = RACE_STATUS.FINISHED;
     finishedRace.results = race.results;
+    finishedRace.finish = race.getFinishResult();
 
     for (let i = 0; i < results.length; i++) {
       const playerName = results[i].playerName;

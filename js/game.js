@@ -6,6 +6,7 @@ import { Result } from "./model/result.js";
 import { TeamAI } from "./model/Team.js";
 
 import { SprintRace } from "./controller/SprintRace.js";
+import { PursuitRace } from "./controller/PursuitRace.js";
 import { RelayRace } from "./controller/RelayRace.js";
 import { IndividualRace } from "./controller/IndividualRace.js";
 import { MassStartRace } from "./controller/MassStartRace.js";
@@ -56,7 +57,7 @@ export class Game {
 
   runGame(timeStamp) {
     //refactored with rAF X2
-    const gameSpeed = 500;
+    const gameSpeed = 50;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -70,8 +71,6 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
     this.canvas.drawGameTick(gameTick); // FPS
-
-    // this.view.renderProgress(this.race);
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -169,6 +168,8 @@ export class Game {
         this.race = new SprintRace();
         break;
       case "Pursuit":
+        playerRoster = this.aiSelectPursuitPlayers(nextRace);
+        this.race = new PursuitRace();
         break;
       default:
         console.log("couldnt find racetype");
@@ -225,6 +226,24 @@ export class Game {
     const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
     const eligiblePlayers = standings.map((result) => {
       return this.getPlayerByName(result.name);
+    });
+
+    return eligiblePlayers;
+  }
+
+  aiSelectPursuitPlayers(nextRace) {
+    const stage = nextRace.stageName;
+    const calendar = this.championship.getRaceList();
+    const prevSprint = calendar.find((race) => {
+      return race.stageName === stage && race.raceType === "Sprint";
+    });
+
+    if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
+
+    const eligiblePlayers = prevSprint.finish.slice(0, 60).map((result) => {
+      const player = this.getPlayerByName(result.playerName);
+      player.startTimer = result.time;
+      return player;
     });
 
     return eligiblePlayers;
