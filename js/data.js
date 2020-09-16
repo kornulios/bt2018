@@ -182,6 +182,30 @@ export const teamData = [
     raceQuota: { men: 4, women: 3 },
     stageQuota: { men: 6, women: 5 },
   },
+  {
+    name: "Canada",
+    shortName: "CAN",
+    flag: "",
+    colors: ["#ffb3fc", "#ffffff"],
+    raceQuota: { men: 4, women: 4 },
+    stageQuota: { men: 6, women: 6 },
+  },
+  {
+    name: "Switzerland",
+    shortName: "SUI",
+    flag: "",
+    colors: ["#919191", "#ffffff"],
+    raceQuota: { men: 4, women: 5 },
+    stageQuota: { men: 6, women: 7 },
+  },
+  {
+    name: "Poland",
+    shortName: "POL",
+    flag: "",
+    colors: ["#ffffff", "#FF0000"],
+    raceQuota: { men: 4, women: 5 },
+    stageQuota: { men: 6, women: 7 },
+  },
 ];
 
 var mockData = {
