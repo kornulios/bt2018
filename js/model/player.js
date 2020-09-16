@@ -161,7 +161,7 @@ export class Player {
 
     this.rangeNum = 0;
     this.rifle = {};
-    this.state = CONSTANT.RUNSTATE.NORMAL;
+    // this.state = CONSTANT.RUNSTATE.NORMAL;
     this.status = PLAYER_STATUS.NOT_STARTED;
   }
 
