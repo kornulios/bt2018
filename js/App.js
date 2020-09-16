@@ -21,9 +21,9 @@ const initEvents = () => {
     .querySelector("#race-mass")
     .addEventListener("click", game.simulatePlayer.bind(game));
 
-  document
-    .querySelector("#champ-races")
-    .addEventListener("click", game.showChampionshipRaces.bind(game));
+  // document
+  //   .querySelector("#champ-races")
+  //   .addEventListener("click", game.showChampionshipRaces.bind(game));
 
   document
     .querySelector("#pause")

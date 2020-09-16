@@ -80,22 +80,18 @@ export class Game {
     //FINISH THE RACE
     if (this.race.raceFinished) {
       cancelAnimationFrame(this.stopTimer);
-      console.log("race finished", timeStamp);
-      this.view.renderShortResults(this.race.getFinishResult());
-      this.championship.onRaceFinish(this.race);
-      this.view.renderRaceList(this.championship.getRaceList());
+      this.endRace();
     }
   }
 
   simulateRace() {
+    
     do {
       this.race.run(100);
     } while (!this.race.raceFinished);
-
-    console.log("race finished");
-    this.view.renderShortResults(this.race.getFinishResult());
-    this.championship.onRaceFinish(this.race);
-    this.view.renderRaceList(this.championship.getRaceList());
+    
+    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+    this.endRace();
   }
 
   pauseGame() {
@@ -196,12 +192,40 @@ export class Game {
     requestAnimationFrame(this.runGame.bind(this));
   }
 
-  showChampionshipRaces() {
+  endRace() {
+    console.log("race finished");
+    this.view.renderShortResults(this.race.getFinishResult());
+    this.championship.onRaceFinish(this.race);
+    this.view.renderRaceList(this.championship.getRaceList());
+
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      //end season
+      // this.view.renderSeasonEnd();
+      console.log("Season over");
+      this.showChampionshipStandings();
+    }
+  }
+
+  showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    this.view.renderRaceList(races);
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE).map((result) => {
+      const player = this.getPlayerByName(result.name);
+      return {
+        id: player.id,
+        name: player.name,
+        points: result.points,
+        team: player.team,
+      };
+    });
+
+    this.view.renderChampionshipStandings(races, standingsMen);
   }
 
   showPlayersList() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
     this.prepareNextRace();
     this.simulateRace();
   }

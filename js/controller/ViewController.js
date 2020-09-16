@@ -259,4 +259,21 @@ export class View {
 
     container.innerHTML = `<div>${racesListHtml.join("")}</div>`;
   }
+
+  renderChampionshipStandings(races, standingsMen, standingsWomen) {
+    // should render race list, men standings, women standings
+    const container = document.querySelector("#standings-men");
+    this.renderRaceList(races);
+
+    const standingsHTML = standingsMen.map((result) => {
+      return `
+      <div class="result-row">
+      <div>${result.name}</div>
+      <div>${result.team}</div>
+      <div>${result.points}</div>
+      </div>`;
+    });
+
+    container.innerHTML = `<div>${standingsHTML.join("")}</div>`;
+  }
 }

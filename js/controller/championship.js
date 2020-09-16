@@ -4,7 +4,7 @@ import { RACE_STATUS, RACE_POINTS_MAP, GENDER } from "../constants/constants.js"
 
 export class Championship {
   constructor() {
-    // this.stages = { ...gameData.stageData };
+    this.state = RACE_STATUS.IN_PROGRESS;
     this.results = [];
     this.raceCalendar = [];
 
@@ -81,6 +81,8 @@ export class Championship {
         return;
       }
     }
+    // if no more races left - finish the season
+    this.state = RACE_STATUS.FINISHED;
   }
 
   getNextRace() {
