@@ -47,12 +47,12 @@ export const raceTypes = {
     gender: Constants.GENDER.FEMALE,
   },
   individual_men: {
-    type: "Individial",
+    type: "Individual",
     name: "Men 20km Individual",
     gender: Constants.GENDER.MALE,
   },
   individual_women: {
-    type: "Individial",
+    type: "Individual",
     name: "Women 15km Individual",
     gender: Constants.GENDER.FEMALE,
   },
@@ -100,6 +100,14 @@ export const teamData = [
     stageQuota: { men: 8, women: 8 },
   },
   {
+    name: "Italy",
+    shortName: "ITA",
+    flag: "",
+    colors: ["#0f8a00", "#ffffff"],
+    raceQuota: { men: 5, women: 5 },
+    stageQuota: { men: 7, women: 7 },
+  },
+  {
     name: "Ukraine",
     shortName: "UKR",
     flag: "",
@@ -112,7 +120,7 @@ export const teamData = [
     shortName: "BLR",
     flag: "",
     // colors: ["#19a303", "#ff1500"],
-    colors: ["#FFFFFF", "#ff1500"],
+    colors: ["#FFFFFF", "#008000"],
     raceQuota: { men: 5, women: 4 },
     stageQuota: { men: 7, women: 6 },
   },
@@ -138,7 +146,7 @@ export const teamData = [
     shortName: "FRA",
     flag: "",
     // colors: ["#0055A4", "#EF4135"],
-    colors: ["#0055A4", "#FFFFFF"],
+    colors: ["#0021db", "#FFFFFF"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
   },
@@ -146,7 +154,7 @@ export const teamData = [
     name: "Finland",
     shortName: "FIN",
     flag: "",
-    colors: ["#FFFFFF", "#002f6c"],
+    colors: ["#FFFFFF", "#1486ff"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
   },
@@ -166,6 +174,14 @@ export const teamData = [
     raceQuota: { men: 5, women: 6 },
     stageQuota: { men: 7, women: 8 },
   },
+  {
+    name: "Bulgaria",
+    shortName: "BUL",
+    flag: "",
+    colors: ["#ace12f", "#000000"],
+    raceQuota: { men: 4, women: 3 },
+    stageQuota: { men: 6, women: 5 },
+  },
 ];
 
 var mockData = {
@@ -176,7 +192,13 @@ var mockData = {
 export const racesData = [
   {
     name: "Pokljuka",
-    raceMap: [raceTypes.individual_men, raceTypes.individual_women, raceTypes.sprint_men, raceTypes.sprint_women],
+    raceMap: [
+      raceTypes.individual_men,
+      raceTypes.massStart_men,
+      raceTypes.individual_women,
+      raceTypes.sprint_men,
+      raceTypes.sprint_women,
+    ],
   },
   {
     name: "Estersund",
