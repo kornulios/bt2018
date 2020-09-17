@@ -86,7 +86,7 @@ export class Graphic2D {
       if (playerCoords[i].coords) {
         try {
           const { x, y } = playerCoords[i].coords;
-          const { colors } = playerCoords[i];
+          const { colors, number } = playerCoords[i];
 
           //render player bub
           ctx.beginPath();
@@ -102,13 +102,14 @@ export class Graphic2D {
           ctx.strokeWidth = "2px";
           ctx.fillStyle = colors[1] || "#000000";
           ctx.font = "bold 10px Verdana";
-          if (i <= 8) {
-            ctx.fillText(i + 1, x - 3.5, y + 3.25);
+          
+          if (number <= 8) {
+            ctx.fillText(number, x - 3.5, y + 3.25);
           } else if (i > 8 && i < 99) {
-            ctx.fillText(i + 1, x - 7.5, y + 3.25);
+            ctx.fillText(number, x - 7.5, y + 3.25);
           } else if (i >= 99) {
             ctx.font = "8px Verdana";
-            ctx.fillText(i + 1, x - 7, y + 3.25);
+            ctx.fillText(number, x - 7, y + 3.25);
           }
         } catch {
           debugger;

@@ -170,6 +170,10 @@ export class Game {
         playerRoster = this.aiSelectPursuitPlayers(nextRace);
         this.race = new PursuitRace();
         break;
+      case "Relay":
+        playerRoster = this.aiSelectRelayPlayers(nextRace);
+        this.race = new RelayRace();
+        break;
       default:
         console.log("couldnt find racetype");
     }
@@ -199,8 +203,6 @@ export class Game {
     this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      //end season
-      // this.view.renderSeasonEnd();
       console.log("Season over");
       this.showChampionshipStandings();
     }
@@ -243,20 +245,27 @@ export class Game {
     return this.teams.find((team) => team.shortName === player.team);
   }
 
-  getTeamColors(teamName) {
-    return this.teams.find((team) => team.shortName === teamName).colors;
-  }
+  // getTeamColors(teamName) {
+  //   return this.teams.find((team) => team.shortName === teamName).colors;
+  // }
 
   getPlayerByName(name) {
     return this.players.find((player) => player.name === name);
   }
 
+  // PREPARING THE ROSTER FOR NEXT RACE
   aiSelectRacePlayers(nextRace) {
     return this.teams
       .map((team) => {
         return team.getNextRacePlayers(this.players, nextRace.raceGender);
       })
       .flat();
+  }
+
+  aiSelectRelayPlayers(nextRace) {
+    return this.teams.map((team) => {
+      return team.getNextRelayPlayers(this.players, nextRace.raceGender);
+    });
   }
 
   aiSelectMassStartPlayers(nextRace) {

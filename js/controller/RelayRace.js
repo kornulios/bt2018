@@ -10,25 +10,41 @@ export class RelayRace extends Race {
     super({ raceType: Constants.RACE_TYPE_SHORT });
 
     this.teams = [];
-    this.players = [];
+    // this.players = [];
 
-    for (var t = 0; t < teamsCount; t++) {
-      this.teams[t] = {};
-      this.teams[t].players = [];
-      this.teams[t].name = "Team " + (t + 1);
+    // for (var t = 0; t < teamsCount; t++) {
+    //   this.teams[t] = {};
+    //   this.teams[t].players = [];
+    //   this.teams[t].name = "Team " + (t + 1);
 
-      this.teams[t].leg = 0;
-      this.teams[t].status = PLAYER_STATUS.NOT_STARTED;
+    //   this.teams[t].leg = 0;
+    //   this.teams[t].status = PLAYER_STATUS.NOT_STARTED;
 
-      for (var i = 1; i <= 4; i++) {
-        this.teams[t].players.push(
-          new Player({
-            name: "Player " + (t + 1) + "-" + i,
-            team: this.teams[t].name,
-            number: t + 1 + " " + i,
-          })
-        );
+    //   for (var i = 1; i <= 4; i++) {
+    //     this.teams[t].players.push(
+    //       new Player({
+    //         name: "Player " + (t + 1) + "-" + i,
+    //         team: this.teams[t].name,
+    //         number: t + 1 + " " + i,
+    //       })
+    //     );
+    //   }
+    // }
+  }
+
+  initPlayers(players) {
+    let teamNumber = 1;
+    // let playerNumber = 1;
+    this.teams = [...players];
+
+    for (let team of this.teams) {
+      // team.name = team.teamName;
+      team.leg = 0;
+      team.status = Constants.PLAYER_STATUS.NOT_STARTED;
+      for (let [i, player] of team.players.entries()) {
+        player.number = teamNumber + " " + (i + 1);
       }
+      teamNumber++;
     }
   }
 
@@ -40,8 +56,12 @@ export class RelayRace extends Race {
     return players;
   }
 
+  getFinishResult() {
+    return false;
+  }
+
   run(gameTick) {
-    const { teams, track, results, frameRate } = this;
+    const { teams, track, results } = this;
     const { PLAYER_STATUS } = Constants;
 
     this.raceTimes += gameTick;
@@ -61,14 +81,8 @@ export class RelayRace extends Race {
           const playerPrevDistance = player.distance;
           player.run(gameTick);
 
-          const passedWaypoint = track.isWaypointPassed(
-            player.distance,
-            playerPrevDistance
-          );
-          const passedRange = track.isShootingEntrancePassed(
-            player.distance,
-            playerPrevDistance
-          );
+          const passedWaypoint = track.isWaypointPassed(player.distance, playerPrevDistance);
+          const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
           if (passedWaypoint) {
             results.pushRelayResult(
@@ -96,18 +110,14 @@ export class RelayRace extends Race {
               player.currentRange,
               player.shotCount - 5
             );
-            const penaltyCount = player.currentRange.filter((r) => r === 0)
-              .length;
+            const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            team.status = penaltyCount
-              ? PLAYER_STATUS.PENALTY
-              : PLAYER_STATUS.RUNNING;
+            team.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
           }
         } else if (team.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);
-          team.status =
-            player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+          team.status = player.penalty > 0 ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
         }
 
         if (player.distance >= track.getTrackLength()) {
@@ -126,6 +136,5 @@ export class RelayRace extends Race {
     }
 
     this.raceFinished = teams.every((t) => t.status === PLAYER_STATUS.FINISHED);
-
   }
 }

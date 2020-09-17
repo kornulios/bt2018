@@ -217,11 +217,11 @@ export const racesData = [
   {
     name: "Estersund",
     raceMap: [
+      // raceTypes.relay_women,
       raceTypes.sprint_men,
       raceTypes.sprint_women,
       raceTypes.pursuit_men,
       raceTypes.pursuit_women,
-      // raceTypes.relay_women,
       // raceTypes.relay_men,
     ],
   },
