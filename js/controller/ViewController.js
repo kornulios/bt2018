@@ -247,7 +247,7 @@ export class View {
             liClass = "list-race-finished";
             break;
           default:
-            liClass = "";
+            liClass = "list-race-normal";
         }
 
         return `<li class=${liClass}>${race.name}</li>`;
@@ -257,23 +257,42 @@ export class View {
       <ul class="race-list-ul">${races.join("")}</ul>`;
     });
 
-    container.innerHTML = `<div>${racesListHtml.join("")}</div>`;
+    container.innerHTML = `<div class="race-block">${racesListHtml.join("")}</div>`;
   }
 
   renderChampionshipStandings(races, standingsMen, standingsWomen) {
     // should render race list, men standings, women standings
     const container = document.querySelector("#standings-men");
+    const container_wmn = document.querySelector("#standings-women");
+
     this.renderRaceList(races);
 
     const standingsHTML = standingsMen.map((result) => {
       return `
-      <div class="result-row">
-      <div>${result.name}</div>
-      <div>${result.team}</div>
-      <div>${result.points}</div>
+      <div class="standings-row">
+      <div class="player-name">${result.name}</div>
+      <div class="player-cell-medium">${result.team}</div>
+      <div class="player-cell-small">${result.points}</div>
       </div>`;
     });
 
-    container.innerHTML = `<div>${standingsHTML.join("")}</div>`;
+    const standingsWMN_HTML = standingsWomen.map((result) => {
+      return `
+      <div class="standings-row">
+      <div class="player-name">${result.name}</div>
+      <div class="player-cell-medium">${result.team}</div>
+      <div class="player-cell-small">${result.points}</div>
+      </div>`;
+    });
+
+    container.innerHTML = `<div>
+      <div class="standings-header">Standings Men</div>
+      ${standingsHTML.join("")}
+      </div>`;
+
+    container_wmn.innerHTML = `<div>
+      <div class="standings-header">Standings Women</div>
+      ${standingsWMN_HTML.join("")}
+      </div>`;
   }
 }

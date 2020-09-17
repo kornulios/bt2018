@@ -13,7 +13,7 @@ export class Championship {
     this.nationPoints = {}; //postponed for future releases
   }
 
-  getPlayersStandings(gender) {
+  getPlayersStandings(gender, resultsNum) {
     const points = gender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
 
     const standings = Object.keys(points)
@@ -24,7 +24,7 @@ export class Championship {
         return p1.points > p2.points ? -1 : 1;
       });
 
-    return standings;
+    return standings.slice(0, resultsNum);
   }
 
   createRaceList(racesData) {
@@ -70,8 +70,6 @@ export class Championship {
     }
 
     this._setNextRace();
-
-    console.log(this.getPlayersStandings(race.raceGender));
   }
 
   _setNextRace() {

@@ -196,6 +196,7 @@ export class Game {
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
     this.view.renderRaceList(this.championship.getRaceList());
+    this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       //end season
@@ -207,7 +208,16 @@ export class Game {
 
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE).map((result) => {
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE, 10).map((result) => {
+      const player = this.getPlayerByName(result.name);
+      return {
+        id: player.id,
+        name: player.name,
+        points: result.points,
+        team: player.team,
+      };
+    });
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.FEMALE, 10).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -217,7 +227,7 @@ export class Game {
       };
     });
 
-    this.view.renderChampionshipStandings(races, standingsMen);
+    this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
   showPlayersList() {
