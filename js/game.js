@@ -6,6 +6,7 @@ import { Result } from "./model/result.js";
 import { TeamAI } from "./model/Team.js";
 
 import { SprintRace } from "./controller/SprintRace.js";
+import { PursuitRace } from "./controller/PursuitRace.js";
 import { RelayRace } from "./controller/RelayRace.js";
 import { IndividualRace } from "./controller/IndividualRace.js";
 import { MassStartRace } from "./controller/MassStartRace.js";
@@ -36,6 +37,24 @@ export class Game {
     this.canvas = new Graphic2D();
 
     this.stopTimer = null;
+    this.paused = false;
+
+    this.initGameData(); // tmp generator
+    this.initChampionship();
+
+    this.view.renderRaceList(this.championship.getRaceList());
+  }
+
+  initChampionship() {
+    this.championship = new Championship();
+    this.championship.createRaceList(gameData.racesData);
+  }
+
+  initGameData() {
+    this.teams = gameData.teamData.map((team) => {
+      return new TeamAI(team);
+    });
+    this.players = gameData.generateTeams(); //temporary players generator
   }
 
   runGame(timeStamp) {
@@ -55,229 +74,307 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
     this.canvas.drawGameTick(gameTick); // FPS
 
-    // this.view.renderShortResults(this.race.results, this.race.track);
-    // this.view.renderProgress(this.race);
-
     //REQUEST NEXT FRAME
-    this.stopTimer = window.requestAnimationFrame(this.runGame.bind(this));
+    this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
 
     //FINISH THE RACE
     if (this.race.raceFinished) {
-      window.cancelAnimationFrame(this.stopTimer);
-      console.log("race finished", timeStamp);
-      this.view.renderResults(this.race.results, this.race.track);
+      cancelAnimationFrame(this.stopTimer);
+      this.endRace();
+    }
+  }
+
+  simulateRace() {
+    do {
+      this.race.run(100);
+    } while (!this.race.raceFinished);
+
+    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+    this.endRace();
+  }
+
+  pauseGame() {
+    const button = document.querySelector("#pause");
+
+    if (!this.paused) {
+      //stop
+      this.paused = true;
+      cancelAnimationFrame(this.stopTimer);
+      button.innerText = "Resume";
+    } else {
+      //resume
+      this.paused = false;
+      oldTimeStamp = performance.now();
+      requestAnimationFrame(this.runGame.bind(this));
+      button.innerText = "Pause";
     }
   }
 
   getPlayerCoords(players) {
-    const res = players.map((player) => {
-      if (
-        player.status === Constants.PLAYER_STATUS.NOT_STARTED ||
-        player.status === Constants.PLAYER_STATUS.FINISHED
-      ) {
+    const playersData = players.map((player) => {
+      if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
         return false;
       }
 
-      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-        return {
-          name: player.name,
-          number: player.number,
-          coords: this.race.track.getPenaltyCoordinates(player.penalty),
-        };
-      } else if (
-        player.distance >=
-        this.race.track.getTrackLength() - this.race.track.finishLineLength
-      ) {
-        return {
-          name: player.name,
-          number: player.number,
-          coords: this.race.track.getFinishCoordinates(player.distance),
-        };
-      }
-
-      return {
+      let playerData = {
         name: player.name,
         number: player.number,
-        coords: this.race.track.getCoordinates(player.distance),
+        colors: player.colors,
       };
+
+      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
+        playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
+      } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
+        playerData.coords = this.race.track.getFinishCoordinates(player.distance);
+      } else {
+        playerData.coords = this.race.track.getCoordinates(player.distance);
+      }
+
+      return playerData;
     });
 
-    return res;
-  }
-
-  simulatePlayer() {
-
-    const championship = new Championship();
-    championship.createRaceList(gameData.racesData);
-
-    console.log(championship.calendar);
-    // this.race = new RelayRace();
-
-    // const { race } = this;
-
-    // oldTimeStamp = performance.now();
-    // this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    // window.requestAnimationFrame(this.runGame.bind(this));
-
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
-    // this.view.renderProgress(this.race);
-
-    //GENERATE TEAMS
-    // this.generateTeams();
-    // this.view.renderPlayerList(this.players);
-
-    // this.view.renderTeamList(this.teams);
-    // console.log(this.players);
+    return playersData;
   }
 
   //#region Racing Sims
   simulateSprint() {
-    this.race = new SprintRace();
-
-    const { race } = this;
-
-    oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    window.requestAnimationFrame(this.runGame.bind(this));
+    this.prepareNextRace();
+    this.startNextRace();
   }
 
   simulateRelay() {
-    this.race = new RelayRace();
-
-    const { race } = this;
-
-    oldTimeStamp = performance.now();
-    this.canvas.drawMapBeta(race.track);
-
-    //START RACE
-    window.requestAnimationFrame(this.runGame.bind(this));
+    this.prepareNextRace();
+    this.startNextRace();
   }
   //#endregion
 
-  generateTeams() {
-    // generate teams and players
-    const { teamData } = gameData;
+  prepareNextRace() {
+    // get next race definition from championship
+    const nextRace = this.championship.getNextRace();
+    let playerRoster = [];
 
-    for (let i = 0; i < teamData.length; i++) {
-      const team = new TeamAI(teamData[i]);
+    switch (nextRace.raceType) {
+      case "Individual":
+        playerRoster = this.aiSelectRacePlayers(nextRace);
+        this.race = new IndividualRace();
+        break;
+      case "Mass-start":
+        playerRoster = this.aiSelectMassStartPlayers(nextRace);
+        this.race = new MassStartRace();
+        break;
+      case "Sprint":
+        playerRoster = this.aiSelectRacePlayers(nextRace);
+        this.race = new SprintRace();
+        break;
+      case "Pursuit":
+        playerRoster = this.aiSelectPursuitPlayers(nextRace);
+        this.race = new PursuitRace();
+        break;
+      default:
+        console.log("couldnt find racetype");
+    }
+    // get players from teamAI as per quotas
+    // create new race with players list
 
-      for (let j = 0; j < team.stageQuota.men + 2; j++) {
-        const newPlayer = new Player({
-          id: this.totalPlayerCount + 1,
-          gender: "male",
-          team: team.shortName,
-        });
-        // team.setPlayer(newPlayer);
-        this.players.push(newPlayer);
-        this.totalPlayerCount++;
-      }
+    this.race.initRaceData(nextRace);
+    this.race.initPlayers(playerRoster);
+  }
 
-      for (let j = 0; j < team.stageQuota.women + 2; j++) {
-        const newPlayer = new Player({
-          id: this.totalPlayerCount + 1,
-          gender: "female",
-          team: team.shortName,
-        });
-        // team.setPlayer(newPlayer);
-        this.players.push(newPlayer);
-        this.totalPlayerCount++;
-      }
+  startNextRace() {
+    // start predefined race
+    const { race } = this;
+    // READY!
+    oldTimeStamp = performance.now();
+    // SET!
+    this.canvas.drawMapBeta(race.track);
+    // GO!!!
+    requestAnimationFrame(this.runGame.bind(this));
+  }
 
-      this.teams.push(team);
+  endRace() {
+    console.log("race finished");
+    this.view.renderShortResults(this.race.getFinishResult());
+    this.championship.onRaceFinish(this.race);
+    this.view.renderRaceList(this.championship.getRaceList());
+    this.showChampionshipStandings();
+
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      //end season
+      // this.view.renderSeasonEnd();
+      console.log("Season over");
+      this.showChampionshipStandings();
     }
   }
 
-  prepareNextRace() {}
+  showChampionshipStandings() {
+    const races = this.championship.getRaceList();
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE, 10).map((result) => {
+      const player = this.getPlayerByName(result.name);
+      return {
+        id: player.id,
+        name: player.name,
+        points: result.points,
+        team: player.team,
+      };
+    });
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.FEMALE, 10).map((result) => {
+      const player = this.getPlayerByName(result.name);
+      return {
+        id: player.id,
+        name: player.name,
+        points: result.points,
+        team: player.team,
+      };
+    });
 
-  setupRaceList() {
-    // setup race players list depending on race type
+    this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
+  }
+
+  showPlayersList() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
+    this.prepareNextRace();
+    this.simulateRace();
+  }
+
+  getPlayerTeam(player) {
+    return this.teams.find((team) => team.shortName === player.team);
+  }
+
+  getTeamColors(teamName) {
+    return this.teams.find((team) => team.shortName === teamName).colors;
+  }
+
+  getPlayerByName(name) {
+    return this.players.find((player) => player.name === name);
+  }
+
+  aiSelectRacePlayers(nextRace) {
+    return this.teams
+      .map((team) => {
+        return team.getNextRacePlayers(this.players, nextRace.raceGender);
+      })
+      .flat();
+  }
+
+  aiSelectMassStartPlayers(nextRace) {
+    const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
+    const eligiblePlayers = standings.map((result) => {
+      return this.getPlayerByName(result.name);
+    });
+
+    return eligiblePlayers;
+  }
+
+  aiSelectPursuitPlayers(nextRace) {
+    const stage = nextRace.stageName;
+    const calendar = this.championship.getRaceList();
+    const prevSprint = calendar.find((race) => {
+      return race.stageName === stage && race.raceType === "Sprint" && race.raceGender === nextRace.raceGender;
+    });
+
+    if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
+
+    const eligiblePlayers = prevSprint.finish.slice(0, 60).map((result) => {
+      const player = this.getPlayerByName(result.playerName);
+      player.startTimer = result.time;
+      return player;
+    });
+
+    return eligiblePlayers;
+  }
+
+  simulatePlayer() {
+    //debugging function
+    // this.race = new RelayRace();
+    // const { race } = this;
+    // oldTimeStamp = performance.now();
+    // this.canvas.drawMapBeta(race.track);
+    //START RACE
+    // window.requestAnimationFrame(this.runGame.bind(this));
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
+    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
+    // this.view.renderProgress(this.race);
+    //GENERATE TEAMS
+    // this.generateTeams();
+    // this.view.renderPlayerList(this.players);
+    // this.view.renderTeamList(this.teams);
+    // console.log(this.players);
   }
 
   // ********************************************************************
 
   // OBSOLETE GOWNO for refactoring
 
-  startNewChampionship() {
-    if (this.players.length > 0) {
-      this.championship = new Championship();
-      // this.championship.prepareNextRace();
-    } else {
-      // console.log('No players loaded.');
-    }
-  }
+  // render() {
+  //   this.view.currentScreen.update();
+  // }
 
-  render() {
-    this.view.currentScreen.update();
-  }
+  // startRace() {
+  //   var race = this.getCurrentRace();
+  //   race.setRaceStatus("Started");
+  //   this.runGame();
+  // }
 
-  startRace() {
-    var race = this.getCurrentRace();
-    race.setRaceStatus("Started");
-    this.runGame();
-  }
+  // finishRace() {
+  //   var race = this.getCurrentRace(),
+  //     championship = this.championship,
+  //     nextRace;
 
-  finishRace() {
-    var race = this.getCurrentRace(),
-      championship = this.championship,
-      nextRace;
+  //   race.setRaceStatus("Finished");
+  //   nextRace = championship.prepareNextRace();
+  //   if (!nextRace) {
+  //     championship.prepareNextStage();
+  //     changeTab("championship");
+  //     return;
+  //   }
+  //   changeTab("results"); // TEMP
+  // }
 
-    race.setRaceStatus("Finished");
-    nextRace = championship.prepareNextRace();
-    if (!nextRace) {
-      championship.prepareNextStage();
-      changeTab("championship");
-      return;
-    }
-    changeTab("results"); // TEMP
-  }
+  // getPlayerTeam() {
+  //   return this.playerTeam.name;
+  // }
 
-  getPlayerTeam() {
-    return this.playerTeam.name;
-  }
+  // getTeams() {
+  //   return this.teams;
+  // }
 
-  getTeams() {
-    return this.teams;
-  }
+  // getPlayers() {
+  //   return this.championship.getPlayers();
+  // }
 
-  getPlayers() {
-    return this.championship.getPlayers();
-  }
+  // getViewGender() {
+  //   return this.selectedGender;
+  // }
 
-  getViewGender() {
-    return this.selectedGender;
-  }
+  // getCurrentRace() {
+  //   return this.championship.currentRace;
+  // }
 
-  getCurrentRace() {
-    return this.championship.currentRace;
-  }
+  // getChampionship() {
+  //   return this.championship;
+  // }
 
-  getChampionship() {
-    return this.championship;
-  }
+  // onChangeTeamSelect(e) {
+  // var teamName = e.target.textContent;
 
-  onChangeTeamSelect(e) {
-    // var teamName = e.target.textContent;
+  // this.startNewChampionship(); //should go to Start button
 
-    this.startNewChampionship(); //should go to Start button
+  // for (var i = 0; i < this.teams.length; i++) {
+  //   if (this.teams[i].name == teamName) {
+  //     this.playerTeam = this.teams[i];
+  //     this.view.selectTeamDetails(this.teams[i]);
+  //   }
+  // }
+  // if (this.playerTeam == '') {
+  //   console.log('Selected team not defined');
+  // }
+  // }
 
-    // for (var i = 0; i < this.teams.length; i++) {
-    //   if (this.teams[i].name == teamName) {
-    //     this.playerTeam = this.teams[i];
-    //     this.view.selectTeamDetails(this.teams[i]);
-    //   }
-    // }
-    // if (this.playerTeam == '') {
-    //   console.log('Selected team not defined');
-    // }
-  }
-
-  onChangeViewGender(e) {
-    this.selectedGender = e.target.getAttribute("data");
-    refreshTab("championship");
-  }
+  // onChangeViewGender(e) {
+  //   this.selectedGender = e.target.getAttribute("data");
+  //   refreshTab("championship");
+  // }
 }

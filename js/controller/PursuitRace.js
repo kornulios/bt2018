@@ -1,19 +1,22 @@
 import { Race } from "./Race.js";
-import { Player } from "../model/player.js";
 
 import * as Constants from "../constants/constants.js";
 
-export class SprintRace extends Race {
+export class PursuitRace extends Race {
   constructor() {
-    super({ raceType: Constants.RACE_TYPE_SHORT });
+    super({ raceType: Constants.RACE_TYPE_LONG });
   }
 
   initPlayers(players) {
     //prepare players
+    let baseTime = players[0].startTimer;
+
     this.players = players.map((player, i) => {
+      const time = player.startTimer - baseTime;
+
       player.reset();
       player.number = i + 1;
-      player.startTimer = i * 30000;
+      player.startTimer = time;
 
       return player;
     });
@@ -42,7 +45,7 @@ export class SprintRace extends Race {
           const passedRange = track.isShootingEntrancePassed(player.distance, playerPrevDistance);
 
           if (passedWaypoint) {
-            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer - player.startTimer);
+            this.logPlayerResult(results, player, passedWaypoint, this.raceTimer);
           }
 
           if (passedRange) {

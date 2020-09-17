@@ -1,6 +1,11 @@
 let canvas = document.querySelector("#main-canvas");
 
 export class Graphic2D {
+  constructor() {
+    this.img = new Image();
+    this.img.src = "../../static/map.gif";
+  }
+
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
@@ -23,8 +28,7 @@ export class Graphic2D {
   drawMapBeta(track) {
     const { coordsMap, penaltyCoordsMap, finishCoordsMap } = track;
     let ctx = canvas.getContext("2d");
-    let img = new Image();
-    img.src = "../../static/map.gif";
+    const { img } = this;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -82,23 +86,28 @@ export class Graphic2D {
       if (playerCoords[i].coords) {
         try {
           const { x, y } = playerCoords[i].coords;
-          ctx.beginPath();
-          ctx.arc(x, y, 8, 0, Math.PI * 2);
+          const { colors } = playerCoords[i];
 
-          ctx.fillStyle = "#ffc7f0";
+          //render player bub
+          ctx.beginPath();
+          ctx.arc(x, y, 9, 0, Math.PI * 2);
+
+          ctx.fillStyle = colors[0] || "#ffc7f0";
           ctx.strokeStyle = "#000000";
 
           ctx.fill();
           ctx.stroke();
 
-          ctx.fillStyle = "#000000";
-          ctx.font = "12px Consolas";
+          //render text
+          ctx.strokeWidth = "2px";
+          ctx.fillStyle = colors[1] || "#000000";
+          ctx.font = "bold 10px Verdana";
           if (i <= 8) {
-            ctx.fillText(i + 1, x - 3.25, y + 3.25);
+            ctx.fillText(i + 1, x - 3.5, y + 3.25);
           } else if (i > 8 && i < 99) {
-            ctx.fillText(i + 1, x - 7, y + 3.25);
+            ctx.fillText(i + 1, x - 7.5, y + 3.25);
           } else if (i >= 99) {
-            ctx.font = "10px Consolas";
+            ctx.font = "8px Verdana";
             ctx.fillText(i + 1, x - 7, y + 3.25);
           }
         } catch {

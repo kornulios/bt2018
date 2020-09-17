@@ -1,0 +1,44 @@
+.race-list {
+  font-family: "Roboto";
+  padding: 8px;
+  flex: 1;
+
+  font-size: 14px;
+  margin: 0;
+}
+
+.race-block {
+  width: 220px;
+}
+
+.race-list li {
+  margin: 4px 0;
+  border-radius: 2px;
+  list-style: none;
+  padding: 2px 8px;
+}
+
+.race-list ul {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 6px;
+}
+
+.race-list-header {
+  background: black;
+  color: white;
+  padding: 2px;
+  padding-left: 4px;
+}
+
+.list-race-finished {
+  background: lightgreen;
+}
+
+.list-race-next {
+  background: lightpink;
+}
+
+.list-race-normal {
+  background: white;
+}

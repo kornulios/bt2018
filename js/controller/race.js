@@ -10,7 +10,13 @@ export class Race {
     this.results = new Result();
     this.players = [];
 
-    this.frameRate = 100;
+    this.id = null;
+    this.stageName = null;
+    this.name = null;
+    this.raceType = null;
+    this.raceGender = null;
+
+    // this.frameRate = 100;
     this.raceTimer = 0;
     this.raceFinished = false;
 
@@ -27,10 +33,13 @@ export class Race {
     this.track.initTrack();
   }
 
-  // renderResults(results, track) {
-  //   const view = new View();
-  //   view.renderResults(results, track);
-  // }
+  initRaceData(raceData) {
+    this.id = raceData.id;
+    this.stageName = raceData.stageName;
+    this.name = raceData.name;
+    this.raceType = raceData.raceType;
+    this.raceGender = raceData.raceGender;
+  }
 
   getPlayers() {
     return this.players;
@@ -61,27 +70,11 @@ export class Race {
   }
 
   get fullName() {
-    return (
-      this.stageName +
-      " " +
-      this.raceType +
-      " " +
-      this.track.getTrackLengthKm() +
-      "km" +
-      " " +
-      this.raceGender
-    );
+    return this.stageName + " " + this.raceType + " " + this.track.getTrackLengthKm() + "km" + " " + this.raceGender;
   }
 
   get shortName() {
-    return (
-      this.raceType +
-      " " +
-      this.track.getTrackLengthKm() +
-      "km" +
-      " " +
-      this.raceGender
-    );
+    return this.raceType + " " + this.track.getTrackLengthKm() + "km" + " " + this.raceGender;
   }
 
   getFinishResult() {
@@ -128,13 +121,17 @@ export class Race {
     return (this.gameTimer / 1000).toFixed(1);
   }
 
-  skipRace() {
-    let raceRunning = false;
-    this.status = "Started";
-    do {
-      raceRunning = this.run(100);
-    } while (raceRunning);
-    alert("race finished");
-    this.status = "Finished";
+  getRaceGender() {
+    return this.raceGender;
   }
+
+  // skipRace() {
+  //   let raceRunning = false;
+  //   this.status = "Started";
+  //   do {
+  //     raceRunning = this.run(100);
+  //   } while (raceRunning);
+  //   alert("race finished");
+  //   this.status = "Finished";
+  // }
 }

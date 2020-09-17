@@ -1,3 +1,6 @@
+import { Player } from "./model/player.js";
+import * as Constants from "./constants/constants.js";
+
 function getData() {
   return axios.get("http://localhost:3000/data");
 }
@@ -33,79 +36,57 @@ var CONSTANT = {
 Object.freeze(CONSTANT);
 
 export const raceTypes = {
-  sprint: {
-    lapLength: { men: 3333.33, women: 2500 },
-    waypoints: 25,
-    laps: 3,
-    shootings: 2,
+  sprint_men: {
     type: "Sprint",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
+    name: "Men 10km Sprint",
+    gender: Constants.GENDER.MALE,
   },
-  individual: {
-    lapLength: { men: 4000, women: 3000 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
+  sprint_women: {
+    type: "Sprint",
+    name: "Women 7.5km Sprint",
+    gender: Constants.GENDER.FEMALE,
+  },
+  individual_men: {
     type: "Individual",
-    penaltyType: CONSTANT.PENALTY_TYPE.MINUTE,
-    startType: CONSTANT.RACE_START_TYPE.SEPARATE,
+    name: "Men 20km Individual",
+    gender: Constants.GENDER.MALE,
   },
-  pursuit: {
-    //60 best of sprint race, intervals are taken from spint
-    lapLength: { men: 2500, women: 2000 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
+  individual_women: {
+    type: "Individual",
+    name: "Women 15km Individual",
+    gender: Constants.GENDER.FEMALE,
+  },
+  pursuit_men: {
     type: "Pursuit",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.PURSUIT,
+    name: "Men 12.5km Pursuit",
+    gender: Constants.GENDER.MALE,
   },
-  massStart: {
-    // 30 top ranked championship players
-    lapLength: { men: 3000, women: 2500 },
-    waypoints: 25,
-    laps: 5,
-    shootings: 4,
-    type: "Mass Start",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.ALL,
+  pursuit_women: {
+    type: "Pursuit",
+    name: "Women 10km Pursuit",
+    gender: Constants.GENDER.FEMALE,
   },
-  relay: {
-    //WHOA!		4x6 women; 4x7,5 men
-    lapLength: { men: 2500, women: 2000 },
-    waypoints: 25,
-    // waypointsPerLap: 3, // 3 is finish
-    laps: 12,
-    shootings: 8,
+  massStart_men: {
+    type: "Mass-start",
+    name: "Men 15km Mass-start",
+    gender: Constants.GENDER.MALE,
+  },
+  massStart_women: {
+    type: "Mass-start",
+    name: "Women 12.5km Mass-start",
+    gender: Constants.GENDER.FEMALE,
+  },
+  relay_men: {
     type: "Relay",
-    penaltyType: CONSTANT.PENALTY_TYPE.LAP,
-    startType: CONSTANT.RACE_START_TYPE.RELAY,
+    name: "Men 4x7.5km Relay",
+    gender: Constants.GENDER.MALE,
+  },
+  relay_women: {
+    type: "Relay",
+    name: "Women 4x6km Relay",
+    gender: Constants.GENDER.FEMALE,
   },
 };
-
-// var trackData = [
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.individual
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.sprint
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.pursuit
-// 	},
-// 	{
-// 		location: 'Ruhpolding',
-// 		coordsMap: [],
-// 		stats: raceTypes.massStart
-// 	}
-// ];
 
 //Season consists of 9 stages and 1 World Cup event
 
@@ -114,15 +95,23 @@ export const teamData = [
     name: "Germany",
     shortName: "GER",
     flag: "",
-    colors: [],
+    colors: ["#000000", "#FFD000"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Italy",
+    shortName: "ITA",
+    flag: "",
+    colors: ["#0f8a00", "#ffffff"],
+    raceQuota: { men: 5, women: 5 },
+    stageQuota: { men: 7, women: 7 },
   },
   {
     name: "Ukraine",
     shortName: "UKR",
     flag: "",
-    colors: [],
+    colors: ["#ffcc00", "#030bff"],
     raceQuota: { men: 5, women: 4 },
     stageQuota: { men: 7, women: 6 },
   },
@@ -130,7 +119,8 @@ export const teamData = [
     name: "Belarus",
     shortName: "BLR",
     flag: "",
-    colors: [],
+    // colors: ["#19a303", "#ff1500"],
+    colors: ["#FFFFFF", "#008000"],
     raceQuota: { men: 5, women: 4 },
     stageQuota: { men: 7, women: 6 },
   },
@@ -138,15 +128,25 @@ export const teamData = [
     name: "Norway",
     shortName: "NOR",
     flag: "",
-    colors: [],
+    // colors: ["#c71000", "#1e00e3"],
+    colors: ["#960c00", "#FFFFFF"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Austria",
+    shortName: "AUT",
+    flag: "",
+    colors: ["#ff230f", "#ffffff"],
+    raceQuota: { men: 5, women: 6 },
+    stageQuota: { men: 7, women: 8 },
   },
   {
     name: "France",
     shortName: "FRA",
     flag: "",
-    colors: [],
+    // colors: ["#0055A4", "#EF4135"],
+    colors: ["#0021db", "#FFFFFF"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
   },
@@ -154,9 +154,57 @@ export const teamData = [
     name: "Finland",
     shortName: "FIN",
     flag: "",
-    colors: [],
+    colors: ["#FFFFFF", "#1486ff"],
     raceQuota: { men: 6, women: 6 },
     stageQuota: { men: 8, women: 8 },
+  },
+  {
+    name: "Romania",
+    shortName: "ROM",
+    flag: "",
+    colors: ["#FCD116", "#CE1126"],
+    raceQuota: { men: 2, women: 2 },
+    stageQuota: { men: 4, women: 4 },
+  },
+  {
+    name: "Sweden",
+    shortName: "SWE",
+    flag: "",
+    colors: ["#006aa8", "#fecb00"],
+    raceQuota: { men: 5, women: 6 },
+    stageQuota: { men: 7, women: 8 },
+  },
+  {
+    name: "Bulgaria",
+    shortName: "BUL",
+    flag: "",
+    colors: ["#ace12f", "#000000"],
+    raceQuota: { men: 4, women: 3 },
+    stageQuota: { men: 6, women: 5 },
+  },
+  {
+    name: "Canada",
+    shortName: "CAN",
+    flag: "",
+    colors: ["#ffb3fc", "#ffffff"],
+    raceQuota: { men: 4, women: 4 },
+    stageQuota: { men: 6, women: 6 },
+  },
+  {
+    name: "Switzerland",
+    shortName: "SUI",
+    flag: "",
+    colors: ["#919191", "#ffffff"],
+    raceQuota: { men: 4, women: 5 },
+    stageQuota: { men: 6, women: 7 },
+  },
+  {
+    name: "Poland",
+    shortName: "POL",
+    flag: "",
+    colors: ["#ffffff", "#FF0000"],
+    raceQuota: { men: 4, women: 5 },
+    stageQuota: { men: 6, women: 7 },
   },
 ];
 
@@ -165,45 +213,54 @@ var mockData = {
     " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
 };
 
-export const racesData = 
- [
-    {
-      name: "Pokljuka",
-      raceMap: [raceTypes.individual, raceTypes.sprint, raceTypes.pursuit],
-    },
-    {
-      name: "Hochfilzen",
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.relay],
-    },
-    {
-      name: "Nove Mesto",
-      raceMap: [raceTypes.sprint, raceTypes.pursuit, raceTypes.massStart],
-    },
-  ];
+export const racesData = [
+  {
+    name: "Estersund",
+    raceMap: [
+      raceTypes.sprint_men,
+      raceTypes.sprint_women,
+      raceTypes.pursuit_men,
+      raceTypes.pursuit_women,
+      // raceTypes.relay_women,
+      // raceTypes.relay_men,
+    ],
+  },
+  {
+    name: "Pokljuka",
+    raceMap: [raceTypes.individual_men, raceTypes.individual_women, raceTypes.sprint_men, raceTypes.sprint_women],
+  },
+];
 
-const createRaceList = () => {
-  let raceIndex = 1;
-  let res = [];
-  for (let stage of gameData.stageData) {
-    for (let race of stage.raceMap) {
-      res.push({
-        index: raceIndex,
-        stageName: stage.name,
-        raceType: race,
-        raceGender: "men",
-        results: null,
-      });
-      raceIndex++;
+//don't like it
+export const generateTeams = () => {
+  // generate teams and players
+  let players = [];
+  let playerCount = 0;
 
-      res.push({
-        index: raceIndex,
-        stageName: stage.name,
-        raceType: race,
-        raceGender: "women",
-        results: null,
+  for (let i = 0; i < teamData.length; i++) {
+    const team = teamData[i];
+
+    for (let j = 0; j < team.stageQuota.men; j++) {
+      playerCount++;
+      const newPlayer = new Player({
+        id: playerCount,
+        gender: Constants.GENDER.MALE,
+        team: team.shortName,
+        colors: team.colors,
       });
-      raceIndex++;
+      players.push(newPlayer);
+    }
+
+    for (let j = 0; j < team.stageQuota.women; j++) {
+      playerCount++;
+      const newPlayer = new Player({
+        id: playerCount,
+        gender: Constants.GENDER.FEMALE,
+        team: team.shortName,
+        colors: team.colors,
+      });
+      players.push(newPlayer);
     }
   }
-  return res;
+  return players;
 };
