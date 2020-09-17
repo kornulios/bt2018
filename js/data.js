@@ -229,6 +229,17 @@ export const racesData = [
     name: "Pokljuka",
     raceMap: [raceTypes.individual_men, raceTypes.individual_women, raceTypes.sprint_men, raceTypes.sprint_women],
   },
+  {
+    name: "Annecy",
+    raceMap: [
+      raceTypes.sprint_men,
+      raceTypes.sprint_women,
+      raceTypes.pursuit_men,
+      raceTypes.pursuit_women,
+      raceTypes.massStart_men,
+      raceTypes.massStart_women,
+    ],
+  },
 ];
 
 //don't like it

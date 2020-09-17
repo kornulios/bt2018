@@ -43,7 +43,7 @@ Routes:
 - implement start roster scheduling (5)
 
 - start-line players route (3)
-- race switch (3)
+- ~~race switch (3)~~
 - stage switch (5)
 - enlarge map view (2)
 - pause on browser tab switch (3)
