@@ -102,12 +102,12 @@ export class Graphic2D {
           ctx.strokeWidth = "2px";
           ctx.fillStyle = colors[1] || "#000000";
           ctx.font = "bold 10px Verdana";
-          
-          if (number <= 8) {
+
+          if (number <= 9) {
             ctx.fillText(number, x - 3.5, y + 3.25);
-          } else if (i > 8 && i < 99) {
+          } else if (number > 9 && number < 99) {
             ctx.fillText(number, x - 7.5, y + 3.25);
-          } else if (i >= 99) {
+          } else if (number >= 99) {
             ctx.font = "8px Verdana";
             ctx.fillText(number, x - 7, y + 3.25);
           }
