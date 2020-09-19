@@ -4,10 +4,10 @@ import * as Constants from "../constants/constants.js";
 
 export class RelayRace extends Race {
   constructor() {
-    const teamsCount = 27;
-    const { PLAYER_STATUS } = Constants;
+    // const teamsCount = 27;
+    // const { PLAYER_STATUS } = Constants;
 
-    super({ raceType: Constants.RACE_TYPE_SHORT });
+    super();
 
     this.teams = [];
     // this.players = [];

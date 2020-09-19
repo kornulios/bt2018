@@ -1,5 +1,6 @@
 import { Player } from "./model/player.js";
 import * as Constants from "./constants/constants.js";
+import * as Waypoints from "./constants/waypoints.js";
 
 function getData() {
   return axios.get("http://localhost:3000/data");
@@ -39,52 +40,82 @@ export const raceTypes = {
   sprint_men: {
     type: "Sprint",
     name: "Men 10km Sprint",
-    gender: Constants.GENDER.MALE,
+    gender: Constants.GENDER.MEN,
+    waypoints: Waypoints.WAYPOINTS_10KM_LONG,
+    ranges: Waypoints.RANGES_10KM_LONG,
+    lapLength: 3300,
   },
   sprint_women: {
     type: "Sprint",
     name: "Women 7.5km Sprint",
-    gender: Constants.GENDER.FEMALE,
+    gender: Constants.GENDER.WOMEN,
+    waypoints: Waypoints.WAYPOINTS_7_5KM,
+    ranges: Waypoints.RANGES_7_5KM,
+    lapLength: 2500,
   },
   individual_men: {
     type: "Individual",
     name: "Men 20km Individual",
-    gender: Constants.GENDER.MALE,
+    gender: Constants.GENDER.MEN,
+    waypoints: Waypoints.WAYPOINTS_20KM,
+    ranges: Waypoints.RANGES_20KM,
+    lapLength: 4000,
   },
   individual_women: {
     type: "Individual",
     name: "Women 15km Individual",
-    gender: Constants.GENDER.FEMALE,
+    gender: Constants.GENDER.WOMEN,
+    waypoints: Waypoints.WAYPOINTS_15KM,
+    ranges: Waypoints.RANGES_15KM,
+    lapLength: 3000,
   },
   pursuit_men: {
     type: "Pursuit",
     name: "Men 12.5km Pursuit",
-    gender: Constants.GENDER.MALE,
+    gender: Constants.GENDER.MEN,
+    waypoints: Waypoints.WAYPOINTS_12_5KM,
+    ranges: Waypoints.RANGES_12_5KM,
+    lapLength: 2500,
   },
   pursuit_women: {
     type: "Pursuit",
     name: "Women 10km Pursuit",
-    gender: Constants.GENDER.FEMALE,
+    gender: Constants.GENDER.WOMEN,
+    waypoints: Waypoints.WAYPOINTS_10KM_SHORT,
+    ranges: Waypoints.RANGES_10KM_SHORT,
+    lapLength: 2000,
   },
   massStart_men: {
     type: "Mass-start",
     name: "Men 15km Mass-start",
-    gender: Constants.GENDER.MALE,
+    gender: Constants.GENDER.MEN,
+    waypoints: Waypoints.WAYPOINTS_15KM,
+    ranges: Waypoints.RANGES_15KM,
+    lapLength: 3000,
   },
   massStart_women: {
     type: "Mass-start",
     name: "Women 12.5km Mass-start",
-    gender: Constants.GENDER.FEMALE,
+    gender: Constants.GENDER.WOMEN,
+    waypoints: Waypoints.WAYPOINTS_12_5KM,
+    ranges: Waypoints.RANGES_12_5KM,
+    lapLength: 2500,
   },
   relay_men: {
     type: "Relay",
     name: "Men 4x7.5km Relay",
-    gender: Constants.GENDER.MALE,
+    gender: Constants.GENDER.MEN,
+    waypoints: Waypoints.WAYPOINTS_7_5KM,
+    ranges: Waypoints.RANGES_7_5KM,
+    lapLength: 2500,
   },
   relay_women: {
     type: "Relay",
     name: "Women 4x6km Relay",
-    gender: Constants.GENDER.FEMALE,
+    gender: Constants.GENDER.WOMEN,
+    waypoints: Waypoints.WAYPOINTS_6KM,
+    ranges: Waypoints.RANGES_6KM,
+    lapLength: 2000,
   },
 };
 
@@ -112,8 +143,8 @@ export const teamData = [
     shortName: "UKR",
     flag: "",
     colors: ["#ffcc00", "#030bff"],
-    raceQuota: { men: 5, women: 4 },
-    stageQuota: { men: 7, women: 6 },
+    raceQuota: { men: 5, women: 5 },
+    stageQuota: { men: 7, women: 7 },
   },
   {
     name: "Belarus",
@@ -138,8 +169,8 @@ export const teamData = [
     shortName: "AUT",
     flag: "",
     colors: ["#ff230f", "#ffffff"],
-    raceQuota: { men: 5, women: 6 },
-    stageQuota: { men: 7, women: 8 },
+    raceQuota: { men: 6, women: 5 },
+    stageQuota: { men: 8, women: 7 },
   },
   {
     name: "France",
@@ -155,8 +186,8 @@ export const teamData = [
     shortName: "FIN",
     flag: "",
     colors: ["#FFFFFF", "#1486ff"],
-    raceQuota: { men: 6, women: 6 },
-    stageQuota: { men: 8, women: 8 },
+    raceQuota: { men: 3, women: 5 },
+    stageQuota: { men: 4, women: 6 },
   },
   {
     name: "Romania",
@@ -255,7 +286,7 @@ export const generateTeams = () => {
       playerCount++;
       const newPlayer = new Player({
         id: playerCount,
-        gender: Constants.GENDER.MALE,
+        gender: Constants.GENDER.MEN,
         team: team.shortName,
         colors: team.colors,
       });
@@ -266,7 +297,7 @@ export const generateTeams = () => {
       playerCount++;
       const newPlayer = new Player({
         id: playerCount,
-        gender: Constants.GENDER.FEMALE,
+        gender: Constants.GENDER.WOMEN,
         team: team.shortName,
         colors: team.colors,
       });

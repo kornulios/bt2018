@@ -5,7 +5,7 @@ import { Result } from "../model/result.js";
 import * as Constants from "../constants/constants.js";
 
 export class Race {
-  constructor(config) {
+  constructor() {
     this.track = new Track();
     this.results = new Result();
     this.players = [];
@@ -19,18 +19,6 @@ export class Race {
     // this.frameRate = 100;
     this.raceTimer = 0;
     this.raceFinished = false;
-
-    if (config.raceType === 1) {
-      this.track.waypoints = Constants.WAYPOINTS_TYPE_1;
-      this.track.shootingRange = Constants.RANGE_TYPE_1;
-      this.track.lapLength = 3000;
-    } else {
-      this.track.waypoints = Constants.WAYPOINTS_TYPE_2;
-      this.track.shootingRange = Constants.RANGE_TYPE_2;
-      this.track.lapLength = 2500;
-    }
-
-    this.track.initTrack();
   }
 
   initRaceData(raceData) {
@@ -39,6 +27,12 @@ export class Race {
     this.name = raceData.name;
     this.raceType = raceData.raceType;
     this.raceGender = raceData.raceGender;
+
+    this.track.waypoints = raceData.waypoints;
+    this.track.shootingRange = raceData.ranges;
+    this.track.lapLength = raceData.lapLength;
+
+    this.track.initTrack();
   }
 
   getPlayers() {

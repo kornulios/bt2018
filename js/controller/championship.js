@@ -14,7 +14,7 @@ export class Championship {
   }
 
   getPlayersStandings(gender, resultsNum) {
-    const points = gender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
+    const points = gender === GENDER.MEN ? this.standingsMen : this.standingsWomen;
 
     const standings = Object.keys(points)
       .map((player) => {
@@ -39,6 +39,9 @@ export class Championship {
           name: race.name,
           raceType: race.type,
           raceGender: race.gender,
+          waypoints: race.waypoints,
+          ranges: race.ranges,
+          lapLength: race.lapLength,
           results: null,
           finish: null,
           status: RACE_STATUS.NOT_STARTED,
@@ -55,7 +58,7 @@ export class Championship {
     const pointResultsNumber = race.raceType === "Mass-start" ? 30 : 40;
     const finishedRace = this.getRaceById(race.id);
     const results = race.getFinishResult().slice(0, pointResultsNumber);
-    const standings = race.raceGender === GENDER.MALE ? this.standingsMen : this.standingsWomen;
+    const standings = race.raceGender === GENDER.MEN ? this.standingsMen : this.standingsWomen;
 
     finishedRace.status = RACE_STATUS.FINISHED;
     finishedRace.results = race.results;

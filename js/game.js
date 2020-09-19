@@ -210,7 +210,7 @@ export class Game {
 
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE, 10).map((result) => {
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 10).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -219,7 +219,7 @@ export class Game {
         team: player.team,
       };
     });
-    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.FEMALE, 10).map((result) => {
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 10).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
