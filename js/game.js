@@ -124,9 +124,10 @@ export class Game {
 
       if (player.status === Constants.PLAYER_STATUS.PENALTY) {
         playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-      } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
-        playerData.coords = this.race.track.getFinishCoordinates(player.distance);
-      } else {
+      }
+      // else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
+      //   playerData.coords = this.race.track.getFinishCoordinates(player.distance);  // RAF RAF
+      else {
         playerData.coords = this.race.track.getCoordinates(player.distance);
       }
 
