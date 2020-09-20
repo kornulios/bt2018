@@ -301,6 +301,10 @@ export class Game {
     this.prepareNextRace();
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta([{ name: "A", number: 1, coords: this.race.track.getPenaltyCoordinates(120) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "B", number: 2, coords: this.race.track.getCoordinates(9749) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "C", number: 3, coords: this.race.track.getCoordinates(9750) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "E", number: 4, coords: this.race.track.getCoordinates(9751) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "F", number: 5, coords: this.race.track.getCoordinates(9790) }]); // -- debugger for player placement
     // const { race } = this;
     // oldTimeStamp = performance.now();
     //START RACE

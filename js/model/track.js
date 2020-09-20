@@ -53,7 +53,7 @@ export class Track {
     this.finishCoords = [
       new Vector(this.getFinishEntrance().x, this.baseLineY),
       new Vector(this.getFinishEntrance().x, this.baseLineY + 20),
-      new Vector(this.baseLineX, this.baseLineY + 20),
+      new Vector(this.baseLineX + 20, this.baseLineY + 20),
     ];
     this.finishCoordsMap = this.initCoordsMap(
       this.finishCoords,
@@ -80,10 +80,6 @@ export class Track {
   }
 
   getPixelRatio(coordsArray, lapLength) {
-    // const trackLengthPixels = coordsArray.reduce((acc, item) => {
-    //   return (acc += item.l);
-    // }, 0);
-
     const trackLengthPixels = coordsArray[coordsArray.length - 1].d;
 
     return lapLength / trackLengthPixels;
@@ -127,13 +123,15 @@ export class Track {
   getFinishEntrance() {
     // return X coord of finish entrance
     // 2.5% of distance
-    const dist = this.getTrackLength() - this.finishLineLength;
-
     const actualDistance = this.finishLineLength / this.pixelRatio;
 
-    const { coords, direction } = this.coordsMap[this.coordsMap.length - 2];
+    const finishCoords = this.coordsMap[this.coordsMap.length - 1];
+    const preFinishCoords = this.coordsMap[this.coordsMap.length - 2];
 
-    return new Vector(coords.x + actualDistance * direction.x, coords.y + actualDistance * direction.y);
+    return new Vector(
+      finishCoords.coords.x + actualDistance * -preFinishCoords.direction.x,
+      finishCoords.coords.y + actualDistance * -preFinishCoords.direction.y
+    );
   }
 
   getLapNumber(distance) {
