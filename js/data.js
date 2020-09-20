@@ -43,7 +43,7 @@ export const raceTypes = {
     gender: Constants.GENDER.MEN,
     waypoints: Waypoints.WAYPOINTS_10KM_LONG,
     ranges: Waypoints.RANGES_10KM_LONG,
-    lapLength: 3300,
+    lapLength: 10000 / 3,
   },
   sprint_women: {
     type: "Sprint",

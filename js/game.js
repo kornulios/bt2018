@@ -298,13 +298,13 @@ export class Game {
 
   simulatePlayer() {
     //debugging function
-    // this.race = new RelayRace();
+    this.prepareNextRace();
+    this.canvas.drawMapBeta(this.race.track);
+    this.canvas.drawPlayersBeta([{ name: "A", number: 1, coords: this.race.track.getPenaltyCoordinates(120) }]); // -- debugger for player placement
     // const { race } = this;
     // oldTimeStamp = performance.now();
-    // this.canvas.drawMapBeta(race.track);
     //START RACE
     // window.requestAnimationFrame(this.runGame.bind(this));
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
     // this.view.renderProgress(this.race);
     //GENERATE TEAMS

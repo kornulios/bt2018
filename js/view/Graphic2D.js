@@ -92,7 +92,7 @@ export class Graphic2D {
           ctx.beginPath();
           ctx.arc(x, y, 9, 0, Math.PI * 2);
 
-          ctx.fillStyle = colors[0] || "#ffc7f0";
+          ctx.fillStyle = colors ? colors[0] : "#ffc7f0";
           ctx.strokeStyle = "#000000";
 
           ctx.fill();
@@ -100,7 +100,7 @@ export class Graphic2D {
 
           //render text
           ctx.strokeWidth = "2px";
-          ctx.fillStyle = colors[1] || "#000000";
+          ctx.fillStyle = colors ? colors[1] : "#000000";
           ctx.font = "bold 10px Verdana";
 
           if (number <= 9) {

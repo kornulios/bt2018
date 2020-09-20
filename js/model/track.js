@@ -49,46 +49,53 @@ export class Track {
     this.penaltyPixelRatio = this.getPixelRatio(this.penaltyCoordsMap, this.penaltyLapLength);
 
     this.finishLineLength = 250; // 2.5% meters
+
     this.finishCoords = [
       new Vector(this.getFinishEntrance().x, this.baseLineY),
       new Vector(this.getFinishEntrance().x, this.baseLineY + 20),
       new Vector(this.baseLineX, this.baseLineY + 20),
     ];
-    this.finishCoordsMap = this.initCoordsMap(this.finishCoords);
+    this.finishCoordsMap = this.initCoordsMap(
+      this.finishCoords,
+      (this.lapLength - this.finishLineLength) / this.pixelRatio
+    );
   }
 
-  initCoordsMap(coords) {
+  initCoordsMap(coords, fromDistance) {
+    let totalLength = fromDistance || 0;
+
     const res = coords.map((vec, i, arr) => {
       const lastElement = i === arr.length - 1;
+      const nextElement = lastElement ? arr[0] : arr[i + 1];
 
-      const l = lastElement ? 0 : vec.substract(arr[i + 1]).getLength();
-      const direction = lastElement ? new Vector(0, 0) : arr[i + 1].substract(vec).normalize();
+      const l = vec.substract(nextElement).getLength();
+      const d = totalLength;
+      totalLength += l;
+      const direction = nextElement.substract(vec).normalize();
 
-      return { coords: new Vector(vec.x, vec.y), l, direction };
+      return { coords: new Vector(vec.x, vec.y), direction, d, next: nextElement };
     });
 
     return res;
   }
 
   getPixelRatio(coordsArray, lapLength) {
-    const trackLengthPixels = coordsArray.reduce((acc, item) => {
-      return (acc += item.l);
-    }, 0);
+    // const trackLengthPixels = coordsArray.reduce((acc, item) => {
+    //   return (acc += item.l);
+    // }, 0);
+
+    const trackLengthPixels = coordsArray[coordsArray.length - 1].d;
 
     return lapLength / trackLengthPixels;
   }
 
   getCoordinates(dist) {
-    const d = (dist - this.lapLength * (this.getLapNumber(dist) - 1)) / this.pixelRatio;
+    const d = (dist - this.lapLength * (this.getLapNumber(dist) - 1)) / this.pixelRatio; //passed distance in px
     const coords = dist < this.getTrackLength() - this.finishLineLength ? this.coordsMap : this.finishCoordsMap;
 
-    let totalLength = 0;
-
     for (let i = 0; i < coords.length; i++) {
-      totalLength += coords[i].l;
-
-      if (d <= totalLength) {
-        const actualDistance = d - (totalLength - coords[i].l);
+      if (d >= coords[i].d && d <= coords[i + 1].d) {
+        const actualDistance = d - coords[i].d;
 
         return new Vector(
           coords[i].coords.x + actualDistance * coords[i].direction.x,
@@ -96,74 +103,37 @@ export class Track {
         );
       }
     }
-    debugger;
     console.log("invalid distance", d);
   }
 
   getPenaltyCoordinates(dist) {
     const d = (150 * Math.ceil(dist / 150) - dist) / this.penaltyPixelRatio;
-    let totalLength = 0;
+    const coords = this.penaltyCoordsMap;
 
-    for (let i = 0; i < this.penaltyCoordsMap.length; i++) {
-      totalLength += this.penaltyCoordsMap[i].l;
-      if (d <= totalLength) {
-        const actualDistance = d - (totalLength - this.penaltyCoordsMap[i].l);
+    for (let i = 0; i < coords.length; i++) {
+      if (d >= coords[i].d && d <= coords[i + 1].d) {
+        const actualDistance = d - coords[i].d;
 
         return new Vector(
-          this.penaltyCoordsMap[i].coords.x + actualDistance * this.penaltyCoordsMap[i].direction.x,
-          this.penaltyCoordsMap[i].coords.y + actualDistance * this.penaltyCoordsMap[i].direction.y
+          coords[i].coords.x + actualDistance * coords[i].direction.x,
+          coords[i].coords.y + actualDistance * coords[i].direction.y
         );
       }
     }
+
     console.log("invalid penalty distance", d);
   }
-
-  // getFinishCoordinates(dist) {
-  //   const d = (this.finishLineLength - (this.getTrackLength() - dist)) / this.pixelRatio;
-  //   let totalLength = 0;
-
-  //   for (let i = 0; i < this.finishCoordsMap.length; i++) {
-  //     totalLength += this.finishCoordsMap[i].l;
-  //     if (d <= totalLength) {
-  //       const actualDistance = d - (totalLength - this.finishCoordsMap[i].l);
-
-  //       return new Vector(
-  //         this.finishCoordsMap[i].coords.x + actualDistance * this.finishCoordsMap[i].direction.x,
-  //         this.finishCoordsMap[i].coords.y + actualDistance * this.finishCoordsMap[i].direction.y
-  //       );
-  //     }
-  //   }
-  //   console.log("invalid finish distance", d);
-  // }
 
   getFinishEntrance() {
     // return X coord of finish entrance
     // 2.5% of distance
-    // return this.getCoordinates(this.getTrackLength() - this.finishLineLength).x;
     const dist = this.getTrackLength() - this.finishLineLength;
 
     const actualDistance = this.finishLineLength / this.pixelRatio;
 
-    // const d = (dist - this.lapLength * (this.getLapNumber(dist) - 1)) / this.pixelRatio;
     const { coords, direction } = this.coordsMap[this.coordsMap.length - 2];
 
-    // let totalLength = 0;
-
     return new Vector(coords.x + actualDistance * direction.x, coords.y + actualDistance * direction.y);
-
-    // for (let i = 0; i < coords.length; i++) {
-    //   totalLength += coords[i].l;
-
-    //   if (d <= totalLength) {
-    //     const actualDistance = d - (totalLength - coords[i].l);
-
-    //     return new Vector(
-    //       coords[i].coords.x + actualDistance * coords[i].direction.x,
-    //       coords[i].coords.y + actualDistance * coords[i].direction.y
-    //     );
-    //   }
-    // }
-    // console.log("invalid distance", d);
   }
 
   getLapNumber(distance) {
