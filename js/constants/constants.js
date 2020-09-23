@@ -6,6 +6,8 @@ export const RACE_START_TYPE = {
   RELAY: 4,
 };
 
+export const SHOOTING_DELAY = 60000;
+
 //AI behaviour constants
 export const AI_BEHAVIOUR = {
   AGGRESSIVE: [50, 25, 25],

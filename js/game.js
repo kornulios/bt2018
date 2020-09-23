@@ -60,7 +60,7 @@ export class Game {
   runGame(timeStamp) {
     // main game loop
     //refactored with rAF X2
-    const gameSpeed = 50;
+    const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -143,7 +143,7 @@ export class Game {
 
   getShootingPlayers(players) {
     const shootingPlayers = players.filter((player) => {
-      return player.status === Constants.PLAYER_STATUS.SHOOTING;
+      return player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0;
     });
 
     return shootingPlayers;

@@ -58,6 +58,7 @@ export class SprintRace extends Race {
 
             player.penalty = penaltyCount * track.penaltyLapLength;
             player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            player.shootingTimer = Constants.SHOOTING_DELAY;
           }
         } else if (player.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);

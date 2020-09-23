@@ -28,6 +28,7 @@ export class Player {
     //race related
     this.status = PLAYER_STATUS.NOT_STARTED;
     this.startTimer = args.startTimer;
+    this.shootingTimer = 0; // to delay shooting results
 
     //shooting related
     this.rangeNum = 0;
@@ -109,6 +110,7 @@ export class Player {
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
     this.distance += distancePassed;
+    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
   }
 
   runPenaltyLap(elapsedTime) {
@@ -116,6 +118,7 @@ export class Player {
     const distancePassed = ((this.currentSpeed * 0.9) / 3600) * fps; // m/ms
 
     this.penalty -= distancePassed;
+    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
   }
 
   enterShootingRange(range) {
@@ -136,6 +139,7 @@ export class Player {
   quitShootingRange(penaltyLaps) {
     this.status = penaltyLaps ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
     this.rifle = {};
+    this.shootingTimer = Constants.SHOOTING_DELAY;
   }
 
   shoot(elapsedTime) {
