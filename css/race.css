@@ -65,7 +65,14 @@
 .range {
   display: flex;
   border: 1px solid black;
+  background: white;
   /* padding: 2px; */
+}
+
+.range-delayed {
+  display: flex;
+  border: 1px solid black;
+  background: lightgray;
 }
 
 .shooting-player {

@@ -57,7 +57,8 @@ export class MassStartRace extends Race {
             const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            // player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            player.quitShootingRange(penaltyCount);
           }
         } else if (player.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);

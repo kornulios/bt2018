@@ -1,6 +1,6 @@
 import { Utils } from "../utils/Utils.js";
 import { teamData } from "../data.js";
-import { RACE_STATUS } from "../constants/constants.js";
+import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
 
 export class View {
   constructor() {
@@ -304,7 +304,11 @@ export class View {
       const rangeHtml = range.map((r) => {
         return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
       });
-      return `<div class="range">${rangeHtml.join("")} <div class="shooting-player">${player.name} ${player.team}</div></div>`;
+
+      const rangeClass = player.status === PLAYER_STATUS.SHOOTING ? "range" : "range-delayed";
+      return `<div class=${rangeClass}>${rangeHtml.join("")} <div class="shooting-player">${player.name} ${
+        player.team
+      }</div></div>`;
     });
 
     const container = document.querySelector("#finish-results");

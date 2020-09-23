@@ -113,7 +113,8 @@ export class RelayRace extends Race {
             const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            team.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            // team.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            player.quitShootingRange(penaltyCount);
           }
         } else if (team.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);
