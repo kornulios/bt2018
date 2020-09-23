@@ -42,3 +42,42 @@
 .list-race-normal {
   background: white;
 }
+
+.target-open {
+  align-self: center;
+  margin: 1px;
+  width: 14px;
+  height: 14px;
+  background: black;
+  border-radius: 50%;
+}
+
+.target-closed {
+  align-self: center;
+  margin: 1px;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.range {
+  display: flex;
+  border: 1px solid black;
+  /* padding: 2px; */
+}
+
+.shooting-player {
+  flex: 1;
+  margin-left: 12px;
+  border: none;
+  color: white;
+  background: darkblue;
+}
+
+.shooting-container {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+}

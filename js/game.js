@@ -58,6 +58,7 @@ export class Game {
   }
 
   runGame(timeStamp) {
+    // main game loop
     //refactored with rAF X2
     const gameSpeed = 50;
 
@@ -70,8 +71,11 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //RENDER
+    const racePlayers = this.race.getPlayers();
     this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
+    this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
+    // DOM RENDER
+    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS
 
     //REQUEST NEXT FRAME
@@ -135,6 +139,14 @@ export class Game {
     });
 
     return playersData;
+  }
+
+  getShootingPlayers(players) {
+    const shootingPlayers = players.filter((player) => {
+      return player.status === Constants.PLAYER_STATUS.SHOOTING;
+    });
+
+    return shootingPlayers;
   }
 
   //#region Racing Sims

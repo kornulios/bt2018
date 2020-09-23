@@ -18,7 +18,7 @@ export const GENDER = {
   WOMEN: "women",
 };
 
-export const PLAYER_RUN_STATUS = { NORMAL: 0, EASE: 1, PUSHING: 2 };
+export const AI_PLAYER_RUN_STATUS = { NORMAL: 0, EASE: 1, PUSHING: 2 };
 
 export const START_TIME_INTERVAL = 30; // in seconds
 export const PURSUIT_PLAYERS_NUM = 60;

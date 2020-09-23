@@ -6,7 +6,8 @@ export class Player {
   constructor(args) {
     //base stats
     this.id = args.id; //unique player ID
-    this.baseSpeed = this.currentSpeed = args.gender === 'men' ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100 // km/h
+    this.baseSpeed = this.currentSpeed =
+      args.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100; // km/h
     this.name = args.name || "Player " + args.id;
     this.team = args.team || "Team 1";
     this.colors = args.colors || [];
@@ -37,7 +38,7 @@ export class Player {
     //AI related
     this.speedMod = 1;
     this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
-    this.state = Constants.PLAYER_RUN_STATUS.NORMAL;
+    this.state = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
   }
 
   static create(name, team, gender) {
@@ -78,6 +79,14 @@ export class Player {
 
   getDistance() {
     return this.distance;
+  }
+
+  getShootingRange() {
+    return this.currentRange;
+  }
+
+  getShootCount() {
+    return this.shotCount;
   }
 
   // setDistance(newDistance) {

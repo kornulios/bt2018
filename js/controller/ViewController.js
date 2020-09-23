@@ -129,6 +129,7 @@ export class View {
   }
 
   renderResults(results, track) {
+    const pls = game.players;
     //results fetch
     const playerResults = results.data.reduce((acc, result) => {
       const name = result.playerName;
@@ -294,5 +295,20 @@ export class View {
       <div class="standings-header">Standings Women</div>
       ${standingsWMN_HTML.join("")}
       </div>`;
+  }
+
+  renderShootingRange(players = [], target) {
+    const shootingTargetsHTML = players.map((player) => {
+      const range = player.getShootingRange();
+      const shotCount = player.getShootCount();
+      const rangeHtml = range.map((r) => {
+        return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
+      });
+      return `<div class="range">${rangeHtml.join("")} <div class="shooting-player">${player.name} ${player.team}</div></div>`;
+    });
+
+    const container = document.querySelector("#finish-results");
+
+    container.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
   }
 }

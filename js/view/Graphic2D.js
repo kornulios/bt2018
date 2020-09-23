@@ -38,25 +38,6 @@ export class Graphic2D {
     this.drawCoordinatesMap(penaltyCoordsMap, "green");
     this.drawCoordinatesMap(finishCoordsMap, "red");
 
-    // ctx.beginPath();
-    // ctx.moveTo(coordsMap[0].coords.x, coordsMap[0].coords.y);
-
-    // for (let i = 1; i < coordsMap.length; i++) {
-    //   ctx.lineTo(coordsMap[i].coords.x, coordsMap[i].coords.y);
-    // }
-    // ctx.strokeStyle = "#ffdd00";
-    // ctx.stroke();
-
-    // ctx.beginPath();
-    // ctx.moveTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
-
-    // for (let i = 1; i < penaltyCoords.length; i++) {
-    //   ctx.lineTo(penaltyCoords[i].coords.x, penaltyCoords[i].coords.y);
-    // }
-    // ctx.lineTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
-    // ctx.strokeStyle = "green";
-    // ctx.stroke();
-
     //start / finish line
     ctx.beginPath();
     ctx.strokeStyle = "#000000";
@@ -116,5 +97,9 @@ export class Graphic2D {
         }
       }
     }
+  }
+
+  drawShootingRange(players) {
+    let ctx = canvas.getContext("2d");    
   }
 }
