@@ -301,11 +301,17 @@ export class View {
     const shootingTargetsHTML = players.map((player) => {
       const range = player.getShootingRange();
       const shotCount = player.getShootCount();
+
       const rangeHtml = range.map((r) => {
         return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
       });
 
-      const rangeClass = player.status === PLAYER_STATUS.SHOOTING ? "range" : "range-delayed";
+      let rangeClass = player.status === PLAYER_STATUS.SHOOTING ? "range" : "range-delayed";
+      if (player.missNotification) {
+        rangeClass = "range-missed";
+        player.dismissMissNotification();
+      }
+
       return `<div class=${rangeClass}>${rangeHtml.join("")} <div class="shooting-player">${player.name} ${
         player.team
       }</div></div>`;

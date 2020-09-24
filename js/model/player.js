@@ -35,6 +35,7 @@ export class Player {
     this.currentRange = [];
     this.rifle = {};
     this.shotCount = 0;
+    this.missNotification = false;
 
     //AI related
     this.speedMod = 1;
@@ -104,6 +105,14 @@ export class Player {
     this.penaltyTime += time;
   }
 
+  setMissedNotification() {
+    this.missNotification = true;
+  }
+
+  dismissMissNotification() {
+    this.missNotification = false;
+  }
+
   run(elapsedTime) {
     //move forward on track
     const fps = elapsedTime;
@@ -157,6 +166,8 @@ export class Player {
     const nextTarget = this.shotCount >= 5 ? this.currentRange.indexOf(0) : this.shotCount;
     if (Utils.rand(100, 0) < this.accuracy) {
       this.currentRange[nextTarget] = 1; // HIT
+    } else {
+      this.setMissedNotification();
     }
     // this.currentRange = [1, 0, 0, 1, 1];
 
