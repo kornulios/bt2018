@@ -128,63 +128,79 @@ export class View {
     document.querySelector("#finish-results").innerHTML = `<div>${htmlResults.join("")}</div>`;
   }
 
-  renderResults(results, track) {
-    const pls = game.players;
-    //results fetch
-    const playerResults = results.data.reduce((acc, result) => {
-      const name = result.playerName;
-      if (!acc[name]) {
-        acc[name] = [];
-      }
+  renderResults(results) {
+    const htmlResults = results.map((result, i) => {
+      const colors = teamData.find((team) => team.shortName === result.team).colors;
 
-      return {
-        ...acc,
-        [name]: [
-          ...acc[name],
-          {
-            wpName: track.getWaypointName(result.waypoint),
-            time: Utils.convertToMinutes(result.time / 1000),
-          },
-        ],
-      };
-    }, {});
+      return `<div class="intermediate-row">
+        <div class="player-cell-small">${i + 1}</div> 
+        <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
+        <div class="player-name">${result.playerName}</div>
+        <div>${result.team}</div>
+        <div>${Utils.convertToMinutes(result.time / 1000)}</div>
+			</div>`;
+    });
 
-    const rangeResults = results.shootingData.reduce((acc, result) => {
-      const name = result.playerName;
-      if (!acc[name]) {
-        acc[name] = [];
-      }
-
-      return {
-        ...acc,
-        [name]: [...acc[name], { range: result.range, result: result.result }],
-      };
-    }, {});
-
-    //html
-    const htmlResults = Object.keys(playerResults)
-      .map((name) => {
-        const resultItems = playerResults[name].map((r) => {
-          const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`;
-
-          return `<li class="result-list-item">${item}</li>`;
-        });
-        const rangeItems = rangeResults[name].map((r) => {
-          const item = `<div>Range ${r.range}: ${r.result}</div>`;
-
-          return `<div>${item}</div>`;
-        });
-
-        const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join(
-          ""
-        )}</ul>${rangeItems.join("")}</div>`;
-
-        return list;
-      })
-      .join("");
-
-    document.querySelector("#finish-results").innerHTML = `<div class="results">${htmlResults}</div>`;
+    document.querySelector("#intermediate-results").innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
   }
+
+  // renderResults(results, track) {
+  //   const pls = game.players;
+  //   //results fetch
+  //   const playerResults = results.data.reduce((acc, result) => {
+  //     const name = result.playerName;
+  //     if (!acc[name]) {
+  //       acc[name] = [];
+  //     }
+
+  //     return {
+  //       ...acc,
+  //       [name]: [
+  //         ...acc[name],
+  //         {
+  //           wpName: track.getWaypointName(result.waypoint),
+  //           time: Utils.convertToMinutes(result.time / 1000),
+  //         },
+  //       ],
+  //     };
+  //   }, {});
+
+  //   const rangeResults = results.shootingData.reduce((acc, result) => {
+  //     const name = result.playerName;
+  //     if (!acc[name]) {
+  //       acc[name] = [];
+  //     }
+
+  //     return {
+  //       ...acc,
+  //       [name]: [...acc[name], { range: result.range, result: result.result }],
+  //     };
+  //   }, {});
+
+  //   //html
+  //   const htmlResults = Object.keys(playerResults)
+  //     .map((name) => {
+  //       const resultItems = playerResults[name].map((r) => {
+  //         const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`;
+
+  //         return `<li class="result-list-item">${item}</li>`;
+  //       });
+  //       const rangeItems = rangeResults[name].map((r) => {
+  //         const item = `<div>Range ${r.range}: ${r.result}</div>`;
+
+  //         return `<div>${item}</div>`;
+  //       });
+
+  //       const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join(
+  //         ""
+  //       )}</ul>${rangeItems.join("")}</div>`;
+
+  //       return list;
+  //     })
+  //     .join("");
+
+  //   document.querySelector("#finish-results").innerHTML = `<div class="results">${htmlResults}</div>`;
+  // }
 
   renderTeamList(teams) {
     const htmlResults = teams

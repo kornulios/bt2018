@@ -19,6 +19,9 @@ export class Result {
   //   this.data.push(resObj);
   // }
 
+  // RESULT STRUCTURE
+  // playerName, playerNumer, team, waypointId, time (timestamp)
+
   pushResult(resultData) {
     var resObj = { ...resultData };
 

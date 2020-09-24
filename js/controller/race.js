@@ -97,6 +97,10 @@ export class Race {
     return this.results;
   }
 
+  getWaypointResults(waypointId) {
+    return this.results.getWaypointResults(waypointId);
+  }
+
   getRaceName() {
     return this.name;
   }

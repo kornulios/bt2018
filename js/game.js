@@ -20,25 +20,34 @@ let oldTimeStamp = 0;
 
 export class Game {
   constructor() {
-    this.gameSpeed = 1000 / 60; //50 ticks per second
-    this.gameTimer;
-    this.gameRunning = false;
+    // REDUNDANT CODE
+    // this.gameSpeed = 1000 / 60; //50 ticks per second
+    // this.gameTimer;
+    // this.gameRunning = false;
+    // this.playerTeam = "";
+    // this.selectedGender = "men";
 
-    this.selectedResults = 0;
-    this.selectedGender = "men";
-    this.playerTeam = "";
+    //ui options
+    this.uiOptions = {
+      selectedResults: null,
+      selectedPlayer: null,
+    };
 
+    //game data
     this.teams = [];
     this.players = [];
     this.totalPlayerCount = 0; //temp
     this.race = null;
-    this.view = new View();
 
+    //graphics
+    this.view = new View();
     this.canvas = new Graphic2D();
 
+    //game state
     this.stopTimer = null;
     this.paused = false;
 
+    //initializations
     this.initGameData(); // tmp generator
     this.initChampionship();
 
@@ -75,7 +84,7 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     // DOM RENDER
-    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
+    this.showCurrentResults();
     this.canvas.drawGameTick(gameTick); // FPS
 
     //REQUEST NEXT FRAME
@@ -128,10 +137,7 @@ export class Game {
 
       if (player.status === Constants.PLAYER_STATUS.PENALTY) {
         playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-      }
-      // else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
-      //   playerData.coords = this.race.track.getFinishCoordinates(player.distance);  // RAF RAF
-      else {
+      } else {
         playerData.coords = this.race.track.getCoordinates(player.distance);
       }
 
@@ -166,6 +172,7 @@ export class Game {
     const nextRace = this.championship.getNextRace();
     let playerRoster = [];
 
+    // get players from teamAI as per quotas
     switch (nextRace.raceType) {
       case "Individual":
         playerRoster = this.aiSelectRacePlayers(nextRace);
@@ -190,9 +197,8 @@ export class Game {
       default:
         console.log("couldnt find racetype");
     }
-    // get players from teamAI as per quotas
-    // create new race with players list
 
+    // create new race with players list
     this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
@@ -254,13 +260,19 @@ export class Game {
     this.simulateRace();
   }
 
+  showCurrentResults() {
+    const racePlayers = this.race.players;
+    const selectedResults = 4;  //waypoint id
+
+    const results = this.race.getWaypointResults(selectedResults);
+
+    this.view.renderResults(results.slice(0, 15));
+    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
+  }
+
   getPlayerTeam(player) {
     return this.teams.find((team) => team.shortName === player.team);
   }
-
-  // getTeamColors(teamName) {
-  //   return this.teams.find((team) => team.shortName === teamName).colors;
-  // }
 
   getPlayerByName(name) {
     return this.players.find((player) => player.name === name);
