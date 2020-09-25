@@ -53,6 +53,6 @@ Routes:
 - implement map creator (8)
 
 - enable player team interaction (8)
--- display a list of players for a team(3)
--- create my team in-race panels (5)
+  - display a list of players for a team(3)
+  - create my team in-race panels (5)
 - biathletes traits! (8)
