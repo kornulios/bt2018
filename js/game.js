@@ -1,8 +1,8 @@
-import { Player } from "./model/player.js";
+// import { Player } from "./model/player.js";
 import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
-import { Track } from "./model/track.js";
-import { Result } from "./model/result.js";
+// import { Track } from "./model/track.js";
+// import { Result } from "./model/result.js";
 import { TeamAI } from "./model/Team.js";
 
 import { SprintRace } from "./controller/SprintRace.js";
@@ -51,7 +51,7 @@ export class Game {
     this.initGameData(); // tmp generator
     this.initChampionship();
 
-    this.view.renderRaceList(this.championship.getRaceList());
+    // this.view.renderRaceList(this.championship.getRaceList());
   }
 
   initChampionship() {
@@ -156,12 +156,20 @@ export class Game {
   }
 
   //#region Racing Sims
-  simulateSprint() {
+  onSimulateRaceClick() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
     this.prepareNextRace();
-    this.startNextRace();
+    this.simulateRace();
   }
 
-  simulateRelay() {
+  onStartRaceClick() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
     this.prepareNextRace();
     this.startNextRace();
   }

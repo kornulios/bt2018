@@ -79,18 +79,20 @@ export class Race {
     return this.players;
   }
 
-  getPlayerTeamMembers() {
-    var team = game.getPlayerTeam(),
-      resArray = [];
+  // getPlayerTeamMembers() {
+  //   var team = game.getPlayerTeam(),
+  //     resArray = [];
 
-    this.players.forEach(function (p) {
-      if (p.team.name == team) {
-        resArray.push(p);
-      }
-    });
-    return resArray;
-  }
+  //   this.players.forEach(function (p) {
+  //     if (p.team.name == team) {
+  //       resArray.push(p);
+  //     }
+  //   });
+  //   return resArray;
+  // }
 
+
+  //RESULTS FETCH
   getResults() {
     // const results = { ...this.results }
     // return JSON.parse(JSON.stringify(results));
@@ -109,27 +111,9 @@ export class Race {
     return this.status;
   }
 
-  setRaceStatus(status) {
-    if (status) {
-      this.status = status;
-    }
-  }
 
   getRaceTime() {
     return (this.gameTimer / 1000).toFixed(1);
   }
 
-  getRaceGender() {
-    return this.raceGender;
-  }
-
-  // skipRace() {
-  //   let raceRunning = false;
-  //   this.status = "Started";
-  //   do {
-  //     raceRunning = this.run(100);
-  //   } while (raceRunning);
-  //   alert("race finished");
-  //   this.status = "Finished";
-  // }
 }

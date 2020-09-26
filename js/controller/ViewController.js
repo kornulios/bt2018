@@ -141,7 +141,9 @@ export class View {
 			</div>`;
     });
 
-    document.querySelector("#intermediate-results").innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
+    document.querySelector("#intermediate-results").innerHTML = `<div class="intermediate-results">${htmlResults.join(
+      ""
+    )}</div>`;
   }
 
   // renderResults(results, track) {
@@ -322,13 +324,15 @@ export class View {
         return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
       });
 
-      let rangeClass = player.status === PLAYER_STATUS.SHOOTING ? "range" : "range-delayed";
+      let rangeClass;
+      const playerClass = player.status === PLAYER_STATUS.SHOOTING ? "shooting-player" : "shooting-player shooting-player-delayed";
+
       if (player.missNotification) {
         rangeClass = "range-missed";
         player.dismissMissNotification();
       }
 
-      return `<div class=${rangeClass}>${rangeHtml.join("")} <div class="shooting-player">${player.name} ${
+      return `<div class="range">${rangeHtml.join("")} <div class="${playerClass}">${player.name} ${
         player.team
       }</div></div>`;
     });

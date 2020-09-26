@@ -2,24 +2,22 @@ import { Game } from "./game.js";
 
 const game = new Game();
 
-// game.simulatePlayer();
-
 const initEvents = () => {
   document
-    .querySelector("#race-sprint")
-    .addEventListener("click", game.simulateSprint.bind(game));
+    .querySelector("#start-race")
+    .addEventListener("click", game.onStartRaceClick.bind(game));
 
-  document
-    .querySelector("#race-indi")
-    .addEventListener("click", game.simulateSprint.bind(game));
+  // document
+  //   .querySelector("#race-indi")
+  //   .addEventListener("click", game.simulateSprint.bind(game));
 
-  document
-    .querySelector("#race-relay")
-    .addEventListener("click", game.simulateRelay.bind(game));
+  // document
+  //   .querySelector("#race-relay")
+  //   .addEventListener("click", game.simulateRelay.bind(game));
 
-  document
-    .querySelector("#race-mass")
-    .addEventListener("click", game.simulatePlayer.bind(game));
+  // document
+  //   .querySelector("#race-mass")
+  //   .addEventListener("click", game.simulatePlayer.bind(game));
 
   // document
   //   .querySelector("#champ-races")
@@ -30,8 +28,8 @@ const initEvents = () => {
     .addEventListener("click", game.pauseGame.bind(game));
 
   document
-    .querySelector("#champ-standings")
-    .addEventListener("click", game.showPlayersList.bind(game));
+    .querySelector("#skip-race")
+    .addEventListener("click", game.onSimulateRaceClick.bind(game));
 };
 
 document.addEventListener("DOMContentLoaded", initEvents);
