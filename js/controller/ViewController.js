@@ -341,4 +341,13 @@ export class View {
 
     container.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
   }
+
+  setupWaypointView(waypoints) {
+    const resultHtml = waypoints.map((waypoint, index) => {
+      return `<button type="button" class="btn-waypoint" name="${index}">${waypoint}</button>`;
+    });
+
+    const container = document.querySelector("#results-controls");
+    container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;
+  }
 }

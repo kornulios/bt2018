@@ -140,3 +140,22 @@ canvas {
   margin: 1px 0;
   gap: 4px;
 }
+
+.results-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 280px;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.btn-waypoint {
+  flex: 1;
+  background: darkblue;
+  color: white;
+  font-family: "Open sans";
+  font-weight: bold;
+  border: none;
+  border-radius: 3px;
+}

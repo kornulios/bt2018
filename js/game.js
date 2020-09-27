@@ -215,6 +215,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
+    this.view.setupWaypointView(this.race.getWaypointsNames());
     this.canvas.drawMapBeta(race.track);
     // GO!!!
     requestAnimationFrame(this.runGame.bind(this));
@@ -268,7 +269,7 @@ export class Game {
 
   showCurrentResults() {
     const racePlayers = this.race.players;
-    const selectedResults = 1;  //waypoint id
+    const { selectedResults } = this; //waypoint id
 
     const results = this.race.getWaypointResults(selectedResults);
 
@@ -324,6 +325,13 @@ export class Game {
     });
 
     return eligiblePlayers;
+  }
+
+  onResultSelect(event) {
+    const waypointId = event.target.name;
+    this.selectedResults = +waypointId;
+
+    this.showCurrentResults();
   }
 
   simulatePlayer() {

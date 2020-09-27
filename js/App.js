@@ -3,9 +3,7 @@ import { Game } from "./game.js";
 const game = new Game();
 
 const initEvents = () => {
-  document
-    .querySelector("#start-race")
-    .addEventListener("click", game.onStartRaceClick.bind(game));
+  document.querySelector("#start-race").addEventListener("click", game.onStartRaceClick.bind(game));
 
   // document
   //   .querySelector("#race-indi")
@@ -23,13 +21,11 @@ const initEvents = () => {
   //   .querySelector("#champ-races")
   //   .addEventListener("click", game.showChampionshipRaces.bind(game));
 
-  document
-    .querySelector("#pause")
-    .addEventListener("click", game.pauseGame.bind(game));
+  document.querySelector("#pause").addEventListener("click", game.pauseGame.bind(game));
 
-  document
-    .querySelector("#skip-race")
-    .addEventListener("click", game.onSimulateRaceClick.bind(game));
+  document.querySelector("#skip-race").addEventListener("click", game.onSimulateRaceClick.bind(game));
+
+  document.querySelector("#results-controls").addEventListener("click", game.onResultSelect.bind(game));
 };
 
 document.addEventListener("DOMContentLoaded", initEvents);

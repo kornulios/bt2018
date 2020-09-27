@@ -148,12 +148,17 @@ export class Track {
 
   getWaypointName = (waypointId) => {
     const distance = this.waypoints[waypointId];
-    if (distance === this.getTrackLength()) {
-      return "Finish";
-    } else if (this.shootingRange.indexOf(distance) >= 0) {
-      return `S${this.shootingRange.indexOf(distance) + 1}`;
-    } else {
-      return `${(distance / 1000).toFixed(1)}km`;
+    const trackLen = this.getTrackLength();
+
+    switch (true) {
+      case distance === 0:
+        return "Start";
+      case distance === trackLen:
+        return "Finish";
+      case this.shootingRange.indexOf(distance) > 0:
+        return `S${this.shootingRange.indexOf(distance)}`;
+      default:
+        return `${(distance / 1000).toFixed(1)}km`;
     }
   };
 

@@ -103,6 +103,12 @@ export class Race {
     return this.results.getWaypointResults(waypointId);
   }
 
+  getWaypointsNames() {
+    return this.track.waypoints.map((waypoint, index) => {
+      return this.track.getWaypointName(index);
+    })
+  }
+
   getRaceName() {
     return this.name;
   }
