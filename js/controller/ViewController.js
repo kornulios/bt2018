@@ -337,7 +337,7 @@ export class View {
       }</div></div>`;
     });
 
-    const container = document.querySelector("#finish-results");
+    const container = document.querySelector("#range-results");
 
     container.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
   }

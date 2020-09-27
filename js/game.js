@@ -155,7 +155,6 @@ export class Game {
     return shootingPlayers;
   }
 
-  //#region Racing Sims
   onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
@@ -173,7 +172,6 @@ export class Game {
     this.prepareNextRace();
     this.startNextRace();
   }
-  //#endregion
 
   prepareNextRace() {
     // get next race definition from championship
@@ -270,11 +268,11 @@ export class Game {
 
   showCurrentResults() {
     const racePlayers = this.race.players;
-    const selectedResults = 4;  //waypoint id
+    const selectedResults = 1;  //waypoint id
 
     const results = this.race.getWaypointResults(selectedResults);
 
-    this.view.renderResults(results.slice(0, 15));
+    this.view.renderResults(results.slice(0, 30));
     this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
   }
 
