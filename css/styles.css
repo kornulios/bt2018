@@ -4,10 +4,6 @@ body {
   font-family: "Consolas";
 }
 
-canvas {
-  border: 1px solid black;
-}
-
 .championship-standings {
   display: flex;
   width: 100%;
@@ -96,8 +92,10 @@ canvas {
   display: flex;
   width: 100%;
   margin: auto;
-  max-width: 1200px;
+  max-width: 1280px;
   justify-content: flex-start;
+  background-color: #ebf5ff;
+  padding: 20px;
 }
 
 .player-bub {
@@ -132,11 +130,12 @@ canvas {
   flex: 1;
   align-content: flex-start;
   flex-direction: column;
+  width: 240px;
+  padding: 8px;
 }
 
 .intermediate-row {
   display: flex;
-  width: 280px;
   margin: 1px 0;
   gap: 4px;
 }
@@ -145,7 +144,7 @@ canvas {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 280px;
+  width: 240px;
   gap: 2px;
   padding: 0 8px;
 }
