@@ -2,6 +2,21 @@
 
 body {
   font-family: "Consolas";
+  background-image: url("../static/background_image.png");
+}
+
+.game-group {
+  display: flex;
+  width: 100%;
+  margin: auto;
+  max-width: 1280px;
+  justify-content: flex-start;
+  background-color: #ebf5ff;
+  padding: 20px;
+}
+
+.race-results-row {
+  flex-direction: column;
 }
 
 .championship-standings {
@@ -88,15 +103,7 @@ body {
   margin-bottom: 12px;
 }
 
-.game-group {
-  display: flex;
-  width: 100%;
-  margin: auto;
-  max-width: 1280px;
-  justify-content: flex-start;
-  background-color: #ebf5ff;
-  padding: 20px;
-}
+
 
 .player-bub {
   border: 1px solid black;
@@ -130,7 +137,8 @@ body {
   flex: 1;
   align-content: flex-start;
   flex-direction: column;
-  width: 240px;
+  height: 120px;
+  flex-wrap: wrap;
   padding: 8px;
 }
 
@@ -144,14 +152,14 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 240px;
+  flex: 1;
   gap: 2px;
   padding: 0 8px;
 }
 
 .btn-waypoint {
   flex: 1;
-  background: darkblue;
+  background: rgb(6, 79, 112);
   color: white;
   font-family: "Open sans";
   font-weight: bold;

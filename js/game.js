@@ -17,6 +17,7 @@ import { Graphic2D } from "./view/Graphic2D.js";
 import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
+const numberResultsShown = 20;
 
 export class Game {
   constructor() {
@@ -273,7 +274,7 @@ export class Game {
 
     const results = this.race.getWaypointResults(selectedResults);
 
-    this.view.renderResults(results.slice(0, 30));
+    this.view.renderResults(results.slice(0, numberResultsShown));
     this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
   }
 
