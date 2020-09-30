@@ -2,11 +2,49 @@ import { Utils } from "../utils/Utils.js";
 import { teamData } from "../data.js";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
 
+export const VIEW_PANELS = {
+  PANEL_RACE: "race",
+  PANEL_CHAMPIONSHIP: "championship",
+  PANEL_FINISH_RESULTS: "finish-results",
+};
+
 export class View {
   constructor() {
     this.trackView = document.querySelector("#track-info");
     this.mainView = document.querySelector("#main-view");
     this.resultView = document.querySelector("#results-view");
+
+    this.viewPanels2 = ["#championship-standings", "#finish-results", "#race-main"];
+
+    this.viewPanels = {
+      championship: {
+        id: "#championship-standings",
+        style: "flex",
+      },
+      "finish-results": {
+        id: "#finish-results",
+        style: "flex",
+      },
+      race: {
+        id: "#race-main",
+        style: "flex",
+      },
+    };
+  }
+
+  hideAllPanels() {
+    Object.keys(this.viewPanels).forEach((panel) => {
+      const elem = document.querySelector(this.viewPanels[panel].id);
+      elem.style.display = "none";
+    });
+  }
+
+  showPanel(panelName, data) {
+    const elem = document.querySelector(this.viewPanels[panelName].id);
+    elem.style.display = this.viewPanels[panelName].style;
+    if (data) {
+      elem.innerHTML = data;
+    }
   }
 
   renderProgress(race) {
@@ -111,6 +149,8 @@ export class View {
   }
 
   renderShortResults(results) {
+    this.hideAllPanels();
+
     const htmlResults = results.map((result, i) => {
       const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
       const colors = teamData.find((team) => team.shortName === result.team).colors;
@@ -125,7 +165,9 @@ export class View {
 			</div>`;
     });
 
-    document.querySelector("#finish-results").innerHTML = `<div>${htmlResults.join("")}</div>`;
+    const resultData = `<div>${htmlResults.join("")}</div>`;
+
+    this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS, resultData);
   }
 
   renderResults(results) {
@@ -325,7 +367,8 @@ export class View {
       });
 
       let rangeClass;
-      const playerClass = player.status === PLAYER_STATUS.SHOOTING ? "shooting-player" : "shooting-player shooting-player-delayed";
+      const playerClass =
+        player.status === PLAYER_STATUS.SHOOTING ? "shooting-player" : "shooting-player shooting-player-delayed";
 
       if (player.missNotification) {
         rangeClass = "range-missed";
@@ -342,10 +385,14 @@ export class View {
     container.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
   }
 
-  setupWaypointView(waypoints) {
+  setupRaceView(waypoints) {
+    this.hideAllPanels();
+    //waypoints
     const resultHtml = waypoints.map((waypoint, index) => {
       return `<button type="button" class="btn-waypoint" name="${index}">${waypoint}</button>`;
     });
+
+    this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
     container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;

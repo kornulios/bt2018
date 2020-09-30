@@ -1,8 +1,6 @@
 // import { Player } from "./model/player.js";
 import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
-// import { Track } from "./model/track.js";
-// import { Result } from "./model/result.js";
 import { TeamAI } from "./model/Team.js";
 
 import { SprintRace } from "./controller/SprintRace.js";
@@ -12,7 +10,7 @@ import { IndividualRace } from "./controller/IndividualRace.js";
 import { MassStartRace } from "./controller/MassStartRace.js";
 
 import * as Constants from "./constants/constants.js";
-import { View } from "./controller/ViewController.js";
+import { View, VIEW_PANELS } from "./controller/ViewController.js";
 import { Graphic2D } from "./view/Graphic2D.js";
 import { Championship } from "./controller/championship.js";
 
@@ -53,6 +51,7 @@ export class Game {
     this.initChampionship();
 
     // this.view.renderRaceList(this.championship.getRaceList());
+    this.view.hideAllPanels();
   }
 
   initChampionship() {
@@ -80,7 +79,7 @@ export class Game {
     // UPDATE
     this.race.run(gameTick * gameSpeed);
 
-    //RENDER
+    //CANVAS RENDER
     const racePlayers = this.race.getPlayers();
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
@@ -216,7 +215,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
-    this.view.setupWaypointView(this.race.getWaypointsNames());
+    this.view.setupRaceView(this.race.getWaypointsNames());
     this.canvas.drawMapBeta(race.track);
     // GO!!!
     requestAnimationFrame(this.runGame.bind(this));
@@ -226,8 +225,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
-    this.view.renderRaceList(this.championship.getRaceList());
-    this.showChampionshipStandings();
+    // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       console.log("Season over");
@@ -256,6 +254,7 @@ export class Game {
       };
     });
 
+    this.view.renderRaceList(this.championship.getRaceList());
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
