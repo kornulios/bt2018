@@ -1,8 +1,6 @@
-import { Player } from "./model/player.js";
+// import { Player } from "./model/player.js";
 import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
-import { Track } from "./model/track.js";
-import { Result } from "./model/result.js";
 import { TeamAI } from "./model/Team.js";
 
 import { SprintRace } from "./controller/SprintRace.js";
@@ -12,37 +10,48 @@ import { IndividualRace } from "./controller/IndividualRace.js";
 import { MassStartRace } from "./controller/MassStartRace.js";
 
 import * as Constants from "./constants/constants.js";
-import { View } from "./controller/ViewController.js";
+import { View, VIEW_PANELS } from "./controller/ViewController.js";
 import { Graphic2D } from "./view/Graphic2D.js";
 import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
+const numberResultsShown = 20;
 
 export class Game {
   constructor() {
-    this.gameSpeed = 1000 / 60; //50 ticks per second
-    this.gameTimer;
-    this.gameRunning = false;
+    // REDUNDANT CODE
+    // this.gameSpeed = 1000 / 60; //50 ticks per second
+    // this.gameTimer;
+    // this.gameRunning = false;
+    // this.playerTeam = "";
+    // this.selectedGender = "men";
 
-    this.selectedResults = 0;
-    this.selectedGender = "men";
-    this.playerTeam = "";
+    //ui options
+    this.uiOptions = {
+      selectedResults: null,
+      selectedPlayer: null,
+    };
 
+    //game data
     this.teams = [];
     this.players = [];
     this.totalPlayerCount = 0; //temp
     this.race = null;
-    this.view = new View();
 
+    //graphics
+    this.view = new View();
     this.canvas = new Graphic2D();
 
+    //game state
     this.stopTimer = null;
     this.paused = false;
 
+    //initializations
     this.initGameData(); // tmp generator
     this.initChampionship();
 
-    this.view.renderRaceList(this.championship.getRaceList());
+    // this.view.renderRaceList(this.championship.getRaceList());
+    this.view.hideAllPanels();
   }
 
   initChampionship() {
@@ -58,8 +67,9 @@ export class Game {
   }
 
   runGame(timeStamp) {
+    // main game loop
     //refactored with rAF X2
-    const gameSpeed = 50;
+    const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -69,9 +79,12 @@ export class Game {
     // UPDATE
     this.race.run(gameTick * gameSpeed);
 
-    //RENDER
+    //CANVAS RENDER
+    const racePlayers = this.race.getPlayers();
     this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta(this.getPlayerCoords(this.race.getPlayers()));
+    this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
+    // DOM RENDER
+    this.showCurrentResults();
     this.canvas.drawGameTick(gameTick); // FPS
 
     //REQUEST NEXT FRAME
@@ -124,8 +137,6 @@ export class Game {
 
       if (player.status === Constants.PLAYER_STATUS.PENALTY) {
         playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-      } else if (player.distance >= this.race.track.getTrackLength() - this.race.track.finishLineLength) {
-        playerData.coords = this.race.track.getFinishCoordinates(player.distance);
       } else {
         playerData.coords = this.race.track.getCoordinates(player.distance);
       }
@@ -136,23 +147,38 @@ export class Game {
     return playersData;
   }
 
-  //#region Racing Sims
-  simulateSprint() {
-    this.prepareNextRace();
-    this.startNextRace();
+  getShootingPlayers(players) {
+    const shootingPlayers = players.filter((player) => {
+      return player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0;
+    });
+
+    return shootingPlayers;
   }
 
-  simulateRelay() {
+  onSimulateRaceClick() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
+    this.prepareNextRace();
+    this.simulateRace();
+  }
+
+  onStartRaceClick() {
+    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
+      alert("Season over! Please start a new one");
+      return;
+    }
     this.prepareNextRace();
     this.startNextRace();
   }
-  //#endregion
 
   prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
     let playerRoster = [];
 
+    // get players from teamAI as per quotas
     switch (nextRace.raceType) {
       case "Individual":
         playerRoster = this.aiSelectRacePlayers(nextRace);
@@ -170,12 +196,15 @@ export class Game {
         playerRoster = this.aiSelectPursuitPlayers(nextRace);
         this.race = new PursuitRace();
         break;
+      case "Relay":
+        playerRoster = this.aiSelectRelayPlayers(nextRace);
+        this.race = new RelayRace();
+        break;
       default:
         console.log("couldnt find racetype");
     }
-    // get players from teamAI as per quotas
-    // create new race with players list
 
+    // create new race with players list
     this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
@@ -186,6 +215,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
+    this.view.setupRaceView(this.race.getWaypointsNames());
     this.canvas.drawMapBeta(race.track);
     // GO!!!
     requestAnimationFrame(this.runGame.bind(this));
@@ -195,12 +225,9 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
-    this.view.renderRaceList(this.championship.getRaceList());
-    this.showChampionshipStandings();
+    // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      //end season
-      // this.view.renderSeasonEnd();
       console.log("Season over");
       this.showChampionshipStandings();
     }
@@ -208,7 +235,7 @@ export class Game {
 
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MALE, 10).map((result) => {
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 10).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -217,7 +244,7 @@ export class Game {
         team: player.team,
       };
     });
-    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.FEMALE, 10).map((result) => {
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 10).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -227,6 +254,7 @@ export class Game {
       };
     });
 
+    // this.view.renderRaceList(this.championship.getRaceList());
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
@@ -239,24 +267,37 @@ export class Game {
     this.simulateRace();
   }
 
-  getPlayerTeam(player) {
-    return this.teams.find((team) => team.shortName === player.team);
+  showCurrentResults() {
+    const racePlayers = this.race.players;
+    const { selectedResults } = this; //waypoint id
+
+    const results = this.race.getWaypointResults(selectedResults);
+
+    this.view.renderResults(results.slice(0, numberResultsShown));
+    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
   }
 
-  getTeamColors(teamName) {
-    return this.teams.find((team) => team.shortName === teamName).colors;
+  getPlayerTeam(player) {
+    return this.teams.find((team) => team.shortName === player.team);
   }
 
   getPlayerByName(name) {
     return this.players.find((player) => player.name === name);
   }
 
+  // PREPARING THE ROSTER FOR NEXT RACE
   aiSelectRacePlayers(nextRace) {
     return this.teams
       .map((team) => {
         return team.getNextRacePlayers(this.players, nextRace.raceGender);
       })
       .flat();
+  }
+
+  aiSelectRelayPlayers(nextRace) {
+    return this.teams.map((team) => {
+      return team.getNextRelayPlayers(this.players, nextRace.raceGender);
+    });
   }
 
   aiSelectMassStartPlayers(nextRace) {
@@ -286,15 +327,26 @@ export class Game {
     return eligiblePlayers;
   }
 
+  onResultSelect(event) {
+    const waypointId = event.target.name;
+    this.selectedResults = +waypointId;
+
+    this.showCurrentResults();
+  }
+
   simulatePlayer() {
     //debugging function
-    // this.race = new RelayRace();
+    this.prepareNextRace();
+    this.canvas.drawMapBeta(this.race.track);
+    this.canvas.drawPlayersBeta([{ name: "A", number: 1, coords: this.race.track.getPenaltyCoordinates(120) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "B", number: 2, coords: this.race.track.getCoordinates(9749) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "C", number: 3, coords: this.race.track.getCoordinates(9750) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "E", number: 4, coords: this.race.track.getCoordinates(9751) }]); // -- debugger for player placement
+    this.canvas.drawPlayersBeta([{ name: "F", number: 5, coords: this.race.track.getCoordinates(9790) }]); // -- debugger for player placement
     // const { race } = this;
     // oldTimeStamp = performance.now();
-    // this.canvas.drawMapBeta(race.track);
     //START RACE
     // window.requestAnimationFrame(this.runGame.bind(this));
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getCoordinates(100) }]); // -- debugger for player placement
     // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
     // this.view.renderProgress(this.race);
     //GENERATE TEAMS

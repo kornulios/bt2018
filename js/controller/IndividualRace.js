@@ -5,7 +5,7 @@ import * as Constants from "../constants/constants.js";
 
 export class IndividualRace extends Race {
   constructor() {
-    super({ raceType: Constants.RACE_TYPE_LONG });
+    super();
   }
 
   initPlayers(players) {
@@ -62,7 +62,7 @@ export class IndividualRace extends Race {
             const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penaltyTime += penaltyCount * 60000;
-            player.status = PLAYER_STATUS.RUNNING;
+            player.quitShootingRange(0);
           }
         }
 

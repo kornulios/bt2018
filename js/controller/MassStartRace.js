@@ -5,7 +5,7 @@ import * as Constants from "../constants/constants.js";
 
 export class MassStartRace extends Race {
   constructor() {
-    super({ raceType: Constants.RACE_TYPE_LONG });
+    super();
   }
 
   initPlayers(players) {
@@ -57,7 +57,8 @@ export class MassStartRace extends Race {
             const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            // player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
+            player.quitShootingRange(penaltyCount);
           }
         } else if (player.status === PLAYER_STATUS.PENALTY) {
           player.runPenaltyLap(gameTick);

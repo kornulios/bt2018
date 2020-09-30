@@ -41,14 +41,35 @@ export class TeamAI {
   }
 
   getNextRacePlayers(players, gender) {
-    // get best players as per race quota STR+ACC+SPD*2
-    const myPlayers = this.getTeamPlayers(players).filter(
-      (player) => player.gender === gender
-    );
+    const myPlayers = this.getTeamPlayers(players).filter((player) => player.gender === gender);
 
     const quota = gender === "male" ? this.raceQuota.men : this.raceQuota.women;
 
-    const playersWeight = myPlayers
+    const playersWeight = this.weightPlayers(myPlayers).slice(0, quota);
+
+    return players.filter((player) => {
+      return playersWeight.find((pw) => pw.id === player.id);
+    });
+  }
+
+  getNextRelayPlayers(players, gender) {
+    const myPlayers = this.getTeamPlayers(players).filter((player) => player.gender === gender);
+
+    if (myPlayers.length < 4) return;
+
+    const playersWeight = this.weightPlayers(myPlayers).slice(0, 4);
+
+    return {
+      name: this.shortName,
+      players: players.filter((player) => {
+        return playersWeight.find((pw) => pw.id === player.id);
+      }),
+    };
+  }
+
+  weightPlayers(players) {
+    // get best players as per race quota STR+ACC+SPD*2
+    return players
       .map((player) => {
         return {
           id: player.id,
@@ -57,12 +78,7 @@ export class TeamAI {
       })
       .sort((p1, p2) => {
         return p1.weight > p2.weight ? -1 : 1;
-      })
-      .slice(0, quota);
-
-    return players.filter((player) => {
-      return playersWeight.find((pw) => pw.id === player.id);
-    });
+      });
   }
 
   addPlayerToRace(player) {}

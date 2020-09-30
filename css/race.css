@@ -42,3 +42,58 @@
 .list-race-normal {
   background: white;
 }
+
+.target-open {
+  align-self: center;
+  margin: 1px;
+  width: 10px;
+  height: 10px;
+  background: black;
+  border-radius: 50%;
+}
+
+.target-closed {
+  align-self: center;
+  margin: 1px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 1px 1px gray;
+}
+
+.range {
+  display: flex;
+  border: 1px solid lightgray;
+  /* padding: 2px; */
+}
+
+.range-missed {
+  display: flex;
+  border: 1px solid lightgray;
+  background: red;
+}
+
+.shooting-player {
+  flex: 1;
+  margin-left: 8px;
+  padding-left: 8px;
+  padding-right: 4px;
+  border: none;
+  color: white;
+  background: rgb(110, 137, 255);
+  background: radial-gradient(circle at 40px 40px, rgba(110, 137, 255, 1) 0%, rgba(18, 0, 135, 1) 100%);
+}
+
+.shooting-player-delayed {
+  background: darkblue;
+}
+
+.shooting-container {
+  width: 180px;
+  display: flex;
+  font-family: "Open sans";
+  font-size: small;
+  font-style: italic;
+  flex-direction: column;
+}

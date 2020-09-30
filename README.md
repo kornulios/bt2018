@@ -38,19 +38,21 @@ Routes:
 - ~~individual race setup (1)~~
 - ~~mass-start race setup (1)~~
 - ~~pursuit race setup (3)~~
-- relay race setup (5)
-- switch for playes ID in results (5)
+- ~~relay race setup (5)~~
+- switch to playes ID in results (5)
 - implement start roster scheduling (5)
 
 - start-line players route (3)
-- race switch (3)
+- ~~race switch (3)~~
 - stage switch (5)
 - enlarge map view (2)
 - pause on browser tab switch (3)
-- display real-time shootings (5)
+- ~~display real-time shootings (5)~~
 
 - add more teams with colors (3)
 - implement map creator (8)
 
 - enable player team interaction (8)
+  - display a list of players for a team(3)
+  - create my team in-race panels (5)
 - biathletes traits! (8)

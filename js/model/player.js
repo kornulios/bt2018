@@ -6,14 +6,15 @@ export class Player {
   constructor(args) {
     //base stats
     this.id = args.id; //unique player ID
-    this.baseSpeed = this.currentSpeed = args.speed ? args.speed : Utils.rand(2500, 2300) / 100; // km/h
+    this.baseSpeed = this.currentSpeed =
+      args.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100; // km/h
     this.name = args.name || "Player " + args.id;
     this.team = args.team || "Team 1";
     this.colors = args.colors || [];
-    this.gender = args.gender || "male";
+    this.gender = args.gender || "men";
     this.index = args.index;
-    this.accuracy = args.accuracy || Utils.rand(99, 70);
-    this.strength = args.strength || Utils.rand(99, 75);
+    this.accuracy = args.accuracy || Utils.rand(95, 65);
+    this.strength = args.strength || Utils.rand(95, 75);
     this.stamina = args.stamina || Utils.rand(99, 30);
     this.fatigue = 100;
     this.technique = args.technique || Utils.rand(99, 50);
@@ -27,17 +28,19 @@ export class Player {
     //race related
     this.status = PLAYER_STATUS.NOT_STARTED;
     this.startTimer = args.startTimer;
+    this.shootingTimer = 0; // to delay shooting results
 
     //shooting related
     this.rangeNum = 0;
     this.currentRange = [];
     this.rifle = {};
     this.shotCount = 0;
+    this.missNotification = false;
 
     //AI related
     this.speedMod = 1;
     this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
-    this.state = Constants.PLAYER_RUN_STATUS.NORMAL;
+    this.state = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
   }
 
   static create(name, team, gender) {
@@ -80,6 +83,14 @@ export class Player {
     return this.distance;
   }
 
+  getShootingRange() {
+    return this.currentRange;
+  }
+
+  getShootCount() {
+    return this.shotCount;
+  }
+
   // setDistance(newDistance) {
   //   //required for relay placement
   //   this.distance = newDistance;
@@ -94,12 +105,21 @@ export class Player {
     this.penaltyTime += time;
   }
 
+  setMissedNotification() {
+    this.missNotification = true;
+  }
+
+  dismissMissNotification() {
+    this.missNotification = false;
+  }
+
   run(elapsedTime) {
     //move forward on track
     const fps = elapsedTime;
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
     this.distance += distancePassed;
+    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
   }
 
   runPenaltyLap(elapsedTime) {
@@ -107,6 +127,7 @@ export class Player {
     const distancePassed = ((this.currentSpeed * 0.9) / 3600) * fps; // m/ms
 
     this.penalty -= distancePassed;
+    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
   }
 
   enterShootingRange(range) {
@@ -127,6 +148,7 @@ export class Player {
   quitShootingRange(penaltyLaps) {
     this.status = penaltyLaps ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
     this.rifle = {};
+    this.shootingTimer = Constants.SHOOTING_DELAY;
   }
 
   shoot(elapsedTime) {
@@ -144,6 +166,8 @@ export class Player {
     const nextTarget = this.shotCount >= 5 ? this.currentRange.indexOf(0) : this.shotCount;
     if (Utils.rand(100, 0) < this.accuracy) {
       this.currentRange[nextTarget] = 1; // HIT
+    } else {
+      this.setMissedNotification();
     }
     // this.currentRange = [1, 0, 0, 1, 1];
 

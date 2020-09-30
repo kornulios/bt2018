@@ -1,12 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
+@import './race.css';
+@import './result-table.css';
+
 body {
   font-family: "Consolas";
+  background-image: url("../static/background_image.png");
 }
 
-canvas {
-  border: 1px solid black;
+.game-group {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
 }
 
-.championship-standings {
+.race-results-row {
+  flex-direction: column;
+  width: 1000px;
+}
+
+.championship-standings-panel {
   display: flex;
   width: 100%;
   max-width: 1024px;
@@ -14,42 +26,14 @@ canvas {
   background: #ebf5ff;
 }
 
-/* RESULTS BLOCK */
-.results {
-  /* width: 380px; */
+.race-main-panel {
   display: flex;
-  flex-wrap: wrap;
-}
-
-.result-list {
-  list-style: none;
-  width: 170px;
-  padding: 0;
-  margin: 10px;
-}
-
-.result-list-item {
-  display: flex;
-  justify-content: space-between;
-}
-
-.result-block {
-  margin-top: 20px;
-}
-
-.result-row {
-  display: flex;
-  width: 280px;
-  justify-content: space-between;
-  margin: 1px 0;
-}
-
-.results-standings {
-  padding: 8px;
-  flex: 1;
-
-  font-size: 14px;
-  margin: 0;
+  width: 100%;
+  margin: auto;
+  max-width: 1280px;
+  background-color: #ebf5ff;
+  padding: 20px;
+  flex-direction: column;
 }
 
 .standings-row {
@@ -90,33 +74,41 @@ canvas {
   margin-bottom: 12px;
 }
 
-.game-group {
+
+.intermediate-results {
   display: flex;
+  flex: 1;
+  align-content: flex-start;
+  flex-direction: column;
+  height: 120px;
+  flex-wrap: wrap;
+  padding: 8px;
 }
 
-.player-bub {
-  border: 1px solid black;
-  border-radius: 50%;
-  min-width: 18px;
-  line-height: 16px;
-  font-size: 10px;
+.intermediate-row {
+  display: flex;
+  margin: 1px 0;
+  gap: 4px;
+}
+
+.results-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex: 1;
+  gap: 2px;
+  padding: 0 8px;
+}
+
+.player-control-col {
+}
+
+.btn-waypoint {
+  flex: 1;
+  background: rgb(6, 79, 112);
+  color: white;
+  font-family: "Open sans";
   font-weight: bold;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  text-align: center;
-}
-
-.player-name {
-  width: 100px;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.player-cell-small {
-  width: 20px;
-}
-
-.player-cell-medium {
-  width: 50px;
+  border: none;
+  border-radius: 3px;
 }

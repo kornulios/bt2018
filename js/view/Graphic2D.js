@@ -38,25 +38,6 @@ export class Graphic2D {
     this.drawCoordinatesMap(penaltyCoordsMap, "green");
     this.drawCoordinatesMap(finishCoordsMap, "red");
 
-    // ctx.beginPath();
-    // ctx.moveTo(coordsMap[0].coords.x, coordsMap[0].coords.y);
-
-    // for (let i = 1; i < coordsMap.length; i++) {
-    //   ctx.lineTo(coordsMap[i].coords.x, coordsMap[i].coords.y);
-    // }
-    // ctx.strokeStyle = "#ffdd00";
-    // ctx.stroke();
-
-    // ctx.beginPath();
-    // ctx.moveTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
-
-    // for (let i = 1; i < penaltyCoords.length; i++) {
-    //   ctx.lineTo(penaltyCoords[i].coords.x, penaltyCoords[i].coords.y);
-    // }
-    // ctx.lineTo(penaltyCoords[0].coords.x, penaltyCoords[0].coords.y);
-    // ctx.strokeStyle = "green";
-    // ctx.stroke();
-
     //start / finish line
     ctx.beginPath();
     ctx.strokeStyle = "#000000";
@@ -86,13 +67,13 @@ export class Graphic2D {
       if (playerCoords[i].coords) {
         try {
           const { x, y } = playerCoords[i].coords;
-          const { colors } = playerCoords[i];
+          const { colors, number } = playerCoords[i];
 
           //render player bub
           ctx.beginPath();
           ctx.arc(x, y, 9, 0, Math.PI * 2);
 
-          ctx.fillStyle = colors[0] || "#ffc7f0";
+          ctx.fillStyle = colors ? colors[0] : "#ffc7f0";
           ctx.strokeStyle = "#000000";
 
           ctx.fill();
@@ -100,20 +81,25 @@ export class Graphic2D {
 
           //render text
           ctx.strokeWidth = "2px";
-          ctx.fillStyle = colors[1] || "#000000";
+          ctx.fillStyle = colors ? colors[1] : "#000000";
           ctx.font = "bold 10px Verdana";
-          if (i <= 8) {
-            ctx.fillText(i + 1, x - 3.5, y + 3.25);
-          } else if (i > 8 && i < 99) {
-            ctx.fillText(i + 1, x - 7.5, y + 3.25);
-          } else if (i >= 99) {
+
+          if (number <= 9) {
+            ctx.fillText(number, x - 3.5, y + 3.25);
+          } else if (number > 9 && number < 99) {
+            ctx.fillText(number, x - 7.5, y + 3.25);
+          } else if (number >= 99) {
             ctx.font = "8px Verdana";
-            ctx.fillText(i + 1, x - 7, y + 3.25);
+            ctx.fillText(number, x - 7, y + 3.25);
           }
         } catch {
           debugger;
         }
       }
     }
+  }
+
+  drawShootingRange(players) {
+    let ctx = canvas.getContext("2d");    
   }
 }
