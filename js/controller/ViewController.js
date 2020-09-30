@@ -322,6 +322,7 @@ export class View {
   }
 
   renderChampionshipStandings(races, standingsMen, standingsWomen) {
+    this.hideAllPanels();
     // should render race list, men standings, women standings
     const container = document.querySelector("#standings-men");
     const container_wmn = document.querySelector("#standings-women");
@@ -355,8 +356,11 @@ export class View {
       <div class="standings-header">Standings Women</div>
       ${standingsWMN_HTML.join("")}
       </div>`;
+
+    this.showPanel(VIEW_PANELS.PANEL_CHAMPIONSHIP);
   }
 
+  // SHOOTING
   renderShootingRange(players = [], target) {
     const shootingTargetsHTML = players.map((player) => {
       const range = player.getShootingRange();

@@ -254,7 +254,7 @@ export class Game {
       };
     });
 
-    this.view.renderRaceList(this.championship.getRaceList());
+    // this.view.renderRaceList(this.championship.getRaceList());
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
