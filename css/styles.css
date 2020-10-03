@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
 @import './race.css';
 @import './result-table.css';
+@import '../js/view/PlayerControls/playercontrols.css';
 
 body {
   font-family: "Consolas";
@@ -23,7 +24,6 @@ body {
   width: 100%;
   max-width: 1024px;
   margin: auto;
-  background: #ebf5ff;
 }
 
 .race-main-panel {

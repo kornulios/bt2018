@@ -2,6 +2,8 @@ import { Utils } from "../utils/Utils.js";
 import { teamData } from "../data.js";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
 
+import { PlayerControls } from "../view/PlayerControls/PlayerControls.js";
+
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
   PANEL_CHAMPIONSHIP: "championship",
@@ -400,5 +402,14 @@ export class View {
 
     const container = document.querySelector("#results-controls");
     container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;
+  }
+
+  renderPlayerControls(players) {
+    const playersHtml = players.map((player) => {
+      return PlayerControls(player);
+    });
+
+    const container = document.querySelector("#player-controls");
+    container.innerHTML = playersHtml.join("");
   }
 }

@@ -25,6 +25,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
+    this.userTeam = "GER";
 
     //ui options
     this.uiOptions = {
@@ -83,9 +84,9 @@ export class Game {
     const racePlayers = this.race.getPlayers();
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
+    this.canvas.drawGameTick(gameTick); // FPS counter
     // DOM RENDER
     this.showCurrentResults();
-    this.canvas.drawGameTick(gameTick); // FPS
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -201,7 +202,7 @@ export class Game {
         this.race = new RelayRace();
         break;
       default:
-        console.log("couldnt find racetype");
+        console.log("PrepareNextRace() error: Couldn't find racetype");
     }
 
     // create new race with players list
@@ -235,7 +236,7 @@ export class Game {
 
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 10).map((result) => {
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -244,7 +245,7 @@ export class Game {
         team: player.team,
       };
     });
-    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 10).map((result) => {
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 20).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -267,14 +268,17 @@ export class Game {
     this.simulateRace();
   }
 
+  // DOM render for race tick
   showCurrentResults() {
-    const racePlayers = this.race.players;
+    const shootingPlayers = this.getShootingPlayers(this.race.players);
+    const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
     const { selectedResults } = this; //waypoint id
 
     const results = this.race.getWaypointResults(selectedResults);
 
     this.view.renderResults(results.slice(0, numberResultsShown));
-    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
+    this.view.renderShootingRange(shootingPlayers);
+    this.view.renderPlayerControls(userPlayers);
   }
 
   getPlayerTeam(player) {
