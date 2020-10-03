@@ -1,3 +1,15 @@
 export const PlayerControls = (player) => {
-  return `<div class="player-controls">${player.name} ${player.distance.toFixed(0)}</div>`;
+  const playerHtml = `<div class="player-control-item">
+    <div class="player-control-portrait">
+      <div>${player.number}</div>
+    </div>
+    <div class="player-control-section">
+      <div>${player.name}</div>
+    </div>
+    <div class="player-control-section">
+      ${player.distance.toFixed(0)}
+    </div>
+   </div>`;
+
+  return playerHtml;
 };

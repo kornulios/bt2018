@@ -410,6 +410,6 @@ export class View {
     });
 
     const container = document.querySelector("#player-controls");
-    container.innerHTML = playersHtml.join("");
+    container.innerHTML = `<div class="player-controls">${playersHtml.join("")}</div>`;
   }
 }

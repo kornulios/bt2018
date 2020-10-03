@@ -278,7 +278,7 @@ export class Game {
 
     this.view.renderResults(results.slice(0, numberResultsShown));
     this.view.renderShootingRange(shootingPlayers);
-    this.view.renderPlayerControls(userPlayers);
+    this.view.renderPlayerControls([...userPlayers]);
   }
 
   getPlayerTeam(player) {
