@@ -79,6 +79,13 @@ export class Result {
       var shooting = this.getShootingResult(results[i].playerName);
       results[i].shooting = shooting;
     }
+    // let res = [];
+
+    // for(let i = 0; i < this.data.length; i++) {
+    //   if(this.data[i].waypoint === wp) {
+    //     res.push({...this.data[i], shooting: []});
+    //   }
+    // }
 
     return results;
   }

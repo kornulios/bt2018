@@ -3,7 +3,7 @@ import { teamData } from "../data.js";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
 
 import { PlayerControls } from "../view/PlayerControls/PlayerControls.js";
-import { PlayerBub } from '../view/PlayerBub/PlayerBub.js';
+import { PlayerBub } from "../view/PlayerBub/PlayerBub.js";
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
@@ -16,6 +16,9 @@ export class View {
     this.trackView = document.querySelector("#track-info");
     this.mainView = document.querySelector("#main-view");
     this.resultView = document.querySelector("#results-view");
+    this.playerControls = document.querySelector("#player-controls");
+    this.intermediateResult = document.querySelector("#intermediate-results");
+    this.shootingRange = document.querySelector("#range-results");
 
     this.viewPanels2 = ["#championship-standings", "#finish-results", "#race-main"];
 
@@ -62,8 +65,8 @@ export class View {
   //     .join("");
 
   //   const htmlRace = `<div>Race finished: ${raceFinished}</div>
-	// 	<div>Race timer: ${timer}</div>
-	// 	<div>${htmlProgress}</div>`;
+  // 	<div>Race timer: ${timer}</div>
+  // 	<div>${htmlProgress}</div>`;
 
   //   document.querySelector("#run").innerHTML = `<div>${htmlRace}</div>`;
   // }
@@ -178,17 +181,19 @@ export class View {
       const colors = teamData.find((team) => team.shortName === result.team).colors;
 
       return `<div class="intermediate-row">
-        <div class="player-cell-small">${i + 1}</div> 
+        <div class="player-cell-small">${i + 1}</div>
         <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
         <div class="player-name">${result.playerName}</div>
         <div>${result.team}</div>
-        <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-			</div>`;
+        </div>`;
+      // return `<div class="intermediate-row">
+      //   <div class="player-name">${result.playerName}</div>
+      //   <div>${result.team}</div>
+      //   <div>${Utils.convertToMinutes(result.time / 1000)}</div>
+      // </div>`;
     });
 
-    document.querySelector("#intermediate-results").innerHTML = `<div class="intermediate-results">${htmlResults.join(
-      ""
-    )}</div>`;
+    this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
   }
 
   // renderResults(results, track) {
@@ -366,16 +371,13 @@ export class View {
   // SHOOTING
   renderShootingRange(players = [], target) {
     const shootingTargetsHTML = players.map((player) => {
-      const range = player.getShootingRange();
-      const shotCount = player.getShootCount();
-
-      const rangeHtml = range.map((r) => {
+      const rangeHtml = player.range.map((r) => {
         return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
       });
 
       let rangeClass;
-      const playerClass =
-        player.status === PLAYER_STATUS.SHOOTING ? "shooting-player" : "shooting-player shooting-player-delayed";
+
+      const playerClass = player.delayed ? "shooting-player shooting-player-delayed" : "shooting-player";
 
       if (player.missNotification) {
         rangeClass = "range-missed";
@@ -387,9 +389,10 @@ export class View {
       }</div></div>`;
     });
 
-    const container = document.querySelector("#range-results");
+    // const container = document.querySelector("#range-results");
 
-    container.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
+    this.shootingRange.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
+
   }
 
   setupRaceView(waypoints) {
@@ -408,9 +411,9 @@ export class View {
   renderPlayerControls(players) {
     const playersHtml = players.map((player) => {
       return PlayerControls(player);
+      // return `<div>${player.name}</div>`;
     });
 
-    const container = document.querySelector("#player-controls");
-    container.innerHTML = `<div class="player-controls">${playersHtml.join("")}</div>`;
+    this.playerControls.innerHTML = `<div class="player-controls">${playersHtml.join("")}</div>`;
   }
 }

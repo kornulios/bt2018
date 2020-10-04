@@ -96,6 +96,7 @@ export class Game {
     //FINISH THE RACE
     if (this.race.raceFinished) {
       cancelAnimationFrame(this.stopTimer);
+      this.canvas.finalFPSDrops(); // total FPS drops counter
       this.endRace();
     }
   }
@@ -151,9 +152,16 @@ export class Game {
   }
 
   getShootingPlayers(players) {
-    const shootingPlayers = players.filter((player) => {
-      return player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0;
-    });
+    const shootingPlayers = players
+      .filter((player) => player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0)
+      .map((player) => {
+        return {
+          name: player.name,
+          range: player.currentRange,
+          team: player.team,
+          delayed: player.shootingTimer > 0,
+        };
+      });
 
     return shootingPlayers;
   }
@@ -295,11 +303,11 @@ export class Game {
 
     const { selectedResults } = this; //waypoint id
 
-    const results = this.race.getWaypointResults(selectedResults).splice(0, 20);
+    const results = this.race.getWaypointResults(selectedResults).slice(0, 20);
 
     this.view.renderResults(results);
     this.view.renderShootingRange(shootingPlayers);
-    this.view.renderPlayerControls([...userPlayers]);
+    this.view.renderPlayerControls(userPlayers);
   }
 
   // HELPER FUNCTIONS
