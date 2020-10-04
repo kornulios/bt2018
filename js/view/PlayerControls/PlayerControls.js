@@ -1,10 +1,10 @@
 import { PlayerBub } from "../PlayerBub/PlayerBub.js";
 
 export const PlayerControls = (player) => {
+  // <div class="player-control-portrait">
+  //   IMG
+  // </div>
   const playerHtml = `<div class="player-control-item">
-    <div class="player-control-portrait">
-      IMG
-    </div>
     <div class="player-control-section">
       <div>${PlayerBub(player)}</div>
       <div>${player.name}</div>

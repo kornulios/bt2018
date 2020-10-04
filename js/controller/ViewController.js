@@ -185,6 +185,7 @@ export class View {
         <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
         <div class="player-name">${result.playerName}</div>
         <div>${result.team}</div>
+        <div>${Utils.convertToMinutes(result.time / 1000)}</div>
         </div>`;
       // return `<div class="intermediate-row">
       //   <div class="player-name">${result.playerName}</div>
