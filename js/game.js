@@ -280,7 +280,7 @@ export class Game {
 
   // DOM RENDER FOR GAME TICK
   showCurrentResults() {
-    const shootingPlayers = this.getShootingPlayers(this.race.players);
+    const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
 
     // const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
 

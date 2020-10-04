@@ -15,9 +15,8 @@ export class Graphic2D {
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
-    if (1000 / tick < 100) {
+    if (1000 / tick < 60) {
       fpsDrops++;
-      console.log("Fps drop", 1000 / tick);
     }
     ctx.fillText("FPS: " + 1000 / tick, 620, 50);
   }
