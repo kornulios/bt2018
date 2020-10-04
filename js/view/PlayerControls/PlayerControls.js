@@ -9,8 +9,12 @@ export const PlayerControls = (player) => {
       <div>${PlayerBub(player)}</div>
       <div>${player.name}</div>
     </div>
-    <div class="player-control-section">
-      ${player.distance.toFixed(0)}
+    <div class="player-control__next-waypoint">
+      ${player.time}
+    </div>
+    <div class="player-control__next-waypoint">
+      ${player.lastWaypoint}
+      ${player.lastWaypointResult}
     </div>
    </div>`;
 

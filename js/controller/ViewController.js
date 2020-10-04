@@ -3,6 +3,7 @@ import { teamData } from "../data.js";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
 
 import { PlayerControls } from "../view/PlayerControls/PlayerControls.js";
+import { PlayerBub } from '../view/PlayerBub/PlayerBub.js';
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
@@ -49,23 +50,23 @@ export class View {
     }
   }
 
-  renderProgress(race) {
-    const players = race.players;
-    const raceFinished = race.raceFinished;
-    const timer = Utils.convertToMinutes(race.raceTimer / 1000);
+  // renderProgress(race) {
+  //   const players = race.players;
+  //   const raceFinished = race.raceFinished;
+  //   const timer = Utils.convertToMinutes(race.raceTimer / 1000);
 
-    const htmlProgress = players
-      .map((player) => {
-        return `<div>${player.name} ${player.status} ${player.distance.toFixed(1)}</div>`;
-      })
-      .join("");
+  //   const htmlProgress = players
+  //     .map((player) => {
+  //       return `<div>${player.name} ${player.status} ${player.distance.toFixed(1)}</div>`;
+  //     })
+  //     .join("");
 
-    const htmlRace = `<div>Race finished: ${raceFinished}</div>
-		<div>Race timer: ${timer}</div>
-		<div>${htmlProgress}</div>`;
+  //   const htmlRace = `<div>Race finished: ${raceFinished}</div>
+	// 	<div>Race timer: ${timer}</div>
+	// 	<div>${htmlProgress}</div>`;
 
-    document.querySelector("#run").innerHTML = `<div>${htmlRace}</div>`;
-  }
+  //   document.querySelector("#run").innerHTML = `<div>${htmlRace}</div>`;
+  // }
 
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);

@@ -16,6 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
+const gameSpeed = 1000 / 60;
 
 export class Game {
   constructor() {
@@ -70,7 +71,7 @@ export class Game {
   runGame(timeStamp) {
     // main game loop
     //refactored with rAF X2
-    const gameSpeed = 30;
+    // const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -268,10 +269,24 @@ export class Game {
     this.simulateRace();
   }
 
-  // DOM render for race tick
+  // DOM RENDER FOR GAME TICK
   showCurrentResults() {
     const shootingPlayers = this.getShootingPlayers(this.race.players);
-    const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
+    
+    // const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
+
+    const userPlayers = this.race.players.filter((player) => player.team === this.userTeam).map(player => {
+      return {
+        name: player.name,
+        team: player.team,
+        number: player.number,
+        distance: player.distance,
+        lastWaypoint: this.race.getLastWaypointName(player.distance),
+        time: player.status === Constants.PLAYER_STATUS.FINISHED ? '' : this.race.getPlayerTime(player.startTimer),
+        lastWaypointResult: this.race.getLastWaypointResult(player.name, player.distance),
+      }
+    });
+
     const { selectedResults } = this; //waypoint id
 
     const results = this.race.getWaypointResults(selectedResults);
@@ -281,6 +296,7 @@ export class Game {
     this.view.renderPlayerControls([...userPlayers]);
   }
 
+  // HELPER FUNCTIONS
   getPlayerTeam(player) {
     return this.teams.find((team) => team.shortName === player.team);
   }

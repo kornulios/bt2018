@@ -31,4 +31,10 @@
 
 .player-control-item .player-control-section {
   display: flex;
+  flex: 2;
+}
+
+.player-control__next-waypoint {
+  flex: 1;
+  display: flex;
 }

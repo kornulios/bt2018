@@ -3,6 +3,7 @@ import { View } from "./ViewController.js";
 import { Track } from "../model/track.js";
 import { Result } from "../model/result.js";
 import * as Constants from "../constants/constants.js";
+import { Utils } from "../utils/Utils.js";
 
 export class Race {
   constructor() {
@@ -91,7 +92,6 @@ export class Race {
   //   return resArray;
   // }
 
-
   //RESULTS FETCH
   getResults() {
     // const results = { ...this.results }
@@ -103,10 +103,55 @@ export class Race {
     return this.results.getWaypointResults(waypointId);
   }
 
+  getPlayerResults(playerName, waypointId) {
+    return this.results.getPlayerResults(playerName, waypointId);
+  }
+
   getWaypointsNames() {
     return this.track.waypoints.map((waypoint, index) => {
       return this.track.getWaypointName(index);
-    })
+    });
+  }
+
+  getNextWaypointName(distance) {
+    if (distance === 0) {
+      return "";
+    }
+
+    if (distance >= this.track.getTrackLength()) {
+      return "Finished";
+    }
+
+    for (let i = 0; i < this.track.waypoints.length; i++) {
+      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
+        return this.track.getWaypointName(i + 1);
+      }
+    }
+  }
+
+  getLastWaypointName(distance) {
+    if (distance === 0) {
+      return "";
+    }
+
+    if (distance >= this.track.getTrackLength()) {
+      return "Finished";
+    }
+
+    for (let i = 0; i < this.track.waypoints.length; i++) {
+      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
+        return this.track.getWaypointName(i);
+      }
+    }
+  }
+
+  getLastWaypointResult(playerName, distance) {
+    for (let i = 0; i < this.track.waypoints.length; i++) {
+      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
+        return Utils.convertToMinutes(this.results.getPlayerResults(playerName, i) / 1000);
+      }
+    }
+    return '';
   }
 
   getRaceName() {
@@ -117,9 +162,14 @@ export class Race {
     return this.status;
   }
 
+  // getRaceTime() {
+  //   return (this.gameTimer / 1000).toFixed(1);
+  // }
 
-  getRaceTime() {
-    return (this.gameTimer / 1000).toFixed(1);
+  getPlayerTime(startTime) {
+    if (startTime > this.raceTimer) {
+      return "Starting in " + Utils.convertToMinutes((startTime - this.raceTimer) / 1000);
+    }
+    return Utils.convertToMinutes((this.raceTimer - startTime) / 1000);
   }
-
 }

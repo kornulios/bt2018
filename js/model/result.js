@@ -71,9 +71,7 @@ export class Result {
   }
 
   getWaypointResults(wp) {
-    const results = this.data
-      .filter((res) => res.waypoint === wp)
-      .sort((a, b) => (a.time > b.time ? 1 : -1));
+    const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
 
     for (var i = 0; i < results.length; i++) {
       var shooting = this.getShootingResult(results[i].playerName);
@@ -83,8 +81,9 @@ export class Result {
     return results;
   }
 
-  getPlayerResults(name) {
-    return this.data.filter((res) => res.playerName === name);
+  getPlayerResults(name, waypointId) {
+    const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
+    return result ? result.time : '';
   }
 
   getRelayResults(waypoint) {
