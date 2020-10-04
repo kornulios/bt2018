@@ -284,6 +284,7 @@ export class Game {
         lastWaypoint: this.race.getLastWaypointName(player.distance),
         time: player.status === Constants.PLAYER_STATUS.FINISHED ? '' : this.race.getPlayerTime(player.startTimer),
         lastWaypointResult: this.race.getLastWaypointResult(player.name, player.distance),
+        lastWaypointPlace: this.race.getLastWaypointPlace(player.name, player.distance),
       }
     });
 

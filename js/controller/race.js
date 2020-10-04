@@ -107,6 +107,16 @@ export class Race {
     return this.results.getPlayerResults(playerName, waypointId);
   }
 
+  getPrevWaypointId(distance) {
+    for (let i = 0; i < this.track.waypoints.length; i++) {
+      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
   getWaypointsNames() {
     return this.track.waypoints.map((waypoint, index) => {
       return this.track.getWaypointName(index);
@@ -138,21 +148,22 @@ export class Race {
       return "Finished";
     }
 
-    for (let i = 0; i < this.track.waypoints.length; i++) {
-      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
-        return this.track.getWaypointName(i);
-      }
-    }
+    return this.track.getWaypointName(this.getPrevWaypointId(distance));
   }
 
   getLastWaypointResult(playerName, distance) {
-    for (let i = 0; i < this.track.waypoints.length; i++) {
-      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
-        return Utils.convertToMinutes(this.results.getPlayerResults(playerName, i) / 1000);
-      }
-    }
-    return '';
+    const prevWaypoint = this.getPrevWaypointId(distance);
+
+    return Utils.convertToMinutes(this.results.getPlayerResults(playerName, prevWaypoint) / 1000);
   }
+
+  getLastWaypointPlace(playerName, distance) {
+    const prevWaypoint = this.getPrevWaypointId(distance);
+
+    return this.results.getPlayerPlace(playerName, prevWaypoint);
+  }
+
+
 
   getRaceName() {
     return this.name;

@@ -31,10 +31,24 @@
 
 .player-control-item .player-control-section {
   display: flex;
-  flex: 2;
+  flex: 1;
+}
+
+.player-control-section__race-data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .player-control__next-waypoint {
-  flex: 1;
   display: flex;
+  justify-content: space-between;
+}
+
+.player-control__position-box {
+  background: #fff017;
+  height: 18px;
+  width: 18px;
+  text-align: center;
+  font-weight: bold;
 }

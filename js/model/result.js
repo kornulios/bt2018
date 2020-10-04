@@ -86,6 +86,11 @@ export class Result {
     return result ? result.time : '';
   }
 
+  getPlayerPlace(name, waypointId) {
+    const result = this.getWaypointResults(waypointId).findIndex(result => result.playerName === name) + 1;
+    return result;
+  }
+
   getRelayResults(waypoint) {
     return this.data.filter((item) => item.waypoint === waypoint);
   }
