@@ -1,6 +1,8 @@
 // MAJOR REFACTORING UNDERWAY 17.10.2018
 // V2. 21.10.2018 Refac part 2 done
 
+import { Utils } from "../utils/Utils.js";
+
 export class Result {
   constructor() {
     this.data = []; // {name$, waypoint%, time!}
@@ -83,11 +85,23 @@ export class Result {
 
   getPlayerResults(name, waypointId) {
     const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
-    return result ? result.time : '';
+    return result ? result.time : "";
+  }
+
+  getPlayerResultsRelative(name, waypointId) {
+    const result = this.getWaypointResults(waypointId);
+    const playerResult = result.find((result) => result.playerName === name);
+    const timeDiff = playerResult.time - result[0].time;
+
+    if (timeDiff === 0) {
+      return playerResult.time;
+    }
+
+    return timeDiff;
   }
 
   getPlayerPlace(name, waypointId) {
-    const result = this.getWaypointResults(waypointId).findIndex(result => result.playerName === name) + 1;
+    const result = this.getWaypointResults(waypointId).findIndex((result) => result.playerName === name) + 1;
     return result;
   }
 

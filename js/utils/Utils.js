@@ -29,26 +29,34 @@ export const Utils = {
 	},
 
 	convertToMinutesRelative: (time1, time2) => {
-		// const hours = Math.floor(time / 3600);
-		// const minutes = Math.floor(time / 60) - hours * 60;
-		// const seconds = time - Math.floor(time / 60) * 60;
+		let time; 
 
-		// const forwardZero = (seconds < 10 && (minutes > 0 || hours > 0)) ? '0' : '';
-		// const millis = seconds.toFixed(1).split('.')[1];
-		// let timeStr = "";
+		if (time1 === time2) {
+			time = time1;
+		} else {
+			time = time1 - time2;
+		}
+		
+		const hours = Math.floor(time / 3600);
+		const minutes = Math.floor(time / 60) - hours * 60;
+		const seconds = time - Math.floor(time / 60) * 60;
 
-		// //apply formatting
-		// const secondsStr = forwardZero + Math.floor(seconds);
-		// const minutesStr = hours > 0 ?
-		// 	(minutes < 10) ? `0${minutes}:` : `${minutes}:`
-		// 	: (minutes > 0) ? `${minutes}:` : '';
+		const forwardZero = (seconds < 10 && (minutes > 0 || hours > 0)) ? '0' : '';
+		const millis = seconds.toFixed(1).split('.')[1];
+		let timeStr = "";
 
-		// const hoursStr = hours > 0 ? hours + ':' : '';
+		//apply formatting
+		const secondsStr = forwardZero + Math.floor(seconds);
+		const minutesStr = hours > 0 ?
+			(minutes < 10) ? `0${minutes}:` : `${minutes}:`
+			: (minutes > 0) ? `${minutes}:` : '';
+
+		const hoursStr = hours > 0 ? hours + ':' : '';
 
 
-		// timeStr = hoursStr + minutesStr + secondsStr + '.' + millis;
+		timeStr = hoursStr + minutesStr + secondsStr + '.' + millis;
 
-		// return timeStr;
+		return timeStr;
 	},
 
 	convertToShootingString: function (shootingResult) {

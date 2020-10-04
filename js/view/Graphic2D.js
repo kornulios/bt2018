@@ -9,6 +9,7 @@ export class Graphic2D {
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
+    if(1000/tick < 100) console.log('Fps drop', 1000/tick)
     ctx.fillText("FPS: " + 1000 / tick, 620, 50);
   }
 
@@ -32,7 +33,7 @@ export class Graphic2D {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
+    // ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
 
     this.drawCoordinatesMap(coordsMap, "#ffdd00");
     this.drawCoordinatesMap(penaltyCoordsMap, "green");

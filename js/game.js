@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 1000 / 60;
+const gameSpeed = 130;
 
 export class Game {
   constructor() {
@@ -86,6 +86,7 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
+
     // DOM RENDER
     this.showCurrentResults();
 
@@ -272,27 +273,31 @@ export class Game {
   // DOM RENDER FOR GAME TICK
   showCurrentResults() {
     const shootingPlayers = this.getShootingPlayers(this.race.players);
-    
+
     // const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
 
-    const userPlayers = this.race.players.filter((player) => player.team === this.userTeam).map(player => {
-      return {
-        name: player.name,
-        team: player.team,
-        number: player.number,
-        distance: player.distance,
-        lastWaypoint: this.race.getLastWaypointName(player.distance),
-        time: player.status === Constants.PLAYER_STATUS.FINISHED ? '' : this.race.getPlayerTime(player.startTimer),
-        lastWaypointResult: this.race.getLastWaypointResult(player.name, player.distance),
-        lastWaypointPlace: this.race.getLastWaypointPlace(player.name, player.distance),
-      }
-    });
+    const userPlayers = this.race.players
+      .filter((player) => player.team === this.userTeam)
+      .map((player) => {
+        const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+
+        return {
+          name: player.name,
+          team: player.team,
+          number: player.number,
+          distance: player.distance,
+          lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+          lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+          lastWaypointPlace: this.race.getLastWaypointPlace(player.name, prevWaypoint),
+        };
+      });
 
     const { selectedResults } = this; //waypoint id
 
-    const results = this.race.getWaypointResults(selectedResults);
+    const results = this.race.getWaypointResults(selectedResults).splice(0, 20);
 
-    this.view.renderResults(results.slice(0, numberResultsShown));
+    this.view.renderResults(results);
     this.view.renderShootingRange(shootingPlayers);
     this.view.renderPlayerControls([...userPlayers]);
   }

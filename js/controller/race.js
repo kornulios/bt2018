@@ -139,31 +139,29 @@ export class Race {
     }
   }
 
-  getLastWaypointName(distance) {
-    if (distance === 0) {
+  getLastWaypointName(waypointId) {
+    if (waypointId === 0) {
       return "";
     }
 
-    if (distance >= this.track.getTrackLength()) {
+    if (waypointId == this.track.getFinishWaypoint()) {
       return "Finished";
     }
 
-    return this.track.getWaypointName(this.getPrevWaypointId(distance));
+    return this.track.getWaypointName(waypointId);
   }
 
-  getLastWaypointResult(playerName, distance) {
-    const prevWaypoint = this.getPrevWaypointId(distance);
+  getLastWaypointResult(playerName, waypointId) {
+    if (waypointId === 0) {
+      return "";
+    }
 
-    return Utils.convertToMinutes(this.results.getPlayerResults(playerName, prevWaypoint) / 1000);
+    return Utils.convertToMinutes(this.results.getPlayerResultsRelative(playerName, waypointId) / 1000);
   }
 
-  getLastWaypointPlace(playerName, distance) {
-    const prevWaypoint = this.getPrevWaypointId(distance);
-
-    return this.results.getPlayerPlace(playerName, prevWaypoint);
+  getLastWaypointPlace(playerName, waypointId) {
+    return this.results.getPlayerPlace(playerName, waypointId);
   }
-
-
 
   getRaceName() {
     return this.name;
