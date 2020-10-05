@@ -15,9 +15,9 @@ export const PlayerControls = (player) => {
         ${player.time}
       </div>
       <div class="player-control__next-waypoint">
-        ${player.lastWaypoint}
+        <div class="player-control__waypoint-name">${player.lastWaypoint}</div>
         <div class="player-control__position-box">${player.lastWaypointPlace ? player.lastWaypointPlace : ""}</div>
-        ${player.lastWaypointResult}
+        <div class="player-control__waypoint-time">${player.lastWaypointResult}</div>
       </div>
 
     </div>
