@@ -8,6 +8,7 @@ export class Result {
     this.data = []; // {name$, waypoint%, time!}
     this.shootingData = []; // { name$, number%, result[ARR] }
     this.relative = true;
+    this.dataObject = {};
   }
 
   // pushResult(player, wp, t) {
@@ -25,9 +26,16 @@ export class Result {
   // playerName, playerNumer, team, waypointId, time (timestamp)
 
   pushResult(resultData) {
-    var resObj = { ...resultData };
+    const result = { ...resultData };
 
-    this.data.push(resObj);
+    // this.data.push(result);
+
+    if (!this.dataObject[result.waypoint]) {
+      this.dataObject[result.waypoint] = [];
+    }
+
+    this.dataObject[result.waypoint].push(result);
+    this.dataObject[result.waypoint].sort((r1, r2) => (r1.time > r2.time ? 1 : -1));
   }
 
   pushRelayResult(wp, number, playerName, teamName, time, leg) {
@@ -72,26 +80,20 @@ export class Result {
     return res;
   }
 
-  getWaypointResults(wp) {
-    const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
-
-    for (var i = 0; i < results.length; i++) {
-      var shooting = this.getShootingResult(results[i].playerName);
-      results[i].shooting = shooting;
-    }
-    // let res = [];
-
-    // for(let i = 0; i < this.data.length; i++) {
-    //   if(this.data[i].waypoint === wp) {
-    //     res.push({...this.data[i], shooting: []});
-    //   }
+  getWaypointResults(waypointId) {
+    // const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
+    // for (var i = 0; i < results.length; i++) {
+    //   var shooting = this.getShootingResult(results[i].playerName);
+    //   results[i].shooting = shooting;
     // }
+    const results = this.dataObject[waypointId] || [];
 
     return results;
   }
 
   getPlayerResults(name, waypointId) {
-    const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
+    // const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
+    const result = this.getWaypointResults(waypointId).find((result) => result.playerName === name);
     return result ? result.time : "";
   }
 
