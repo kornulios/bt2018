@@ -56,9 +56,9 @@ export class RelayRace extends Race {
     return players;
   }
 
-  getFinishResult() {
-    return false;
-  }
+  // getFinishResult() {
+  //   return false;
+  // }
 
   run(gameTick) {
     const { teams, track, results } = this;

@@ -108,6 +108,10 @@ export class Race {
   }
 
   getPrevWaypointId(distance) {
+    if(distance >= this.track.getTrackLength()) {
+      return this.track.waypoints.length - 1;
+    }
+
     for (let i = 0; i < this.track.waypoints.length; i++) {
       if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
         return i;
@@ -153,14 +157,31 @@ export class Race {
 
   getLastWaypointResult(playerName, waypointId) {
     if (waypointId === 0) {
-      return "";
+      return {
+        time: "--",
+        place: "--",
+        shootingTotal: 0,
+      };
     }
 
-    return Utils.convertToMinutes(this.results.getPlayerResultsRelative(playerName, waypointId) / 1000);
-  }
+    const resultData = this.results.getWaypointResults(waypointId);
+    const playerIndex = resultData.findIndex((result) => result.playerName === playerName);
+    const playerData = resultData[playerIndex];
 
-  getLastWaypointPlace(playerName, waypointId) {
-    return this.results.getPlayerPlace(playerName, waypointId);
+    let time;
+    if (playerIndex === 0) {
+      time = Utils.convertToMinutes(playerData.time / 1000);
+    } else {
+      time = '+' + Utils.convertToMinutes(playerData.time / 1000 - resultData[0].time / 1000);
+    }
+
+    const result = {
+      time,
+      place: playerIndex + 1,
+      shootingTotal: playerData.shootingTotal,
+    };
+
+    return result;
   }
 
   getRaceName() {
