@@ -226,7 +226,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
-    this.view.setupRaceView(this.race.getWaypointsNames());
+    this.view.setupRaceView(this.race);
     this.canvas.drawMapBeta(race.track);
     // GO!!!
     requestAnimationFrame(this.runGame.bind(this));

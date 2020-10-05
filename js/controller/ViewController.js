@@ -393,12 +393,13 @@ export class View {
     // const container = document.querySelector("#range-results");
 
     this.shootingRange.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
-
   }
 
-  setupRaceView(waypoints) {
+  setupRaceView(race) {
     this.hideAllPanels();
     //waypoints
+    const raceName = `${race.stageName} ${race.name}`;
+    const waypoints = race.getWaypointsNames();
     const resultHtml = waypoints.map((waypoint, index) => {
       return `<button type="button" class="btn-waypoint" name="${index}">${waypoint}</button>`;
     });
@@ -406,7 +407,9 @@ export class View {
     this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
+    const nameContainer = document.querySelector("#race-name");
     container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;
+    nameContainer.textContent = raceName;
   }
 
   renderPlayerControls(players) {
