@@ -1,3 +1,5 @@
+import * as Constants from "../constants/constants.js";
+
 let canvas = document.querySelector("#main-canvas");
 
 let fpsDrops = 0;
@@ -18,7 +20,7 @@ export class Graphic2D {
     if (1000 / tick < 60) {
       fpsDrops++;
     }
-    ctx.fillText("FPS: " + 1000 / tick, 620, 50);
+    ctx.fillText("FPS: " + 1000 / tick, 10, 10);
   }
 
   drawCoordinatesMap(coordsMap, color) {
@@ -69,14 +71,15 @@ export class Graphic2D {
     ctx.fillRect(225.5, 233, 3, 3);
   }
 
-  drawPlayersBeta(playerCoords) {
+  drawPlayersBeta(playersData) {
     let ctx = canvas.getContext("2d");
+    let shootingNum = 0;
 
-    for (let i = 0; i < playerCoords.length; i++) {
-      if (playerCoords[i].coords) {
+    for (let i = 0; i < playersData.length; i++) {
+      if (playersData[i].coords) {
         try {
-          const { x, y } = playerCoords[i].coords;
-          const { colors, number } = playerCoords[i];
+          const { x, y } = playersData[i].coords;
+          const { colors, number } = playersData[i];
 
           //render player bub
           ctx.beginPath();
@@ -101,6 +104,35 @@ export class Graphic2D {
             ctx.font = "8px Verdana";
             ctx.fillText(number, x - 7, y + 3.25);
           }
+
+          //render shooting range
+          if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
+            const fontHeight = 14;
+
+            ctx.fillStyle = playersData[i].rangeTimer ? "#000099" : "#0033cc";
+            ctx.strokeStyle = "#999999";
+            ctx.strokeWidth = "1px";
+            ctx.fillRect(720, 20 * shootingNum, 80, 18);
+            ctx.strokeRect(640, 20 * shootingNum, 80, 18);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "14px Open Sans";
+            ctx.fillText(playersData[i].name, 723, 20 * shootingNum + 14);
+
+            for (let target = 0; target < 5; target++) {
+              ctx.beginPath();
+              ctx.fillStyle = "#000000";
+              ctx.strokeStyle = "#000000";
+              ctx.arc(653 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
+              if (playersData[i].range[target]) {
+                ctx.stroke();
+              } else {
+                ctx.fill();
+              }
+            }
+
+            shootingNum++;
+          }
         } catch {
           debugger;
         }
@@ -108,7 +140,5 @@ export class Graphic2D {
     }
   }
 
-  drawShootingRange(players) {
-    let ctx = canvas.getContext("2d");
-  }
+  drawPlayerBub() {}
 }

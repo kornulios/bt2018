@@ -8,6 +8,10 @@ body {
   background-image: url("../static/background_image.png");
 }
 
+canvas {
+  border: 1px solid black;
+}
+
 .game-group {
   display: flex;
   width: 100%;

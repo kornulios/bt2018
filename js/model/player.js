@@ -127,7 +127,9 @@ export class Player {
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
     this.distance += distancePassed;
-    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
+    if (this.shootingTimer > 0) {
+      this.shootingTimer -= elapsedTime;
+    }
   }
 
   runPenaltyLap(elapsedTime) {
@@ -135,7 +137,9 @@ export class Player {
     const distancePassed = ((this.currentSpeed * 0.9) / 3600) * fps; // m/ms
 
     this.penalty -= distancePassed;
-    if (this.shootingTimer > 0) this.shootingTimer -= elapsedTime;
+    if (this.shootingTimer > 0) {
+      this.shootingTimer -= elapsedTime;
+    }
   }
 
   enterShootingRange(range) {
