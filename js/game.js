@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 130;
+const gameSpeed = 150;
 
 export class Game {
   constructor() {
@@ -88,7 +88,7 @@ export class Game {
     this.canvas.drawGameTick(gameTick); // FPS counter
 
     // DOM RENDER
-    this.showCurrentResults();
+    // this.showCurrentResults();
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));

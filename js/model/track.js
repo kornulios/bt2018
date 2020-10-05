@@ -90,13 +90,17 @@ export class Track {
     const coords = dist < this.getTrackLength() - this.finishLineLength ? this.coordsMap : this.finishCoordsMap;
 
     for (let i = 0; i < coords.length; i++) {
-      if (d >= coords[i].d && d <= coords[i + 1].d) {
-        const actualDistance = d - coords[i].d;
+      try {
+        if (d >= coords[i].d && d <= coords[i + 1].d) {
+          const actualDistance = d - coords[i].d;
 
-        return new Vector(
-          coords[i].coords.x + actualDistance * coords[i].direction.x,
-          coords[i].coords.y + actualDistance * coords[i].direction.y
-        );
+          return {
+            x: (coords[i].coords.x + actualDistance * coords[i].direction.x) | 0,
+            y: (coords[i].coords.y + actualDistance * coords[i].direction.y) | 0,
+          };
+        }
+      } catch {
+        debugger
       }
     }
     console.log("invalid distance", d);
@@ -110,10 +114,10 @@ export class Track {
       if (d >= coords[i].d && d <= coords[i + 1].d) {
         const actualDistance = d - coords[i].d;
 
-        return new Vector(
-          coords[i].coords.x + actualDistance * coords[i].direction.x,
-          coords[i].coords.y + actualDistance * coords[i].direction.y
-        );
+        return {
+          x: (coords[i].coords.x + actualDistance * coords[i].direction.x) | 0,
+          y: (coords[i].coords.y + actualDistance * coords[i].direction.y) | 0,
+        };
       }
     }
 
@@ -128,10 +132,10 @@ export class Track {
     const finishCoords = this.coordsMap[this.coordsMap.length - 1];
     const preFinishCoords = this.coordsMap[this.coordsMap.length - 2];
 
-    return new Vector(
-      finishCoords.coords.x + actualDistance * -preFinishCoords.direction.x,
-      finishCoords.coords.y + actualDistance * -preFinishCoords.direction.y
-    );
+    return {
+      x: (finishCoords.coords.x + actualDistance * -preFinishCoords.direction.x),
+      y: (finishCoords.coords.y + actualDistance * -preFinishCoords.direction.y),
+    };
   }
 
   getLapNumber(distance) {
