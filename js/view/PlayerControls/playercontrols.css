@@ -1,0 +1,64 @@
+.player-control-col {
+  flex: 1;
+}
+
+.player-controls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border: 1px solid black;
+  font-family: "Open sans";
+  font-size: small;
+  margin-left: 20px;
+}
+
+.player-control-item {
+  display: flex;
+  /* padding: 30px 0; */
+  min-height: 60px;
+  border: 1px solid red;
+}
+
+.player-control-item .player-control-portrait {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  margin: 10px;
+  border: 1px solid green;
+  border-radius: 50%;
+}
+
+.player-control-item .player-control-section {
+  display: flex;
+  flex: 1;
+}
+
+.player-control-section__race-data {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.player-control__next-waypoint {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-control__position-box {
+  background: #fff017;
+  height: 18px;
+  width: 18px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.player-control__waypoint-time {
+  width: 60px;
+  text-align: right;
+}
+
+.player-control__waypoint-name {
+  width: 60px;
+  text-align: left;
+}

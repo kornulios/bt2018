@@ -16,6 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
+const gameSpeed = 130;
 
 export class Game {
   constructor() {
@@ -25,6 +26,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
+    this.userTeam = "GER";
 
     //ui options
     this.uiOptions = {
@@ -69,7 +71,7 @@ export class Game {
   runGame(timeStamp) {
     // main game loop
     //refactored with rAF X2
-    const gameSpeed = 30;
+    // const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -83,9 +85,10 @@ export class Game {
     const racePlayers = this.race.getPlayers();
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
+    this.canvas.drawGameTick(gameTick); // FPS counter
+
     // DOM RENDER
     this.showCurrentResults();
-    this.canvas.drawGameTick(gameTick); // FPS
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -93,6 +96,7 @@ export class Game {
     //FINISH THE RACE
     if (this.race.raceFinished) {
       cancelAnimationFrame(this.stopTimer);
+      this.canvas.finalFPSDrops(); // total FPS drops counter
       this.endRace();
     }
   }
@@ -148,9 +152,16 @@ export class Game {
   }
 
   getShootingPlayers(players) {
-    const shootingPlayers = players.filter((player) => {
-      return player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0;
-    });
+    const shootingPlayers = players
+      .filter((player) => player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0)
+      .map((player) => {
+        return {
+          name: player.name,
+          range: player.currentRange,
+          team: player.team,
+          delayed: player.shootingTimer > 0,
+        };
+      });
 
     return shootingPlayers;
   }
@@ -201,7 +212,7 @@ export class Game {
         this.race = new RelayRace();
         break;
       default:
-        console.log("couldnt find racetype");
+        console.log("PrepareNextRace() error: Couldn't find racetype");
     }
 
     // create new race with players list
@@ -215,7 +226,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
-    this.view.setupRaceView(this.race.getWaypointsNames());
+    this.view.setupRaceView(this.race);
     this.canvas.drawMapBeta(race.track);
     // GO!!!
     requestAnimationFrame(this.runGame.bind(this));
@@ -225,6 +236,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
+    delete this.race.players;
     // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
@@ -235,7 +247,7 @@ export class Game {
 
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
-    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 10).map((result) => {
+    const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -244,7 +256,7 @@ export class Game {
         team: player.team,
       };
     });
-    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 10).map((result) => {
+    const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 20).map((result) => {
       const player = this.getPlayerByName(result.name);
       return {
         id: player.id,
@@ -267,16 +279,39 @@ export class Game {
     this.simulateRace();
   }
 
+  // DOM RENDER FOR GAME TICK
   showCurrentResults() {
-    const racePlayers = this.race.players;
+    const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
+
+    // const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
+
+    const userPlayers = this.race.players
+      .filter((player) => player.team === this.userTeam)
+      .map((player) => {
+        const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+
+        return {
+          name: player.name,
+          team: player.team,
+          number: player.number,
+          distance: player.distance,
+          lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+          lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+          lastWaypointPlace: this.race.getLastWaypointPlace(player.name, prevWaypoint),
+        };
+      });
+
     const { selectedResults } = this; //waypoint id
 
-    const results = this.race.getWaypointResults(selectedResults);
+    const results = this.race.getWaypointResults(selectedResults).slice(0, 20);
 
-    this.view.renderResults(results.slice(0, numberResultsShown));
-    this.view.renderShootingRange(this.getShootingPlayers(racePlayers));
+    this.view.renderResults(results);
+    this.view.renderShootingRange(shootingPlayers);
+    this.view.renderPlayerControls(userPlayers);
   }
 
+  // HELPER FUNCTIONS
   getPlayerTeam(player) {
     return this.teams.find((team) => team.shortName === player.team);
   }

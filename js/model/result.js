@@ -1,6 +1,8 @@
 // MAJOR REFACTORING UNDERWAY 17.10.2018
 // V2. 21.10.2018 Refac part 2 done
 
+import { Utils } from "../utils/Utils.js";
+
 export class Result {
   constructor() {
     this.data = []; // {name$, waypoint%, time!}
@@ -71,20 +73,43 @@ export class Result {
   }
 
   getWaypointResults(wp) {
-    const results = this.data
-      .filter((res) => res.waypoint === wp)
-      .sort((a, b) => (a.time > b.time ? 1 : -1));
+    const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
 
     for (var i = 0; i < results.length; i++) {
       var shooting = this.getShootingResult(results[i].playerName);
       results[i].shooting = shooting;
     }
+    // let res = [];
+
+    // for(let i = 0; i < this.data.length; i++) {
+    //   if(this.data[i].waypoint === wp) {
+    //     res.push({...this.data[i], shooting: []});
+    //   }
+    // }
 
     return results;
   }
 
-  getPlayerResults(name) {
-    return this.data.filter((res) => res.playerName === name);
+  getPlayerResults(name, waypointId) {
+    const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
+    return result ? result.time : "";
+  }
+
+  getPlayerResultsRelative(name, waypointId) {
+    const result = this.getWaypointResults(waypointId);
+    const playerResult = result.find((result) => result.playerName === name);
+    const timeDiff = playerResult.time - result[0].time;
+
+    if (timeDiff === 0) {
+      return playerResult.time;
+    }
+
+    return timeDiff;
+  }
+
+  getPlayerPlace(name, waypointId) {
+    const result = this.getWaypointResults(waypointId).findIndex((result) => result.playerName === name) + 1;
+    return result;
   }
 
   getRelayResults(waypoint) {

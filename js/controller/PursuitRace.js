@@ -1,4 +1,5 @@
 import { Race } from "./Race.js";
+import { Player } from "../model/player.js";
 
 import * as Constants from "../constants/constants.js";
 
@@ -12,13 +13,14 @@ export class PursuitRace extends Race {
     let baseTime = players[0].startTimer;
 
     this.players = players.map((player, i) => {
+      const newPlayer = new Player({...player});
       const time = player.startTimer - baseTime;
 
-      player.reset();
-      player.number = i + 1;
-      player.startTimer = time;
+      newPlayer.reset();
+      newPlayer.number = i + 1;
+      newPlayer.startTimer = time;
 
-      return player;
+      return newPlayer;
     });
   }
 

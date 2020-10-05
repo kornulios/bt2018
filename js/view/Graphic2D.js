@@ -1,14 +1,23 @@
 let canvas = document.querySelector("#main-canvas");
 
+let fpsDrops = 0;
+
 export class Graphic2D {
   constructor() {
     this.img = new Image();
     this.img.src = "../../static/map.gif";
   }
 
+  finalFPSDrops() {
+    console.log("FPS drops:" + fpsDrops);
+  }
+
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
     ctx.fillStyle = "#000000";
+    if (1000 / tick < 60) {
+      fpsDrops++;
+    }
     ctx.fillText("FPS: " + 1000 / tick, 620, 50);
   }
 
@@ -32,7 +41,7 @@ export class Graphic2D {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
+    // ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
 
     this.drawCoordinatesMap(coordsMap, "#ffdd00");
     this.drawCoordinatesMap(penaltyCoordsMap, "green");
@@ -100,6 +109,6 @@ export class Graphic2D {
   }
 
   drawShootingRange(players) {
-    let ctx = canvas.getContext("2d");    
+    let ctx = canvas.getContext("2d");
   }
 }
