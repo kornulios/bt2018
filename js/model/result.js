@@ -6,9 +6,10 @@ import { Utils } from "../utils/Utils.js";
 export class Result {
   constructor() {
     this.data = []; // {name$, waypoint%, time!}
-    this.shootingData = []; // { name$, number%, result[ARR] }
-    this.relative = true;
+    this.shootingData = {}; // { name$, number%, result[ARR] }
     this.dataObject = {};
+    // this.relative = true;
+    // this.shootingObject = {};
   }
 
   // pushResult(player, wp, t) {
@@ -23,7 +24,7 @@ export class Result {
   // }
 
   // RESULT STRUCTURE
-  // playerName, playerNumer, team, waypointId, time (timestamp)
+  // playerName, playerNumer, team, waypoint, time (timestamp)
 
   pushResult(resultData) {
     const result = { ...resultData };
@@ -33,6 +34,8 @@ export class Result {
     if (!this.dataObject[result.waypoint]) {
       this.dataObject[result.waypoint] = [];
     }
+
+    result.shootingTotal = this.getShootingTotal(result.playerName);
 
     this.dataObject[result.waypoint].push(result);
     this.dataObject[result.waypoint].sort((r1, r2) => (r1.time > r2.time ? 1 : -1));
@@ -50,35 +53,43 @@ export class Result {
     this.data.push(resObj);
   }
 
-  // pushShootingResult(player, range, result) {
-  //   this.shootingData.push({ name: player.name, number: player.number, range: range, result: result });
+  pushShootingResult(resultData) {
+    var result = { ...resultData };
+
+    if (!this.shootingData[result.playerName]) {
+      this.shootingData[result.playerName] = [];
+    }
+
+    this.shootingData[result.playerName].push(result.result);
+  }
+
+  getShootingTotal(playerName) {
+    if (!this.shootingData[playerName]) return 0;
+
+    return this.shootingData[playerName].reduce((acc, cur) => {
+      return acc + cur;
+    }, 0);
+  }
+
+  // pushShootingResultRelay(range, playerName, teamName, result, ammo) {
+  //   this.shootingData.push({
+  //     range: range,
+  //     name: playerName,
+  //     team: teamName,
+  //     result: result.filter((r) => r === 0).length,
+  //     ammo: ammo,
+  //   });
   // }
 
-  pushShootingResult(resultData) {
-    var resObj = { ...resultData };
-
-    this.shootingData.push(resObj);
-  }
-
-  pushShootingResultRelay(range, playerName, teamName, result, ammo) {
-    this.shootingData.push({
-      range: range,
-      name: playerName,
-      team: teamName,
-      result: result.filter((r) => r === 0).length,
-      ammo: ammo,
-    });
-  }
-
-  getShootingResult(name) {
-    var res = [];
-    for (var i = 0; i < this.shootingData.length; i++) {
-      if (this.shootingData[i].playerName === name) {
-        res.push(this.shootingData[i].result);
-      }
-    }
-    return res;
-  }
+  // getShootingResult(name) {
+  //   var res = [];
+  //   for (var i = 0; i < this.shootingData.length; i++) {
+  //     if (this.shootingData[i].playerName === name) {
+  //       res.push(this.shootingData[i].result);
+  //     }
+  //   }
+  //   return res;
+  // }
 
   getWaypointResults(waypointId) {
     // const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));

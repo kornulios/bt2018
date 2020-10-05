@@ -158,7 +158,7 @@ export class View {
     this.hideAllPanels();
 
     const htmlResults = results.map((result, i) => {
-      const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
+      // const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
       const colors = teamData.find((team) => team.shortName === result.team).colors;
 
       return `<div class="result-row">
@@ -166,7 +166,7 @@ export class View {
       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
 			<div class="player-name">${result.playerName}</div>
 			<div>${result.team}</div>
-			<div>${shootingResult}</div>
+			<div>${result.shootingTotal}</div>
 			<div>${Utils.convertToMinutes(result.time / 1000)}</div>
 			</div>`;
     });
