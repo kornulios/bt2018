@@ -11,11 +11,12 @@ export class MassStartRace extends Race {
   initPlayers(players) {
     //prepare players
     this.players = players.map((player, i) => {
-      player.reset();
-      player.number = i + 1;
-      player.startTimer = 0;
+      const newPlayer = new Player({...player});
+      newPlayer.reset();
+      newPlayer.number = i + 1;
+      newPlayer.startTimer = 0;
 
-      return player;
+      return newPlayer;
     });
   }
 

@@ -6,13 +6,16 @@ export class Player {
   constructor(args) {
     //base stats
     this.id = args.id; //unique player ID
-    this.baseSpeed = this.currentSpeed =
-      args.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100; // km/h
+    // this.baseSpeed = this.currentSpeed =
+    //   args.baseSpeed || args.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100; // km/h
+    this.gender = args.gender || "men";
     this.name = args.name || "Player " + args.id;
     this.team = args.team || "Team 1";
     this.colors = args.colors || [];
-    this.gender = args.gender || "men";
-    this.index = args.index;
+
+    this.baseSpeed = args.baseSpeed ? args.baseSpeed : this._getRandomSpeed();
+    this.currentSpeed = this.baseSpeed;
+    // this.index = args.index;
     this.accuracy = args.accuracy || Utils.rand(95, 65);
     this.strength = args.strength || Utils.rand(95, 75);
     this.stamina = args.stamina || Utils.rand(99, 30);
@@ -26,6 +29,7 @@ export class Player {
     this.penaltyTime = 0;
 
     //race related
+    this.number = null;
     this.status = PLAYER_STATUS.NOT_STARTED;
     this.startTimer = args.startTimer;
     this.shootingTimer = 0; // to delay shooting results
@@ -41,6 +45,10 @@ export class Player {
     this.speedMod = 1;
     this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
     this.state = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
+  }
+
+  _getRandomSpeed() {
+    return this.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100;
   }
 
   static create(name, team, gender) {

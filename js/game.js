@@ -236,6 +236,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
+    delete this.race.players;
     // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {

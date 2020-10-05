@@ -11,11 +11,12 @@ export class SprintRace extends Race {
   initPlayers(players) {
     //prepare players
     this.players = players.map((player, i) => {
-      player.reset();
-      player.number = i + 1;
-      player.startTimer = i * 30000;
+      const newPlayer = new Player({...player});
+      newPlayer.reset();
+      newPlayer.number = i + 1;
+      newPlayer.startTimer = i * 30000;
 
-      return player;
+      return newPlayer;
     });
   }
 
