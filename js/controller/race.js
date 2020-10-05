@@ -108,6 +108,10 @@ export class Race {
   }
 
   getPrevWaypointId(distance) {
+    if(distance >= this.track.getTrackLength()) {
+      return this.track.waypoints.length - 1;
+    }
+
     for (let i = 0; i < this.track.waypoints.length; i++) {
       if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
         return i;
@@ -179,10 +183,6 @@ export class Race {
 
     return result;
   }
-
-  // getLastWaypointPlace(playerName, waypointId) {
-  //   return
-  // }
 
   getRaceName() {
     return this.name;

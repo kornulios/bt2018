@@ -283,8 +283,6 @@ export class Game {
   showCurrentResults() {
     const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
 
-    // const userPlayers = this.race.players.filter((player) => player.team === this.userTeam);
-
     const userPlayers = this.race.players
       .filter((player) => player.team === this.userTeam)
       .map((player) => {
@@ -298,7 +296,6 @@ export class Game {
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
           lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
-          // lastWaypointPlace: this.race.getLastWaypointPlace(player.name, prevWaypoint),
         };
       });
 
