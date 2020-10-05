@@ -298,7 +298,7 @@ export class Game {
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
           lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
-          lastWaypointPlace: this.race.getLastWaypointPlace(player.name, prevWaypoint),
+          // lastWaypointPlace: this.race.getLastWaypointPlace(player.name, prevWaypoint),
         };
       });
 

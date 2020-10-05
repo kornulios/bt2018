@@ -108,22 +108,22 @@ export class Result {
     return result ? result.time : "";
   }
 
-  getPlayerResultsRelative(name, waypointId) {
-    const result = this.getWaypointResults(waypointId);
-    const playerResult = result.find((result) => result.playerName === name);
-    const timeDiff = playerResult.time - result[0].time;
+  // getPlayerResultsRelative(name, waypointId) {
+  //   const result = this.getWaypointResults(waypointId);
+  //   const playerResult = result.find((result) => result.playerName === name);
+  //   const timeDiff = playerResult.time - result[0].time;
 
-    if (timeDiff === 0) {
-      return playerResult.time;
-    }
+  //   if (timeDiff === 0) {
+  //     return playerResult.time;
+  //   }
 
-    return timeDiff;
-  }
+  //   return timeDiff;
+  // }
 
-  getPlayerPlace(name, waypointId) {
-    const result = this.getWaypointResults(waypointId).findIndex((result) => result.playerName === name) + 1;
-    return result;
-  }
+  // getPlayerPlace(name, waypointId) {
+  //   const result = this.getWaypointResults(waypointId).findIndex((result) => result.playerName === name) + 1;
+  //   return result;
+  // }
 
   getRelayResults(waypoint) {
     return this.data.filter((item) => item.waypoint === waypoint);
