@@ -18,6 +18,8 @@ export class Graphic2D {
 
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
+
+    ctx.textAlign = "left";
     ctx.fillStyle = "#000000";
     if (1000 / tick < 60) {
       fpsDrops++;
@@ -81,33 +83,12 @@ export class Graphic2D {
       if (playersData[i].coords) {
         try {
           const { x, y } = playersData[i].coords;
-          const { colors, number } = playersData[i];
+          const { team, number } = playersData[i];
 
-          //render player bub
-          ctx.beginPath();
-          ctx.arc(x, y, 9, 0, Math.PI * 2);
-
-          ctx.fillStyle = colors ? colors[0] : "#ffc7f0";
-          ctx.strokeStyle = "#000000";
-
-          ctx.fill();
-          ctx.stroke();
-
-          //render text
-          ctx.strokeWidth = "2px";
-          ctx.fillStyle = colors ? colors[1] : "#000000";
-          ctx.font = "bold 10px Verdana";
-
-          if (number <= 9) {
-            ctx.fillText(number, x - 3.5, y + 3.25);
-          } else if (number > 9 && number < 99) {
-            ctx.fillText(number, x - 7.5, y + 3.25);
-          } else if (number >= 99) {
-            ctx.font = "8px Verdana";
-            ctx.fillText(number, x - 7, y + 3.25);
-          }
-
+          this.drawPlayerBub(ctx, number, team, x, y, 9);
+          
           //render shooting range
+          ctx.beginPath();
           if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
             const fontHeight = 14;
 
@@ -118,6 +99,7 @@ export class Graphic2D {
             ctx.strokeRect(640, 20 * shootingNum, 80, 18);
 
             ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "left";
             ctx.font = "14px Open Sans";
             ctx.fillText(playersData[i].name, 723, 20 * shootingNum + 14);
 
@@ -153,7 +135,7 @@ export class Graphic2D {
   }
 
   drawIntermediateResultItem(ctx, index, result) {
-    const x = Math.floor(index / 5) * 180;
+    const x = Math.floor(index / 5) * 200;
     const y = (index % 5) * 22;
 
     ctx.beginPath();
@@ -173,7 +155,7 @@ export class Graphic2D {
     ctx.fillText(result.playerName, x + 44, y + 16);
 
     ctx.textAlign = "right";
-    ctx.fillText(result.timeString, x + 170, y + 16);
+    ctx.fillText(result.timeString, x + 180, y + 16);
   }
 
   drawPlayerBub(ctx, number, team, x, y, size) {

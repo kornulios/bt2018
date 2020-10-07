@@ -29,10 +29,8 @@ export class Game {
     this.userTeam = "GER";
 
     //ui options
-    this.uiOptions = {
-      selectedResults: null,
-      selectedPlayer: null,
-    };
+    this.selectedResults = null;
+    this.selectedPlayer = null;
 
     //game data
     this.teams = [];
@@ -87,13 +85,10 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
-    
-    if(this.race.raceTimer % 10 === 0) {
+
+    if (this.race.raceTimer % 10 === 0) {
       this.showCurrentResults();
     }
-
-
-    // DOM RENDER
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -104,6 +99,25 @@ export class Game {
       this.canvas.finalFPSDrops(); // total FPS drops counter
       this.endRace();
     }
+  }
+
+  showCurrentResults() {
+    if (this.selectedResults === 0) {
+      const startList = this.race.players.slice(0, 20).map((player) => {
+        return {
+          playerName: player.name,
+          playerNumber: player.number,
+          team: player.team,
+          timeString: Utils.convertToMinutes(player.startTimer / 1000),
+        };
+      });
+
+      this.canvas.drawIntermediateResults(startList);
+      return;
+    }
+
+    const results = this.race.getWaypointResults(this.selectedResults).slice(0, 20);
+    this.canvas.drawIntermediateResults(results);
   }
 
   simulateRace() {
@@ -140,6 +154,7 @@ export class Game {
 
       let playerData = {
         name: player.name,
+        team: player.team,
         number: player.number,
         colors: player.colors,
         range: player.currentRange,
@@ -234,6 +249,7 @@ export class Game {
     // READY!
     oldTimeStamp = performance.now();
     // SET!
+    this.selectedResults = 0;
     this.view.setupRaceView(this.race);
     this.canvas.drawMapBeta(race.track);
     // GO!!!
@@ -288,36 +304,32 @@ export class Game {
   }
 
   // DOM RENDER FOR GAME TICK
-  showCurrentResults() {
-    const results = this.race.getWaypointResults(this.selectedResults).slice(0, 20);
-    this.canvas.drawIntermediateResults(results);
 
-    // const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
+  // const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
 
-    // const userPlayers = this.race.players
-    //   .filter((player) => player.team === this.userTeam)
-    //   .map((player) => {
-    //     const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+  // const userPlayers = this.race.players
+  //   .filter((player) => player.team === this.userTeam)
+  //   .map((player) => {
+  //     const prevWaypoint = this.race.getPrevWaypointId(player.distance);
 
-    //     return {
-    //       name: player.name,
-    //       team: player.team,
-    //       number: player.number,
-    //       distance: player.distance,
-    //       lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-    //       time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-    //       lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
-    //     };
-    //   });
+  //     return {
+  //       name: player.name,
+  //       team: player.team,
+  //       number: player.number,
+  //       distance: player.distance,
+  //       lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+  //       time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+  //       lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+  //     };
+  //   });
 
-    // const { selectedResults } = this; //waypoint id
+  // const { selectedResults } = this; //waypoint id
 
-    // const results = this.race.getWaypointResults(selectedResults).slice(0, 20);
+  // const results = this.race.getWaypointResults(selectedResults).slice(0, 20);
 
-    // this.view.renderResults(results);
-    // this.view.renderShootingRange(shootingPlayers);
-    // this.view.renderPlayerControls(userPlayers);
-  }
+  // this.view.renderResults(results);
+  // this.view.renderShootingRange(shootingPlayers);
+  // this.view.renderPlayerControls(userPlayers);
 
   // HELPER FUNCTIONS
   getPlayerTeam(player) {
