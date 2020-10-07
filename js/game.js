@@ -54,6 +54,7 @@ export class Game {
 
     // this.view.renderRaceList(this.championship.getRaceList());
     this.view.hideAllPanels();
+    this.view.showPanel(VIEW_PANELS.PANEL_RACE);
   }
 
   initChampionship() {
