@@ -1,4 +1,5 @@
 import * as Constants from "../constants/constants.js";
+import { teamData } from "../data.js";
 
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
@@ -145,15 +146,14 @@ export class Graphic2D {
     let ctx = resultCanvas.getContext("2d");
 
     ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
-    // if (resultsData.length) debugger;
 
     for (let i = 0; i < resultsData.length; i++) {
-      this.drawIntermediateResultItem(ctx, i, resultsData[i], Math.floor(i / 5) * 155, i * 22);
+      this.drawIntermediateResultItem(ctx, i, resultsData[i]);
     }
   }
 
   drawIntermediateResultItem(ctx, index, result) {
-    const x = Math.floor(index / 5) * 170;
+    const x = Math.floor(index / 5) * 180;
     const y = (index % 5) * 22;
 
     ctx.beginPath();
@@ -162,17 +162,45 @@ export class Graphic2D {
 
     ctx.fillStyle = "black";
     ctx.font = "bold 12px Open Sans";
-
     ctx.textAlign = "center";
     ctx.fillText(index + 1, x + 10, y + 16);
 
+    this.drawPlayerBub(ctx, result.playerNumber, result.team, x + 32, y + 10, 8);
+
     ctx.font = "14px Open Sans";
+    ctx.fillStyle = "black";
     ctx.textAlign = "left";
-    ctx.fillText(result.playerName, x + 25, y + 16);
+    ctx.fillText(result.playerName, x + 44, y + 16);
 
     ctx.textAlign = "right";
-    ctx.fillText(result.timeString, x + 160, y + 16);
+    ctx.fillText(result.timeString, x + 170, y + 16);
   }
 
-  drawPlayerBub() {}
+  drawPlayerBub(ctx, number, team, x, y, size) {
+    const colors = teamData.find((t) => t.shortName === team).colors;
+
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+
+    ctx.fillStyle = colors[0];
+    ctx.strokeStyle = "#000000";
+
+    ctx.fill();
+    ctx.stroke();
+
+    //render text
+    ctx.strokeWidth = "2px";
+    ctx.fillStyle = colors[1];
+    ctx.font = "bold 10px Verdana";
+    ctx.textAlign = "center";
+
+    if (number <= 9) {
+      ctx.fillText(number, x, y + 3.25);
+    } else if (number > 9 && number < 99) {
+      ctx.fillText(number, x, y + 3.25);
+    } else if (number >= 99) {
+      ctx.font = "8px Verdana";
+      ctx.fillText(number, x, y + 3.25);
+    }
+  }
 }

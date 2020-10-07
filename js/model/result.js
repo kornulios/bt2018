@@ -24,7 +24,7 @@ export class Result {
   // }
 
   // RESULT STRUCTURE
-  // playerName, playerNumer, team, waypoint, time (timestamp)
+  // playerName, playerNumber, team, waypoint, time (timestamp)
 
   pushResult(resultData) {
     const result = { ...resultData };

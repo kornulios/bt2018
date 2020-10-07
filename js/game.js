@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 10;
+const gameSpeed = 30;
 
 export class Game {
   constructor() {
