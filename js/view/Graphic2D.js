@@ -1,6 +1,7 @@
 import * as Constants from "../constants/constants.js";
 
 let canvas = document.querySelector("#main-canvas");
+let resultCanvas = document.querySelector("#result-canvas");
 
 let fpsDrops = 0;
 
@@ -138,6 +139,39 @@ export class Graphic2D {
         }
       }
     }
+  }
+
+  drawIntermediateResults(resultsData) {
+    let ctx = resultCanvas.getContext("2d");
+
+    ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    // if (resultsData.length) debugger;
+
+    for (let i = 0; i < resultsData.length; i++) {
+      this.drawIntermediateResultItem(ctx, i, resultsData[i], Math.floor(i / 5) * 155, i * 22);
+    }
+  }
+
+  drawIntermediateResultItem(ctx, index, result) {
+    const x = Math.floor(index / 5) * 170;
+    const y = (index % 5) * 22;
+
+    ctx.beginPath();
+    ctx.fillStyle = "#fff017";
+    ctx.fillRect(x, y, 20, 20);
+
+    ctx.fillStyle = "black";
+    ctx.font = "bold 12px Open Sans";
+
+    ctx.textAlign = "center";
+    ctx.fillText(index + 1, x + 10, y + 16);
+
+    ctx.font = "14px Open Sans";
+    ctx.textAlign = "left";
+    ctx.fillText(result.playerName, x + 25, y + 16);
+
+    ctx.textAlign = "right";
+    ctx.fillText(result.timeString, x + 160, y + 16);
   }
 
   drawPlayerBub() {}

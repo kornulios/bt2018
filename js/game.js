@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 50;
+const gameSpeed = 10;
 
 export class Game {
   constructor() {
@@ -87,9 +87,13 @@ export class Game {
     this.canvas.drawMapBeta(this.race.track);
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
+    
+    if(this.race.raceTimer % 10 === 0) {
+      this.showCurrentResults();
+    }
+
 
     // DOM RENDER
-    this.showCurrentResults();
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -285,6 +289,9 @@ export class Game {
 
   // DOM RENDER FOR GAME TICK
   showCurrentResults() {
+    const results = this.race.getWaypointResults(this.selectedResults).slice(0, 20);
+    this.canvas.drawIntermediateResults(results);
+
     // const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
 
     // const userPlayers = this.race.players

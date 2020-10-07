@@ -27,7 +27,7 @@ export class PursuitRace extends Race {
   run(gameTick) {
     const { players, track, results } = this;
 
-    this.raceTimer += gameTick;
+    this.raceTimer += gameTick | 0;
 
     const { PLAYER_STATUS } = Constants;
 
