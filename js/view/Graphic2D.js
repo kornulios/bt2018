@@ -131,21 +131,21 @@ export class Graphic2D {
     }
   }
 
-  drawIntermediateResults(resultsData) {
+  drawIntermediateResults(resultsData, offset) {
     // let ctx = resultCanvas.getContext("2d");
     let ctx = this.offscreenContext;
 
     ctx.clearRect(0, 0, this.offscreenCanvas.width, this.offscreenCanvas.height);
 
     for (let i = 0; i < resultsData.length; i++) {
-      this.drawIntermediateResultItem(ctx, i, resultsData[i]);
+      this.drawIntermediateResultItem(ctx, i, resultsData[i], offset);
     }
 
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.resultContext.drawImage(this.offscreenCanvas, 0, 0);
   }
 
-  drawIntermediateResultItem(ctx, index, result) {
+  drawIntermediateResultItem(ctx, index, result, offset) {
     const x = Math.floor(index / 5) * 200;
     const y = (index % 5) * 22;
 
@@ -156,7 +156,7 @@ export class Graphic2D {
     ctx.fillStyle = "black";
     ctx.font = "bold 12px Open Sans";
     ctx.textAlign = "center";
-    ctx.fillText(index + 1, x + 10, y + 16);
+    ctx.fillText(offset + index + 1, x + 10, y + 16);
 
     this.drawPlayerBub(ctx, result.playerNumber, result.team, x + 32, y + 10, 8);
 

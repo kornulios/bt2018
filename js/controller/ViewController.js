@@ -404,20 +404,17 @@ export class View {
       return `<button type="button" class="btn-waypoint" name="${index}">${waypoint}</button>`;
     });
 
+    const pagingButtons = `<button type="button" class="btn-paging" name="prev">Prev</button>
+    <button type="button" class="btn-paging" name="next">Next</button>`;
+
     this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
     const nameContainer = document.querySelector("#race-name");
+    const pagingContainer = document.querySelector("#results-paging");
+
     container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;
     nameContainer.textContent = raceName;
-  }
-
-  renderPlayerControls(players) {
-    const playersHtml = players.map((player) => {
-      return PlayerControls(player);
-      // return `<div>${player.name}</div>`;
-    });
-
-    this.playerControls.innerHTML = `<div class="player-controls">${playersHtml.join("")}</div>`;
+    pagingContainer.innerHTML = pagingButtons;
   }
 }

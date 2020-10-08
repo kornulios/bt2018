@@ -114,6 +114,13 @@ canvas {
   border-radius: 3px;
 }
 
-.flex-1 {
+.btn-paging {
   flex: 1;
+  background: rgb(153, 0, 0);
+  color: white;
+  font-family: "Open sans";
+  font-weight: bold;
+  border: none;
+  border-radius: 3px;
 }
+

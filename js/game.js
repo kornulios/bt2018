@@ -31,6 +31,7 @@ export class Game {
 
     //ui options
     this.selectedResults = null;
+    this.selectedResultsPage = 0;
     this.selectedPlayer = null;
 
     //game data
@@ -105,8 +106,11 @@ export class Game {
   }
 
   showCurrentResults() {
+    const resOffset = this.selectedResultsPage * 20;
+    const resLength = resOffset + 20;
+
     if (this.selectedResults === 0) {
-      const startList = this.race.players.slice(0, 20).map((player) => {
+      const startList = this.race.players.slice(resOffset, resLength).map((player) => {
         return {
           playerName: player.name,
           playerNumber: player.number,
@@ -115,12 +119,12 @@ export class Game {
         };
       });
 
-      this.canvas.drawIntermediateResults(startList);
+      this.canvas.drawIntermediateResults(startList, resOffset);
       return;
     }
 
-    const results = this.race.getWaypointResults(this.selectedResults).slice(0, 20);
-    this.canvas.drawIntermediateResults(results);
+    const results = this.race.getWaypointResults(this.selectedResults).slice(resOffset, resLength);
+    this.canvas.drawIntermediateResults(results, resOffset);
   }
 
   simulateRace() {
@@ -385,10 +389,24 @@ export class Game {
     return eligiblePlayers;
   }
 
+  // UI DOM EVENTS
   onResultSelect(event) {
     const waypointId = event.target.name;
     this.selectedResults = +waypointId;
+    this.selectedResultsPage = 0;
 
+    this.showCurrentResults();
+  }
+
+  onResultPageSelect(event) {
+    if (event.target.name === "next") {
+      this.selectedResultsPage++;
+    } else {
+      this.selectedResultsPage--;
+    }
+    if (this.selectedResultsPage < 0) {
+      this.selectedResultsPage = 0;
+    }
     this.showCurrentResults();
   }
 
