@@ -10,6 +10,13 @@ export class Graphic2D {
   constructor() {
     this.img = new Image();
     this.img.src = "../../static/map.gif";
+
+    this.resultContext = resultCanvas.getContext("2d");
+
+    this.offscreenCanvas = document.createElement('canvas');
+    this.offscreenCanvas.width = resultCanvas.width;
+    this.offscreenCanvas.height = resultCanvas.height;
+    this.offscreenContext = this.offscreenCanvas.getContext("2d");
   }
 
   finalFPSDrops() {
@@ -24,7 +31,7 @@ export class Graphic2D {
     if (1000 / tick < 60) {
       fpsDrops++;
     }
-    ctx.fillText("FPS: " + 1000 / tick, 10, 10);
+    ctx.fillText("FPS: " + (1000 / tick).toFixed(0), 10, 10);
   }
 
   drawCoordinatesMap(coordsMap, color) {
@@ -86,7 +93,7 @@ export class Graphic2D {
           const { team, number } = playersData[i];
 
           this.drawPlayerBub(ctx, number, team, x, y, 9);
-          
+
           //render shooting range
           ctx.beginPath();
           if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
@@ -125,13 +132,17 @@ export class Graphic2D {
   }
 
   drawIntermediateResults(resultsData) {
-    let ctx = resultCanvas.getContext("2d");
+    // let ctx = resultCanvas.getContext("2d");
+    let ctx = this.offscreenContext;
 
-    ctx.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    ctx.clearRect(0, 0, this.offscreenCanvas.width, this.offscreenCanvas.height);
 
     for (let i = 0; i < resultsData.length; i++) {
       this.drawIntermediateResultItem(ctx, i, resultsData[i]);
     }
+
+    this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    this.resultContext.drawImage(this.offscreenCanvas, 0, 0);
   }
 
   drawIntermediateResultItem(ctx, index, result) {

@@ -17,6 +17,7 @@ import { Championship } from "./controller/championship.js";
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
 const gameSpeed = 30;
+let tickCounter = 0;
 
 export class Game {
   constructor() {
@@ -86,8 +87,10 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    if (this.race.raceTimer % 10 === 0) {
+    // if (this.race.raceTimer % 10 === 0) {
+    if (++tickCounter === 14) {
       this.showCurrentResults();
+      tickCounter = 0;
     }
 
     //REQUEST NEXT FRAME
