@@ -24,7 +24,7 @@ export class Result {
   // }
 
   // RESULT STRUCTURE
-  // playerName, playerNumer, team, waypoint, time (timestamp)
+  // playerName, playerNumber, team, waypoint, time (timestamp)
 
   pushResult(resultData) {
     const result = { ...resultData };
@@ -36,6 +36,7 @@ export class Result {
     }
 
     result.shootingTotal = this.getShootingTotal(result.playerName);
+    result.timeString = Utils.convertToMinutes(result.time / 1000);
 
     this.dataObject[result.waypoint].push(result);
     this.dataObject[result.waypoint].sort((r1, r2) => (r1.time > r2.time ? 1 : -1));
@@ -92,18 +93,12 @@ export class Result {
   // }
 
   getWaypointResults(waypointId) {
-    // const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
-    // for (var i = 0; i < results.length; i++) {
-    //   var shooting = this.getShootingResult(results[i].playerName);
-    //   results[i].shooting = shooting;
-    // }
     const results = this.dataObject[waypointId] || [];
 
     return results;
   }
 
   getPlayerResults(name, waypointId) {
-    // const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
     const result = this.getWaypointResults(waypointId).find((result) => result.playerName === name);
     return result ? result.time : "";
   }

@@ -24,6 +24,7 @@ const initEvents = () => {
   document.querySelector("#skip-race").addEventListener("click", game.onSimulateRaceClick.bind(game));
 
   document.querySelector("#results-controls").addEventListener("click", game.onResultSelect.bind(game));
+  document.querySelector("#results-paging").addEventListener("click", game.onResultPageSelect.bind(game));
 };
 
 document.addEventListener("DOMContentLoaded", initEvents);

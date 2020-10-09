@@ -404,20 +404,33 @@ export class View {
       return `<button type="button" class="btn-waypoint" name="${index}">${waypoint}</button>`;
     });
 
+    const pagingButtons = `<button type="button" class="btn-paging" name="prev">Prev</button>
+    <button type="button" class="btn-paging" name="next">Next</button>`;
+
     this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
     const nameContainer = document.querySelector("#race-name");
+    const pagingContainer = document.querySelector("#results-paging");
+
     container.innerHTML = `<div class="results-controls">${resultHtml.join("")}</div>`;
     nameContainer.textContent = raceName;
+    pagingContainer.innerHTML = pagingButtons;
   }
 
-  renderPlayerControls(players) {
-    const playersHtml = players.map((player) => {
-      return PlayerControls(player);
-      // return `<div>${player.name}</div>`;
-    });
+  updateResultsControls(resultsCount) {
+    const pagingContainer = document.querySelector("#results-paging");
 
-    this.playerControls.innerHTML = `<div class="player-controls">${playersHtml.join("")}</div>`;
+    const pagesNum = resultsCount / 20;
+
+    let pagingButtons = [];
+
+    pagingButtons.push(`<button type="button" class="btn-paging" name="prev">Prev</button>`);
+    for (let i = 0; i < pagesNum; i++) {
+      pagingButtons.push(`<button type="button" class="btn-paging" name=${i}>${i * 20 + 1}...${(i + 1) * 20}</button>`);
+    }
+    pagingButtons.push(`<button type="button" class="btn-paging" name="next">Next</button>`);
+
+    pagingContainer.innerHTML = pagingButtons.join("");
   }
 }

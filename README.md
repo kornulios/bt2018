@@ -35,18 +35,19 @@ Routes:
 ## Biatech roadmap:
 
 **RC 1**
-- switch to playes ID in results (5)
+- implement resutls pagination (2)
+- create my team in-race panels (5)
 - implement start roster scheduling (5)
+- implement map creator (8)
 
+- switch to playes ID in results (5)
 - start-line players route (3)
 - stage switch (5)
 
 - enable player team interaction (8)
   - display a list of players for a team(3)
-  - create my team in-race panels (5)
 
 - add more teams with colors (3)
-- implement map creator (8)
 - enlarge map view (2)
 - pause on browser tab switch (3)
 

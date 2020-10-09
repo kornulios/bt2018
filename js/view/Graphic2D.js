@@ -1,4 +1,9 @@
+import * as Constants from "../constants/constants.js";
+import { teamData } from "../data.js";
+
 let canvas = document.querySelector("#main-canvas");
+let resultCanvas = document.querySelector("#result-canvas");
+let controlsCanvas = document.querySelector("#controls-canvas");
 
 let fpsDrops = 0;
 
@@ -6,6 +11,14 @@ export class Graphic2D {
   constructor() {
     this.img = new Image();
     this.img.src = "../../static/map.gif";
+
+    this.resultContext = resultCanvas.getContext("2d");
+    this.controlsCtx = controlsCanvas.getContext("2d");
+
+    this.offscreenCanvas = document.createElement("canvas");
+    this.offscreenCanvas.width = resultCanvas.width;
+    this.offscreenCanvas.height = resultCanvas.height;
+    this.offscreenContext = this.offscreenCanvas.getContext("2d");
   }
 
   finalFPSDrops() {
@@ -14,11 +27,13 @@ export class Graphic2D {
 
   drawGameTick(tick) {
     let ctx = canvas.getContext("2d");
+
+    ctx.textAlign = "left";
     ctx.fillStyle = "#000000";
     if (1000 / tick < 60) {
       fpsDrops++;
     }
-    ctx.fillText("FPS: " + 1000 / tick, 620, 50);
+    ctx.fillText("FPS: " + (1000 / tick).toFixed(0), 10, 10);
   }
 
   drawCoordinatesMap(coordsMap, color) {
@@ -69,37 +84,47 @@ export class Graphic2D {
     ctx.fillRect(225.5, 233, 3, 3);
   }
 
-  drawPlayersBeta(playerCoords) {
+  drawPlayersBeta(playersData) {
     let ctx = canvas.getContext("2d");
+    let shootingNum = 0;
 
-    for (let i = 0; i < playerCoords.length; i++) {
-      if (playerCoords[i].coords) {
+    for (let i = 0; i < playersData.length; i++) {
+      if (playersData[i].coords) {
         try {
-          const { x, y } = playerCoords[i].coords;
-          const { colors, number } = playerCoords[i];
+          const { x, y } = playersData[i].coords;
+          const { team, number } = playersData[i];
 
-          //render player bub
+          this.drawPlayerBub(ctx, number, team, x, y, 9);
+
+          //render shooting range
           ctx.beginPath();
-          ctx.arc(x, y, 9, 0, Math.PI * 2);
+          if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
+            const fontHeight = 14;
 
-          ctx.fillStyle = colors ? colors[0] : "#ffc7f0";
-          ctx.strokeStyle = "#000000";
+            ctx.fillStyle = playersData[i].rangeTimer ? "#000099" : "#0033cc";
+            ctx.strokeStyle = "#999999";
+            ctx.strokeWidth = "1px";
+            ctx.fillRect(720, 20 * shootingNum, 80, 18);
+            ctx.strokeRect(640, 20 * shootingNum, 80, 18);
 
-          ctx.fill();
-          ctx.stroke();
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "left";
+            ctx.font = "14px Open Sans";
+            ctx.fillText(playersData[i].name, 723, 20 * shootingNum + 14);
 
-          //render text
-          ctx.strokeWidth = "2px";
-          ctx.fillStyle = colors ? colors[1] : "#000000";
-          ctx.font = "bold 10px Verdana";
+            for (let target = 0; target < 5; target++) {
+              ctx.beginPath();
+              ctx.fillStyle = "#000000";
+              ctx.strokeStyle = "#000000";
+              ctx.arc(653 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
+              if (playersData[i].range[target]) {
+                ctx.stroke();
+              } else {
+                ctx.fill();
+              }
+            }
 
-          if (number <= 9) {
-            ctx.fillText(number, x - 3.5, y + 3.25);
-          } else if (number > 9 && number < 99) {
-            ctx.fillText(number, x - 7.5, y + 3.25);
-          } else if (number >= 99) {
-            ctx.font = "8px Verdana";
-            ctx.fillText(number, x - 7, y + 3.25);
+            shootingNum++;
           }
         } catch {
           debugger;
@@ -108,7 +133,108 @@ export class Graphic2D {
     }
   }
 
-  drawShootingRange(players) {
-    let ctx = canvas.getContext("2d");
+  drawIntermediateResults(resultsData, offset) {
+    // let ctx = resultCanvas.getContext("2d");
+    let ctx = this.offscreenContext;
+
+    ctx.clearRect(0, 0, this.offscreenCanvas.width, this.offscreenCanvas.height);
+
+    for (let i = 0; i < resultsData.length; i++) {
+      this.drawIntermediateResultItem(ctx, i, resultsData[i], offset);
+    }
+
+    this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    this.resultContext.drawImage(this.offscreenCanvas, 0, 0);
+  }
+
+  drawIntermediateResultItem(ctx, index, result, offset) {
+    const x = Math.floor(index / 5) * 200;
+    const y = (index % 5) * 22;
+
+    ctx.beginPath();
+    ctx.fillStyle = "#fff017";
+    ctx.fillRect(x, y, 20, 20);
+
+    ctx.fillStyle = "black";
+    ctx.font = "bold 12px Open Sans";
+    ctx.textAlign = "center";
+    ctx.fillText(offset + index + 1, x + 10, y + 16);
+
+    this.drawPlayerBub(ctx, result.playerNumber, result.team, x + 32, y + 10, 8);
+
+    ctx.font = "14px Open Sans";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "left";
+    ctx.fillText(result.playerName, x + 44, y + 16);
+
+    ctx.textAlign = "right";
+    ctx.fillText(result.timeString, x + 180, y + 16);
+  }
+
+  drawPlayerBub(ctx, number, team, x, y, size) {
+    const colors = teamData.find((t) => t.shortName === team).colors;
+
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+
+    ctx.fillStyle = colors[0];
+    ctx.strokeStyle = "#000000";
+
+    ctx.fill();
+    ctx.stroke();
+
+    //render text
+    ctx.strokeWidth = "2px";
+    ctx.fillStyle = colors[1];
+    ctx.font = "bold 10px Verdana";
+    ctx.textAlign = "center";
+
+    if (number <= 9) {
+      ctx.fillText(number, x, y + 3.25);
+    } else if (number > 9 && number < 99) {
+      ctx.fillText(number, x, y + 3.25);
+    } else if (number >= 99) {
+      ctx.font = "8px Verdana";
+      ctx.fillText(number, x, y + 3.25);
+    }
+  }
+
+  drawPlayerControls(players) {
+    let ctx = this.controlsCtx;
+
+    ctx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
+
+    for (let i = 0; i < players.length; i++) {
+      this.drawPlayerControlItem(ctx, players[i], 10, i * 65 + 10);
+    }
+  }
+
+  drawPlayerControlItem(ctx, data, x, y) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#cccccc";
+    ctx.strokeWidth = "1px";
+    ctx.strokeRect(x, y, controlsCanvas.width - 20, 60);
+    ctx.font = "14px Open sans";
+    ctx.fillStyle = "black";
+
+    ctx.textAlign = "left";
+    ctx.fillText(data.name, x + 10, y + 18);
+
+    ctx.textAlign = "right";
+    ctx.fillText(data.lastWaypoint, 180, y + 18);
+    ctx.fillText(data.lastWaypointResult.time, 280, y + 18)
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.fillStyle = "#fff017";
+    ctx.fillRect(200, y + 4, 20, 20);
+
+    ctx.textAlign = "center";
+    ctx.font = "bold 14px Open sans";
+    ctx.fillStyle = "#000000";
+    ctx.fillText(data.lastWaypointResult.place, 210, y + 18);
+    ctx.closePath();
+
+
   }
 }
