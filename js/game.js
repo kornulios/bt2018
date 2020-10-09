@@ -18,6 +18,7 @@ let oldTimeStamp = 0;
 const numberResultsShown = 20;
 const gameSpeed = 30;
 let tickCounter = 0;
+let domRedrawCounter = 0;
 
 export class Game {
   constructor() {
@@ -92,6 +93,11 @@ export class Game {
     if (++tickCounter === 14) {
       this.showCurrentResults();
       tickCounter = 0;
+    }
+
+    if (++domRedrawCounter === 70) {
+      this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
+      domRedrawCounter = 0;
     }
 
     //REQUEST NEXT FRAME
@@ -401,15 +407,19 @@ export class Game {
   onResultPageSelect(event) {
     if (event.target.name === "next") {
       this.selectedResultsPage++;
-    } else {
+    } else if (event.target.name === "prev") {
       this.selectedResultsPage--;
+    } else {
+      this.selectedResultsPage = event.target.name;
     }
+
     if (this.selectedResultsPage < 0) {
       this.selectedResultsPage = 0;
     }
     this.showCurrentResults();
   }
 
+  // CUSTOM SCRIPT
   simulatePlayer() {
     //debugging function
     this.prepareNextRace();

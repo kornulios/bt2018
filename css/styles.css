@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
-@import './race.css';
-@import './result-table.css';
-@import '../js/view/PlayerControls/playercontrols.css';
+@import "./race.css";
+@import "./result-table.css";
+@import "../js/view/PlayerControls/playercontrols.css";
 
 body {
   font-family: "Consolas";
@@ -10,6 +10,11 @@ body {
 
 canvas {
   border: 1px solid black;
+}
+
+#results-paging {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .game-group {
@@ -78,7 +83,6 @@ canvas {
   margin-bottom: 12px;
 }
 
-
 .intermediate-results {
   display: flex;
   flex: 1;
@@ -115,12 +119,11 @@ canvas {
 }
 
 .btn-paging {
-  flex: 1;
+  width: 60px;
   background: rgb(153, 0, 0);
   color: white;
   font-family: "Open sans";
   font-weight: bold;
-  border: none;
+  border: 1px solid;
   border-radius: 3px;
 }
-

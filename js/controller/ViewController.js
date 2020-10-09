@@ -417,4 +417,20 @@ export class View {
     nameContainer.textContent = raceName;
     pagingContainer.innerHTML = pagingButtons;
   }
+
+  updateResultsControls(resultsCount) {
+    const pagingContainer = document.querySelector("#results-paging");
+
+    const pagesNum = resultsCount / 20;
+
+    let pagingButtons = [];
+
+    pagingButtons.push(`<button type="button" class="btn-paging" name="prev">Prev</button>`);
+    for (let i = 0; i < pagesNum; i++) {
+      pagingButtons.push(`<button type="button" class="btn-paging" name=${i}>${i * 20 + 1}...${(i + 1) * 20}</button>`);
+    }
+    pagingButtons.push(`<button type="button" class="btn-paging" name="next">Next</button>`);
+
+    pagingContainer.innerHTML = pagingButtons.join("");
+  }
 }
