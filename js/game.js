@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 30;
+const gameSpeed = 5;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -92,6 +92,7 @@ export class Game {
     // if (this.race.raceTimer % 10 === 0) {
     if (++tickCounter === 14) {
       this.showCurrentResults();
+      this.showPlayerControls();
       tickCounter = 0;
     }
 
@@ -131,6 +132,26 @@ export class Game {
 
     const results = this.race.getWaypointResults(this.selectedResults).slice(resOffset, resLength);
     this.canvas.drawIntermediateResults(results, resOffset);
+  }
+
+  showPlayerControls() {
+    const userPlayers = this.race.players
+      .filter((player) => player.team === this.userTeam)
+      .map((player) => {
+        const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+
+        return {
+          name: player.name,
+          team: player.team,
+          number: player.number,
+          distance: player.distance,
+          lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+          lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+        };
+      });
+
+    this.canvas.drawPlayerControls(userPlayers);
   }
 
   simulateRace() {

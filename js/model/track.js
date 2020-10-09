@@ -95,8 +95,8 @@ export class Track {
           const actualDistance = d - coords[i].d;
 
           return {
-            x: (coords[i].coords.x + actualDistance * coords[i].direction.x) | 0,
-            y: (coords[i].coords.y + actualDistance * coords[i].direction.y) | 0,
+            x: (coords[i].coords.x + actualDistance * coords[i].direction.x), //| 0,
+            y: (coords[i].coords.y + actualDistance * coords[i].direction.y), //| 0,
           };
         }
       } catch {
@@ -115,8 +115,8 @@ export class Track {
         const actualDistance = d - coords[i].d;
 
         return {
-          x: (coords[i].coords.x + actualDistance * coords[i].direction.x) | 0,
-          y: (coords[i].coords.y + actualDistance * coords[i].direction.y) | 0,
+          x: (coords[i].coords.x + actualDistance * coords[i].direction.x), // | 0,
+          y: (coords[i].coords.y + actualDistance * coords[i].direction.y), // | 0,
         };
       }
     }

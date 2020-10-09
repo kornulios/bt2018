@@ -3,6 +3,7 @@ import { teamData } from "../data.js";
 
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
+let controlsCanvas = document.querySelector("#controls-canvas");
 
 let fpsDrops = 0;
 
@@ -12,8 +13,9 @@ export class Graphic2D {
     this.img.src = "../../static/map.gif";
 
     this.resultContext = resultCanvas.getContext("2d");
+    this.controlsCtx = controlsCanvas.getContext("2d");
 
-    this.offscreenCanvas = document.createElement('canvas');
+    this.offscreenCanvas = document.createElement("canvas");
     this.offscreenCanvas.width = resultCanvas.width;
     this.offscreenCanvas.height = resultCanvas.height;
     this.offscreenContext = this.offscreenCanvas.getContext("2d");
@@ -195,5 +197,44 @@ export class Graphic2D {
       ctx.font = "8px Verdana";
       ctx.fillText(number, x, y + 3.25);
     }
+  }
+
+  drawPlayerControls(players) {
+    let ctx = this.controlsCtx;
+
+    ctx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
+
+    for (let i = 0; i < players.length; i++) {
+      this.drawPlayerControlItem(ctx, players[i], 10, i * 65 + 10);
+    }
+  }
+
+  drawPlayerControlItem(ctx, data, x, y) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#cccccc";
+    ctx.strokeWidth = "1px";
+    ctx.strokeRect(x, y, controlsCanvas.width - 20, 60);
+    ctx.font = "14px Open sans";
+    ctx.fillStyle = "black";
+
+    ctx.textAlign = "left";
+    ctx.fillText(data.name, x + 10, y + 18);
+
+    ctx.textAlign = "right";
+    ctx.fillText(data.lastWaypoint, 180, y + 18);
+    ctx.fillText(data.lastWaypointResult.time, 280, y + 18)
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.fillStyle = "#fff017";
+    ctx.fillRect(200, y + 4, 20, 20);
+
+    ctx.textAlign = "center";
+    ctx.font = "bold 14px Open sans";
+    ctx.fillStyle = "#000000";
+    ctx.fillText(data.lastWaypointResult.place, 210, y + 18);
+    ctx.closePath();
+
+
   }
 }
