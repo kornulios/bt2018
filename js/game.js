@@ -73,7 +73,6 @@ export class Game {
   runGame(timeStamp) {
     // main game loop
     //refactored with rAF X2
-    // const gameSpeed = 30;
 
     const gameTick = timeStamp - oldTimeStamp;
 
@@ -89,7 +88,6 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    // if (this.race.raceTimer % 10 === 0) {
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -336,34 +334,6 @@ export class Game {
     this.prepareNextRace();
     this.simulateRace();
   }
-
-  // DOM RENDER FOR GAME TICK
-
-  // const shootingPlayers = this.getShootingPlayers(this.race.players).slice(0, 30);
-
-  // const userPlayers = this.race.players
-  //   .filter((player) => player.team === this.userTeam)
-  //   .map((player) => {
-  //     const prevWaypoint = this.race.getPrevWaypointId(player.distance);
-
-  //     return {
-  //       name: player.name,
-  //       team: player.team,
-  //       number: player.number,
-  //       distance: player.distance,
-  //       lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-  //       time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-  //       lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
-  //     };
-  //   });
-
-  // const { selectedResults } = this; //waypoint id
-
-  // const results = this.race.getWaypointResults(selectedResults).slice(0, 20);
-
-  // this.view.renderResults(results);
-  // this.view.renderShootingRange(shootingPlayers);
-  // this.view.renderPlayerControls(userPlayers);
 
   // HELPER FUNCTIONS
   getPlayerTeam(player) {

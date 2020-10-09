@@ -93,18 +93,12 @@ export class Result {
   // }
 
   getWaypointResults(waypointId) {
-    // const results = this.data.filter((res) => res.waypoint === wp).sort((a, b) => (a.time > b.time ? 1 : -1));
-    // for (var i = 0; i < results.length; i++) {
-    //   var shooting = this.getShootingResult(results[i].playerName);
-    //   results[i].shooting = shooting;
-    // }
     const results = this.dataObject[waypointId] || [];
 
     return results;
   }
 
   getPlayerResults(name, waypointId) {
-    // const result = this.data.filter((res) => res.playerName === name).find((result) => result.waypoint === waypointId);
     const result = this.getWaypointResults(waypointId).find((result) => result.playerName === name);
     return result ? result.time : "";
   }

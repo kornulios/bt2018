@@ -99,11 +99,6 @@ export class Player {
     return this.shotCount;
   }
 
-  // setDistance(newDistance) {
-  //   //required for relay placement
-  //   this.distance = newDistance;
-  // }
-
   addPenalty(length) {
     this.penalty += length;
     return this.penalty;
