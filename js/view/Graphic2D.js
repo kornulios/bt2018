@@ -1,6 +1,7 @@
 import * as Constants from "../constants/constants.js";
 import { teamData } from "../data.js";
 import { IntermediateResults } from "./IntermediateResults/IntermediateResults.js";
+import { PlayerControls } from "./PlayerControls/PlayerControls.js";
 
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
@@ -21,7 +22,13 @@ export class Graphic2D {
     this.offscreenCanvas.height = resultCanvas.height;
     this.offscreenContext = this.offscreenCanvas.getContext("2d");
 
+    this.offscreenControlsCanvas = document.createElement("canvas");
+    this.offscreenControlsCanvas.width = controlsCanvas.width;
+    this.offscreenControlsCanvas.height = controlsCanvas.height;
+    this.offscreenControlsContext = this.offscreenControlsCanvas.getContext("2d");
+
     this.intermediateResults = new IntermediateResults();
+    this.playerControls = new PlayerControls();
   }
 
   finalFPSDrops() {
@@ -140,7 +147,7 @@ export class Graphic2D {
     let ctx = this.offscreenContext;
     let mainCtx = this.resultContext;
 
-    if(this.intermediateResults.compareResults(resultsData)) {
+    if (this.intermediateResults.compareResults(resultsData)) {
       return;
     }
 
@@ -178,41 +185,16 @@ export class Graphic2D {
   }
 
   drawPlayerControls(players) {
+    let offscreenCtx = this.offscreenControlsContext;
     let ctx = this.controlsCtx;
 
-    ctx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
-
-    for (let i = 0; i < players.length; i++) {
-      this.drawPlayerControlItem(ctx, players[i], 10, i * 65 + 10);
+    if (this.playerControls.compareControls(players)) {
+      return;
     }
-  }
 
-  drawPlayerControlItem(ctx, data, x, y) {
-    ctx.beginPath();
-    ctx.strokeStyle = "#cccccc";
-    ctx.strokeWidth = "1px";
-    ctx.strokeRect(x, y, controlsCanvas.width - 20, 60);
-    ctx.font = "14px Open sans";
-    ctx.fillStyle = "black";
+    this.playerControls.draw(offscreenCtx, players);
 
-    ctx.textAlign = "left";
-    ctx.fillText(data.name, x + 10, y + 18);
-
-    ctx.textAlign = "right";
-    ctx.fillText(data.lastWaypoint, 180, y + 18);
-    ctx.fillText(data.lastWaypointResult.time, 280, y + 18)
-    ctx.closePath();
-
-    ctx.beginPath();
-    ctx.fillStyle = "#fff017";
-    ctx.fillRect(200, y + 4, 20, 20);
-
-    ctx.textAlign = "center";
-    ctx.font = "bold 14px Open sans";
-    ctx.fillStyle = "#000000";
-    ctx.fillText(data.lastWaypointResult.place, 210, y + 18);
-    ctx.closePath();
-
-
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 }

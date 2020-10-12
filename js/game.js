@@ -144,6 +144,7 @@ export class Game {
       .filter((player) => player.team === this.userTeam)
       .map((player) => {
         const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+        const prevWaypointData = this.race.getLastWaypointResult(player.name, prevWaypoint);
 
         return {
           name: player.name,
@@ -152,7 +153,7 @@ export class Game {
           distance: player.distance,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-          lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+          ...prevWaypointData,
         };
       });
 

@@ -1,37 +1,62 @@
 import { PlayerBub } from "../PlayerBub/PlayerBub.js";
 
 export class PlayerControls {
+  constructor() {
+    this.data = [];
+  }
 
-  // this.x = 0;
+  compareControls(newData) {
+    if (!this.data.length) {
+      this.data = newData;
+      return false;
+    }
+    
+    for (let i = 0; i < newData.length; i++) {
+      if (
+        newData[i].place !== this.data[i].place ||
+        newData[i].lastWaypoint !== this.data[i].lastWaypoint ||
+        newData[i].time !== this.data[i].time
+      ) {
+        this.data = newData;
+        return false;
+      }
+    }
 
-  // draw = () => {
+    return true;
+  }
 
-  // }
+  draw(ctx, players) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-// OLD HTML STYLE
+    for (let i = 0; i < players.length; i++) {
+      this.drawPlayerControlItem(ctx, players[i], 10, i * 65 + 10);
+    }
+  }
 
-  // <div class="player-control-portrait">
-  //   IMG
-  // </div>
-  // const playerHtml = `<div class="player-control-item">
-  //   <div class="player-control-section">
-  //     <div>${PlayerBub(player)}</div>
-  //     <div>${player.name}</div>
-  //     <div>(${player.lastWaypointResult.shootingTotal})</div>
-  //   </div>
-  //   <div class="player-control-section__race-data">
+  drawPlayerControlItem(ctx, data, x, y) {
+    ctx.beginPath();
+    ctx.strokeStyle = "#cccccc";
+    ctx.strokeWidth = "1px";
+    ctx.strokeRect(x, y, ctx.canvas.width - 20, 60);
+    ctx.font = "14px Open sans";
+    ctx.fillStyle = "black";
 
-  //     <div class="player-control__next-waypoint">
-  //       ${player.time}
-  //     </div>
-  //     <div class="player-control__next-waypoint">
-  //       <div class="player-control__waypoint-name">${player.lastWaypoint}</div>
-  //       <div class="player-control__position-box">${player.lastWaypointResult.place}</div>
-  //       <div class="player-control__waypoint-time">${player.lastWaypointResult.time}</div>
-  //     </div>
+    ctx.textAlign = "left";
+    ctx.fillText(data.name, x + 10, y + 18);
 
-  //   </div>
-  //  </div>`;
+    ctx.textAlign = "right";
+    ctx.fillText(data.lastWaypoint, 180, y + 18);
+    ctx.fillText(data.time, 280, y + 18);
+    ctx.closePath();
 
-  // return playerHtml;
-};
+    ctx.beginPath();
+    ctx.fillStyle = "#fff017";
+    ctx.fillRect(200, y + 4, 20, 20);
+
+    ctx.textAlign = "center";
+    ctx.font = "bold 14px Open sans";
+    ctx.fillStyle = "#000000";
+    ctx.fillText(data.place, 210, y + 18);
+    ctx.closePath();
+  }
+}
