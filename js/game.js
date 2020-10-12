@@ -28,7 +28,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
-    this.userTeam = "GER";
+    this.userTeam = "UKR";
 
     //ui options
     this.selectedResults = null;

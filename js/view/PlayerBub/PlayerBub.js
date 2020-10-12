@@ -27,5 +27,7 @@ export const PlayerBub = {
       ctx.font = "8px Verdana";
       ctx.fillText(number, x, y + 3.25);
     }
+
+    ctx.closePath();
   },
 };

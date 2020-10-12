@@ -10,7 +10,7 @@ export class PlayerControls {
       this.data = newData;
       return false;
     }
-    
+
     for (let i = 0; i < newData.length; i++) {
       if (
         newData[i].place !== this.data[i].place ||
@@ -34,6 +34,9 @@ export class PlayerControls {
   }
 
   drawPlayerControlItem(ctx, data, x, y) {
+    
+    PlayerBub.draw(ctx, data.number, data.team, x + 16, y + 14);
+
     ctx.beginPath();
     ctx.strokeStyle = "#cccccc";
     ctx.strokeWidth = "1px";
@@ -41,8 +44,9 @@ export class PlayerControls {
     ctx.font = "14px Open sans";
     ctx.fillStyle = "black";
 
+
     ctx.textAlign = "left";
-    ctx.fillText(data.name, x + 10, y + 18);
+    ctx.fillText(data.name, x + 30, y + 18);
 
     ctx.textAlign = "right";
     ctx.fillText(data.lastWaypoint, 180, y + 18);
