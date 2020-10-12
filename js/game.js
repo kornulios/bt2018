@@ -16,7 +16,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 5;
+const gameSpeed = 50;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -88,6 +88,7 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
+    
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -111,12 +112,13 @@ export class Game {
   }
 
   showCurrentResults() {
-    const resOffset = this.selectedResultsPage * 20;
-    const resLength = resOffset + 20;
+    const resOffset = this.selectedResultsPage * numberResultsShown;
+    const resLength = resOffset + numberResultsShown;
 
     if (this.selectedResults === 0) {
-      const startList = this.race.players.slice(resOffset, resLength).map((player) => {
+      const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
         return {
+          place: index + 1 + resOffset,
           playerName: player.name,
           playerNumber: player.number,
           team: player.team,
@@ -128,7 +130,12 @@ export class Game {
       return;
     }
 
-    const results = this.race.getWaypointResults(this.selectedResults).slice(resOffset, resLength);
+    const results = this.race
+      .getWaypointResults(this.selectedResults)
+      .slice(resOffset, resLength)
+      .map((result, i) => {
+        return { ...result, place: i + 1 + resOffset };
+      });
     this.canvas.drawIntermediateResults(results, resOffset);
   }
 
