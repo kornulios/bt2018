@@ -15,6 +15,11 @@ const removeCoord = () => {
   drawMap();
 };
 
+const closeCoordsPath = () => {
+  mapCoords.push(mapCoords[0]);
+  drawMap();
+}
+
 const drawMap = () => {
   let canvas = document.querySelector("#map-canvas");
   let ctx = canvas.getContext("2d");
