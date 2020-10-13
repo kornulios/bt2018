@@ -238,16 +238,16 @@ export class Game {
     this.simulateRace();
   }
 
-  onStartRaceClick() {
+  async onStartRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    this.prepareNextRace();
+    await this.prepareNextRace();
     this.startNextRace();
   }
 
-  prepareNextRace() {
+  async prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
     let playerRoster = [];
@@ -279,7 +279,7 @@ export class Game {
     }
 
     // create new race with players list
-    this.race.initRaceData(nextRace);
+    await this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
 
