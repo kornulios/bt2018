@@ -7,36 +7,13 @@ export class Track {
     this.penaltyLapLength = 150;
     this.lapLength = null;
 
-    this.baseLineX = 205;
-    this.baseLineY = 210;
+    this.baseLineX = 376;
+    this.baseLineY = 575;
 
     
-    // this.coords = mapCoords.map((coord) => new Vector(coord[0], coord[1]));
-
-    // this.coords = [
-    //   new Vector(205, 210),
-    //   new Vector(10, 210),
-    //   new Vector(10, 30),
-    //   new Vector(28, 15),
-    //   new Vector(30, 80),
-    //   new Vector(35, 85),
-    //   new Vector(45, 45),
-    //   new Vector(195, 100),
-    //   new Vector(200, 90),
-    //   new Vector(205, 88),
-    //   new Vector(213, 120),
-    //   new Vector(250, 90),
-    //   new Vector(300, 50),
-    //   new Vector(320, 80),
-    //   new Vector(410, 10),
-    //   new Vector(410, 30),
-    //   new Vector(380, 50),
-    //   new Vector(400, 90),
-    //   new Vector(320, 140),
-    //   new Vector(410, 210),
-    //   new Vector(205, 210),
-    // ];
-    this.loadMapData();
+    this.coords = [];
+    this.flagsCoords = [];
+    this.waypoints = [];
 
     this.penaltyLapCoords = [
       new Vector(376, 555),
@@ -74,6 +51,9 @@ export class Track {
       this.finishCoords,
       (this.lapLength - this.finishLineLength) / this.pixelRatio
     );
+
+    this.flagsCoords[0] = this.getCoordinates(this.waypoints[1]);
+    this.flagsCoords[1] = this.getCoordinates(this.waypoints[2]);
   }
 
   initCoordsMap(coords, fromDistance) {

@@ -13,6 +13,8 @@ export class Graphic2D {
   constructor() {
     this.img = new Image();
     this.img.src = "../../static/map.gif";
+    this.flagImg = new Image();
+    this.flagImg.src = "../../static/track_flag.png";
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -60,7 +62,7 @@ export class Graphic2D {
   }
 
   drawMapBeta(track) {
-    const { coordsMap, penaltyCoordsMap, finishCoordsMap } = track;
+    const { coordsMap, penaltyCoordsMap, finishCoordsMap, flagsCoords } = track;
     let ctx = canvas.getContext("2d");
     const { img } = this;
 
@@ -72,26 +74,32 @@ export class Graphic2D {
     this.drawCoordinatesMap(penaltyCoordsMap, "green");
     this.drawCoordinatesMap(finishCoordsMap, "red");
 
-    //start / finish line
-    ctx.beginPath();
-    ctx.strokeStyle = "#000000";
-    ctx.fillStyle = "#000000";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(202.5, 204.5, 6, 12);
-    ctx.fillRect(202.5, 204, 3, 3);
-    ctx.fillRect(205.5, 207, 3, 3);
-    ctx.fillRect(202.5, 210, 3, 3);
-    ctx.fillRect(205.5, 213, 3, 3);
+    //draw waypoint flags
+    flagsCoords.forEach(flag => {
+      ctx.drawImage(this.flagImg, flag.x, flag.y - this.flagImg.height);
+    })
+    
 
-    ctx.beginPath();
-    ctx.strokeStyle = "#000000";
-    ctx.fillStyle = "#000000";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(222.5, 224.5, 6, 12);
-    ctx.fillRect(222.5, 224, 3, 3);
-    ctx.fillRect(225.5, 227, 3, 3);
-    ctx.fillRect(222.5, 230, 3, 3);
-    ctx.fillRect(225.5, 233, 3, 3);
+    //start / finish line
+    // ctx.beginPath();
+    // ctx.strokeStyle = "#000000";
+    // ctx.fillStyle = "#000000";
+    // ctx.lineWidth = 1;
+    // ctx.strokeRect(202.5, 204.5, 6, 12);
+    // ctx.fillRect(202.5, 204, 3, 3);
+    // ctx.fillRect(205.5, 207, 3, 3);
+    // ctx.fillRect(202.5, 210, 3, 3);
+    // ctx.fillRect(205.5, 213, 3, 3);
+
+    // ctx.beginPath();
+    // ctx.strokeStyle = "#000000";
+    // ctx.fillStyle = "#000000";
+    // ctx.lineWidth = 1;
+    // ctx.strokeRect(222.5, 224.5, 6, 12);
+    // ctx.fillRect(222.5, 224, 3, 3);
+    // ctx.fillRect(225.5, 227, 3, 3);
+    // ctx.fillRect(222.5, 230, 3, 3);
+    // ctx.fillRect(225.5, 233, 3, 3);
   }
 
   drawPlayersBeta(playersData) {

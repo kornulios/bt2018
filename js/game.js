@@ -1,4 +1,3 @@
-// import { Player } from "./model/player.js";
 import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
 import { TeamAI } from "./model/Team.js";
@@ -330,7 +329,6 @@ export class Game {
       };
     });
 
-    // this.view.renderRaceList(this.championship.getRaceList());
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
