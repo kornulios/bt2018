@@ -1,4 +1,5 @@
 import { Vector } from "../view/Vector.js";
+import axios from 'axios';
 
 const httpClient = axios.create({ baseURL: "http://localhost:3000", timeout: 2000 });
 
