@@ -22,7 +22,7 @@ export class Race {
     this.raceFinished = false;
   }
 
-  initRaceData(raceData) {
+  async initRaceData(raceData) {
     this.id = raceData.id;
     this.stageName = raceData.stageName;
     this.name = raceData.name;
@@ -33,6 +33,7 @@ export class Race {
     this.track.shootingRange = raceData.ranges;
     this.track.lapLength = raceData.lapLength;
 
+    await this.track.loadMapData();
     this.track.initTrack();
   }
 

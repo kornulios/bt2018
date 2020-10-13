@@ -1,4 +1,3 @@
-// import { Player } from "./model/player.js";
 import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
 import { TeamAI } from "./model/Team.js";
@@ -16,7 +15,7 @@ import { Championship } from "./controller/championship.js";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 5;
+const gameSpeed = 50;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -28,7 +27,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
-    this.userTeam = "GER";
+    this.userTeam = "UKR";
 
     //ui options
     this.selectedResults = null;
@@ -88,6 +87,7 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
+    
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -111,12 +111,13 @@ export class Game {
   }
 
   showCurrentResults() {
-    const resOffset = this.selectedResultsPage * 20;
-    const resLength = resOffset + 20;
+    const resOffset = this.selectedResultsPage * numberResultsShown;
+    const resLength = resOffset + numberResultsShown;
 
     if (this.selectedResults === 0) {
-      const startList = this.race.players.slice(resOffset, resLength).map((player) => {
+      const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
         return {
+          place: index + 1 + resOffset,
           playerName: player.name,
           playerNumber: player.number,
           team: player.team,
@@ -128,7 +129,12 @@ export class Game {
       return;
     }
 
-    const results = this.race.getWaypointResults(this.selectedResults).slice(resOffset, resLength);
+    const results = this.race
+      .getWaypointResults(this.selectedResults)
+      .slice(resOffset, resLength)
+      .map((result, i) => {
+        return { ...result, place: i + 1 + resOffset };
+      });
     this.canvas.drawIntermediateResults(results, resOffset);
   }
 
@@ -137,6 +143,7 @@ export class Game {
       .filter((player) => player.team === this.userTeam)
       .map((player) => {
         const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+        const prevWaypointData = this.race.getLastWaypointResult(player.name, prevWaypoint);
 
         return {
           name: player.name,
@@ -145,7 +152,7 @@ export class Game {
           distance: player.distance,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-          lastWaypointResult: this.race.getLastWaypointResult(player.name, prevWaypoint),
+          ...prevWaypointData,
         };
       });
 
@@ -230,16 +237,16 @@ export class Game {
     this.simulateRace();
   }
 
-  onStartRaceClick() {
+  async onStartRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    this.prepareNextRace();
+    await this.prepareNextRace();
     this.startNextRace();
   }
 
-  prepareNextRace() {
+  async prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
     let playerRoster = [];
@@ -271,7 +278,7 @@ export class Game {
     }
 
     // create new race with players list
-    this.race.initRaceData(nextRace);
+    await this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
   }
 
@@ -322,7 +329,6 @@ export class Game {
       };
     });
 
-    // this.view.renderRaceList(this.championship.getRaceList());
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 

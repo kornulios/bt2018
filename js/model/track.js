@@ -1,44 +1,36 @@
 import { Vector } from "../view/Vector.js";
 
+const httpClient = axios.create({ baseURL: "http://localhost:3000", timeout: 2000 });
+
 export class Track {
   constructor() {
     this.penaltyLapLength = 150;
     this.lapLength = null;
 
-    this.baseLineX = 205;
-    this.baseLineY = 210;
+    this.baseLineX = 376;
+    this.baseLineY = 575;
 
-    this.coords = [
-      new Vector(205, 210),
-      new Vector(10, 210),
-      new Vector(10, 30),
-      new Vector(28, 15),
-      new Vector(30, 80),
-      new Vector(35, 85),
-      new Vector(45, 45),
-      new Vector(195, 100),
-      new Vector(200, 90),
-      new Vector(205, 88),
-      new Vector(213, 120),
-      new Vector(250, 90),
-      new Vector(300, 50),
-      new Vector(320, 80),
-      new Vector(410, 10),
-      new Vector(410, 30),
-      new Vector(380, 50),
-      new Vector(400, 90),
-      new Vector(320, 140),
-      new Vector(410, 210),
-      new Vector(205, 210),
-    ];
+    
+    this.coords = [];
+    this.flagsCoords = [];
+    this.waypoints = [];
 
     this.penaltyLapCoords = [
-      new Vector(215, 200),
-      new Vector(215, 185),
-      new Vector(245, 185),
-      new Vector(245, 200),
-      new Vector(215, 200),
+      new Vector(376, 555),
+      new Vector(356, 555),
+      new Vector(346, 550),
+      new Vector(348, 540),
+      new Vector(346, 535),
+      new Vector(356, 528),
+      new Vector(376, 528),
+      new Vector(386, 545),
+      new Vector(376, 555),
     ];
+  }
+
+  async loadMapData() {
+    const response = await httpClient.get("/map-coords");
+    this.coords = response.data.map((coord) => new Vector(coord[0], coord[1]));
   }
 
   initTrack() {
@@ -59,6 +51,9 @@ export class Track {
       this.finishCoords,
       (this.lapLength - this.finishLineLength) / this.pixelRatio
     );
+
+    this.flagsCoords[0] = this.getCoordinates(this.waypoints[1]);
+    this.flagsCoords[1] = this.getCoordinates(this.waypoints[2]);
   }
 
   initCoordsMap(coords, fromDistance) {
@@ -95,12 +90,12 @@ export class Track {
           const actualDistance = d - coords[i].d;
 
           return {
-            x: (coords[i].coords.x + actualDistance * coords[i].direction.x), //| 0,
-            y: (coords[i].coords.y + actualDistance * coords[i].direction.y), //| 0,
+            x: coords[i].coords.x + actualDistance * coords[i].direction.x, //| 0,
+            y: coords[i].coords.y + actualDistance * coords[i].direction.y, //| 0,
           };
         }
       } catch {
-        debugger
+        debugger;
       }
     }
     console.log("invalid distance", d);
@@ -115,8 +110,8 @@ export class Track {
         const actualDistance = d - coords[i].d;
 
         return {
-          x: (coords[i].coords.x + actualDistance * coords[i].direction.x), // | 0,
-          y: (coords[i].coords.y + actualDistance * coords[i].direction.y), // | 0,
+          x: coords[i].coords.x + actualDistance * coords[i].direction.x, // | 0,
+          y: coords[i].coords.y + actualDistance * coords[i].direction.y, // | 0,
         };
       }
     }
@@ -133,8 +128,8 @@ export class Track {
     const preFinishCoords = this.coordsMap[this.coordsMap.length - 2];
 
     return {
-      x: (finishCoords.coords.x + actualDistance * -preFinishCoords.direction.x),
-      y: (finishCoords.coords.y + actualDistance * -preFinishCoords.direction.y),
+      x: finishCoords.coords.x + actualDistance * -preFinishCoords.direction.x,
+      y: finishCoords.coords.y + actualDistance * -preFinishCoords.direction.y,
     };
   }
 
