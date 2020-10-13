@@ -1,7 +1,8 @@
-var express = require('express');
+var express = require("express");
 var app = express();
 var router = express.Router();
-var path = require('path');
+var path = require("path");
+var fs = require("fs");
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -10,21 +11,38 @@ app.use(function (req, res, next) {
   next();
 });
 
-
-app.get('/', function (req, res) {
-  res.sendFile('public/index.html', { root: __dirname });
+app.get("/", function (req, res) {
+  res.sendFile("public/index.html", { root: __dirname });
 });
 
-app.get('/data', function (req, res) {
-  res.sendFile('public/data.json', { root: __dirname });
+app.get("/data", function (req, res) {
+  res.sendFile("public/data.json", { root: __dirname });
 });
 
-app.use(express.static(path.join(__dirname, 'static')));
+app.post("/newmap", (request, response) => {
+  var body = "";
+  var filePath = __dirname + "/maps/map1.json";
+  // console.log(request.body);
+  request.on("data", (data) => {
+    body += data;
+  });
+  request.on("end", () => {
+    console.log(body);
+    fs.writeFile(filePath, body, () => {
+      response.sendStatus(200);
+    });
+  });
+});
 
-app.set('port', 3000);
+app.get("/map-coords", (request, response) => {
+  response.sendFile("maps/map1.json", { root: __dirname });
+})
 
-var server = app.listen(app.get('port'), function () {
+app.use(express.static(path.join(__dirname, "static")));
+
+app.set("port", 3000);
+
+var server = app.listen(app.get("port"), function () {
   var port = server.address().port;
-  console.log('app running on port ', port);
+  console.log("app running on port ", port);
 });
-

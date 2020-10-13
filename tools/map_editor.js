@@ -1,5 +1,10 @@
 let mapCoords = [];
 
+const httpClient = axios.create({
+  baseURL: 'http://localhost:3000',
+  timeout: 1000,
+});
+
 const addCoord = (event) => {
   let canvas = document.querySelector("#map-canvas");
   let rect = canvas.getBoundingClientRect();
@@ -18,13 +23,26 @@ const removeCoord = () => {
 const closeCoordsPath = () => {
   mapCoords.push(mapCoords[0]);
   drawMap();
-}
+};
+
+const beginNewPath = () => {
+  mapCoords = [];
+  drawMap();
+};
+
+const saveMap = () => {
+  httpClient.post('/newmap', JSON.stringify(mapCoords));
+};
 
 const drawMap = () => {
   let canvas = document.querySelector("#map-canvas");
   let ctx = canvas.getContext("2d");
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!mapCoords.length) {
+    return;
+  }
 
   ctx.beginPath();
   ctx.moveTo(mapCoords[0][0], mapCoords[0][1]);

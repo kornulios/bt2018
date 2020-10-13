@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="editor.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./map_editor.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,10 +15,10 @@
 
     <div>
         <input type="text" placeholder="map name"/>
-        <button>Begin new</button>
+        <button onclick="beginNewPath()">Begin new</button>
         <button onclick="removeCoord()">Undo</button>
         <button onclick="closeCoordsPath()">Close path</button>
-        <button>Save map</button>
+        <button onclick="saveMap()">Save map</button>
     </div>
   </body>
 </html>
