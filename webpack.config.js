@@ -8,6 +8,8 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
   },
+  devtool: "source-map",
+
   module: {
     rules: [
       {
@@ -39,4 +41,5 @@ module.exports = {
     contentBase: './dist',
     port: 7700,
   },
+  
 };
