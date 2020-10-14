@@ -1,3 +1,5 @@
+import faker from "faker";
+
 import { Player } from "./model/player.js";
 import * as Constants from "./constants/constants.js";
 import * as Waypoints from "./constants/waypoints.js";
@@ -334,6 +336,7 @@ export const generateTeams = () => {
         gender: Constants.GENDER.MEN,
         team: team.shortName,
         colors: team.colors,
+        name: faker.name.lastName(),
       });
       players.push(newPlayer);
     }
