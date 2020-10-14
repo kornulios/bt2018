@@ -1965,6 +1965,7 @@ var App = /*#__PURE__*/function () {
 
     _defineProperty(this, "initEvents", function () {
       document.querySelector("#start-race").addEventListener("click", _this.game.onStartRaceClick.bind(_this.game));
+      document.querySelector("#custom-script").addEventListener("click", _this.game.customScript.bind(_this.game));
       document.querySelector("#champ-races").addEventListener("click", _this.game.showChampionshipStandings.bind(_this.game));
       document.querySelector("#pause").addEventListener("click", _this.game.pauseGame.bind(_this.game));
       document.querySelector("#skip-race").addEventListener("click", _this.game.onSimulateRaceClick.bind(_this.game));
@@ -4868,51 +4869,9 @@ var Game = /*#__PURE__*/function () {
     } // CUSTOM SCRIPT
 
   }, {
-    key: "simulatePlayer",
-    value: function simulatePlayer() {
-      //debugging function
-      this.prepareNextRace();
-      this.canvas.drawMapBeta(this.race.track);
-      this.canvas.drawPlayersBeta([{
-        name: "A",
-        number: 1,
-        coords: this.race.track.getPenaltyCoordinates(120)
-      }]); // -- debugger for player placement
-
-      this.canvas.drawPlayersBeta([{
-        name: "B",
-        number: 2,
-        coords: this.race.track.getCoordinates(9749)
-      }]); // -- debugger for player placement
-
-      this.canvas.drawPlayersBeta([{
-        name: "C",
-        number: 3,
-        coords: this.race.track.getCoordinates(9750)
-      }]); // -- debugger for player placement
-
-      this.canvas.drawPlayersBeta([{
-        name: "E",
-        number: 4,
-        coords: this.race.track.getCoordinates(9751)
-      }]); // -- debugger for player placement
-
-      this.canvas.drawPlayersBeta([{
-        name: "F",
-        number: 5,
-        coords: this.race.track.getCoordinates(9790)
-      }]); // -- debugger for player placement
-      // const { race } = this;
-      // oldTimeStamp = performance.now();
-      //START RACE
-      // window.requestAnimationFrame(this.runGame.bind(this));
-      // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
-      // this.view.renderProgress(this.race);
-      //GENERATE TEAMS
-      // this.generateTeams();
-      // this.view.renderPlayerList(this.players);
-      // this.view.renderTeamList(this.teams);
-      // console.log(this.players);
+    key: "customScript",
+    value: function customScript() {
+      this.canvas.drawFlagTest();
     } // ********************************************************************
     // OBSOLETE GOWNO for refactoring
     // render() {
@@ -5889,7 +5848,8 @@ function importAll(r) {
 
 var images = importAll(__webpack_require__("./static/flags sync \\.(svg)$"));
 var flagImages = {
-  italy: "images/italy.svg"
+  ITA: "images/italy.svg",
+  NOR: "images/norway.svg"
 };
 
 /***/ }),
@@ -6014,10 +5974,7 @@ var Graphic2D = /*#__PURE__*/function () {
     this.img = new Image();
     this.img.src = _static_background_image_png__WEBPACK_IMPORTED_MODULE_4__.default;
     this.flagImg = new Image();
-    this.flagImg.src = _static_track_flag_png__WEBPACK_IMPORTED_MODULE_5__.default; // this.flagImages = images;
-
-    this.flag1 = new Image();
-    this.flag1.src = _services_flagService__WEBPACK_IMPORTED_MODULE_6__.flagImages.italy;
+    this.flagImg.src = _static_track_flag_png__WEBPACK_IMPORTED_MODULE_5__.default;
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
     this.offscreenCanvas = document.createElement("canvas");
@@ -6216,8 +6173,20 @@ var Graphic2D = /*#__PURE__*/function () {
 
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       this.playerControls.draw(offscreenCtx, players);
-      ctx.drawImage(this.flag1, 10, 10, 18, 13);
+      ctx.drawImage(this.flag1, 10, 100, 18, 13);
+      ctx.drawImage(this.flag2, 10, 120, 18, 12);
       ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
+    }
+  }, {
+    key: "drawFlagTest",
+    value: function drawFlagTest() {
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, 800, 600);
+      Object.keys(_services_flagService__WEBPACK_IMPORTED_MODULE_6__.flagImages).forEach(function (name, i) {
+        var image = new Image();
+        image.src = _services_flagService__WEBPACK_IMPORTED_MODULE_6__.flagImages[name];
+        ctx.drawImage(image, 0, i * 15, 18, 13);
+      });
     }
   }]);
 
@@ -131102,6 +131071,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./static/flags/norway.svg":
+/*!*********************************!*\
+  !*** ./static/flags/norway.svg ***!
+  \*********************************/
+/*! namespace exports */
+/*! export default [provided] [no usage info] [missing usage info prevents renaming] */
+/*! other exports [not provided] [no usage info] */
+/*! runtime requirements: __webpack_exports__, __webpack_require__.r, __webpack_require__.p, __webpack_require__.d, __webpack_require__.* */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "images/norway.svg");
+
+/***/ }),
+
 /***/ "./static/track_flag.png":
 /*!*******************************!*\
   !*** ./static/track_flag.png ***!
@@ -132208,7 +132196,8 @@ module.exports = function (list, options) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./italy.svg": "./static/flags/italy.svg"
+	"./italy.svg": "./static/flags/italy.svg",
+	"./norway.svg": "./static/flags/norway.svg"
 };
 
 

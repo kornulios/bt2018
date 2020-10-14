@@ -7,6 +7,7 @@ export class App {
 
   initEvents = () => {
     document.querySelector("#start-race").addEventListener("click", this.game.onStartRaceClick.bind(this.game));
+    document.querySelector("#custom-script").addEventListener("click", this.game.customScript.bind(this.game));
 
     document
       .querySelector("#champ-races")

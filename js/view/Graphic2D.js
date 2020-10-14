@@ -22,10 +22,11 @@ export class Graphic2D {
     this.flagImg = new Image();
     this.flagImg.src = FlagIcon;
 
-    // this.flagImages = images;
-
-    this.flag1 = new Image();
-    this.flag1.src = flagImages['ITA'];
+    this.flagImages = Object.keys(flagImages).map((name, i) => {
+      const img = new Image();
+      img.src = flagImages[name];
+      return img;
+    });
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -220,7 +221,15 @@ export class Graphic2D {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.playerControls.draw(offscreenCtx, players);
 
-    ctx.drawImage(this.flag1, 10, 10, 18, 13);
+    ctx.drawImage(this.flag1, 10, 100, 18, 13);
+    ctx.drawImage(this.flag2, 10, 120, 18, 12);
     ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
+  }
+
+  drawFlagTest() {
+    let ctx = canvas.getContext("2d");
+    for (let i = 0; i < this.flagImages.length; i++) {
+      ctx.drawImage(this.flagImages[i], 0, i * 14, 18, 13);
+    }
   }
 }

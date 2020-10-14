@@ -8,5 +8,5 @@ export const images = importAll(require.context("../../static/flags", false, /\.
 
 export const flagImages = {
   ITA: "images/italy.svg",
-  
+  NOR: "images/norway.svg",
 }
