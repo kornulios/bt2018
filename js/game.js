@@ -87,7 +87,6 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -160,11 +159,12 @@ export class Game {
   }
 
   simulateRace() {
+    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+
     do {
       this.race.run(100);
     } while (!this.race.raceFinished);
 
-    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
     this.endRace();
   }
 
@@ -233,7 +233,9 @@ export class Game {
       alert("Season over! Please start a new one");
       return;
     }
-    await this.prepareNextRace();
+    if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
+      await this.prepareNextRace();
+    }
     this.simulateRace();
   }
 
@@ -287,11 +289,14 @@ export class Game {
     const { race } = this;
     // READY!
     oldTimeStamp = performance.now();
-    // SET!
     this.selectedResults = 0;
+    // SET!
     this.view.setupRaceView(this.race);
-    this.canvas.drawMapBeta(race.track);
+    this.canvas.initRaceCanvas();
+    this.showPlayerControls();
+    this.showCurrentResults();
     // GO!!!
+    this.race.status = Constants.RACE_STATUS.IN_PROGRESS;
     requestAnimationFrame(this.runGame.bind(this));
   }
 
@@ -299,7 +304,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
-    delete this.race.players;
+    this.race = null;
     // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {

@@ -1,7 +1,5 @@
 import { Game } from "./game";
 
-//champ-standings
-
 export class App {
   constructor() {
     this.game = null;

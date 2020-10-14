@@ -24,7 +24,7 @@ export const PlayerBub = {
     } else if (number > 9 && number < 99) {
       ctx.fillText(number, x, y + 3.25);
     } else if (number >= 99) {
-      ctx.font = "8px Verdana";
+      ctx.font = "bold 8px Verdana";
       ctx.fillText(number, x, y + 3.25);
     }
 

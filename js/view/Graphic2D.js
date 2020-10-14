@@ -36,6 +36,11 @@ export class Graphic2D {
     this.playerControls = new PlayerControls();
   }
 
+  initRaceCanvas() {
+    this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
+  }
+
   finalFPSDrops() {
     console.log("FPS drops:" + fpsDrops);
   }
@@ -146,6 +151,7 @@ export class Graphic2D {
             }
 
             shootingNum++;
+            ctx.closePath();
           }
         } catch {
           debugger;
@@ -190,7 +196,7 @@ export class Graphic2D {
     } else if (number > 9 && number < 99) {
       ctx.fillText(number, x, y + 3.25);
     } else if (number >= 99) {
-      ctx.font = "8px Verdana";
+      ctx.font = "bold 8px Verdana";
       ctx.fillText(number, x, y + 3.25);
     }
   }
@@ -199,13 +205,14 @@ export class Graphic2D {
     let offscreenCtx = this.offscreenControlsContext;
     let ctx = this.controlsCtx;
 
+    
     if (this.playerControls.compareControls(players)) {
       return;
     }
-
+    
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.playerControls.draw(offscreenCtx, players);
 
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 }
