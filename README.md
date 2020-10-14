@@ -1,7 +1,7 @@
 # BiaTech 2018/20
 Newest and coolest bia manager in the world.
 
-##Installation
+## Installation
     &> npm install
     &> npm start
 
