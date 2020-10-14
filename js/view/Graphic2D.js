@@ -6,6 +6,9 @@ import { PlayerControls } from "./PlayerControls/PlayerControls.js";
 import MapBackground from "../../static/background_image.png";
 import FlagIcon from "../../static/track_flag.png";
 
+// import Flag from '../../static/flags/flag1.svg';
+import { flagImages } from "../services/flagService";
+
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
 let controlsCanvas = document.querySelector("#controls-canvas");
@@ -18,6 +21,11 @@ export class Graphic2D {
     this.img.src = MapBackground;
     this.flagImg = new Image();
     this.flagImg.src = FlagIcon;
+
+    // this.flagImages = images;
+
+    this.flag1 = new Image();
+    this.flag1.src = flagImages['ITA'];
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -205,14 +213,14 @@ export class Graphic2D {
     let offscreenCtx = this.offscreenControlsContext;
     let ctx = this.controlsCtx;
 
-    
     if (this.playerControls.compareControls(players)) {
       return;
     }
-    
+
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.playerControls.draw(offscreenCtx, players);
 
+    ctx.drawImage(this.flag1, 10, 10, 18, 13);
     ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 }

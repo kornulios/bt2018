@@ -27,7 +27,10 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"],
+        loader: "file-loader",
+        options: {
+          name: "images/[name].[ext]",
+        },
       },
     ],
   },
@@ -38,8 +41,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    contentBase: './dist',
+    contentBase: "./dist",
     port: 7700,
   },
-  
 };
