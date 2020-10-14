@@ -3,6 +3,9 @@ import { teamData } from "../data.js";
 import { IntermediateResults } from "./IntermediateResults/IntermediateResults.js";
 import { PlayerControls } from "./PlayerControls/PlayerControls.js";
 
+import MapBackground from "../../static/background_image.png";
+import FlagIcon from "../../static/track_flag.png";
+
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
 let controlsCanvas = document.querySelector("#controls-canvas");
@@ -12,9 +15,9 @@ let fpsDrops = 0;
 export class Graphic2D {
   constructor() {
     this.img = new Image();
-    this.img.src = "../../static/map.gif";
+    this.img.src = MapBackground;
     this.flagImg = new Image();
-    this.flagImg.src = "../../static/track_flag.png";
+    this.flagImg.src = FlagIcon;
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -42,7 +45,8 @@ export class Graphic2D {
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#000000";
-    if (1000 / tick < 60) {
+    if (1000 / tick < 100) {
+      console.log("fps drop");
       fpsDrops++;
     }
     ctx.fillText("FPS: " + (1000 / tick).toFixed(0), 10, 10);
@@ -75,10 +79,9 @@ export class Graphic2D {
     this.drawCoordinatesMap(finishCoordsMap, "red");
 
     //draw waypoint flags
-    flagsCoords.forEach(flag => {
+    flagsCoords.forEach((flag) => {
       ctx.drawImage(this.flagImg, flag.x, flag.y - this.flagImg.height);
-    })
-    
+    });
 
     //start / finish line
     // ctx.beginPath();

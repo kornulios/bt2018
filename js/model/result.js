@@ -1,7 +1,7 @@
 // MAJOR REFACTORING UNDERWAY 17.10.2018
 // V2. 21.10.2018 Refac part 2 done
 
-import { Utils } from "../utils/Utils.js";
+import { Utils } from "../utils/Utils";
 
 export class Result {
   constructor() {

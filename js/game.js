@@ -2,16 +2,16 @@ import * as gameData from "./data.js";
 import { Utils } from "./utils/Utils.js";
 import { TeamAI } from "./model/Team.js";
 
-import { SprintRace } from "./controller/SprintRace.js";
-import { PursuitRace } from "./controller/PursuitRace.js";
-import { RelayRace } from "./controller/RelayRace.js";
-import { IndividualRace } from "./controller/IndividualRace.js";
-import { MassStartRace } from "./controller/MassStartRace.js";
+import { SprintRace } from "./controller/SprintRace";
+import { PursuitRace } from "./controller/PursuitRace";
+import { RelayRace } from "./controller/RelayRace";
+import { IndividualRace } from "./controller/IndividualRace";
+import { MassStartRace } from "./controller/MassStartRace";
 
-import * as Constants from "./constants/constants.js";
-import { View, VIEW_PANELS } from "./controller/ViewController.js";
-import { Graphic2D } from "./view/Graphic2D.js";
-import { Championship } from "./controller/championship.js";
+import * as Constants from "./constants/constants";
+import { View, VIEW_PANELS } from "./controller/ViewController";
+import { Graphic2D } from "./view/Graphic2D";
+import { Championship } from "./controller/championship";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
@@ -228,12 +228,12 @@ export class Game {
     return shootingPlayers;
   }
 
-  onSimulateRaceClick() {
+  async onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    this.prepareNextRace();
+    await this.prepareNextRace();
     this.simulateRace();
   }
 
