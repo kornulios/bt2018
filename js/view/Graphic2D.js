@@ -229,7 +229,7 @@ export class Graphic2D {
   drawFlagTest() {
     let ctx = canvas.getContext("2d");
     for (let i = 0; i < this.flagImages.length; i++) {
-      ctx.drawImage(this.flagImages[i], 0, i * 14, 18, 13);
+      ctx.drawImage(this.flagImages[i], 10, i * 15 + 10, 18, 12);
     }
   }
 }

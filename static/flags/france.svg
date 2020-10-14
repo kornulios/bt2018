@@ -1,0 +1,11 @@
+<svg width="270" height="180" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="180" width="270" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="180" width="90" y="0" x="0" fill="#0000cc"/>
+  <rect id="svg_2" height="180" width="90" y="0" x="180" fill="#ff0800" />
+ </g>
+</svg>

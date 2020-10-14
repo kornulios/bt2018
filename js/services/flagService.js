@@ -9,4 +9,18 @@ export const images = importAll(require.context("../../static/flags", false, /\.
 export const flagImages = {
   ITA: "images/italy.svg",
   NOR: "images/norway.svg",
+  SWE: "images/sweden.svg",
+  FIN: "images/finland.svg",
+  FRA: "images/france.svg",
+  BEL: "images/belgium.svg",
+  ROM: "images/romania.svg",
+  GER: "images/germany.svg",
+  RUS: "images/russia.svg",
+  AUT: "images/austria.svg",
+  BUL: "images/bulgaria.svg",
+  LTU: "images/lithuania.svg",
+  LAT: "images/latvia.svg",
+  UKR: "images/ukraine.svg",
+  POL: "images/poland.svg",
+  EST: "images/estonia.svg",
 }
