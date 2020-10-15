@@ -144,7 +144,7 @@ export class Game {
       .filter((player) => player.team === this.userTeam)
       .map((player) => {
         const prevWaypoint = this.race.getPrevWaypointId(player.distance);
-        const prevWaypointData = this.race.getLastWaypointResult(player.name, prevWaypoint);
+        const prevWaypointData = this.race.getLastWaypointResult(player.id, prevWaypoint);
 
         return {
           name: player.name,
@@ -321,7 +321,7 @@ export class Game {
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
     const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
-      const player = this.getPlayerByName(result.name);
+      const player = this.getPlayerById(result.id);
       return {
         id: player.id,
         name: player.name,
@@ -330,7 +330,7 @@ export class Game {
       };
     });
     const standingsWomen = this.championship.getPlayersStandings(Constants.GENDER.WOMEN, 20).map((result) => {
-      const player = this.getPlayerByName(result.name);
+      const player = this.getPlayerById(result.id);
       return {
         id: player.id,
         name: player.name,
@@ -356,8 +356,12 @@ export class Game {
     return this.teams.find((team) => team.shortName === player.team);
   }
 
-  getPlayerByName(name) {
-    return this.players.find((player) => player.name === name);
+  // getPlayerByName(name) {
+  //   return this.players.find((player) => player.name === name);
+  // }
+
+  getPlayerById(id) {
+    return this.players.find((player) => player.id === id);
   }
 
   // PREPARING THE ROSTER FOR NEXT RACE
@@ -378,7 +382,7 @@ export class Game {
   aiSelectMassStartPlayers(nextRace) {
     const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
     const eligiblePlayers = standings.map((result) => {
-      return this.getPlayerByName(result.name);
+      return this.getPlayerById(result.id);
     });
 
     return eligiblePlayers;
@@ -394,7 +398,7 @@ export class Game {
     if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
 
     const eligiblePlayers = prevSprint.finish.slice(0, 60).map((result) => {
-      const player = this.getPlayerByName(result.playerName);
+      const player = this.getPlayerById(result.id);
       player.startTimer = result.time;
       return player;
     });

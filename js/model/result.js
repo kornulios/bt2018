@@ -5,7 +5,7 @@ import { Utils } from "../utils/Utils";
 
 export class Result {
   constructor() {
-    this.data = []; // {name$, waypoint%, time!}
+    // this.data = []; // {name$, waypoint%, time!}
     this.shootingData = {}; // { name$, number%, result[ARR] }
     this.dataObject = {};
     // this.relative = true;
@@ -24,7 +24,7 @@ export class Result {
   // }
 
   // RESULT STRUCTURE
-  // playerName, playerNumber, team, waypoint, time (timestamp)
+  // id, playerName, playerNumber, team, waypoint, time (timestamp)
 
   pushResult(resultData) {
     const result = { ...resultData };
@@ -35,7 +35,7 @@ export class Result {
       this.dataObject[result.waypoint] = [];
     }
 
-    result.shootingTotal = this.getShootingTotal(result.playerName);
+    result.shootingTotal = this.getShootingTotal(result.id);
     result.timeString = Utils.convertToMinutes(result.time / 1000);
 
     this.dataObject[result.waypoint].push(result);
@@ -66,17 +66,17 @@ export class Result {
   pushShootingResult(resultData) {
     var result = { ...resultData };
 
-    if (!this.shootingData[result.playerName]) {
-      this.shootingData[result.playerName] = [];
+    if (!this.shootingData[result.id]) {
+      this.shootingData[result.id] = [];
     }
 
-    this.shootingData[result.playerName].push(result.result);
+    this.shootingData[result.id].push(result.result);
   }
 
-  getShootingTotal(playerName) {
-    if (!this.shootingData[playerName]) return 0;
+  getShootingTotal(id) {
+    if (!this.shootingData[id]) return 0;
 
-    return this.shootingData[playerName].reduce((acc, cur) => {
+    return this.shootingData[id].reduce((acc, cur) => {
       return acc + cur;
     }, 0);
   }
@@ -107,10 +107,10 @@ export class Result {
     return results;
   }
 
-  getPlayerResults(name, waypointId) {
-    const result = this.getWaypointResults(waypointId).find((result) => result.playerName === name);
-    return result ? result.time : "";
-  }
+  // getPlayerResults(name, waypointId) {
+  //   const result = this.getWaypointResults(waypointId).find((result) => result.playerName === name);
+  //   return result ? result.time : "";
+  // }
 
   // getPlayerResultsRelative(name, waypointId) {
   //   const result = this.getWaypointResults(waypointId);
