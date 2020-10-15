@@ -22,11 +22,13 @@ export class Graphic2D {
     this.flagImg = new Image();
     this.flagImg.src = FlagIcon;
 
-    this.flagImages = Object.keys(flagImages).map((name, i) => {
+    this.flagImages = Object.keys(flagImages).reduce((acc, name) => {
       const img = new Image();
       img.src = flagImages[name];
-      return img;
-    });
+      acc[name] = img;
+
+      return { ...acc };
+    }, {});
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -135,32 +137,35 @@ export class Graphic2D {
           ctx.beginPath();
           if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
             const fontHeight = 14;
+            const shootingPanelLeft = 680;
+            const shootingPanelRight = 890;
 
             ctx.fillStyle = playersData[i].rangeTimer ? "#000099" : "#0033cc";
             ctx.strokeStyle = "#999999";
             ctx.strokeWidth = "1px";
-            ctx.fillRect(720, 20 * shootingNum, 80, 18);
-            ctx.strokeRect(640, 20 * shootingNum, 80, 18);
+            ctx.strokeRect(shootingPanelLeft, 20 * shootingNum, 80, 18);
+            ctx.fillRect(shootingPanelLeft + 80, 20 * shootingNum, 130, 18);
+            ctx.drawImage(this.flagImages[playersData[i].team], shootingPanelRight - 22, 20 * shootingNum + 2, 18, 12);
 
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = "left";
             ctx.font = "14px Open Sans";
-            ctx.fillText(playersData[i].name, 723, 20 * shootingNum + 14);
+            ctx.fillText(playersData[i].name, shootingPanelLeft + 83, 20 * shootingNum + 14);
 
             for (let target = 0; target < 5; target++) {
               ctx.beginPath();
               ctx.fillStyle = "#000000";
               ctx.strokeStyle = "#000000";
-              ctx.arc(653 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
+              ctx.arc(shootingPanelLeft + 13 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
               if (playersData[i].range[target]) {
                 ctx.stroke();
               } else {
                 ctx.fill();
               }
             }
+            ctx.closePath();
 
             shootingNum++;
-            ctx.closePath();
           }
         } catch {
           debugger;
@@ -221,8 +226,6 @@ export class Graphic2D {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.playerControls.draw(offscreenCtx, players);
 
-    ctx.drawImage(this.flag1, 10, 100, 18, 13);
-    ctx.drawImage(this.flag2, 10, 120, 18, 12);
     ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 
