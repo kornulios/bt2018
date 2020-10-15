@@ -1,0 +1,16 @@
+<svg width="270" height="180" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <g>
+  <title>background</title>
+  <rect fill="#fff" id="canvas_background" height="182" width="272" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="182" width="273" y="-2" x="-2.5" stroke-opacity="null" stroke-width="1.5" stroke="null" fill="#ea0000"/>
+  <path stroke="null" id="svg_2" d="m17.85714,27.5125l13.75087,0l4.24913,-13.06328l4.24913,13.06328l13.75087,0l-11.12467,8.07346l4.24935,13.06328l-11.12468,-8.07368l-11.12467,8.07368l4.24935,-13.06328l-11.12467,-8.07346z" stroke-opacity="null" stroke-width="1.5" fill="#ffe900"/>
+  <path transform="rotate(-33.85075759887695 79.55342102050783,15.236532211303711) " id="svg_4" d="m72.185,13.58407l5.62901,0l1.73941,-5.34754l1.73941,5.34754l5.62901,0l-4.55396,3.30492l1.7395,5.34754l-4.55396,-3.30501l-4.55396,3.30501l1.7395,-5.34754l-4.55396,-3.30492z" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="null" fill="#ffe900"/>
+  <path transform="rotate(-22.742034912109375 89.55341339111328,36.379386901855476) " id="svg_6" d="m82.185,34.72693l5.62901,0l1.73941,-5.34754l1.73941,5.34754l5.629,0l-4.55395,3.30492l1.7395,5.34754l-4.55396,-3.30501l-4.55396,3.30501l1.7395,-5.34754l-4.55396,-3.30492z" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="null" fill="#ffe900"/>
+  <path transform="rotate(-45.628597259521484 79.83912658691403,58.95081329345702) " id="svg_7" d="m72.47071,57.29836l5.62901,0l1.73941,-5.34754l1.73941,5.34754l5.629,0l-4.55395,3.30492l1.7395,5.34754l-4.55396,-3.30501l-4.55396,3.30501l1.7395,-5.34754l-4.55396,-3.30492z" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="null" fill="#ffe900"/>
+  <path transform="rotate(-33.85075759887695 60.12484741210944,74.66510009765625) " id="svg_8" d="m52.75643,73.01264l5.62901,0l1.73941,-5.34754l1.73941,5.34754l5.629,0l-4.55395,3.30492l1.7395,5.34754l-4.55396,-3.30501l-4.55396,3.30501l1.7395,-5.34754l-4.55396,-3.30492z" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="null" fill="#ffe900"/>
+ </g>
+</svg>
