@@ -17,8 +17,8 @@ export class Championship {
     const points = gender === GENDER.MEN ? this.standingsMen : this.standingsWomen;
 
     const standings = Object.keys(points)
-      .map((player) => {
-        return { name: player, points: points[player] };
+      .map((playerId) => {
+        return { id: +playerId, points: points[playerId] };
       })
       .sort((p1, p2) => {
         return p1.points > p2.points ? -1 : 1;
@@ -66,10 +66,10 @@ export class Championship {
 
     //points calculation
     for (let i = 0; i < results.length; i++) {
-      const playerName = results[i].playerName;
+      const id = results[i].id;
 
-      if (!standings[playerName]) standings[playerName] = 0;
-      standings[playerName] += RACE_POINTS_MAP[i];
+      if (!standings[id]) standings[id] = 0;
+      standings[id] += RACE_POINTS_MAP[i];
     }
 
     this._setNextRace();

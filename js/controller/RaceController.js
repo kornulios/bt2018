@@ -43,6 +43,7 @@ export class Race {
 
   logPlayerResult(resultStore, player, passedWaypoint, time) {
     const payload = {
+      id: player.id,
       playerName: player.name,
       playerNumber: player.number,
       team: player.team,
@@ -55,6 +56,7 @@ export class Race {
 
   logShootingResult(resultStore, player, range, result) {
     const payload = {
+      id: player.id,
       playerName: player.name,
       playerNumber: player.number,
       team: player.team,
@@ -90,9 +92,9 @@ export class Race {
     return this.results.getWaypointResults(waypointId);
   }
 
-  getPlayerResults(playerName, waypointId) {
-    return this.results.getPlayerResults(playerName, waypointId);
-  }
+  // getPlayerResults(playerName, waypointId) {
+  //   return this.results.getPlayerResults(playerName, waypointId);
+  // }
 
   getPrevWaypointId(distance) {
     if (distance >= this.track.getTrackLength()) {
@@ -142,7 +144,7 @@ export class Race {
     return this.track.getWaypointName(waypointId);
   }
 
-  getLastWaypointResult(playerName, waypointId) {
+  getLastWaypointResult(playerId, waypointId) {
     if (waypointId === 0) {
       return {
         time: "--",
@@ -152,7 +154,7 @@ export class Race {
     }
 
     const resultData = this.results.getWaypointResults(waypointId);
-    const playerIndex = resultData.findIndex((result) => result.playerName === playerName);
+    const playerIndex = resultData.findIndex((result) => result.id === playerId);
     const playerData = resultData[playerIndex];
 
     let time;

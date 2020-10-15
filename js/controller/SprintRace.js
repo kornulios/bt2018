@@ -1,4 +1,4 @@
-import { Race } from "./Race.js";
+import { Race } from "./RaceController.js";
 import { Player } from "../model/player.js";
 
 import * as Constants from "../constants/constants.js";
