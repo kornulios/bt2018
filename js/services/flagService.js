@@ -6,7 +6,7 @@ function importAll(r) {
 
 export const images = importAll(require.context("../../static/flags", false, /\.(svg)$/));
 
-export const flagImages = {
+const flagImagesMap = {
   ITA: "images/italy.svg",
   NOR: "images/norway.svg",
   SWE: "images/sweden.svg",
@@ -34,4 +34,14 @@ export const flagImages = {
   KAZ: "images/kazakhstan.svg",
   CZE: "images/czech.svg",
   SUI: "images/switzerland.svg",
-}
+};
+
+export const flagImages = () => {
+  return Object.keys(flagImagesMap).reduce((acc, name) => {
+    const img = new Image();
+    img.src = flagImagesMap[name];
+    acc[name] = img;
+
+    return { ...acc };
+  }, {});
+};

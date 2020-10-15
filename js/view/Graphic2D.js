@@ -22,13 +22,7 @@ export class Graphic2D {
     this.flagImg = new Image();
     this.flagImg.src = FlagIcon;
 
-    this.flagImages = Object.keys(flagImages).reduce((acc, name) => {
-      const img = new Image();
-      img.src = flagImages[name];
-      acc[name] = img;
-
-      return { ...acc };
-    }, {});
+    this.flagImages = flagImages();
 
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
@@ -145,7 +139,7 @@ export class Graphic2D {
             ctx.strokeWidth = "1px";
             ctx.strokeRect(shootingPanelLeft, 20 * shootingNum, 80, 18);
             ctx.fillRect(shootingPanelLeft + 80, 20 * shootingNum, 130, 18);
-            ctx.drawImage(this.flagImages[playersData[i].team], shootingPanelRight - 22, 20 * shootingNum + 2, 18, 12);
+            // ctx.drawImage(this.flagImages[playersData[i].team], shootingPanelRight - 22, 20 * shootingNum + 2, 18, 12);
 
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = "left";
