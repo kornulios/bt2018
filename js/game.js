@@ -218,7 +218,7 @@ export class Game {
     return playersData;
   }
 
-  getShootingPlayers(players) {
+  getShootingPlayersOld(players) {
     const shootingPlayers = players
       .filter((player) => player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0)
       .map((player) => {
@@ -230,6 +230,21 @@ export class Game {
           misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
         };
       });
+
+    return shootingPlayers;
+  }
+
+  getShootingPlayers() {
+    const shootingPlayers = this.race.shootingRange.map((playerId) => {
+      const player = this.race.getPlayerById(playerId);
+      return {
+        name: player.name,
+        range: player.currentRange,
+        team: player.team,
+        rangeTimer: player.shootingTimer > 0,
+        misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
+      };
+    });
 
     return shootingPlayers;
   }

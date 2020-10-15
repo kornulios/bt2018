@@ -10,6 +10,7 @@ export class Race {
     this.track = new Track();
     this.results = new Result();
     this.players = [];
+    this.shootingRange = [];
 
     this.id = null;
     this.stageName = null;
@@ -20,6 +21,15 @@ export class Race {
     // this.frameRate = 100;
     this.raceTimer = 0;
     this.raceFinished = false;
+  }
+
+  exitShootingRange(id) {
+    const index = this.shootingRange.indexOf(id);
+    this.shootingRange.splice(index, 1);
+  }
+
+  enterShootingRange(id) {
+    this.shootingRange.push(id);
   }
 
   async initRaceData(raceData) {
@@ -39,6 +49,10 @@ export class Race {
 
   getPlayers() {
     return this.players;
+  }
+
+  getPlayerById(id) {
+    return this.players.find((player) => player.id === id);
   }
 
   logPlayerResult(resultStore, player, passedWaypoint, time) {

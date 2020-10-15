@@ -11,7 +11,7 @@ export class IndividualRace extends Race {
   initPlayers(players) {
     //prepare players
     this.players = players.map((player, i) => {
-      const newPlayer = new Player({...player});
+      const newPlayer = new Player({ ...player });
       newPlayer.reset();
       newPlayer.number = i + 1;
       newPlayer.startTimer = i * 30000;
@@ -35,6 +35,14 @@ export class IndividualRace extends Race {
       }
 
       if (player.status !== PLAYER_STATUS.FINISHED) {
+        if (
+          this.shootingRange.indexOf(player.id) > -1 &&
+          player.shootingTimer <= 0 &&
+          player.status !== PLAYER_STATUS.SHOOTING
+        ) {
+          this.exitShootingRange(player.id);
+        }
+        
         if (player.status === PLAYER_STATUS.RUNNING) {
           const playerPrevDistance = player.distance;
           player.run(gameTick);
@@ -54,6 +62,7 @@ export class IndividualRace extends Race {
           if (passedRange) {
             player.status = PLAYER_STATUS.SHOOTING;
             player.enterShootingRange(passedRange);
+            this.enterShootingRange(player.id);
           }
         } else if (player.status === PLAYER_STATUS.SHOOTING) {
           player.shoot(gameTick);

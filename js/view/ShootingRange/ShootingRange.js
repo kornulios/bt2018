@@ -33,8 +33,6 @@ export class ShootingRange {
   drawRangeItem(ctx, player, x, y) {
     ctx.beginPath();
 
-    const fontHeight = 14;
-
     ctx.fillStyle = player.rangeTimer ? "#000099" : "#0033cc";
     ctx.strokeStyle = "#999999";
     ctx.strokeWidth = "1px";
