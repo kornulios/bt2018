@@ -90,6 +90,7 @@ export class Game {
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
+      this.showShootingRange();
       tickCounter = 0;
     }
 
@@ -159,6 +160,11 @@ export class Game {
     this.canvas.drawPlayerControls(userPlayers);
   }
 
+  showShootingRange() {
+    const shootingPlayers = this.getShootingPlayers(this.race.players);
+    this.canvas.drawShootingRange(shootingPlayers);
+  }
+
   simulateRace() {
     if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
 
@@ -222,7 +228,7 @@ export class Game {
           name: player.name,
           range: player.currentRange,
           team: player.team,
-          delayed: player.shootingTimer > 0,
+          rangeTimer: player.shootingTimer > 0,
         };
       });
 

@@ -23,6 +23,11 @@ canvas {
   justify-content: center;
 }
 
+.result-group {
+  max-width: 900px;
+  margin: auto;
+}
+
 .race-results-row {
   flex-direction: column;
   width: 1000px;
