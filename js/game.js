@@ -15,7 +15,7 @@ import { Championship } from "./controller/championship";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 50;
+const gameSpeed = 10;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -203,8 +203,6 @@ export class Game {
         team: player.team,
         number: player.number,
         colors: player.colors,
-        range: player.currentRange,
-        rangeTimer: player.shootingTimer > 0,
         status: player.status,
       };
 

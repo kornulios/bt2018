@@ -101,32 +101,10 @@ export class Graphic2D {
     flagsCoords.forEach((flag) => {
       ctx.drawImage(this.flagImg, flag.x, flag.y - this.flagImg.height);
     });
-
-    //start / finish line
-    // ctx.beginPath();
-    // ctx.strokeStyle = "#000000";
-    // ctx.fillStyle = "#000000";
-    // ctx.lineWidth = 1;
-    // ctx.strokeRect(202.5, 204.5, 6, 12);
-    // ctx.fillRect(202.5, 204, 3, 3);
-    // ctx.fillRect(205.5, 207, 3, 3);
-    // ctx.fillRect(202.5, 210, 3, 3);
-    // ctx.fillRect(205.5, 213, 3, 3);
-
-    // ctx.beginPath();
-    // ctx.strokeStyle = "#000000";
-    // ctx.fillStyle = "#000000";
-    // ctx.lineWidth = 1;
-    // ctx.strokeRect(222.5, 224.5, 6, 12);
-    // ctx.fillRect(222.5, 224, 3, 3);
-    // ctx.fillRect(225.5, 227, 3, 3);
-    // ctx.fillRect(222.5, 230, 3, 3);
-    // ctx.fillRect(225.5, 233, 3, 3);
   }
 
   drawPlayersBeta(playersData) {
     let ctx = canvas.getContext("2d");
-    let shootingNum = 0;
 
     for (let i = 0; i < playersData.length; i++) {
       if (playersData[i].coords) {
@@ -135,41 +113,6 @@ export class Graphic2D {
           const { team, number } = playersData[i];
 
           this.drawPlayerBub(ctx, number, team, x, y, 9);
-
-          //render shooting range
-          // ctx.beginPath();
-          // if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
-          //   const fontHeight = 14;
-          //   const shootingPanelLeft = 680;
-          //   const shootingPanelRight = 890;
-
-          //   ctx.fillStyle = playersData[i].rangeTimer ? "#000099" : "#0033cc";
-          //   ctx.strokeStyle = "#999999";
-          //   ctx.strokeWidth = "1px";
-          //   ctx.strokeRect(shootingPanelLeft, 20 * shootingNum, 80, 18);
-          //   ctx.fillRect(shootingPanelLeft + 80, 20 * shootingNum, 130, 18);
-          //   // ctx.drawImage(this.flagImages[playersData[i].team], shootingPanelRight - 22, 20 * shootingNum + 2, 18, 12);
-
-          //   ctx.fillStyle = "#ffffff";
-          //   ctx.textAlign = "left";
-          //   ctx.font = "14px Open Sans";
-          //   ctx.fillText(playersData[i].name, shootingPanelLeft + 83, 20 * shootingNum + 14);
-
-          //   for (let target = 0; target < 5; target++) {
-          //     ctx.beginPath();
-          //     ctx.fillStyle = "#000000";
-          //     ctx.strokeStyle = "#000000";
-          //     ctx.arc(shootingPanelLeft + 13 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
-          //     if (playersData[i].range[target]) {
-          //       ctx.stroke();
-          //     } else {
-          //       ctx.fill();
-          //     }
-          //   }
-          //   ctx.closePath();
-
-          //   shootingNum++;
-          // }
         } catch {
           debugger;
         }
@@ -242,6 +185,7 @@ export class Graphic2D {
     ctx.drawImage(this.offRangeCanvas, 0, 0);
   }
 
+  // RENDER TESTING
   drawFlagTest() {
     let ctx = canvas.getContext("2d");
     for (let i = 0; i < this.flagImages.length; i++) {

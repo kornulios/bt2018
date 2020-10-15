@@ -34,7 +34,6 @@ export class ShootingRange {
     ctx.beginPath();
 
     const fontHeight = 14;
-    const shootingPanelRight = 890;
 
     ctx.fillStyle = player.rangeTimer ? "#000099" : "#0033cc";
     ctx.strokeStyle = "#999999";
