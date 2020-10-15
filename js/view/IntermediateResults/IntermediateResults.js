@@ -52,6 +52,6 @@ export class IntermediateResults {
     ctx.fillText(result.playerName, x + 44, y + 16);
 
     ctx.textAlign = "right";
-    ctx.fillText(result.timeString, x + 180, y + 16);
+    ctx.fillText(result.place === 1 ? result.timeString : result.relativeTime, x + 180, y + 16);
   }
 }

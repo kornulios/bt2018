@@ -121,6 +121,7 @@ export class Game {
           playerNumber: player.number,
           team: player.team,
           timeString: Utils.convertToMinutes(player.startTimer / 1000),
+          relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
         };
       });
 

@@ -40,6 +40,15 @@ export class Result {
 
     this.dataObject[result.waypoint].push(result);
     this.dataObject[result.waypoint].sort((r1, r2) => (r1.time > r2.time ? 1 : -1));
+    this.recalculateRelative(result.waypoint);
+  }
+
+  recalculateRelative(waypointId) {
+    const baseTime = this.dataObject[waypointId][0].time / 1000;
+    this.dataObject[waypointId] = this.dataObject[waypointId].map((result) => {
+      result.relativeTime = "+" + Utils.convertToMinutes(result.time / 1000 - baseTime);
+      return result;
+    });
   }
 
   pushRelayResult(wp, number, playerName, teamName, time, leg) {
