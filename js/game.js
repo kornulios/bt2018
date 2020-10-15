@@ -15,7 +15,7 @@ import { Championship } from "./controller/championship";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 10;
+const gameSpeed = 50;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -227,6 +227,7 @@ export class Game {
           range: player.currentRange,
           team: player.team,
           rangeTimer: player.shootingTimer > 0,
+          misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
         };
       });
 
@@ -432,7 +433,18 @@ export class Game {
 
   // CUSTOM SCRIPT
   customScript() {
-    this.canvas.drawFlagTest();
+    const tempShootingPlayers = [
+      {
+        name: "Player 1",
+        team: "GER",
+        range: [0, 0, 0, 0, 0],
+        rangeTimer: false,
+        misses: 5,
+      },
+    ];
+
+    this.canvas.drawShootingRange(tempShootingPlayers);
+    // this.canvas.drawFlagTest();
   }
 
   // ********************************************************************

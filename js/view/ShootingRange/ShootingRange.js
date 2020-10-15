@@ -45,7 +45,12 @@ export class ShootingRange {
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "left";
     ctx.font = "14px Open Sans";
-    ctx.fillText(player.name, x + 83, y + 14);
+    ctx.fillText(player.name, x + 89, y + 14);
+
+    for (let m = 0; m < player.misses; m++) {
+      ctx.fillStyle = "#ffff00";
+      ctx.fillRect(x + 83, (y + 2) + m * 3, 2, 2);
+    }
 
     for (let target = 0; target < 5; target++) {
       ctx.beginPath();
