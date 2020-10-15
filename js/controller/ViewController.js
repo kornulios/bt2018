@@ -1,9 +1,6 @@
-import { Utils } from "../utils/Utils.js";
-import { teamData } from "../data.js";
-import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants.js";
-
-import { PlayerControls } from "../view/PlayerControls/PlayerControls.js";
-import { PlayerBub } from "../view/PlayerBub/PlayerBub.js";
+import { Utils } from "../utils/Utils";
+import { teamData } from "../data";
+import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants";
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
@@ -53,23 +50,6 @@ export class View {
     }
   }
 
-  // renderProgress(race) {
-  //   const players = race.players;
-  //   const raceFinished = race.raceFinished;
-  //   const timer = Utils.convertToMinutes(race.raceTimer / 1000);
-
-  //   const htmlProgress = players
-  //     .map((player) => {
-  //       return `<div>${player.name} ${player.status} ${player.distance.toFixed(1)}</div>`;
-  //     })
-  //     .join("");
-
-  //   const htmlRace = `<div>Race finished: ${raceFinished}</div>
-  // 	<div>Race timer: ${timer}</div>
-  // 	<div>${htmlProgress}</div>`;
-
-  //   document.querySelector("#run").innerHTML = `<div>${htmlRace}</div>`;
-  // }
 
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
@@ -158,7 +138,6 @@ export class View {
     this.hideAllPanels();
 
     const htmlResults = results.map((result, i) => {
-      // const shootingResult = result.shooting.reduce((acc, val) => acc + val, 0);
       const colors = teamData.find((team) => team.shortName === result.team).colors;
 
       return `<div class="result-row">
@@ -187,74 +166,12 @@ export class View {
         <div>${result.team}</div>
         <div>${Utils.convertToMinutes(result.time / 1000)}</div>
         </div>`;
-      // return `<div class="intermediate-row">
-      //   <div class="player-name">${result.playerName}</div>
-      //   <div>${result.team}</div>
-      //   <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-      // </div>`;
     });
 
     this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
   }
 
-  // renderResults(results, track) {
-  //   const pls = game.players;
-  //   //results fetch
-  //   const playerResults = results.data.reduce((acc, result) => {
-  //     const name = result.playerName;
-  //     if (!acc[name]) {
-  //       acc[name] = [];
-  //     }
-
-  //     return {
-  //       ...acc,
-  //       [name]: [
-  //         ...acc[name],
-  //         {
-  //           wpName: track.getWaypointName(result.waypoint),
-  //           time: Utils.convertToMinutes(result.time / 1000),
-  //         },
-  //       ],
-  //     };
-  //   }, {});
-
-  //   const rangeResults = results.shootingData.reduce((acc, result) => {
-  //     const name = result.playerName;
-  //     if (!acc[name]) {
-  //       acc[name] = [];
-  //     }
-
-  //     return {
-  //       ...acc,
-  //       [name]: [...acc[name], { range: result.range, result: result.result }],
-  //     };
-  //   }, {});
-
-  //   //html
-  //   const htmlResults = Object.keys(playerResults)
-  //     .map((name) => {
-  //       const resultItems = playerResults[name].map((r) => {
-  //         const item = `<span class="waypoint">${r.wpName}</span><span class="time">${r.time}</span>`;
-
-  //         return `<li class="result-list-item">${item}</li>`;
-  //       });
-  //       const rangeItems = rangeResults[name].map((r) => {
-  //         const item = `<div>Range ${r.range}: ${r.result}</div>`;
-
-  //         return `<div>${item}</div>`;
-  //       });
-
-  //       const list = `<div class="result-block">${name}<ul class="result-list">${resultItems.join(
-  //         ""
-  //       )}</ul>${rangeItems.join("")}</div>`;
-
-  //       return list;
-  //     })
-  //     .join("");
-
-  //   document.querySelector("#finish-results").innerHTML = `<div class="results">${htmlResults}</div>`;
-  // }
-
+  
   renderTeamList(teams) {
     const htmlResults = teams
       .map((team) => {

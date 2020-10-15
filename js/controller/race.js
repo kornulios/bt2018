@@ -81,22 +81,8 @@ export class Race {
     return this.players;
   }
 
-  // getPlayerTeamMembers() {
-  //   var team = game.getPlayerTeam(),
-  //     resArray = [];
-
-  //   this.players.forEach(function (p) {
-  //     if (p.team.name == team) {
-  //       resArray.push(p);
-  //     }
-  //   });
-  //   return resArray;
-  // }
-
   //RESULTS FETCH
   getResults() {
-    // const results = { ...this.results }
-    // return JSON.parse(JSON.stringify(results));
     return this.results;
   }
 
@@ -109,7 +95,7 @@ export class Race {
   }
 
   getPrevWaypointId(distance) {
-    if(distance >= this.track.getTrackLength()) {
+    if (distance >= this.track.getTrackLength()) {
       return this.track.waypoints.length - 1;
     }
 
@@ -173,7 +159,7 @@ export class Race {
     if (playerIndex === 0) {
       time = Utils.convertToMinutes(playerData.time / 1000);
     } else {
-      time = '+' + Utils.convertToMinutes(playerData.time / 1000 - resultData[0].time / 1000);
+      time = playerData.relativeTime;
     }
 
     const result = {
@@ -192,10 +178,6 @@ export class Race {
   getRaceStatus() {
     return this.status;
   }
-
-  // getRaceTime() {
-  //   return (this.gameTimer / 1000).toFixed(1);
-  // }
 
   getPlayerTime(startTime) {
     if (startTime > this.raceTimer) {

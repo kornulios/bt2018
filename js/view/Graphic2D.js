@@ -2,13 +2,18 @@ import * as Constants from "../constants/constants.js";
 import { teamData } from "../data.js";
 import { IntermediateResults } from "./IntermediateResults/IntermediateResults.js";
 import { PlayerControls } from "./PlayerControls/PlayerControls.js";
+import { ShootingRange } from "./ShootingRange/ShootingRange";
 
 import MapBackground from "../../static/background_image.png";
 import FlagIcon from "../../static/track_flag.png";
 
+// import Flag from '../../static/flags/flag1.svg';
+import { flagImages } from "../services/flagService";
+
 let canvas = document.querySelector("#main-canvas");
 let resultCanvas = document.querySelector("#result-canvas");
 let controlsCanvas = document.querySelector("#controls-canvas");
+let rangeCanvas = document.querySelector("#range-canvas");
 
 let fpsDrops = 0;
 
@@ -19,8 +24,11 @@ export class Graphic2D {
     this.flagImg = new Image();
     this.flagImg.src = FlagIcon;
 
+    this.flagImages = flagImages();
+
     this.resultContext = resultCanvas.getContext("2d");
     this.controlsCtx = controlsCanvas.getContext("2d");
+    this.rangeCtx = rangeCanvas.getContext("2d");
 
     this.offscreenCanvas = document.createElement("canvas");
     this.offscreenCanvas.width = resultCanvas.width;
@@ -32,8 +40,19 @@ export class Graphic2D {
     this.offscreenControlsCanvas.height = controlsCanvas.height;
     this.offscreenControlsContext = this.offscreenControlsCanvas.getContext("2d");
 
+    this.offRangeCanvas = document.createElement("canvas");
+    this.offRangeCanvas.width = rangeCanvas.width;
+    this.offRangeCanvas.height = rangeCanvas.height;
+    this.offscreenRangeContext = this.offRangeCanvas.getContext("2d");
+
     this.intermediateResults = new IntermediateResults();
     this.playerControls = new PlayerControls();
+    this.shootingRange = new ShootingRange();
+  }
+
+  initRaceCanvas() {
+    this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
+    this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
   }
 
   finalFPSDrops() {
@@ -82,32 +101,10 @@ export class Graphic2D {
     flagsCoords.forEach((flag) => {
       ctx.drawImage(this.flagImg, flag.x, flag.y - this.flagImg.height);
     });
-
-    //start / finish line
-    // ctx.beginPath();
-    // ctx.strokeStyle = "#000000";
-    // ctx.fillStyle = "#000000";
-    // ctx.lineWidth = 1;
-    // ctx.strokeRect(202.5, 204.5, 6, 12);
-    // ctx.fillRect(202.5, 204, 3, 3);
-    // ctx.fillRect(205.5, 207, 3, 3);
-    // ctx.fillRect(202.5, 210, 3, 3);
-    // ctx.fillRect(205.5, 213, 3, 3);
-
-    // ctx.beginPath();
-    // ctx.strokeStyle = "#000000";
-    // ctx.fillStyle = "#000000";
-    // ctx.lineWidth = 1;
-    // ctx.strokeRect(222.5, 224.5, 6, 12);
-    // ctx.fillRect(222.5, 224, 3, 3);
-    // ctx.fillRect(225.5, 227, 3, 3);
-    // ctx.fillRect(222.5, 230, 3, 3);
-    // ctx.fillRect(225.5, 233, 3, 3);
   }
 
   drawPlayersBeta(playersData) {
     let ctx = canvas.getContext("2d");
-    let shootingNum = 0;
 
     for (let i = 0; i < playersData.length; i++) {
       if (playersData[i].coords) {
@@ -116,37 +113,6 @@ export class Graphic2D {
           const { team, number } = playersData[i];
 
           this.drawPlayerBub(ctx, number, team, x, y, 9);
-
-          //render shooting range
-          ctx.beginPath();
-          if (playersData[i].status === Constants.PLAYER_STATUS.SHOOTING || playersData[i].rangeTimer) {
-            const fontHeight = 14;
-
-            ctx.fillStyle = playersData[i].rangeTimer ? "#000099" : "#0033cc";
-            ctx.strokeStyle = "#999999";
-            ctx.strokeWidth = "1px";
-            ctx.fillRect(720, 20 * shootingNum, 80, 18);
-            ctx.strokeRect(640, 20 * shootingNum, 80, 18);
-
-            ctx.fillStyle = "#ffffff";
-            ctx.textAlign = "left";
-            ctx.font = "14px Open Sans";
-            ctx.fillText(playersData[i].name, 723, 20 * shootingNum + 14);
-
-            for (let target = 0; target < 5; target++) {
-              ctx.beginPath();
-              ctx.fillStyle = "#000000";
-              ctx.strokeStyle = "#000000";
-              ctx.arc(653 + 13 * target, 20 * shootingNum + 10, 5, 0, 360);
-              if (playersData[i].range[target]) {
-                ctx.stroke();
-              } else {
-                ctx.fill();
-              }
-            }
-
-            shootingNum++;
-          }
         } catch {
           debugger;
         }
@@ -190,7 +156,7 @@ export class Graphic2D {
     } else if (number > 9 && number < 99) {
       ctx.fillText(number, x, y + 3.25);
     } else if (number >= 99) {
-      ctx.font = "8px Verdana";
+      ctx.font = "bold 8px Verdana";
       ctx.fillText(number, x, y + 3.25);
     }
   }
@@ -203,9 +169,27 @@ export class Graphic2D {
       return;
     }
 
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     this.playerControls.draw(offscreenCtx, players);
 
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
+  }
+
+  drawShootingRange(players) {
+    let offCtx = this.offscreenRangeContext;
+    let ctx = this.rangeCtx;
+
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.shootingRange.draw(offCtx, players);
+
+    ctx.drawImage(this.offRangeCanvas, 0, 0);
+  }
+
+  // RENDER TESTING
+  drawFlagTest() {
+    let ctx = canvas.getContext("2d");
+    for (let i = 0; i < this.flagImages.length; i++) {
+      ctx.drawImage(this.flagImages[i], 10, i * 15 + 10, 18, 12);
+    }
   }
 }

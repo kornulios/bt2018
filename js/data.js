@@ -284,12 +284,63 @@ export const teamData = [
     raceQuota: { men: 3, women: 4 },
     stageQuota: { men: 5, women: 6 },
   },
+  {
+    name: "Lithuania",
+    shortName: "LTU",
+    flag: "",
+    colors: ["#336600", "#cccc00"],
+    raceQuota: { men: 4, women: 2 },
+    stageQuota: { men: 6, women: 4 },
+  },
+  {
+    name: "Latvia",
+    shortName: "LAT",
+    flag: "",
+    colors: ["#660033", "#ffffff"],
+    raceQuota: { men: 3, women: 2 },
+    stageQuota: { men: 5, women: 4 },
+  },
+  {
+    name: "Belgium",
+    shortName: "BEL",
+    flag: "",
+    colors: ["#000000", "#ff0000"],
+    raceQuota: { men: 3, women: 0 },
+    stageQuota: { men: 5, women: 0 },
+  },
+  {
+    name: "China",
+    shortName: "CHI",
+    flag: "",
+    colors: ["#ff0000", "#ffff00"],
+    raceQuota: { men: 3, women: 4 },
+    stageQuota: { men: 5, women: 6 },
+  },
+  {
+    name: "Kazakhstan",
+    shortName: "KAZ",
+    flag: "",
+    colors: ["#33ccff", "#ffff00"],
+    raceQuota: { men: 2, women: 3 },
+    stageQuota: { men: 4, women: 5 },
+  },
+  {
+    name: "Japan",
+    shortName: "JPN",
+    flag: "",
+    colors: ["#ffffff", "#990000"],
+    raceQuota: { men: 2, women: 3 },
+    stageQuota: { men: 4, women: 5 },
+  },
+  {
+    name: "South Korea",
+    shortName: "KOR",
+    flag: "",
+    colors: ["#ffffff", "#000000"],
+    raceQuota: { men: 2, women: 3 },
+    stageQuota: { men: 4, women: 5 },
+  },
 ];
-
-var mockData = {
-  teamDesc:
-    " is a potent team with some strong players as well as fresh growing stars. Player should rely on skill in order to bring his team to victory.",
-};
 
 export const racesData = [
   {

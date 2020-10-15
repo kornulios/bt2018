@@ -15,7 +15,7 @@ import { Championship } from "./controller/championship";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 50;
+const gameSpeed = 10;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -87,10 +87,10 @@ export class Game {
     this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
+      this.showShootingRange();
       tickCounter = 0;
     }
 
@@ -122,6 +122,7 @@ export class Game {
           playerNumber: player.number,
           team: player.team,
           timeString: Utils.convertToMinutes(player.startTimer / 1000),
+          relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
         };
       });
 
@@ -159,12 +160,18 @@ export class Game {
     this.canvas.drawPlayerControls(userPlayers);
   }
 
+  showShootingRange() {
+    const shootingPlayers = this.getShootingPlayers(this.race.players);
+    this.canvas.drawShootingRange(shootingPlayers);
+  }
+
   simulateRace() {
+    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+
     do {
       this.race.run(100);
     } while (!this.race.raceFinished);
 
-    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
     this.endRace();
   }
 
@@ -196,8 +203,6 @@ export class Game {
         team: player.team,
         number: player.number,
         colors: player.colors,
-        range: player.currentRange,
-        rangeTimer: player.shootingTimer > 0,
         status: player.status,
       };
 
@@ -221,7 +226,7 @@ export class Game {
           name: player.name,
           range: player.currentRange,
           team: player.team,
-          delayed: player.shootingTimer > 0,
+          rangeTimer: player.shootingTimer > 0,
         };
       });
 
@@ -233,7 +238,9 @@ export class Game {
       alert("Season over! Please start a new one");
       return;
     }
-    await this.prepareNextRace();
+    if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
+      await this.prepareNextRace();
+    }
     this.simulateRace();
   }
 
@@ -287,11 +294,14 @@ export class Game {
     const { race } = this;
     // READY!
     oldTimeStamp = performance.now();
-    // SET!
     this.selectedResults = 0;
+    // SET!
     this.view.setupRaceView(this.race);
-    this.canvas.drawMapBeta(race.track);
+    this.canvas.initRaceCanvas();
+    this.showPlayerControls();
+    this.showCurrentResults();
     // GO!!!
+    this.race.status = Constants.RACE_STATUS.IN_PROGRESS;
     requestAnimationFrame(this.runGame.bind(this));
   }
 
@@ -299,7 +309,7 @@ export class Game {
     console.log("race finished");
     this.view.renderShortResults(this.race.getFinishResult());
     this.championship.onRaceFinish(this.race);
-    delete this.race.players;
+    this.race = null;
     // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
@@ -417,26 +427,8 @@ export class Game {
   }
 
   // CUSTOM SCRIPT
-  simulatePlayer() {
-    //debugging function
-    this.prepareNextRace();
-    this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta([{ name: "A", number: 1, coords: this.race.track.getPenaltyCoordinates(120) }]); // -- debugger for player placement
-    this.canvas.drawPlayersBeta([{ name: "B", number: 2, coords: this.race.track.getCoordinates(9749) }]); // -- debugger for player placement
-    this.canvas.drawPlayersBeta([{ name: "C", number: 3, coords: this.race.track.getCoordinates(9750) }]); // -- debugger for player placement
-    this.canvas.drawPlayersBeta([{ name: "E", number: 4, coords: this.race.track.getCoordinates(9751) }]); // -- debugger for player placement
-    this.canvas.drawPlayersBeta([{ name: "F", number: 5, coords: this.race.track.getCoordinates(9790) }]); // -- debugger for player placement
-    // const { race } = this;
-    // oldTimeStamp = performance.now();
-    //START RACE
-    // window.requestAnimationFrame(this.runGame.bind(this));
-    // this.canvas.drawPlayersBeta([{ name: 'A', coords: this.race.track.getFinishCoordinates(14900) }]); // -- debugger for player placement
-    // this.view.renderProgress(this.race);
-    //GENERATE TEAMS
-    // this.generateTeams();
-    // this.view.renderPlayerList(this.players);
-    // this.view.renderTeamList(this.teams);
-    // console.log(this.players);
+  customScript() {
+    this.canvas.drawFlagTest();
   }
 
   // ********************************************************************
