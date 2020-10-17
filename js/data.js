@@ -253,7 +253,7 @@ export const teamData = [
     stageQuota: { men: 6, women: 6 },
   },
   {
-    name: "Czech Rep.",
+    name: "Czech Republic",
     shortName: "CZE",
     flag: "",
     colors: ["#ff1a1a", "#0000ff"],

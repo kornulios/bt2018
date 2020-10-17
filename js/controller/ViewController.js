@@ -1,6 +1,7 @@
 import { Utils } from "../utils/Utils";
 import { teamData } from "../data";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants";
+import { flagImages } from "../services/flagService";
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
@@ -12,6 +13,7 @@ export const VIEW_PANELS = {
 export class View {
   constructor() {
     this.trackView = document.querySelector("#track-info");
+    this.flagImages = flagImages();
     // this.mainView = document.querySelector("#main-view");
     // this.resultView = document.querySelector("#results-view");
     // this.playerControls = document.querySelector("#player-controls");
@@ -53,6 +55,21 @@ export class View {
     if (data) {
       elem.innerHTML = data;
     }
+  }
+
+  renderPlayerTeam(team) {
+    const panel = document.querySelector("#user-team");
+    let img = new Image();
+    img = this.flagImages[team.shortName];
+    img.height = "70";
+    img.width = "106";
+    img.className = "head-flag-img";
+
+    const name = document.createElement("span");
+    name.innerText = "Team - " + team.name;
+    panel.appendChild(img);
+
+    panel.appendChild(name);
   }
 
   renderShortRelayResults(results, track) {

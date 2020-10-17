@@ -27,7 +27,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
-    this.userTeam = "UKR";
+    this.userTeam = "KAZ";
 
     //ui options
     this.selectedResults = null;
@@ -56,6 +56,7 @@ export class Game {
     this.view.hideAllPanels();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList();
+    this.view.renderPlayerTeam(this.getTeam(this.userTeam));
   }
 
   initChampionship() {
@@ -374,9 +375,9 @@ export class Game {
     return this.teams.find((team) => team.shortName === player.team);
   }
 
-  // getPlayerByName(name) {
-  //   return this.players.find((player) => player.name === name);
-  // }
+  getTeam(shortName) {
+    return this.teams.find((team) => team.shortName === shortName);
+  }
 
   getPlayerById(id) {
     return this.players.find((player) => player.id === id);
