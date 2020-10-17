@@ -18,7 +18,6 @@ export class Race {
     this.raceType = null;
     this.raceGender = null;
 
-    // this.frameRate = 100;
     this.raceTimer = 0;
     this.raceFinished = false;
   }
@@ -105,10 +104,6 @@ export class Race {
   getWaypointResults(waypointId) {
     return this.results.getWaypointResults(waypointId);
   }
-
-  // getPlayerResults(playerName, waypointId) {
-  //   return this.results.getPlayerResults(playerName, waypointId);
-  // }
 
   getPrevWaypointId(distance) {
     if (distance >= this.track.getTrackLength()) {

@@ -1,3 +1,5 @@
+import * as Constants from '../constants/constants';
+
 export class TeamAI {
   constructor(team) {
     this.name = team.name;
@@ -33,11 +35,11 @@ export class TeamAI {
   }
 
   getMalePlayers() {
-    return this.players.filter((player) => player.gender === "male");
+    return this.players.filter((player) => player.gender === Constants.GENDER.MEN);
   }
 
   getFemalePlayers() {
-    return this.players.filter((player) => player.gender === "female");
+    return this.players.filter((player) => player.gender === Constants.GENDER.WOMEN);
   }
 
   getNextRacePlayers(players, gender) {

@@ -54,7 +54,8 @@ export class Game {
 
     // this.view.renderRaceList(this.championship.getRaceList());
     this.view.hideAllPanels();
-    this.view.showPanel(VIEW_PANELS.PANEL_RACE);
+    this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
+    this.showTeamPlayersList();
   }
 
   initChampionship() {
@@ -334,6 +335,7 @@ export class Game {
     }
   }
 
+  // DOM render
   showChampionshipStandings() {
     const races = this.championship.getRaceList();
     const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
@@ -358,13 +360,13 @@ export class Game {
     this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
   }
 
-  showPlayersList() {
-    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      alert("Season over! Please start a new one");
-      return;
-    }
-    this.prepareNextRace();
-    this.simulateRace();
+  showTeamPlayersList() {
+    // const myTeam = this.teams.find(t => t.shortName === this.userTeam);
+    const teamPlayers = this.players.filter((p) => p.team === this.userTeam);
+    this.view.renderTeamPlayersList([
+      teamPlayers.filter((p) => p.gender === Constants.GENDER.MEN),
+      teamPlayers.filter((p) => p.gender === Constants.GENDER.WOMEN),
+    ]);
   }
 
   // HELPER FUNCTIONS

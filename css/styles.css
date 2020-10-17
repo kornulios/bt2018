@@ -2,10 +2,15 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 @import "./race.css";
 @import "./result-table.css";
+@import "./team.css";
 
 body {
   font-family: "Consolas";
   background-image: url("../static/background_image.png");
+}
+
+.app-header {
+  margin-top: 40px;
 }
 
 canvas {
@@ -48,6 +53,18 @@ canvas {
   background-color: #ebf5ff;
   padding: 20px;
   flex-direction: column;
+}
+
+.generic-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
+  background: rgba(235, 245, 255, 0.8);
+  height: 800px;
+  padding: 40px 0;
 }
 
 .standings-row {
