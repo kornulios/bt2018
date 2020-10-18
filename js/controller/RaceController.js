@@ -183,7 +183,7 @@ export class Race {
   }
 
   getRaceName() {
-    return this.name;
+    return this.stageName + ' - ' + this.name;
   }
 
   getRaceStatus() {

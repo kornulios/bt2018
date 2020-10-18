@@ -8,6 +8,7 @@ export const VIEW_PANELS = {
   PANEL_CHAMPIONSHIP: "championship",
   PANEL_FINISH_RESULTS: "finish-results",
   PANEL_TEAM: "team",
+  PANEL_MAIN: "main",
 };
 
 export class View {
@@ -39,6 +40,10 @@ export class View {
         id: "#team-panel",
         style: "flex",
       },
+      // main: {
+      //   id: "#main-panel-content",
+      //   style: "flex",
+      // },
     };
   }
 
@@ -55,6 +60,10 @@ export class View {
     if (data) {
       elem.innerHTML = data;
     }
+  }
+
+  getPanel(panelName) {
+    return document.querySelector(this.viewPanels[panelName].id);
   }
 
   renderPlayerTeam(team) {
@@ -155,8 +164,11 @@ export class View {
     document.querySelector("#run").innerHTML = `<div>${htmlResults.join("")}</div>`;
   }
 
-  renderShortResults(results) {
+  renderShortResults(race) {
     this.hideAllPanels();
+
+    const results = race.getFinishResult();
+    const raceName = race.getRaceName();
 
     const htmlResults = results.map((result, i) => {
       const colors = teamData.find((team) => team.shortName === result.team).colors;
@@ -171,9 +183,22 @@ export class View {
 			</div>`;
     });
 
-    const resultData = `<div>${htmlResults.join("")}</div>`;
+    const mainPanel = this.getPanel("finish-results");
 
-    this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS, resultData);
+    const headerEl = document.createElement("div");
+    headerEl.innerText = raceName;
+    headerEl.classList.add("race-results-header");
+    mainPanel.appendChild(headerEl);
+
+    const resultEl = document.createElement("div");
+    resultEl.classList.add("finish-results-panel");
+    resultEl.innerHTML = `
+    ${htmlResults.join("")}
+    `;
+
+    mainPanel.appendChild(resultEl);
+
+    this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS);
   }
 
   renderResults(results) {

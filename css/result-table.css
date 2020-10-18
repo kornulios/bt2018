@@ -1,25 +1,41 @@
 /* RESULTS BLOCK */
 
+#finish-results {
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+}
 
 .finish-results-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1024px;
-  margin: auto;
-  background: rgba(235, 245, 255, 0.8);
-  height: 800px;
-  padding: 40px 0;
-
-
+  font-family: "Open Sans";
+  overflow-y: auto;
+  
 }
 
-.finish-results-panel > div {
-  overflow-y: scroll;
-  padding: 0 15px;
+.finish-results-panel::-webkit-scrollbar {
+  width: 0.6rem;
 }
 
+.finish-results-panel::-webkit-scrollbar-thumb {
+  background-color: #7d85e9 ;
+  border-radius: 6px;
+} 
+
+.race-results-header {
+  font-family: "Raleway";
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: bold;
+  background-color: #1c215c;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+}
 
 .result-list {
   list-style: none;
@@ -39,9 +55,10 @@
 
 .result-row {
   display: flex;
-  width: 580px;
+  width: 600px;
   justify-content: space-between;
   margin: 1px 0;
+  padding: 0 8px;
 }
 
 .results-standings {

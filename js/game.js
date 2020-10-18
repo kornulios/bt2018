@@ -220,22 +220,6 @@ export class Game {
     return playersData;
   }
 
-  getShootingPlayersOld(players) {
-    const shootingPlayers = players
-      .filter((player) => player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0)
-      .map((player) => {
-        return {
-          name: player.name,
-          range: player.currentRange,
-          team: player.team,
-          rangeTimer: player.shootingTimer > 0,
-          misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
-        };
-      });
-
-    return shootingPlayers;
-  }
-
   getShootingPlayers() {
     const shootingPlayers = this.race.shootingRange.map((playerId) => {
       const player = this.race.getPlayerById(playerId);
@@ -325,7 +309,7 @@ export class Game {
 
   endRace() {
     console.log("race finished");
-    this.view.renderShortResults(this.race.getFinishResult());
+    this.view.renderShortResults(this.race);
     this.championship.onRaceFinish(this.race);
     this.race = null;
     // this.showChampionshipStandings();

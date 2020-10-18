@@ -6,20 +6,22 @@
   font-family: "Raleway";
   font-size: 1.3rem;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .team-grid-section-header {
   grid-column: 1 / 5;
   background: linear-gradient(
     90deg,
-    rgba(207, 238, 252, 1) 0%,
-    rgba(255, 255, 255, 1) 78%,
-    rgba(207, 238, 252, 1) 100%
+    #1c215c 0%,
+    #7d85e9 85%,
+    #1c215c 100%
   );
   text-transform: uppercase;
   font-style: italic;
-  font-size: 18px;
-  font-family: "Impact";
-  color: #004663;
-  padding: 4px;
+  font-size: 1.4rem;
+  font-family: "Raleway";
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
 }
