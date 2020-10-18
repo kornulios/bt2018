@@ -225,8 +225,8 @@ export class View {
     const teamF = players[1];
 
     const headerHtml = `
-    <div>Name</div>
-    <div>Base speed</div>
+    <div></div>
+    <div>SPD</div>
     <div>ACC</div>
     <div>STR</div>`;
 

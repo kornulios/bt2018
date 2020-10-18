@@ -5,7 +5,6 @@
 
   <body>
     <div class="app-header">
-      
       <div class="control-group">
         <button type="button" id="champ-teams">Teams list</button>
         <button type="button" id="skip-race">Simulate Race</button>
@@ -22,15 +21,28 @@
       </div>
     </div>
 
+    <!-- SIDE MENU BAR -->
     <div id="user-team" class="user-team"></div>
+    <div class="main-panel">
+      <div class="menu-panel">
+        <button>News</button>
+        <button>Calendar</button>
+        <button>Championship</button>
+        <button>Team</button>
+        <button>Ski service</button>
+        <div class="race-button-outer">
+          <div class="next-event">Next event:</div>
+          <button class="btn-next-race"></button>
+        </div>
+      </div>
+      <div id="team-panel" class="team-panel inner-panel"></div>
+    </div>
 
     <div id="championship-standings" class="championship-standings-panel">
       <div id="race-schedule" class="race-list"></div>
       <div id="standings-men" class="results-standings"></div>
       <div id="standings-women" class="results-standings"></div>
     </div>
-
-    <div id="team-panel" class="team-panel generic-panel"></div>
 
     <div id="finish-results" class="finish-results-panel"></div>
 

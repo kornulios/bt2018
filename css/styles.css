@@ -1,12 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import "./race.css";
 @import "./result-table.css";
 @import "./team.css";
+@import "./side-menu.css";
 
 body {
   font-family: "Consolas";
   background-image: url("../static/background_image.png");
+  background-size: cover;
 }
 
 .app-header {
@@ -55,19 +58,29 @@ canvas {
   flex-direction: column;
 }
 
-.generic-panel {
+.main-panel {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
   max-width: 1024px;
   margin: auto;
   margin-top: 20px;
   background: rgba(235, 245, 255, 0.8);
   height: 800px;
-  padding: 40px 0;
   border-radius: 20px;
 }
+
+.inner-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  /* max-width: 1024px; */
+  /* margin-top: 20px; */
+  /* background: rgba(235, 245, 255, 0.8); */
+  /* height: 800px; */
+  /* padding: 40px 0; */
+}
+
+
 
 .user-team {
   display: flex;
