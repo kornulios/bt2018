@@ -173,14 +173,14 @@ export class View {
     const htmlResults = results.map((result, i) => {
       const colors = teamData.find((team) => team.shortName === result.team).colors;
 
-      return `<div class="result-row">
-      <div class="player-cell-small">${i + 1}</div> 
+      return `
+      <div>${i + 1}</div> 
       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-			<div class="player-name">${result.playerName}</div>
+			<div>${result.playerName}</div>
 			<div>${result.team}</div>
 			<div>${result.shootingTotal}</div>
-			<div>${Utils.convertToMinutes(result.time / 1000)}</div>
-			</div>`;
+			<div class="player-result-time">${Utils.convertToMinutes(result.time / 1000)}</div>
+			`;
     });
 
     const mainPanel = this.getPanel("finish-results");
@@ -201,21 +201,21 @@ export class View {
     this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS);
   }
 
-  renderResults(results) {
-    const htmlResults = results.map((result, i) => {
-      const colors = teamData.find((team) => team.shortName === result.team).colors;
+  // renderResults(results) {
+  //   const htmlResults = results.map((result, i) => {
+  //     const colors = teamData.find((team) => team.shortName === result.team).colors;
 
-      return `<div class="intermediate-row">
-        <div class="player-cell-small">${i + 1}</div>
-        <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-        <div class="player-name">${result.playerName}</div>
-        <div>${result.team}</div>
-        <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-        </div>`;
-    });
+  //     return `
+  //       <div class="player-cell-small">${i + 1}</div>
+  //       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
+  //       <div class="player-name">${result.playerName}</div>
+  //       <div>${result.team}</div>
+  //       <div>${Utils.convertToMinutes(result.time / 1000)}</div>
+  //       `;
+  //   });
 
-    this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
-  }
+  //   this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
+  // }
 
   renderTeamList(teams) {
     const htmlResults = teams

@@ -8,12 +8,14 @@
 }
 
 .finish-results-panel {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr 1fr 1fr 2fr;
+  grid-auto-rows: auto;
   flex-direction: column;
   align-items: center;
   font-family: "Open Sans";
   overflow-y: auto;
-  
+  width: 580px;
 }
 
 .finish-results-panel::-webkit-scrollbar {
@@ -94,4 +96,8 @@
 
 .player-cell-medium {
   width: 50px;
+}
+
+.player-result-time {
+  text-align: center;
 }
