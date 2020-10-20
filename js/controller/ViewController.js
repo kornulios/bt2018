@@ -9,6 +9,7 @@ export const VIEW_PANELS = {
   PANEL_FINISH_RESULTS: "finish-results",
   PANEL_TEAM: "team",
   PANEL_MAIN: "main",
+  PANEL_CALENDAR: "calendar",
 };
 
 export class View {
@@ -39,6 +40,10 @@ export class View {
       team: {
         id: "#team-panel",
         style: "flex",
+      },
+      calendar: {
+        id: "#race-schedule",
+        style: "block",
       },
       // main: {
       //   id: "#main-panel-content",
@@ -184,6 +189,7 @@ export class View {
     });
 
     const mainPanel = this.getPanel("finish-results");
+    mainPanel.innerHTML = "";
 
     const headerEl = document.createElement("div");
     headerEl.innerText = raceName;
@@ -291,6 +297,8 @@ export class View {
   }
 
   renderRaceList(races) {
+    this.hideAllPanels();
+
     const container = document.querySelector("#race-schedule");
 
     const stages = races.reduce((acc, result) => {
@@ -322,16 +330,15 @@ export class View {
       <ul class="race-list-ul">${races.join("")}</ul>`;
     });
 
-    container.innerHTML = `<div class="race-block">${racesListHtml.join("")}</div>`;
+    container.innerHTML = `<div>${racesListHtml.join("")}</div>`;
+    this.showPanel(VIEW_PANELS.PANEL_CALENDAR);
   }
 
-  renderChampionshipStandings(races, standingsMen, standingsWomen) {
+  renderChampionshipStandings(standingsMen, standingsWomen) {
     this.hideAllPanels();
     // should render race list, men standings, women standings
     const container = document.querySelector("#standings-men");
     const container_wmn = document.querySelector("#standings-women");
-
-    this.renderRaceList(races);
 
     const standingsHTML = standingsMen.map((result) => {
       return `
@@ -351,12 +358,12 @@ export class View {
       </div>`;
     });
 
-    container.innerHTML = `<div>
+    container.innerHTML = `<div class="results-standings">
       <div class="standings-header">Standings Men</div>
       ${standingsHTML.join("")}
       </div>`;
 
-    container_wmn.innerHTML = `<div>
+    container_wmn.innerHTML = `<div class="results-standings">
       <div class="standings-header">Standings Women</div>
       ${standingsWMN_HTML.join("")}
       </div>`;

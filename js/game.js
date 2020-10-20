@@ -322,7 +322,7 @@ export class Game {
 
   // DOM render
   showChampionshipStandings() {
-    const races = this.championship.getRaceList();
+    // const races = this.championship.getRaceList();
     const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
       const player = this.getPlayerById(result.id);
       return {
@@ -342,7 +342,12 @@ export class Game {
       };
     });
 
-    this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
+    this.view.renderChampionshipStandings(standingsMen, standingsWomen);
+  }
+
+  showCalendar() {
+    const races = this.championship.getRaceList();
+    this.view.renderRaceList(races);
   }
 
   showTeamPlayersList() {

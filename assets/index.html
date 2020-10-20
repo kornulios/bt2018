@@ -8,7 +8,7 @@
       <div class="control-group">
         <button type="button" id="champ-teams">Teams list</button>
         <button type="button" id="skip-race">Simulate Race</button>
-        <button type="button" id="champ-races">Championship race list</button>
+        <!-- <button type="button" id="champ-races">Championship race list</button> -->
       </div>
 
       <div class="control-group">
@@ -28,8 +28,8 @@
     <div class="main-panel">
       <div class="menu-panel">
         <button>News</button>
-        <button>Calendar</button>
-        <button>Championship</button>
+        <button id="champ-races">Calendar</button>
+        <button id="champ-standings">Championship</button>
         <button>Team</button>
         <button>Ski service</button>
         <div class="race-button-outer">
@@ -41,13 +41,12 @@
       <div id="main-panel-content">
         <div id="team-panel" class="team-panel inner-panel"></div>
         <div id="finish-results"></div>
+        <div id="race-schedule" class="race-list"></div>
+        <div id="championship-standings" class="championship-standings-panel">
+          <div id="standings-men"></div>
+          <div id="standings-women"></div>
+        </div>
       </div>
-    </div>
-
-    <div id="championship-standings" class="championship-standings-panel">
-      <div id="race-schedule" class="race-list"></div>
-      <div id="standings-men" class="results-standings"></div>
-      <div id="standings-women" class="results-standings"></div>
     </div>
 
     <div id="race-main" class="race-main-panel">
