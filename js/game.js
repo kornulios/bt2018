@@ -54,8 +54,9 @@ export class Game {
 
     this.view.renderPlayerTeam(this.getTeam(this.userTeam));
     this.view.renderMenuNextEvent(this.championship.getNextRace().name);
-
+    
     this.view.hideAllPanels();
+    this.view.showMainPanel();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList();
   }
@@ -312,10 +313,10 @@ export class Game {
 
   endRace() {
     console.log("race finished");
+    this.view.showMainPanel();
     this.view.renderShortResults(this.race);
     this.championship.onRaceFinish(this.race);
     this.race = null;
-    // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       console.log("Season over");
@@ -417,7 +418,7 @@ export class Game {
     return eligiblePlayers;
   }
 
-  // UI DOM EVENTS
+  // RACE UI DOM EVENTS
   onResultSelect(event) {
     const waypointId = event.target.name;
     this.selectedResults = +waypointId;

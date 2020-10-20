@@ -16,14 +16,10 @@ export class View {
   constructor() {
     this.trackView = document.querySelector("#track-info");
     this.flagImages = flagImages();
-    // this.mainView = document.querySelector("#main-view");
-    // this.resultView = document.querySelector("#results-view");
-    // this.playerControls = document.querySelector("#player-controls");
-    // this.intermediateResult = document.querySelector("#intermediate-results");
-    // this.shootingRange = document.querySelector("#range-results");
 
-    // this.viewPanels2 = ["#championship-standings", "#finish-results", "#race-main"];
-
+    this.screenMainPanel = document.querySelector("#main-panel");
+    this.screenRacePanel = document.querySelector("#race-panel");
+    
     this.viewPanels = {
       championship: {
         id: "#championship-standings",
@@ -33,12 +29,12 @@ export class View {
         id: "#finish-results",
         style: "flex",
       },
-      race: {
-        id: "#race-main",
-        style: "flex",
-      },
+      // race: {
+      //   id: "#race-panel",
+      //   style: "flex",
+      // },
       team: {
-        id: "#team-panel",
+        id: "#team-view",
         style: "flex",
       },
       calendar: {
@@ -69,6 +65,17 @@ export class View {
 
   getPanel(panelName) {
     return document.querySelector(this.viewPanels[panelName].id);
+  }
+
+  // 2 MAIN PANEL ON SCREEN
+  showMainPanel() {
+    document.querySelector("#main-panel").style.display = "flex";
+    document.querySelector("#race-panel").style.display = "none";
+  }
+
+  showRacePanel() {
+    this.screenMainPanel.style.display = "none";
+    this.screenRacePanel.style.display = "block";
   }
 
   renderPlayerTeam(team) {
@@ -405,7 +412,8 @@ export class View {
   // }
 
   setupRaceView(race) {
-    this.hideAllPanels();
+    // this.hideAllPanels();
+    this.showRacePanel();
     //waypoints
     const raceName = `${race.stageName} ${race.name}`;
     const waypoints = race.getWaypointsNames();
@@ -416,7 +424,7 @@ export class View {
     const pagingButtons = `<button type="button" class="btn-paging" name="prev">Prev</button>
     <button type="button" class="btn-paging" name="next">Next</button>`;
 
-    this.showPanel(VIEW_PANELS.PANEL_RACE);
+    // this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
     const nameContainer = document.querySelector("#race-name");
