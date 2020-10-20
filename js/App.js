@@ -10,6 +10,7 @@ export class App {
     document.querySelector("#custom-script").addEventListener("click", this.game.customScript.bind(this.game));
 
     document.querySelector("#champ-races").addEventListener("click", this.game.showCalendar.bind(this.game));
+    document.querySelector("#player-team").addEventListener("click", this.game.showTeamPlayersList.bind(this.game));
 
     document
       .querySelector("#champ-standings")

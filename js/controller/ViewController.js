@@ -252,6 +252,8 @@ export class View {
   }
 
   renderTeamPlayersList(players) {
+    this.hideAllPanels();
+    
     const teamM = players[0];
     const teamF = players[1];
 

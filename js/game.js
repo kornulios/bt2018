@@ -52,11 +52,11 @@ export class Game {
     this.initGameData(); // tmp generator
     this.initChampionship();
 
-    // this.view.renderRaceList(this.championship.getRaceList());
+    this.view.renderPlayerTeam(this.getTeam(this.userTeam));
+
     this.view.hideAllPanels();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList();
-    this.view.renderPlayerTeam(this.getTeam(this.userTeam));
   }
 
   initChampionship() {
