@@ -86,6 +86,11 @@ export class View {
     panel.appendChild(name);
   }
 
+  renderMenuNextEvent(eventName) {
+    const el = document.querySelector("#next-event-info");
+    el.innerHTML = `<div>Next event:</div><div>${eventName}</div>`;
+  }
+
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
 
@@ -253,7 +258,7 @@ export class View {
 
   renderTeamPlayersList(players) {
     this.hideAllPanels();
-    
+
     const teamM = players[0];
     const teamF = players[1];
 

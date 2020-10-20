@@ -53,6 +53,7 @@ export class Game {
     this.initChampionship();
 
     this.view.renderPlayerTeam(this.getTeam(this.userTeam));
+    this.view.renderMenuNextEvent(this.championship.getNextRace().name);
 
     this.view.hideAllPanels();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
@@ -112,6 +113,7 @@ export class Game {
     }
   }
 
+  //CANVAS RENDER
   showCurrentResults() {
     const resOffset = this.selectedResultsPage * numberResultsShown;
     const resLength = resOffset + numberResultsShown;
@@ -167,6 +169,7 @@ export class Game {
     this.canvas.drawShootingRange(shootingPlayers);
   }
 
+  // RACE CONTROLS
   simulateRace() {
     if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
 
