@@ -15,7 +15,7 @@ import { Championship } from "./controller/championship";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 10;
+const gameSpeed = 50;
 let tickCounter = 0;
 let domRedrawCounter = 0;
 
@@ -27,7 +27,7 @@ export class Game {
     // this.gameRunning = false;
     // this.playerTeam = "";
     // this.selectedGender = "men";
-    this.userTeam = "UKR";
+    this.userTeam = "CAN";
 
     //ui options
     this.selectedResults = null;
@@ -52,9 +52,13 @@ export class Game {
     this.initGameData(); // tmp generator
     this.initChampionship();
 
-    // this.view.renderRaceList(this.championship.getRaceList());
+    this.view.renderPlayerTeam(this.getTeam(this.userTeam));
+    this.view.renderMenuNextEvent(this.championship.getNextRace().name);
+
     this.view.hideAllPanels();
-    this.view.showPanel(VIEW_PANELS.PANEL_RACE);
+    this.view.showMainPanel();
+    this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
+    this.showTeamPlayersList();
   }
 
   initChampionship() {
@@ -110,6 +114,7 @@ export class Game {
     }
   }
 
+  //CANVAS RENDER
   showCurrentResults() {
     const resOffset = this.selectedResultsPage * numberResultsShown;
     const resLength = resOffset + numberResultsShown;
@@ -165,6 +170,7 @@ export class Game {
     this.canvas.drawShootingRange(shootingPlayers);
   }
 
+  // RACE CONTROLS
   simulateRace() {
     if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
 
@@ -218,17 +224,17 @@ export class Game {
     return playersData;
   }
 
-  getShootingPlayers(players) {
-    const shootingPlayers = players
-      .filter((player) => player.status === Constants.PLAYER_STATUS.SHOOTING || player.shootingTimer > 0)
-      .map((player) => {
-        return {
-          name: player.name,
-          range: player.currentRange,
-          team: player.team,
-          rangeTimer: player.shootingTimer > 0,
-        };
-      });
+  getShootingPlayers() {
+    const shootingPlayers = this.race.shootingRange.map((playerId) => {
+      const player = this.race.getPlayerById(playerId);
+      return {
+        name: player.name,
+        range: player.currentRange,
+        team: player.team,
+        rangeTimer: player.shootingTimer > 0,
+        misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
+      };
+    });
 
     return shootingPlayers;
   }
@@ -307,10 +313,10 @@ export class Game {
 
   endRace() {
     console.log("race finished");
-    this.view.renderShortResults(this.race.getFinishResult());
+    this.view.showMainPanel();
+    this.view.renderShortResults(this.race);
     this.championship.onRaceFinish(this.race);
     this.race = null;
-    // this.showChampionshipStandings();
 
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       console.log("Season over");
@@ -318,8 +324,8 @@ export class Game {
     }
   }
 
+  // DOM render
   showChampionshipStandings() {
-    const races = this.championship.getRaceList();
     const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
       const player = this.getPlayerById(result.id);
       return {
@@ -339,16 +345,23 @@ export class Game {
       };
     });
 
-    this.view.renderChampionshipStandings(races, standingsMen, standingsWomen);
+    this.view.renderChampionshipStandings(standingsMen, standingsWomen);
   }
 
-  showPlayersList() {
-    if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      alert("Season over! Please start a new one");
-      return;
-    }
-    this.prepareNextRace();
-    this.simulateRace();
+  showCalendar() {
+    const races = this.championship.getRaceList();
+    this.view.renderRaceList(races);
+  }
+
+  showTeamPlayersList() {
+    const teamPlayers = this.players
+      .filter((p) => p.team === this.userTeam)
+      .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
+
+    this.view.renderTeamPlayersList([
+      teamPlayers.filter((p) => p.gender === Constants.GENDER.MEN),
+      teamPlayers.filter((p) => p.gender === Constants.GENDER.WOMEN),
+    ]);
   }
 
   // HELPER FUNCTIONS
@@ -356,9 +369,9 @@ export class Game {
     return this.teams.find((team) => team.shortName === player.team);
   }
 
-  // getPlayerByName(name) {
-  //   return this.players.find((player) => player.name === name);
-  // }
+  getTeam(shortName) {
+    return this.teams.find((team) => team.shortName === shortName);
+  }
 
   getPlayerById(id) {
     return this.players.find((player) => player.id === id);
@@ -406,7 +419,7 @@ export class Game {
     return eligiblePlayers;
   }
 
-  // UI DOM EVENTS
+  // RACE UI DOM EVENTS
   onResultSelect(event) {
     const waypointId = event.target.name;
     this.selectedResults = +waypointId;
@@ -432,7 +445,18 @@ export class Game {
 
   // CUSTOM SCRIPT
   customScript() {
-    this.canvas.drawFlagTest();
+    const tempShootingPlayers = [
+      {
+        name: "Player 1",
+        team: "GER",
+        range: [0, 0, 0, 0, 0],
+        rangeTimer: false,
+        misses: 5,
+      },
+    ];
+
+    this.canvas.drawShootingRange(tempShootingPlayers);
+    // this.canvas.drawFlagTest();
   }
 
   // ********************************************************************

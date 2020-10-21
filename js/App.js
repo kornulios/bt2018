@@ -9,8 +9,11 @@ export class App {
     document.querySelector("#start-race").addEventListener("click", this.game.onStartRaceClick.bind(this.game));
     document.querySelector("#custom-script").addEventListener("click", this.game.customScript.bind(this.game));
 
+    document.querySelector("#champ-races").addEventListener("click", this.game.showCalendar.bind(this.game));
+    document.querySelector("#player-team").addEventListener("click", this.game.showTeamPlayersList.bind(this.game));
+
     document
-      .querySelector("#champ-races")
+      .querySelector("#champ-standings")
       .addEventListener("click", this.game.showChampionshipStandings.bind(this.game));
 
     document.querySelector("#pause").addEventListener("click", this.game.pauseGame.bind(this.game));

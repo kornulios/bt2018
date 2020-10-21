@@ -124,16 +124,18 @@ export class Player {
     this.distance += distancePassed;
     if (this.shootingTimer > 0) {
       this.shootingTimer -= elapsedTime;
+      if (this.shootingTimer < 0) this.shootingTimer = 0;
     }
   }
 
   runPenaltyLap(elapsedTime) {
     const fps = elapsedTime;
-    const distancePassed = ((this.currentSpeed * 0.9) / 3600) * fps; // m/ms
+    const distancePassed = ((this.currentSpeed * 0.8) / 3600) * fps; // m/ms
 
     this.penalty -= distancePassed;
     if (this.shootingTimer > 0) {
       this.shootingTimer -= elapsedTime;
+      if (this.shootingTimer < 0) this.shootingTimer = 0;
     }
   }
 

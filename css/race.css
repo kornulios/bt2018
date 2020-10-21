@@ -1,21 +1,23 @@
 .race-list {
-  font-family: "Roboto";
+  font-family: "Raleway";
   padding: 8px;
   flex: 1;
 
-  font-size: 14px;
+  font-size: 1.2rem;
   margin: 0;
+  width: 600px;
 }
-
+/* 
 .race-block {
   width: 220px;
-}
+} */
 
 .race-list li {
   margin: 4px 0;
-  border-radius: 2px;
+  border-radius: 8px;
   list-style: none;
   padding: 2px 8px;
+  
 }
 
 .race-list ul {
@@ -25,24 +27,30 @@
 }
 
 .race-list-header {
-  background: black;
+  background: linear-gradient(90deg, #1c215c 0%, #7d85e9 85%, #1c215c 100%);
+  text-transform: uppercase;
+  font-style: italic;
+  font-size: 1.4rem;
+  font-family: "Raleway";
   color: white;
-  padding: 2px;
-  padding-left: 4px;
+  padding: 8px;
+  border-radius: 10px;
 }
 
 .list-race-finished {
-  background: lightgreen;
+  background: lightpink;
 }
 
 .list-race-next {
-  background: lightpink;
+  background: lightgreen;
 }
 
 .list-race-normal {
   background: white;
 }
 
+
+/* 
 .target-open {
   align-self: center;
   margin: 1px;
@@ -65,7 +73,6 @@
 .range {
   display: flex;
   border: 1px solid lightgray;
-  /* padding: 2px; */
 }
 
 .range-missed {
@@ -96,4 +103,4 @@
   font-size: small;
   font-style: italic;
   flex-direction: column;
-}
+} */

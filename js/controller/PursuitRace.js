@@ -13,7 +13,7 @@ export class PursuitRace extends Race {
     let baseTime = players[0].startTimer;
 
     this.players = players.map((player, i) => {
-      const newPlayer = new Player({...player});
+      const newPlayer = new Player({ ...player });
       const time = player.startTimer - baseTime;
 
       newPlayer.reset();
@@ -39,6 +39,14 @@ export class PursuitRace extends Race {
       }
 
       if (player.status !== PLAYER_STATUS.FINISHED && player.status !== PLAYER_STATUS.NOT_STARTED) {
+        if (
+          this.shootingRange.indexOf(player.id) > -1 &&
+          player.shootingTimer <= 0 &&
+          player.status !== PLAYER_STATUS.SHOOTING
+        ) {
+          this.exitShootingRange(player.id);
+        }
+
         if (player.status === PLAYER_STATUS.RUNNING) {
           const playerPrevDistance = player.distance;
           player.run(gameTick);
@@ -53,6 +61,7 @@ export class PursuitRace extends Race {
           if (passedRange) {
             player.status = PLAYER_STATUS.SHOOTING;
             player.enterShootingRange(passedRange);
+            this.enterShootingRange(player.id);
           }
         } else if (player.status === PLAYER_STATUS.SHOOTING) {
           player.shoot(gameTick);
@@ -62,7 +71,6 @@ export class PursuitRace extends Race {
             const penaltyCount = player.currentRange.filter((r) => r === 0).length;
 
             player.penalty = penaltyCount * track.penaltyLapLength;
-            // player.status = penaltyCount ? PLAYER_STATUS.PENALTY : PLAYER_STATUS.RUNNING;
             player.quitShootingRange(penaltyCount);
           }
         } else if (player.status === PLAYER_STATUS.PENALTY) {

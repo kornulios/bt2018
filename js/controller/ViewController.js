@@ -1,23 +1,24 @@
 import { Utils } from "../utils/Utils";
 import { teamData } from "../data";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants";
+import { flagImages } from "../services/flagService";
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
   PANEL_CHAMPIONSHIP: "championship",
   PANEL_FINISH_RESULTS: "finish-results",
+  PANEL_TEAM: "team",
+  PANEL_MAIN: "main",
+  PANEL_CALENDAR: "calendar",
 };
 
 export class View {
   constructor() {
     this.trackView = document.querySelector("#track-info");
-    this.mainView = document.querySelector("#main-view");
-    this.resultView = document.querySelector("#results-view");
-    this.playerControls = document.querySelector("#player-controls");
-    this.intermediateResult = document.querySelector("#intermediate-results");
-    this.shootingRange = document.querySelector("#range-results");
+    this.flagImages = flagImages();
 
-    this.viewPanels2 = ["#championship-standings", "#finish-results", "#race-main"];
+    this.screenMainPanel = document.querySelector("#main-panel");
+    this.screenRacePanel = document.querySelector("#race-panel");
 
     this.viewPanels = {
       championship: {
@@ -28,10 +29,22 @@ export class View {
         id: "#finish-results",
         style: "flex",
       },
-      race: {
-        id: "#race-main",
+      // race: {
+      //   id: "#race-panel",
+      //   style: "flex",
+      // },
+      team: {
+        id: "#team-view",
         style: "flex",
       },
+      calendar: {
+        id: "#race-schedule",
+        style: "block",
+      },
+      // main: {
+      //   id: "#main-panel-content",
+      //   style: "flex",
+      // },
     };
   }
 
@@ -50,6 +63,40 @@ export class View {
     }
   }
 
+  getPanel(panelName) {
+    return document.querySelector(this.viewPanels[panelName].id);
+  }
+
+  // 2 MAIN PANEL ON SCREEN
+  showMainPanel() {
+    document.querySelector("#main-panel").style.display = "flex";
+    document.querySelector("#race-panel").style.display = "none";
+  }
+
+  showRacePanel() {
+    this.screenMainPanel.style.display = "none";
+    this.screenRacePanel.style.display = "block";
+  }
+
+  renderPlayerTeam(team) {
+    const panel = document.querySelector("#user-team");
+    let img = new Image();
+    img = this.flagImages[team.shortName];
+    img.height = "70";
+    img.width = "106";
+    img.className = "head-flag-img";
+
+    const name = document.createElement("span");
+    name.innerText = "Team - " + team.name;
+    panel.appendChild(img);
+
+    panel.appendChild(name);
+  }
+
+  renderMenuNextEvent(eventName) {
+    const el = document.querySelector("#next-event-info");
+    el.innerHTML = `<div>Next event:</div><div>${eventName}</div>`;
+  }
 
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
@@ -134,44 +181,60 @@ export class View {
     document.querySelector("#run").innerHTML = `<div>${htmlResults.join("")}</div>`;
   }
 
-  renderShortResults(results) {
+  renderShortResults(race) {
     this.hideAllPanels();
 
+    const results = race.getFinishResult();
+    const raceName = race.getRaceName();
+
     const htmlResults = results.map((result, i) => {
       const colors = teamData.find((team) => team.shortName === result.team).colors;
 
-      return `<div class="result-row">
-      <div class="player-cell-small">${i + 1}</div> 
+      return `
+      <div>${i + 1}</div> 
       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-			<div class="player-name">${result.playerName}</div>
+			<div>${result.playerName}</div>
 			<div>${result.team}</div>
 			<div>${result.shootingTotal}</div>
-			<div>${Utils.convertToMinutes(result.time / 1000)}</div>
-			</div>`;
+			<div class="player-result-time">${Utils.convertToMinutes(result.time / 1000)}</div>
+			`;
     });
 
-    const resultData = `<div>${htmlResults.join("")}</div>`;
+    const mainPanel = this.getPanel("finish-results");
+    mainPanel.innerHTML = "";
 
-    this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS, resultData);
+    const headerEl = document.createElement("div");
+    headerEl.innerText = raceName;
+    headerEl.classList.add("race-results-header");
+    mainPanel.appendChild(headerEl);
+
+    const resultEl = document.createElement("div");
+    resultEl.classList.add("finish-results-panel");
+    resultEl.innerHTML = `
+    ${htmlResults.join("")}
+    `;
+
+    mainPanel.appendChild(resultEl);
+
+    this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS);
   }
 
-  renderResults(results) {
-    const htmlResults = results.map((result, i) => {
-      const colors = teamData.find((team) => team.shortName === result.team).colors;
+  // renderResults(results) {
+  //   const htmlResults = results.map((result, i) => {
+  //     const colors = teamData.find((team) => team.shortName === result.team).colors;
 
-      return `<div class="intermediate-row">
-        <div class="player-cell-small">${i + 1}</div>
-        <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-        <div class="player-name">${result.playerName}</div>
-        <div>${result.team}</div>
-        <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-        </div>`;
-    });
+  //     return `
+  //       <div class="player-cell-small">${i + 1}</div>
+  //       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
+  //       <div class="player-name">${result.playerName}</div>
+  //       <div>${result.team}</div>
+  //       <div>${Utils.convertToMinutes(result.time / 1000)}</div>
+  //       `;
+  //   });
 
-    this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
-  }
+  //   this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
+  // }
 
-  
   renderTeamList(teams) {
     const htmlResults = teams
       .map((team) => {
@@ -200,19 +263,59 @@ export class View {
     document.querySelector("#run").innerHTML = `<div>${htmlResults}</div>`;
   }
 
-  renderPlayerList(players) {
-    const playerListHtml = players.map((player) => {
-      return `<li>${player.name} ${player.team} ${player.gender === "male" ? "M" : "F"} S:${player.baseSpeed} A:${
-        player.accuracy
-      }</li>`;
+  renderTeamPlayersList(players) {
+    this.hideAllPanels();
+
+    const teamM = players[0];
+    const teamF = players[1];
+
+    const headerHtml = `
+    <div></div>
+    <div>PTS</div>
+    <div>SPD</div>
+    <div>ACC</div>
+    <div>STR</div>`;
+
+    const panelMenHtml = teamM.map((player) => {
+      return `
+        <div>${player.name}</div>
+        <div>${player.points}</div>
+        <div>${player.baseSpeed}</div>
+        <div>${player.accuracy}</div>
+        <div>${player.strength}</div>
+      `;
     });
 
-    const list = `<ul>${playerListHtml.join("")}</ul>`;
+    const panelWomenHtml = teamF.map((player) => {
+      return `
+        <div>${player.name}</div>
+        <div>${player.points}</div>
+        <div>${player.baseSpeed}</div>
+        <div>${player.accuracy}</div>
+        <div>${player.strength}</div>
+      `;
+    });
 
-    document.querySelector("#run").innerHTML = `<div>${list}</div>`;
+    const grid = `
+    <div class="team-grid">
+      <div class="team-grid-section-header">Team MEN</div>
+      ${headerHtml}
+      ${panelMenHtml.join("")}
+    </div>
+    <div class="team-grid">
+      <div class="team-grid-section-header">Team WOMEN</div>
+      ${headerHtml}
+      ${panelWomenHtml.join("")}
+    </div>
+    `;
+
+    this.showPanel(VIEW_PANELS.PANEL_TEAM, grid);
+    // document.querySelector("#run").innerHTML = `<div>${list}</div>`;
   }
 
   renderRaceList(races) {
+    this.hideAllPanels();
+
     const container = document.querySelector("#race-schedule");
 
     const stages = races.reduce((acc, result) => {
@@ -244,16 +347,15 @@ export class View {
       <ul class="race-list-ul">${races.join("")}</ul>`;
     });
 
-    container.innerHTML = `<div class="race-block">${racesListHtml.join("")}</div>`;
+    container.innerHTML = `<div>${racesListHtml.join("")}</div>`;
+    this.showPanel(VIEW_PANELS.PANEL_CALENDAR);
   }
 
-  renderChampionshipStandings(races, standingsMen, standingsWomen) {
+  renderChampionshipStandings(standingsMen, standingsWomen) {
     this.hideAllPanels();
     // should render race list, men standings, women standings
     const container = document.querySelector("#standings-men");
     const container_wmn = document.querySelector("#standings-women");
-
-    this.renderRaceList(races);
 
     const standingsHTML = standingsMen.map((result) => {
       return `
@@ -273,12 +375,12 @@ export class View {
       </div>`;
     });
 
-    container.innerHTML = `<div>
+    container.innerHTML = `<div class="results-standings">
       <div class="standings-header">Standings Men</div>
       ${standingsHTML.join("")}
       </div>`;
 
-    container_wmn.innerHTML = `<div>
+    container_wmn.innerHTML = `<div class="results-standings">
       <div class="standings-header">Standings Women</div>
       ${standingsWMN_HTML.join("")}
       </div>`;
@@ -287,33 +389,34 @@ export class View {
   }
 
   // SHOOTING
-  renderShootingRange(players = [], target) {
-    const shootingTargetsHTML = players.map((player) => {
-      const rangeHtml = player.range.map((r) => {
-        return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
-      });
+  // renderShootingRange(players = [], target) {
+  //   const shootingTargetsHTML = players.map((player) => {
+  //     const rangeHtml = player.range.map((r) => {
+  //       return r === 1 ? `<div class="target-closed"></div>` : `<div class="target-open"></div>`;
+  //     });
 
-      let rangeClass;
+  //     let rangeClass;
 
-      const playerClass = player.delayed ? "shooting-player shooting-player-delayed" : "shooting-player";
+  //     const playerClass = player.delayed ? "shooting-player shooting-player-delayed" : "shooting-player";
 
-      if (player.missNotification) {
-        rangeClass = "range-missed";
-        player.dismissMissNotification();
-      }
+  //     if (player.missNotification) {
+  //       rangeClass = "range-missed";
+  //       player.dismissMissNotification();
+  //     }
 
-      return `<div class="range">${rangeHtml.join("")} <div class="${playerClass}">${player.name} ${
-        player.team
-      }</div></div>`;
-    });
+  //     return `<div class="range">${rangeHtml.join("")} <div class="${playerClass}">${player.name} ${
+  //       player.team
+  //     }</div></div>`;
+  //   });
 
-    // const container = document.querySelector("#range-results");
+  //   // const container = document.querySelector("#range-results");
 
-    this.shootingRange.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
-  }
+  //   this.shootingRange.innerHTML = `<div class="shooting-container">${shootingTargetsHTML.join("")}</div>`;
+  // }
 
   setupRaceView(race) {
-    this.hideAllPanels();
+    // this.hideAllPanels();
+    this.showRacePanel();
     //waypoints
     const raceName = `${race.stageName} ${race.name}`;
     const waypoints = race.getWaypointsNames();
@@ -324,7 +427,7 @@ export class View {
     const pagingButtons = `<button type="button" class="btn-paging" name="prev">Prev</button>
     <button type="button" class="btn-paging" name="next">Next</button>`;
 
-    this.showPanel(VIEW_PANELS.PANEL_RACE);
+    // this.showPanel(VIEW_PANELS.PANEL_RACE);
 
     const container = document.querySelector("#results-controls");
     const nameContainer = document.querySelector("#race-name");
@@ -335,6 +438,7 @@ export class View {
     pagingContainer.innerHTML = pagingButtons;
   }
 
+  // controls displayed result section
   updateResultsControls(resultsCount) {
     const pagingContainer = document.querySelector("#results-paging");
 
