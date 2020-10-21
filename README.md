@@ -39,20 +39,25 @@ Routes:
 ## Biatech roadmap:
 
 **RC 1**
-- implement resutls pagination (2)
-- create my team in-race panels (5)
-- implement start roster scheduling (5)
-- implement map creator (8)
-
-- switch to playes ID in results (5)
-- start-line players route (3)
+- display more player properties (points) (2)
+- select players for next race by user (5)
 - stage switch (5)
+- enable view of previous results (3)
+- enable modern UI full functions (5)
+- create in-App navigation (5)
+- rework championship standings screen (3)
 
 - enable player team interaction (8)
-  - display a list of players for a team(3)
+  - ski service before the race (3)
 
-- add more teams with colors (3)
-- enlarge map view (2)
+- implement start roster scheduling (5)
 - pause on browser tab switch (3)
+- race speed control (5)
+- start-line players route (3)
 
+- create maps for tracks (5)
 - biathletes traits! (8)
+- newsfeed (8)
+- add player statistics (5)
+
+- store persistent data on backend (8)

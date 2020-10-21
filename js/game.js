@@ -326,7 +326,6 @@ export class Game {
 
   // DOM render
   showChampionshipStandings() {
-    // const races = this.championship.getRaceList();
     const standingsMen = this.championship.getPlayersStandings(Constants.GENDER.MEN, 20).map((result) => {
       const player = this.getPlayerById(result.id);
       return {
@@ -355,7 +354,6 @@ export class Game {
   }
 
   showTeamPlayersList() {
-    // const myTeam = this.teams.find(t => t.shortName === this.userTeam);
     const teamPlayers = this.players.filter((p) => p.team === this.userTeam);
     this.view.renderTeamPlayersList([
       teamPlayers.filter((p) => p.gender === Constants.GENDER.MEN),
