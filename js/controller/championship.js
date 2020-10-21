@@ -13,6 +13,12 @@ export class Championship {
     this.nationPoints = {}; //postponed for future releases
   }
 
+  getPlayerPoints(player) {
+    const pointsMap = player.gender === GENDER.MEN ? this.standingsMen : this.standingsWomen;
+
+    return pointsMap[player.id] || 0;
+  }
+
   getPlayersStandings(gender, resultsNum) {
     const points = gender === GENDER.MEN ? this.standingsMen : this.standingsWomen;
 

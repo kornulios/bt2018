@@ -19,7 +19,7 @@ export class View {
 
     this.screenMainPanel = document.querySelector("#main-panel");
     this.screenRacePanel = document.querySelector("#race-panel");
-    
+
     this.viewPanels = {
       championship: {
         id: "#championship-standings",
@@ -271,6 +271,7 @@ export class View {
 
     const headerHtml = `
     <div></div>
+    <div>PTS</div>
     <div>SPD</div>
     <div>ACC</div>
     <div>STR</div>`;
@@ -278,6 +279,7 @@ export class View {
     const panelMenHtml = teamM.map((player) => {
       return `
         <div>${player.name}</div>
+        <div>${player.points}</div>
         <div>${player.baseSpeed}</div>
         <div>${player.accuracy}</div>
         <div>${player.strength}</div>
@@ -287,6 +289,7 @@ export class View {
     const panelWomenHtml = teamF.map((player) => {
       return `
         <div>${player.name}</div>
+        <div>${player.points}</div>
         <div>${player.baseSpeed}</div>
         <div>${player.accuracy}</div>
         <div>${player.strength}</div>

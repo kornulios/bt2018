@@ -1,6 +1,6 @@
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: auto;
   width: 600px;
   font-family: "Raleway";
@@ -10,7 +10,7 @@
 }
 
 .team-grid-section-header {
-  grid-column: 1 / 5;
+  grid-column: 1 / 6;
   background: linear-gradient(
     90deg,
     #1c215c 0%,

@@ -54,7 +54,7 @@ export class Game {
 
     this.view.renderPlayerTeam(this.getTeam(this.userTeam));
     this.view.renderMenuNextEvent(this.championship.getNextRace().name);
-    
+
     this.view.hideAllPanels();
     this.view.showMainPanel();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
@@ -354,7 +354,10 @@ export class Game {
   }
 
   showTeamPlayersList() {
-    const teamPlayers = this.players.filter((p) => p.team === this.userTeam);
+    const teamPlayers = this.players
+      .filter((p) => p.team === this.userTeam)
+      .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
+
     this.view.renderTeamPlayersList([
       teamPlayers.filter((p) => p.gender === Constants.GENDER.MEN),
       teamPlayers.filter((p) => p.gender === Constants.GENDER.WOMEN),

@@ -39,7 +39,7 @@ Routes:
 ## Biatech roadmap:
 
 **RC 1**
-- display more player properties (points) (2)
+- ~~display more player properties (points) (2)~~
 - select players for next race by user (5)
 - stage switch (5)
 - enable view of previous results (3)
