@@ -1,0 +1,52 @@
+#start-list {
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+}
+
+.start-list {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 2fr;
+  /* flex-direction: column; */
+  /* margin: auto; */
+  width: 600px;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.start-list-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.start-list-name {
+  width: 120px;
+}
+
+
+
+.start-list::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+.start-list::-webkit-scrollbar-thumb {
+  background-color: #7d85e9 ;
+  border-radius: 6px;
+} 
+
+.start-race-buttons {
+  margin: auto;
+}
+
+.start-race-buttons > button {
+  background: darkred;
+  color: white;
+  font-family: "Raleway";
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 0;
+  width: 180px;
+  font-weight: bold;
+}

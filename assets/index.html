@@ -7,12 +7,12 @@
     <div class="app-header">
       <div class="control-group">
         <!-- <button type="button" id="champ-teams">Teams list</button> -->
-        <button type="button" id="skip-race">Simulate Race</button>
+        <!-- <button type="button" id="skip-race">Simulate Race</button> -->
         <!-- <button type="button" id="champ-races">Championship race list</button> -->
       </div>
 
       <div class="control-group">
-        <button type="button" id="start-race">Run next Race</button>
+        <!-- <button type="button" id="start-race">Run next Race</button> -->
         <button type="button" id="custom-script">Custom script</button>
         <button type="button" id="pause">Pause</button>
       </div>
@@ -33,13 +33,14 @@
         <button>Ski service</button>
         <div class="race-button-outer">
           <div id="next-event-info" class="next-event">Next event:</div>
-          <button class="btn-next-race"></button>
+          <button id="next-race" class="btn-next-race"></button>
         </div>
       </div>
 
       <div id="main-panel-content">
         <div id="team-view" class="team-panel inner-panel"></div>
         <div id="finish-results"></div>
+        <div id="start-list"></div>
         <div id="race-schedule" class="race-list"></div>
         <div id="championship-standings" class="championship-standings-panel">
           <div id="standings-men"></div>

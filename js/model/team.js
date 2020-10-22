@@ -13,6 +13,7 @@ export class TeamAI {
 
     this.players = [];
     this.reservePlayers = [];
+    this.nextRacePlayers = [];
 
     this.playerControlled = false;
   }
@@ -40,6 +41,14 @@ export class TeamAI {
 
   getFemalePlayers() {
     return this.players.filter((player) => player.gender === Constants.GENDER.WOMEN);
+  }
+
+  setNextRacePlayer(player) {
+
+  }
+
+  removeNextRacePlayer() {
+    
   }
 
   getNextRacePlayers(players, gender) {

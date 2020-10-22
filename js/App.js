@@ -7,7 +7,7 @@ export class App {
   }
 
   initEvents = () => {
-    document.querySelector("#start-race").addEventListener("click", this.game.onStartRaceClick.bind(this.game));
+    // document.querySelector("#start-race").addEventListener("click", this.game.onStartRaceClick.bind(this.game));
     document.querySelector("#custom-script").addEventListener("click", this.game.customScript.bind(this.game));
 
     document.querySelector("#champ-races").addEventListener("click", this.game.showCalendar.bind(this.game));
@@ -25,10 +25,27 @@ export class App {
 
     document.querySelector("#pause").addEventListener("click", this.game.pauseGame.bind(this.game));
 
-    document.querySelector("#skip-race").addEventListener("click", this.game.onSimulateRaceClick.bind(this.game));
+    document.querySelector("#next-race").addEventListener("click", () => {
+      this.game.showStartList();
+    });
 
     document.querySelector("#results-controls").addEventListener("click", this.game.onResultSelect.bind(this.game));
     document.querySelector("#results-paging").addEventListener("click", this.game.onResultPageSelect.bind(this.game));
+
+    document.querySelector("#start-list").addEventListener("click", (event) => {
+      switch (event.target.name) {
+        case "start-race":
+          this.game.onStartRaceClick();
+          return;
+
+        case "simulate-race":
+          this.game.onSimulateRaceClick();
+          return;
+
+        default:
+          return;
+      }
+    });
   };
 
   start() {

@@ -28,6 +28,11 @@
   border-radius: 10px;
 }
 
+.team-grid-section-quota {
+  background: none;
+  margin-bottom: 12px;
+}
+
 .team-grid-row {
   display: flex;
   justify-content: space-between;

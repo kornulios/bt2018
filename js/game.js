@@ -239,23 +239,23 @@ export class Game {
     return shootingPlayers;
   }
 
-  async onSimulateRaceClick() {
+  onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
     if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
-      await this.prepareNextRace();
+      // await this.prepareNextRace();
     }
     this.simulateRace();
   }
 
-  async onStartRaceClick() {
+  onStartRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    await this.prepareNextRace();
+    // await this.prepareNextRace();
     this.startNextRace();
   }
 
@@ -354,11 +354,17 @@ export class Game {
   }
 
   showTeamPlayersList(gender) {
+    const myTeam = this.getTeam(this.userTeam);
     const teamPlayers = this.players
       .filter((p) => p.team === this.userTeam && p.gender === gender)
       .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
 
-    this.view.renderTeamPlayersList(teamPlayers);
+    this.view.renderTeamPlayersList(teamPlayers, 5);
+  }
+
+  async showStartList() {
+    await this.prepareNextRace();
+    this.view.renderStartList(this.race.players);
   }
 
   // HELPER FUNCTIONS
