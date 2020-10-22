@@ -1,4 +1,4 @@
-import * as Constants from '../constants/constants';
+import * as Constants from "../constants/constants";
 
 export class TeamAI {
   constructor(team) {
@@ -43,13 +43,9 @@ export class TeamAI {
     return this.players.filter((player) => player.gender === Constants.GENDER.WOMEN);
   }
 
-  setNextRacePlayer(player) {
+  setNextRacePlayer(player) {}
 
-  }
-
-  removeNextRacePlayer() {
-    
-  }
+  removeNextRacePlayer() {}
 
   getNextRacePlayers(players, gender) {
     const myPlayers = this.getTeamPlayers(players).filter((player) => player.gender === gender);
@@ -58,9 +54,24 @@ export class TeamAI {
 
     const playersWeight = this.weightPlayers(myPlayers).slice(0, quota);
 
-    return players.filter((player) => {
-      return playersWeight.find((pw) => pw.id === player.id);
-    });
+    let roster = [];
+
+    const startGroupMap = {
+      1: [4],
+      2: [3, 4],
+      3: [2, 3, 4],
+      4: [1, 2, 3, 4],
+      5: [1, 1, 2, 3, 4],
+      6: [1, 1, 2, 2, 3, 4],
+    };
+
+    for (let i = 0; i < playersWeight.length; i++) {
+      const player = myPlayers.find((p) => p.id === playersWeight[i].id);
+      player.startGroup = startGroupMap[playersWeight.length][i];
+      roster.push(myPlayers.find((p) => p.id === playersWeight[i].id));
+    }
+
+    return roster;
   }
 
   getNextRelayPlayers(players, gender) {

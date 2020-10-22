@@ -263,11 +263,13 @@ export class Game {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
     let playerRoster = [];
+    let aiRoster = [];
 
     // get players from teamAI as per quotas
     switch (nextRace.raceType) {
       case "Individual":
-        playerRoster = this.aiSelectRacePlayers(nextRace);
+        aiRoster = this.aiSelectRacePlayers(nextRace);
+        playerRoster = this.aiRaceRosterDraw(aiRoster);
         this.race = new IndividualRace();
         break;
       case "Mass-start":
@@ -275,7 +277,8 @@ export class Game {
         this.race = new MassStartRace();
         break;
       case "Sprint":
-        playerRoster = this.aiSelectRacePlayers(nextRace);
+        aiRoster = this.aiSelectRacePlayers(nextRace);
+        playerRoster = this.aiRaceRosterDraw(aiRoster);
         this.race = new SprintRace();
         break;
       case "Pursuit":
@@ -318,6 +321,7 @@ export class Game {
     this.championship.onRaceFinish(this.race);
     this.race = null;
 
+    this.view.renderMenuNextEvent(this.championship.getNextRace().name);
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       console.log("Season over");
       this.showChampionshipStandings();
@@ -363,6 +367,11 @@ export class Game {
   }
 
   async showStartList() {
+    if (this.race) {
+      this.view.renderStartList(this.race.players);
+      return;
+    }
+
     await this.prepareNextRace();
     this.view.renderStartList(this.race.players);
   }
@@ -381,6 +390,23 @@ export class Game {
   }
 
   // PREPARING THE ROSTER FOR NEXT RACE
+  aiRaceRosterDraw(playerRoster) {
+    const newRoster = [];
+
+    const groups = [0, 1, 2, 3].map((i) => {
+      return playerRoster.filter((p) => p.startGroup === i + 1);
+    });
+
+    for (let i = 0; i < groups.length; i++) {
+      do {
+        const index = Utils.rand(0, groups[i].length) - 1;
+        newRoster.push(groups[i].splice(index, 1)[0]);
+      } while (groups[i].length);
+    }
+
+    return newRoster;
+  }
+
   aiSelectRacePlayers(nextRace) {
     return this.teams
       .map((team) => {

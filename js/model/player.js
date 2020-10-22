@@ -29,6 +29,7 @@ export class Player {
     this.penaltyTime = 0;
 
     //race related
+    this.startGroup = null;
     this.number = null;
     this.status = PLAYER_STATUS.NOT_STARTED;
     this.startTimer = args.startTimer;
