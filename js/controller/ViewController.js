@@ -235,77 +235,50 @@ export class View {
   //   this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
   // }
 
-  renderTeamList(teams) {
-    const htmlResults = teams
-      .map((team) => {
-        const maleList = team
-          .getMalePlayers()
-          .map((player) => {
-            return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`;
-          })
-          .join("");
-
-        const femaleList = team
-          .getFemalePlayers()
-          .map((player) => {
-            return `<li>${player.name} S:${player.baseSpeed} A:${player.accuracy}</li>`;
-          })
-          .join("");
-
-        return `<div>${team.name}</div>
-			<div class="player-list">
-				<ul>${maleList}</ul>
-				<ul>${femaleList}</ul>
-			</div>`;
-      })
-      .join("");
-
-    document.querySelector("#run").innerHTML = `<div>${htmlResults}</div>`;
-  }
-
   renderTeamPlayersList(players) {
     this.hideAllPanels();
 
-    const teamM = players[0];
-    const teamF = players[1];
+    // const teamM = players[0];
+    // const teamF = players[1];
 
     const headerHtml = `
-    <div></div>
-    <div>PTS</div>
-    <div>SPD</div>
-    <div>ACC</div>
-    <div>STR</div>`;
+    <div class="team-grid-row">
+      <div class="row-name"></div>
+      <div>PTS</div>
+      <div>SPD</div>
+      <div>ACC</div>
+      <div>STR</div>
+    </div>`;
 
-    const panelMenHtml = teamM.map((player) => {
+    const panelMenHtml = players.map((player) => {
       return `
-        <div>${player.name}</div>
+      <div class="team-grid-row">
+        <div class="row-name">${player.name}</div>
         <div>${player.points}</div>
         <div>${player.baseSpeed}</div>
         <div>${player.accuracy}</div>
         <div>${player.strength}</div>
+      </div>
       `;
     });
 
-    const panelWomenHtml = teamF.map((player) => {
-      return `
-        <div>${player.name}</div>
-        <div>${player.points}</div>
-        <div>${player.baseSpeed}</div>
-        <div>${player.accuracy}</div>
-        <div>${player.strength}</div>
-      `;
-    });
+    // const panelWomenHtml = teamF.map((player) => {
+    //   return `
+    //   <div class="team-grid-row">
+    //     <div class="row-name">${player.name}</div>
+    //     <div>${player.points}</div>
+    //     <div>${player.baseSpeed}</div>
+    //     <div>${player.accuracy}</div>
+    //     <div>${player.strength}</div>
+    //   </div>
+    //   `;
+    // });
 
     const grid = `
     <div class="team-grid">
       <div class="team-grid-section-header">Team MEN</div>
       ${headerHtml}
       ${panelMenHtml.join("")}
-    </div>
-    <div class="team-grid">
-      <div class="team-grid-section-header">Team WOMEN</div>
-      ${headerHtml}
-      ${panelWomenHtml.join("")}
     </div>
     `;
 

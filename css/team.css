@@ -1,7 +1,8 @@
 .team-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: auto;
+  display: flex;
+  flex-direction: column;
+  /* grid-template-columns: repeat(5, 1fr); */
+  /* grid-auto-rows: auto; */
   width: 600px;
   font-family: "Raleway";
   font-size: 1.3rem;
@@ -10,7 +11,8 @@
 }
 
 .team-grid-section-header {
-  grid-column: 1 / 6;
+  /* grid-column: 1 / 6; */
+  display: flex;
   background: linear-gradient(
     90deg,
     #1c215c 0%,
@@ -24,4 +26,22 @@
   color: white;
   padding: 8px;
   border-radius: 10px;
+}
+
+.team-grid-row {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #1c215c;
+  border-radius: 20px;
+  padding: 8px;
+  margin: 4px 0;
+  background: white;
+}
+
+.team-grid-row .row-name {
+  flex: 1.3;
+}
+
+.team-grid-row div {
+  flex: 1;
 }
