@@ -48,7 +48,7 @@ export class Player {
   }
 
   _getRandomSpeed() {
-    return this.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2300, 1900) / 100;
+    return this.gender === "men" ? Utils.rand(2600, 2200) / 100 : Utils.rand(2450, 1900) / 100;
   }
 
   static create(name, team, gender) {
@@ -149,7 +149,7 @@ export class Player {
 
       //load rifle
       this.rifle = {
-        aimTime: 35000, // 35 - 45s
+        aimTime: Utils.rand(35000, 50000), // 35 - 45s
       };
     }
   }

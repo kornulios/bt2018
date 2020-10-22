@@ -56,8 +56,10 @@ Routes:
 - start-line players route (3)
 
 - create maps for tracks (5)
-- biathletes traits! (8)
-- newsfeed (8)
 - add player statistics (5)
 
+
+**RC 2**
+- newsfeed (8)
+- biathletes traits! (8)
 - store persistent data on backend (8)
