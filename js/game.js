@@ -321,10 +321,11 @@ export class Game {
     this.championship.onRaceFinish(this.race);
     this.race = null;
 
-    this.view.renderMenuNextEvent(this.championship.getNextRace().name);
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      console.log("Season over");
+      this.view.renderMenuNextEvent("Season over");
       this.showChampionshipStandings();
+    } else {
+      this.view.renderMenuNextEvent(this.championship.getNextRace().name);
     }
   }
 
@@ -368,12 +369,12 @@ export class Game {
 
   async showStartList() {
     if (this.race) {
-      this.view.renderStartList(this.race.players);
+      this.view.renderStartList(this.race.players, this.race.stageName + ' - ' + this.race.name);
       return;
     }
 
     await this.prepareNextRace();
-    this.view.renderStartList(this.race.players);
+    this.view.renderStartList(this.race.players, this.race.stageName + ' - ' + this.race.name);
   }
 
   // HELPER FUNCTIONS
@@ -399,7 +400,7 @@ export class Game {
 
     for (let i = 0; i < groups.length; i++) {
       do {
-        const index = Utils.rand(0, groups[i].length) - 1;
+        const index = Utils.rand(groups[i].length - 1, 0);
         newRoster.push(groups[i].splice(index, 1)[0]);
       } while (groups[i].length);
     }

@@ -50,3 +50,22 @@
   width: 180px;
   font-weight: bold;
 }
+
+.start-list-header {
+  font-family: "Raleway";
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+  background-color: #1c215c;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+
+.start-list-header .start-list-racename {
+  font-size: 1rem;
+  font-weight: normal;
+}

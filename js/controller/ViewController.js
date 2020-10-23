@@ -216,7 +216,7 @@ export class View {
     this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS);
   }
 
-  renderStartList(startListPlayers) {
+  renderStartList(startListPlayers, raceName) {
     this.hideAllPanels();
     const mainPanel = this.getPanel("start-list");
     mainPanel.innerHTML = "";
@@ -232,6 +232,10 @@ export class View {
 			`;
     });
 
+    const headerEl = document.createElement("div");
+    headerEl.innerHTML = `<div>Start List</div><div class="start-list-racename">${raceName}</div>`;
+    headerEl.classList.add("start-list-header");
+
     const listEl = document.createElement("div");
     listEl.classList.add("start-list");
     listEl.innerHTML = htmlResults.join("");
@@ -243,6 +247,7 @@ export class View {
       <button type="button" name="simulate-race">Simulate</button>
     `;
 
+    mainPanel.appendChild(headerEl);
     mainPanel.appendChild(listEl);
     mainPanel.appendChild(buttonsEl);
     this.showPanel(VIEW_PANELS.PANEL_START_LIST);
