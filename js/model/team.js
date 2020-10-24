@@ -1,5 +1,14 @@
 import * as Constants from "../constants/constants";
 
+const startGroupMap = {
+  1: [4],
+  2: [3, 4],
+  3: [2, 3, 4],
+  4: [1, 2, 3, 4],
+  5: [1, 1, 2, 3, 4],
+  6: [1, 1, 2, 2, 3, 4],
+};
+
 export class TeamAI {
   constructor(team) {
     this.name = team.name;
@@ -16,6 +25,7 @@ export class TeamAI {
     this.nextRacePlayers = [];
 
     this.playerControlled = false;
+    this.isTeamReady = false;
   }
 
   getColors() {
@@ -43,11 +53,7 @@ export class TeamAI {
     return this.players.filter((player) => player.gender === Constants.GENDER.WOMEN);
   }
 
-  setNextRacePlayer(player) {}
-
-  removeNextRacePlayer() {}
-
-  getNextRacePlayers(players, gender) {
+  getNextRacePlayersAI(players, gender) {
     const myPlayers = this.getTeamPlayers(players).filter((player) => player.gender === gender);
 
     const quota = gender === "male" ? this.raceQuota.men : this.raceQuota.women;
@@ -55,15 +61,6 @@ export class TeamAI {
     const playersWeight = this.weightPlayers(myPlayers).slice(0, quota);
 
     let roster = [];
-
-    const startGroupMap = {
-      1: [4],
-      2: [3, 4],
-      3: [2, 3, 4],
-      4: [1, 2, 3, 4],
-      5: [1, 1, 2, 3, 4],
-      6: [1, 1, 2, 2, 3, 4],
-    };
 
     for (let i = 0; i < playersWeight.length; i++) {
       const player = myPlayers.find((p) => p.id === playersWeight[i].id);
@@ -103,5 +100,30 @@ export class TeamAI {
       });
   }
 
-  addPlayerToRace(player) {}
+  getNextRacePlayers() {
+    return this.nextRacePlayers;
+  }
+
+  addPlayerToRace(player, startingGroup) {
+    if (this.isTeamReady) {
+      return;
+    }
+
+    const newPlayer = { ...player, startGroup: startingGroup };
+    this.nextRacePlayers.push(newPlayer);
+    if (this.nextRacePlayers.length === this.raceQuota[player.gender]) {
+      this.isTeamReady = true;
+    }
+  }
+
+  clearNextRacePlayers() {
+    this.nextRacePlayers = [];
+    this.isTeamReady = false;
+  }
+
+  getNextStartGroup(gender) {
+    const playersSelected = this.nextRacePlayers.length;
+    const quota = startGroupMap[this.raceQuota[gender]];
+    return quota[playersSelected];
+  }
 }

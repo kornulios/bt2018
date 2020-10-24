@@ -50,3 +50,19 @@
 .team-grid-row div {
   flex: 1;
 }
+
+.team-player-selected-group-1 {
+  background: lightgreen;
+}
+
+.team-player-selected-group-2 {
+  background: lightyellow;
+}
+
+.team-player-selected-group-3 {
+  background: lightblue;
+}
+
+.team-player-selected-group-4 {
+  background: lightcoral;
+}

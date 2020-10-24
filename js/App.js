@@ -31,6 +31,10 @@ export class App {
 
     document.querySelector("#results-controls").addEventListener("click", this.game.onResultSelect.bind(this.game));
     document.querySelector("#results-paging").addEventListener("click", this.game.onResultPageSelect.bind(this.game));
+    
+    // document.querySelector("#player-selection").addEventListener("click", (event) => {
+    //   this.game.onPlayerSelectorClick(event.target.name);
+    // });
 
     document.querySelector("#start-list").addEventListener("click", (event) => {
       switch (event.target.name) {

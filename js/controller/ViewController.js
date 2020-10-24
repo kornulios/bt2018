@@ -11,6 +11,7 @@ export const VIEW_PANELS = {
   PANEL_MAIN: "main",
   PANEL_CALENDAR: "calendar",
   PANEL_START_LIST: "start-list",
+  PANEL_PLAYER_SELECTOR: "player-selection",
 };
 
 export class View {
@@ -40,6 +41,10 @@ export class View {
       },
       "start-list": {
         id: "#start-list",
+        style: "flex",
+      },
+      "player-selection": {
+        id: "#player-selection",
         style: "flex",
       },
     };
@@ -75,6 +80,7 @@ export class View {
     this.screenRacePanel.style.display = "block";
   }
 
+  // PLAYER TEAM HEADER
   renderPlayerTeam(team) {
     const panel = document.querySelector("#user-team");
     let img = new Image();
@@ -90,11 +96,13 @@ export class View {
     panel.appendChild(name);
   }
 
+  // MENU
   renderMenuNextEvent(eventName) {
     const el = document.querySelector("#next-event-info");
     el.innerHTML = `<div>Next event:</div><div>${eventName}</div>`;
   }
 
+  // SCREENS
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
 
@@ -203,13 +211,13 @@ export class View {
     const headerEl = document.createElement("div");
     headerEl.innerText = raceName;
     headerEl.classList.add("race-results-header");
-    
+
     const resultEl = document.createElement("div");
     resultEl.classList.add("finish-results-panel");
     resultEl.innerHTML = `
     ${htmlResults.join("")}
     `;
-    
+
     mainPanel.appendChild(headerEl);
     mainPanel.appendChild(resultEl);
 
@@ -241,7 +249,7 @@ export class View {
     listEl.innerHTML = htmlResults.join("");
 
     const buttonsEl = document.createElement("div");
-    buttonsEl.classList.add('start-race-buttons');
+    buttonsEl.classList.add("start-race-buttons");
     buttonsEl.innerHTML = `
       <button type="button" name="start-race">Start</button>
       <button type="button" name="simulate-race">Simulate</button>
@@ -253,27 +261,49 @@ export class View {
     this.showPanel(VIEW_PANELS.PANEL_START_LIST);
   }
 
-  // renderResults(results) {
-  //   const htmlResults = results.map((result, i) => {
-  //     const colors = teamData.find((team) => team.shortName === result.team).colors;
+  renderPlayerSelector(players, team, onPlayerSelect) {
+    this.hideAllPanels();
 
-  //     return `
-  //       <div class="player-cell-small">${i + 1}</div>
-  //       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-  //       <div class="player-name">${result.playerName}</div>
-  //       <div>${result.team}</div>
-  //       <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-  //       `;
-  //   });
+    const gender = players[0].gender;
+    const selectedPlayers = team.getNextRacePlayers();
+    const quota = team.raceQuota[gender];
+    const nextStartGroup = team.getNextStartGroup(gender);
 
-  //   this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
-  // }
+    const panel = document.createElement("div");
+
+    panel.innerHTML = `<div>Next Race Federation Quota: ${selectedPlayers.length}/${quota}</div>
+    ${nextStartGroup ? `<div>Select next player for start group ${nextStartGroup}</div>` : ""}`;
+
+    players.forEach((player) => {
+      const startingGroup = selectedPlayers.find((p) => p.id === player.id)
+        ? selectedPlayers.find((p) => p.id === player.id).startGroup
+        : 0;
+
+      const button = document.createElement("button");
+      button.classList.add("team-grid-row");
+      if (startingGroup) {
+        button.classList.add(`team-player-selected-group-${startingGroup}`);
+      }
+      button.innerHTML = `<div>${player.name}</div>
+      <div>${player.baseSpeed}</div>
+      <div>${player.accuracy}</div>
+      <div>${player.points}</div>
+      `;
+
+      button.onclick = () => onPlayerSelect(player.id);
+
+      panel.appendChild(button);
+    });
+
+    const mainPanel = this.getPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
+    mainPanel.innerHTML = "";
+    mainPanel.appendChild(panel);
+
+    this.showPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
+  }
 
   renderTeamPlayersList(players, raceQuota) {
     this.hideAllPanels();
-
-    // const teamM = players[0];
-    // const teamF = players[1];
 
     const headerHtml = `
     <div class="team-grid-row">
