@@ -61,6 +61,8 @@ export class Game {
     this.showTeamPlayersList("men");
 
     this.onPlayerSelectorClick = this.onPlayerSelectorClick.bind(this);
+    this.onPlayerSelectorClear = this.onPlayerSelectorClear.bind(this);
+    this.onPlayerSelectionDone = this.onPlayerSelectionDone.bind(this);
   }
 
   initChampionship() {
@@ -271,6 +273,18 @@ export class Game {
     this.showPlayerSelector();
   }
 
+  onPlayerSelectorClear() {
+    const team = this.getUserTeam();
+    team.clearNextRacePlayers();
+    this.showPlayerSelector();
+  }
+
+  onPlayerSelectionDone() {
+    const team = this.getUserTeam();
+    team.isTeamReady = true;
+    this.showStartList();
+  }
+
   async prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
@@ -330,7 +344,7 @@ export class Game {
     console.log("race finished");
     const team = this.getUserTeam();
     team.clearNextRacePlayers();
-    
+
     this.view.showMainPanel();
     this.view.renderShortResults(this.race);
     this.championship.onRaceFinish(this.race);
@@ -410,7 +424,9 @@ export class Game {
     this.view.renderPlayerSelector(
       teamPlayers,
       team,
-      this.onPlayerSelectorClick
+      this.onPlayerSelectorClick,
+      this.onPlayerSelectorClear,
+      this.onPlayerSelectionDone
     );
   }
 

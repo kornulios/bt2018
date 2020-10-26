@@ -105,7 +105,7 @@ export class TeamAI {
   }
 
   addPlayerToRace(player, startingGroup) {
-    if (this.isTeamReady) {
+    if (this.isTeamReady || this.nextRacePlayers.find(p => p.id === player.id)) {
       return;
     }
 

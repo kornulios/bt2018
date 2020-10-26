@@ -35,7 +35,8 @@
 
 .team-grid-row {
   display: flex;
-  justify-content: space-between;
+  width: 100%;
+  /* justify-content: space-between; */
   border: 1px solid #1c215c;
   border-radius: 20px;
   padding: 8px;
@@ -49,6 +50,29 @@
 
 .team-grid-row div {
   flex: 1;
+}
+
+#player-selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-selector-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+}
+
+.player-selector-buttons > button {
+  flex: 1;
+  background: darkred;
+  color: white;
+  font-family: "Raleway";
+  font-size: 1rem;
+  border: none;
+  padding: 8px;
+  border-radius: 20px;
+  font-weight: bold;
 }
 
 .team-player-selected-group-1 {

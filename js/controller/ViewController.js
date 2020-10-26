@@ -261,7 +261,7 @@ export class View {
     this.showPanel(VIEW_PANELS.PANEL_START_LIST);
   }
 
-  renderPlayerSelector(players, team, onPlayerSelect) {
+  renderPlayerSelector(players, team, onPlayerSelect, onClearSelection, onSelectionDone) {
     this.hideAllPanels();
 
     const gender = players[0].gender;
@@ -298,6 +298,20 @@ export class View {
     const mainPanel = this.getPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
     mainPanel.innerHTML = "";
     mainPanel.appendChild(panel);
+
+    const buttonPanel = document.createElement("div");
+    const clearButton = document.createElement("button");
+    const doneButton = document.createElement("button");
+    buttonPanel.classList.add("player-selector-buttons");
+    clearButton.innerText = "Clear";
+    clearButton.onclick = () => onClearSelection();
+    doneButton.innerText = "Done";
+    doneButton.onclick = () => onSelectionDone();
+
+    buttonPanel.appendChild(clearButton);
+    buttonPanel.appendChild(doneButton);
+
+    mainPanel.appendChild(buttonPanel);
 
     this.showPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
   }
