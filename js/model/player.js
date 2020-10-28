@@ -150,7 +150,7 @@ export class Player {
 
       //load rifle
       this.rifle = {
-        aimTime: Utils.rand(35000, 50000), // 35 - 45s
+        aimTime: Utils.rand(50000, 35000), // 35 - 45s
       };
     }
   }

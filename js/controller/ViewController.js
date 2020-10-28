@@ -11,6 +11,7 @@ export const VIEW_PANELS = {
   PANEL_MAIN: "main",
   PANEL_CALENDAR: "calendar",
   PANEL_START_LIST: "start-list",
+  PANEL_PLAYER_SELECTOR: "player-selection",
 };
 
 export class View {
@@ -40,6 +41,10 @@ export class View {
       },
       "start-list": {
         id: "#start-list",
+        style: "flex",
+      },
+      "player-selection": {
+        id: "#player-selection",
         style: "flex",
       },
     };
@@ -75,6 +80,7 @@ export class View {
     this.screenRacePanel.style.display = "block";
   }
 
+  // PLAYER TEAM HEADER
   renderPlayerTeam(team) {
     const panel = document.querySelector("#user-team");
     let img = new Image();
@@ -90,11 +96,13 @@ export class View {
     panel.appendChild(name);
   }
 
+  // MENU
   renderMenuNextEvent(eventName) {
     const el = document.querySelector("#next-event-info");
     el.innerHTML = `<div>Next event:</div><div>${eventName}</div>`;
   }
 
+  // SCREENS
   renderShortRelayResults(results, track) {
     const teamResults = results.data.filter((res) => res.waypoint === track.getFinishWaypoint() && res.leg === 4);
 
@@ -203,20 +211,20 @@ export class View {
     const headerEl = document.createElement("div");
     headerEl.innerText = raceName;
     headerEl.classList.add("race-results-header");
-    
+
     const resultEl = document.createElement("div");
     resultEl.classList.add("finish-results-panel");
     resultEl.innerHTML = `
     ${htmlResults.join("")}
     `;
-    
+
     mainPanel.appendChild(headerEl);
     mainPanel.appendChild(resultEl);
 
     this.showPanel(VIEW_PANELS.PANEL_FINISH_RESULTS);
   }
 
-  renderStartList(startListPlayers) {
+  renderStartList(startListPlayers, raceName) {
     this.hideAllPanels();
     const mainPanel = this.getPanel("start-list");
     mainPanel.innerHTML = "";
@@ -232,43 +240,86 @@ export class View {
 			`;
     });
 
+    const headerEl = document.createElement("div");
+    headerEl.innerHTML = `<div>Start List</div><div class="start-list-racename">${raceName}</div>`;
+    headerEl.classList.add("start-list-header");
+
     const listEl = document.createElement("div");
     listEl.classList.add("start-list");
     listEl.innerHTML = htmlResults.join("");
 
     const buttonsEl = document.createElement("div");
-    buttonsEl.classList.add('start-race-buttons');
+    buttonsEl.classList.add("start-race-buttons");
     buttonsEl.innerHTML = `
       <button type="button" name="start-race">Start</button>
       <button type="button" name="simulate-race">Simulate</button>
     `;
 
+    mainPanel.appendChild(headerEl);
     mainPanel.appendChild(listEl);
     mainPanel.appendChild(buttonsEl);
     this.showPanel(VIEW_PANELS.PANEL_START_LIST);
   }
 
-  // renderResults(results) {
-  //   const htmlResults = results.map((result, i) => {
-  //     const colors = teamData.find((team) => team.shortName === result.team).colors;
+  renderPlayerSelector(players, team, onPlayerSelect, onClearSelection, onSelectionDone) {
+    this.hideAllPanels();
 
-  //     return `
-  //       <div class="player-cell-small">${i + 1}</div>
-  //       <div class="player-bub" style="background: ${colors[0]}; color: ${colors[1]}">${result.playerNumber}</div>
-  //       <div class="player-name">${result.playerName}</div>
-  //       <div>${result.team}</div>
-  //       <div>${Utils.convertToMinutes(result.time / 1000)}</div>
-  //       `;
-  //   });
+    const gender = players[0].gender;
+    const selectedPlayers = team.getNextRacePlayers();
+    const quota = team.raceQuota[gender];
+    const nextStartGroup = team.getNextStartGroup(gender);
 
-  //   this.intermediateResult.innerHTML = `<div class="intermediate-results">${htmlResults.join("")}</div>`;
-  // }
+    const panel = document.createElement("div");
+
+    panel.classList.add("team-grid");
+    panel.innerHTML = `<div>Next Race Federation Quota: ${selectedPlayers.length}/${quota}</div>
+    ${nextStartGroup ? `<div>Select next player for start group ${nextStartGroup}</div>` : ""}`;
+
+    players.forEach((player) => {
+      const startingGroup = selectedPlayers.find((p) => p.id === player.id)
+        ? selectedPlayers.find((p) => p.id === player.id).startGroup
+        : 0;
+
+      const button = document.createElement("button");
+      button.classList.add("team-grid-row");
+      if (startingGroup) {
+        button.classList.add(`team-player-selected-group-${startingGroup}`);
+      }
+      button.innerHTML = `<div class="row-name">${player.name}</div>
+      <div>SPD:${player.baseSpeed}</div>
+      <div ${player.accuracy > 90 && "style='color:green'"}>A:${player.accuracy}</div>
+      <div>STR:${player.strength}</div>
+      <div>PTS:${player.points}</div>
+      `;
+
+      button.onclick = () => onPlayerSelect(player.id);
+
+      panel.appendChild(button);
+    });
+
+    const mainPanel = this.getPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
+    mainPanel.innerHTML = "";
+    mainPanel.appendChild(panel);
+
+    const buttonPanel = document.createElement("div");
+    const clearButton = document.createElement("button");
+    const doneButton = document.createElement("button");
+    buttonPanel.classList.add("player-selector-buttons");
+    clearButton.innerText = "Clear";
+    clearButton.onclick = () => onClearSelection();
+    doneButton.innerText = "Done";
+    doneButton.onclick = () => onSelectionDone();
+
+    buttonPanel.appendChild(clearButton);
+    buttonPanel.appendChild(doneButton);
+
+    mainPanel.appendChild(buttonPanel);
+
+    this.showPanel(VIEW_PANELS.PANEL_PLAYER_SELECTOR);
+  }
 
   renderTeamPlayersList(players, raceQuota) {
     this.hideAllPanels();
-
-    // const teamM = players[0];
-    // const teamF = players[1];
 
     const headerHtml = `
     <div class="team-grid-row">

@@ -59,6 +59,10 @@ export class Game {
     this.view.showMainPanel();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList("men");
+
+    this.onPlayerSelectorClick = this.onPlayerSelectorClick.bind(this);
+    this.onPlayerSelectorClear = this.onPlayerSelectorClear.bind(this);
+    this.onPlayerSelectionDone = this.onPlayerSelectionDone.bind(this);
   }
 
   initChampionship() {
@@ -259,6 +263,28 @@ export class Game {
     this.startNextRace();
   }
 
+  onPlayerSelectorClick(playerId) {
+    const nextRaceGender = this.championship.getNextRace().raceGender;
+    const player = this.getPlayerById(playerId);
+    const team = this.getUserTeam();
+    const nextStartGroup = team.getNextStartGroup(nextRaceGender);
+
+    team.addPlayerToRace(player, nextStartGroup);
+    this.showPlayerSelector();
+  }
+
+  onPlayerSelectorClear() {
+    const team = this.getUserTeam();
+    team.clearNextRacePlayers();
+    this.showPlayerSelector();
+  }
+
+  onPlayerSelectionDone() {
+    const team = this.getUserTeam();
+    team.isTeamReady = true;
+    this.showStartList();
+  }
+
   async prepareNextRace() {
     // get next race definition from championship
     const nextRace = this.championship.getNextRace();
@@ -316,15 +342,19 @@ export class Game {
 
   endRace() {
     console.log("race finished");
+    const team = this.getUserTeam();
+    team.clearNextRacePlayers();
+
     this.view.showMainPanel();
     this.view.renderShortResults(this.race);
     this.championship.onRaceFinish(this.race);
     this.race = null;
 
-    this.view.renderMenuNextEvent(this.championship.getNextRace().name);
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
-      console.log("Season over");
+      this.view.renderMenuNextEvent("Season over");
       this.showChampionshipStandings();
+    } else {
+      this.view.renderMenuNextEvent(this.championship.getNextRace().name);
     }
   }
 
@@ -367,13 +397,37 @@ export class Game {
   }
 
   async showStartList() {
-    if (this.race) {
-      this.view.renderStartList(this.race.players);
-      return;
+    const nextRace = this.championship.getNextRace();
+    const userTeam = this.getUserTeam();
+
+    if (nextRace.raceType === "Sprint" || nextRace.raceType === "Individual") {
+      if (!userTeam.isTeamReady) {
+        this.showPlayerSelector();
+        return;
+      }
     }
 
-    await this.prepareNextRace();
-    this.view.renderStartList(this.race.players);
+    if (!this.race) {
+      await this.prepareNextRace();
+    }
+
+    this.view.renderStartList(this.race.players, this.race.stageName + " - " + this.race.name);
+  }
+
+  showPlayerSelector() {
+    const gender = this.championship.getNextRace().raceGender;
+    const team = this.getUserTeam();
+    const teamPlayers = this.players
+      .filter((p) => p.team === this.userTeam && p.gender === gender)
+      .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
+
+    this.view.renderPlayerSelector(
+      teamPlayers,
+      team,
+      this.onPlayerSelectorClick,
+      this.onPlayerSelectorClear,
+      this.onPlayerSelectionDone
+    );
   }
 
   // HELPER FUNCTIONS
@@ -383,6 +437,10 @@ export class Game {
 
   getTeam(shortName) {
     return this.teams.find((team) => team.shortName === shortName);
+  }
+
+  getUserTeam() {
+    return this.teams.find((team) => team.shortName === this.userTeam);
   }
 
   getPlayerById(id) {
@@ -399,7 +457,7 @@ export class Game {
 
     for (let i = 0; i < groups.length; i++) {
       do {
-        const index = Utils.rand(0, groups[i].length) - 1;
+        const index = Utils.rand(groups[i].length - 1, 0);
         newRoster.push(groups[i].splice(index, 1)[0]);
       } while (groups[i].length);
     }
@@ -410,7 +468,11 @@ export class Game {
   aiSelectRacePlayers(nextRace) {
     return this.teams
       .map((team) => {
-        return team.getNextRacePlayers(this.players, nextRace.raceGender);
+        if (team.shortName === this.userTeam) {
+          return team.getNextRacePlayers();
+        } else {
+          return team.getNextRacePlayersAI(this.players, nextRace.raceGender);
+        }
       })
       .flat();
   }
