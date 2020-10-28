@@ -271,6 +271,7 @@ export class View {
 
     const panel = document.createElement("div");
 
+    panel.classList.add("team-grid");
     panel.innerHTML = `<div>Next Race Federation Quota: ${selectedPlayers.length}/${quota}</div>
     ${nextStartGroup ? `<div>Select next player for start group ${nextStartGroup}</div>` : ""}`;
 
@@ -284,10 +285,11 @@ export class View {
       if (startingGroup) {
         button.classList.add(`team-player-selected-group-${startingGroup}`);
       }
-      button.innerHTML = `<div>${player.name}</div>
-      <div>${player.baseSpeed}</div>
-      <div>${player.accuracy}</div>
-      <div>${player.points}</div>
+      button.innerHTML = `<div class="row-name">${player.name}</div>
+      <div>SPD:${player.baseSpeed}</div>
+      <div ${player.accuracy > 90 && "style='color:green'"}>A:${player.accuracy}</div>
+      <div>STR:${player.strength}</div>
+      <div>PTS:${player.points}</div>
       `;
 
       button.onclick = () => onPlayerSelect(player.id);

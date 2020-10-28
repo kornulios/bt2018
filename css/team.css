@@ -52,6 +52,13 @@
   flex: 1;
 }
 
+button.team-grid-row  {
+  font-family: "Raleway";
+  font-size: 1rem;
+  text-align: left;
+  font-weight: bold;
+}
+
 #player-selection {
   display: flex;
   flex-direction: column;
