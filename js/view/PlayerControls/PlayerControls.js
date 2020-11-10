@@ -39,7 +39,7 @@ export class PlayerControls {
 
     ctx.beginPath();
     ctx.strokeStyle = "#cccccc";
-    ctx.strokeWidth = "1px";
+    ctx.lineWidth = 1;
     ctx.strokeRect(x, y, ctx.canvas.width - 20, 60);
     ctx.font = "14px Open sans";
     ctx.fillStyle = "black";

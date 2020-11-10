@@ -90,11 +90,13 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //CANVAS RENDER
-    const racePlayers = this.race.getPlayers();
+    // const racePlayers = this.race.getPlayers();
+    const playersCoords = this.race.getPlayerCoords();
     this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
+    this.canvas.drawPlayersBeta(playersCoords);
     this.canvas.drawGameTick(gameTick); // FPS counter
 
+    //DOM RENDER
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -170,7 +172,7 @@ export class Game {
   }
 
   showShootingRange() {
-    const shootingPlayers = this.getShootingPlayers(this.race.players);
+    const shootingPlayers = this.race.getShootingPlayers();
     this.canvas.drawShootingRange(shootingPlayers);
   }
 
@@ -202,46 +204,46 @@ export class Game {
     }
   }
 
-  getPlayerCoords(players) {
-    const playersData = players.map((player) => {
-      if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
-        return false;
-      }
+  // getPlayerCoords(players) {
+  //   const playersData = players.map((player) => {
+  //     if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
+  //       return false;
+  //     }
 
-      let playerData = {
-        name: player.name,
-        team: player.team,
-        number: player.number,
-        colors: player.colors,
-        status: player.status,
-      };
+  //     let playerData = {
+  //       name: player.name,
+  //       team: player.team,
+  //       number: player.number,
+  //       colors: player.colors,
+  //       status: player.status,
+  //     };
 
-      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-        playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-      } else {
-        playerData.coords = this.race.track.getCoordinates(player.distance);
-      }
+  //     if (player.status === Constants.PLAYER_STATUS.PENALTY) {
+  //       playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
+  //     } else {
+  //       playerData.coords = this.race.track.getCoordinates(player.distance);
+  //     }
 
-      return playerData;
-    });
+  //     return playerData;
+  //   });
 
-    return playersData;
-  }
+  //   return playersData;
+  // }
 
-  getShootingPlayers() {
-    const shootingPlayers = this.race.shootingRange.map((playerId) => {
-      const player = this.race.getPlayerById(playerId);
-      return {
-        name: player.name,
-        range: player.currentRange,
-        team: player.team,
-        rangeTimer: player.shootingTimer > 0,
-        misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
-      };
-    });
+  // getShootingPlayers() {
+  //   const shootingPlayers = this.race.shootingRange.map((playerId) => {
+  //     const player = this.race.getPlayerById(playerId);
+  //     return {
+  //       name: player.name,
+  //       range: player.currentRange,
+  //       team: player.team,
+  //       rangeTimer: player.shootingTimer > 0,
+  //       misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
+  //     };
+  //   });
 
-    return shootingPlayers;
-  }
+  //   return shootingPlayers;
+  // }
 
   onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {

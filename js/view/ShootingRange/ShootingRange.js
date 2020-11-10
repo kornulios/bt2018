@@ -33,10 +33,10 @@ export class ShootingRange {
   drawRangeItem(ctx, player, x, y) {
     ctx.beginPath();
 
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(x, y, 80, 18);
+
     ctx.fillStyle = player.rangeTimer ? "#000099" : "#0033cc";
-    ctx.strokeStyle = "#999999";
-    ctx.strokeWidth = "1px";
-    ctx.strokeRect(x, y, 80, 18);
     ctx.fillRect(x + 80, y, 140, 18);
     ctx.drawImage(this.flagImages[player.team], x + 190, y + 2, 18, 12);
 
