@@ -93,6 +93,10 @@ export class Race {
     return this.players;
   }
 
+  getTrack() {
+    return this.track || {};
+  }
+
   getPlayerById(id) {
     return this.players.find((player) => player.id === id);
   }

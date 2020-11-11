@@ -1,6 +1,7 @@
-import * as gameData from "./data.js";
-import { Utils } from "./utils/Utils.js";
-import { TeamAI } from "./model/Team.js";
+import * as gameData from "./data";
+import { Utils } from "./utils/Utils";
+import { TeamAI } from "./model/Team";
+import { Roster } from './controller/Roster';
 
 import { SprintRace } from "./controller/SprintRace";
 import { PursuitRace } from "./controller/PursuitRace";
@@ -90,9 +91,8 @@ export class Game {
     this.race.run(gameTick * gameSpeed);
 
     //CANVAS RENDER
-    // const racePlayers = this.race.getPlayers();
     const playersCoords = this.race.getPlayerCoords();
-    this.canvas.drawMapBeta(this.race.track);
+    this.canvas.drawMapBeta(this.race.getTrack());
     this.canvas.drawPlayersBeta(playersCoords);
     this.canvas.drawGameTick(gameTick); // FPS counter
 
@@ -204,47 +204,6 @@ export class Game {
     }
   }
 
-  // getPlayerCoords(players) {
-  //   const playersData = players.map((player) => {
-  //     if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
-  //       return false;
-  //     }
-
-  //     let playerData = {
-  //       name: player.name,
-  //       team: player.team,
-  //       number: player.number,
-  //       colors: player.colors,
-  //       status: player.status,
-  //     };
-
-  //     if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-  //       playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-  //     } else {
-  //       playerData.coords = this.race.track.getCoordinates(player.distance);
-  //     }
-
-  //     return playerData;
-  //   });
-
-  //   return playersData;
-  // }
-
-  // getShootingPlayers() {
-  //   const shootingPlayers = this.race.shootingRange.map((playerId) => {
-  //     const player = this.race.getPlayerById(playerId);
-  //     return {
-  //       name: player.name,
-  //       range: player.currentRange,
-  //       team: player.team,
-  //       rangeTimer: player.shootingTimer > 0,
-  //       misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
-  //     };
-  //   });
-
-  //   return shootingPlayers;
-  // }
-
   onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
@@ -289,33 +248,31 @@ export class Game {
 
   async prepareNextRace() {
     // get next race definition from championship
-    const nextRace = this.championship.getNextRace();
+    const nextRace = this.getNextRace();
     let playerRoster = [];
-    let aiRoster = [];
+    let roster = new Roster(this);
 
     // get players from teamAI as per quotas
     switch (nextRace.raceType) {
       case "Individual":
-        aiRoster = this.aiSelectRacePlayers(nextRace);
-        playerRoster = this.aiRaceRosterDraw(aiRoster);
+        playerRoster = roster.selectRacePlayers();
         this.race = new IndividualRace();
         break;
       case "Mass-start":
-        playerRoster = this.aiSelectMassStartPlayers(nextRace);
+        playerRoster = roster.selectMassStartPlayers();
         this.race = new MassStartRace();
         break;
       case "Sprint":
-        aiRoster = this.aiSelectRacePlayers(nextRace);
-        playerRoster = this.aiRaceRosterDraw(aiRoster);
+        playerRoster = roster.selectRacePlayers();
         this.race = new SprintRace();
         break;
       case "Pursuit":
-        playerRoster = this.aiSelectPursuitPlayers(nextRace);
+        playerRoster = roster.selectPursuitPlayers();
         this.race = new PursuitRace();
         break;
       case "Relay":
-        playerRoster = this.aiSelectRelayPlayers(nextRace);
-        this.race = new RelayRace();
+        // playerRoster = this.aiSelectRelayPlayers(nextRace);
+        // this.race = new RelayRace();
         break;
       default:
         console.log("PrepareNextRace() error: Couldn't find racetype");
@@ -356,7 +313,7 @@ export class Game {
       this.view.renderMenuNextEvent("Season over");
       this.showChampionshipStandings();
     } else {
-      this.view.renderMenuNextEvent(this.championship.getNextRace().name);
+      this.view.renderMenuNextEvent(this.getNextRace().name);
     }
   }
 
@@ -390,7 +347,7 @@ export class Game {
   }
 
   showTeamPlayersList(gender) {
-    const myTeam = this.getTeam(this.userTeam);
+    // const myTeam = this.getTeam(this.userTeam);
     const teamPlayers = this.players
       .filter((p) => p.team === this.userTeam && p.gender === gender)
       .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
@@ -449,67 +406,8 @@ export class Game {
     return this.players.find((player) => player.id === id);
   }
 
-  // PREPARING THE ROSTER FOR NEXT RACE
-  aiRaceRosterDraw(playerRoster) {
-    const newRoster = [];
-
-    const groups = [0, 1, 2, 3].map((i) => {
-      return playerRoster.filter((p) => p.startGroup === i + 1);
-    });
-
-    for (let i = 0; i < groups.length; i++) {
-      do {
-        const index = Utils.rand(groups[i].length - 1, 0);
-        newRoster.push(groups[i].splice(index, 1)[0]);
-      } while (groups[i].length);
-    }
-
-    return newRoster;
-  }
-
-  aiSelectRacePlayers(nextRace) {
-    return this.teams
-      .map((team) => {
-        if (team.shortName === this.userTeam) {
-          return team.getNextRacePlayers();
-        } else {
-          return team.getNextRacePlayersAI(this.players, nextRace.raceGender);
-        }
-      })
-      .flat();
-  }
-
-  aiSelectRelayPlayers(nextRace) {
-    return this.teams.map((team) => {
-      return team.getNextRelayPlayers(this.players, nextRace.raceGender);
-    });
-  }
-
-  aiSelectMassStartPlayers(nextRace) {
-    const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
-    const eligiblePlayers = standings.map((result) => {
-      return this.getPlayerById(result.id);
-    });
-
-    return eligiblePlayers;
-  }
-
-  aiSelectPursuitPlayers(nextRace) {
-    const stage = nextRace.stageName;
-    const calendar = this.championship.getRaceList();
-    const prevSprint = calendar.find((race) => {
-      return race.stageName === stage && race.raceType === "Sprint" && race.raceGender === nextRace.raceGender;
-    });
-
-    if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
-
-    const eligiblePlayers = prevSprint.finish.slice(0, 60).map((result) => {
-      const player = this.getPlayerById(result.id);
-      player.startTimer = result.time;
-      return player;
-    });
-
-    return eligiblePlayers;
+  getNextRace() {
+    return this.championship.getNextRace();
   }
 
   // RACE UI DOM EVENTS
