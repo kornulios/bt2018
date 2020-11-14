@@ -1,7 +1,7 @@
 import * as gameData from "./data";
 import { Utils } from "./utils/Utils";
 import { TeamAI } from "./model/Team";
-import { Roster } from './controller/Roster';
+import { Roster } from "./controller/Roster";
 
 import { SprintRace } from "./controller/SprintRace";
 import { PursuitRace } from "./controller/PursuitRace";
@@ -13,12 +13,15 @@ import * as Constants from "./constants/constants";
 import { View, VIEW_PANELS } from "./controller/ViewController";
 import { Graphic2D } from "./view/Graphic2D";
 import { Championship } from "./controller/championship";
+import { Engine } from "./engine/Engine";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
 const gameSpeed = 50;
 let tickCounter = 0;
 let domRedrawCounter = 0;
+
+// export const userTeam = "GER";
 
 export class Game {
   constructor() {
@@ -44,6 +47,7 @@ export class Game {
     //graphics
     this.view = new View();
     this.canvas = new Graphic2D();
+    this.engine = new Engine();
 
     //game state
     this.stopTimer = null;
@@ -60,6 +64,8 @@ export class Game {
     this.view.showMainPanel();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList("men");
+
+    this.endRace = this.endRace.bind(this);
 
     this.onPlayerSelectorClick = this.onPlayerSelectorClick.bind(this);
     this.onPlayerSelectorClear = this.onPlayerSelectorClear.bind(this);
@@ -78,114 +84,114 @@ export class Game {
     this.players = gameData.generateTeams(); //temporary players generator
   }
 
-  runGame(timeStamp) {
-    // main game loop
-    //refactored with rAF X2
+  // runGame(timeStamp) {
+  //   // main game loop
+  //   //refactored with rAF X2
 
-    const gameTick = timeStamp - oldTimeStamp;
+  //   const gameTick = timeStamp - oldTimeStamp;
 
-    //update timer
-    oldTimeStamp = timeStamp;
+  //   //update timer
+  //   oldTimeStamp = timeStamp;
 
-    // UPDATE
-    this.race.run(gameTick * gameSpeed);
+  //   // UPDATE
+  //   this.race.run(gameTick * gameSpeed);
 
-    //CANVAS RENDER
-    const playersCoords = this.race.getPlayerCoords();
-    this.canvas.drawMapBeta(this.race.getTrack());
-    this.canvas.drawPlayersBeta(playersCoords);
-    this.canvas.drawGameTick(gameTick); // FPS counter
+  //   //CANVAS RENDER
+  //   const playersCoords = this.race.getPlayerCoords();
+  //   this.canvas.drawMapBeta(this.race.getTrack());
+  //   this.canvas.drawPlayersBeta(playersCoords);
+  //   this.canvas.drawGameTick(gameTick); // FPS counter
 
-    //DOM RENDER
-    if (++tickCounter === 14) {
-      this.showCurrentResults();
-      this.showPlayerControls();
-      this.showShootingRange();
-      tickCounter = 0;
-    }
+  //   //DOM RENDER
+  //   if (++tickCounter === 14) {
+  //     this.showCurrentResults();
+  //     this.showPlayerControls();
+  //     this.showShootingRange();
+  //     tickCounter = 0;
+  //   }
 
-    if (++domRedrawCounter === 70) {
-      this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
-      domRedrawCounter = 0;
-    }
+  //   if (++domRedrawCounter === 70) {
+  //     this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
+  //     domRedrawCounter = 0;
+  //   }
 
-    //REQUEST NEXT FRAME
-    this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
+  //   //REQUEST NEXT FRAME
+  //   this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
 
-    //FINISH THE RACE
-    if (this.race.raceFinished) {
-      cancelAnimationFrame(this.stopTimer);
-      this.canvas.finalFPSDrops(); // total FPS drops counter
-      this.endRace();
-    }
-  }
+  //   //FINISH THE RACE
+  //   if (this.race.raceFinished) {
+  //     cancelAnimationFrame(this.stopTimer);
+  //     this.canvas.finalFPSDrops(); // total FPS drops counter
+  //     this.endRace();
+  //   }
+  // }
 
   //CANVAS RENDER
-  showCurrentResults() {
-    const resOffset = this.selectedResultsPage * numberResultsShown;
-    const resLength = resOffset + numberResultsShown;
+  // showCurrentResults() {
+  //   const resOffset = this.selectedResultsPage * numberResultsShown;
+  //   const resLength = resOffset + numberResultsShown;
 
-    if (this.selectedResults === 0) {
-      const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
-        return {
-          place: index + 1 + resOffset,
-          playerName: player.name,
-          playerNumber: player.number,
-          team: player.team,
-          timeString: Utils.convertToMinutes(player.startTimer / 1000),
-          relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
-        };
-      });
+  //   if (this.selectedResults === 0) {
+  //     const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
+  //       return {
+  //         place: index + 1 + resOffset,
+  //         playerName: player.name,
+  //         playerNumber: player.number,
+  //         team: player.team,
+  //         timeString: Utils.convertToMinutes(player.startTimer / 1000),
+  //         relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
+  //       };
+  //     });
 
-      this.canvas.drawIntermediateResults(startList, resOffset);
-      return;
-    }
+  //     this.canvas.drawIntermediateResults(startList, resOffset);
+  //     return;
+  //   }
 
-    const results = this.race
-      .getWaypointResults(this.selectedResults)
-      .slice(resOffset, resLength)
-      .map((result, i) => {
-        return { ...result, place: i + 1 + resOffset };
-      });
-    this.canvas.drawIntermediateResults(results, resOffset);
-  }
+  //   const results = this.race
+  //     .getWaypointResults(this.selectedResults)
+  //     .slice(resOffset, resLength)
+  //     .map((result, i) => {
+  //       return { ...result, place: i + 1 + resOffset };
+  //     });
+  //   this.canvas.drawIntermediateResults(results, resOffset);
+  // }
 
-  showPlayerControls() {
-    const userPlayers = this.race.players
-      .filter((player) => player.team === this.userTeam)
-      .map((player) => {
-        const prevWaypoint = this.race.getPrevWaypointId(player.distance);
-        const prevWaypointData = this.race.getLastWaypointResult(player.id, prevWaypoint);
+  // showPlayerControls() {
+  //   const userPlayers = this.race.players
+  //     .filter((player) => player.team === this.userTeam)
+  //     .map((player) => {
+  //       const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+  //       const prevWaypointData = this.race.getLastWaypointResult(player.id, prevWaypoint);
 
-        return {
-          name: player.name,
-          team: player.team,
-          number: player.number,
-          distance: player.distance,
-          lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-          ...prevWaypointData,
-        };
-      });
+  //       return {
+  //         name: player.name,
+  //         team: player.team,
+  //         number: player.number,
+  //         distance: player.distance,
+  //         lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+  //         time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+  //         ...prevWaypointData,
+  //       };
+  //     });
 
-    this.canvas.drawPlayerControls(userPlayers);
-  }
+  //   this.canvas.drawPlayerControls(userPlayers);
+  // }
 
-  showShootingRange() {
-    const shootingPlayers = this.race.getShootingPlayers();
-    this.canvas.drawShootingRange(shootingPlayers);
-  }
+  // showShootingRange() {
+  //   const shootingPlayers = this.race.getShootingPlayers();
+  //   this.canvas.drawShootingRange(shootingPlayers);
+  // }
 
   // RACE CONTROLS
-  simulateRace() {
-    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+  // simulateRace() {
+  //   if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
 
-    do {
-      this.race.run(100);
-    } while (!this.race.raceFinished);
+  //   do {
+  //     this.race.run(100);
+  //   } while (!this.race.raceFinished);
 
-    this.endRace();
-  }
+  //   this.endRace();
+  // }
 
   pauseGame() {
     const button = document.querySelector("#pause");
@@ -205,14 +211,17 @@ export class Game {
   }
 
   onSimulateRaceClick() {
+    // const engine = new Engine();
+
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
-      // await this.prepareNextRace();
-    }
-    this.simulateRace();
+    // if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
+    // await this.prepareNextRace();
+    // }
+
+    this.engine.simulateRace(this.race, this.endRace);
   }
 
   onStartRaceClick() {
@@ -281,22 +290,24 @@ export class Game {
     // create new race with players list
     await this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
+    this.race.userTeam = this.userTeam;
   }
 
   startNextRace() {
     // start predefined race
     const { race } = this;
     // READY!
-    oldTimeStamp = performance.now();
     this.selectedResults = 0;
     // SET!
     this.view.setupRaceView(this.race);
-    this.canvas.initRaceCanvas();
-    this.showPlayerControls();
-    this.showCurrentResults();
+    // this.canvas.initRaceCanvas();
+    // this.showPlayerControls();
+    // this.showCurrentResults();
     // GO!!!
     this.race.status = Constants.RACE_STATUS.IN_PROGRESS;
-    requestAnimationFrame(this.runGame.bind(this));
+    this.engine.startRace(race, this.endRace);
+
+    // requestAnimationFrame(this.runGame.bind(this));
   }
 
   endRace() {
@@ -436,18 +447,7 @@ export class Game {
 
   // CUSTOM SCRIPT
   customScript() {
-    const tempShootingPlayers = [
-      {
-        name: "Player 1",
-        team: "GER",
-        range: [0, 0, 0, 0, 0],
-        rangeTimer: false,
-        misses: 5,
-      },
-    ];
-
-    this.canvas.drawShootingRange(tempShootingPlayers);
-    // this.canvas.drawFlagTest();
+    this.onSimulateRaceClick();
   }
 
   // ********************************************************************

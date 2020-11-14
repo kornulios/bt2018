@@ -10,6 +10,7 @@ export class Race {
     this.track = new Track();
     this.results = new Result();
     this.players = [];
+    this.userTeam = null;
     this.shootingRange = [];
 
     this.id = null;
