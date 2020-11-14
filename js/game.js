@@ -15,14 +15,6 @@ import { Graphic2D } from "./view/Graphic2D";
 import { Championship } from "./controller/championship";
 import { Engine } from "./engine/Engine";
 
-let oldTimeStamp = 0;
-const numberResultsShown = 20;
-const gameSpeed = 50;
-let tickCounter = 0;
-let domRedrawCounter = 0;
-
-// export const userTeam = "GER";
-
 export class Game {
   constructor() {
     // REDUNDANT CODE
@@ -50,8 +42,8 @@ export class Game {
     this.engine = new Engine();
 
     //game state
-    this.stopTimer = null;
-    this.paused = false;
+    // this.stopTimer = null;
+    // this.paused = false;
 
     //initializations
     this.initGameData(); // tmp generator
@@ -193,22 +185,22 @@ export class Game {
   //   this.endRace();
   // }
 
-  pauseGame() {
-    const button = document.querySelector("#pause");
+  // pauseGame() {
+  //   const button = document.querySelector("#pause");
 
-    if (!this.paused) {
-      //stop
-      this.paused = true;
-      cancelAnimationFrame(this.stopTimer);
-      button.innerText = "Resume";
-    } else {
-      //resume
-      this.paused = false;
-      oldTimeStamp = performance.now();
-      requestAnimationFrame(this.runGame.bind(this));
-      button.innerText = "Pause";
-    }
-  }
+  //   if (!this.paused) {
+  //     //stop
+  //     this.paused = true;
+  //     cancelAnimationFrame(this.stopTimer);
+  //     button.innerText = "Resume";
+  //   } else {
+  //     //resume
+  //     this.paused = false;
+  //     oldTimeStamp = performance.now();
+  //     requestAnimationFrame(this.runGame.bind(this));
+  //     button.innerText = "Pause";
+  //   }
+  // }
 
   onSimulateRaceClick() {
     // const engine = new Engine();
@@ -424,25 +416,15 @@ export class Game {
   // RACE UI DOM EVENTS
   onResultSelect(event) {
     const waypointId = event.target.name;
-    this.selectedResults = +waypointId;
-    this.selectedResultsPage = 0;
-
-    this.showCurrentResults();
+    this.engine.setSelectedResultWaypoint(+waypointId);
   }
 
   onResultPageSelect(event) {
-    if (event.target.name === "next") {
-      this.selectedResultsPage++;
-    } else if (event.target.name === "prev") {
-      this.selectedResultsPage--;
-    } else {
-      this.selectedResultsPage = event.target.name;
-    }
+    this.engine.setSelectedResultPage(event.target.name);
+  }
 
-    if (this.selectedResultsPage < 0) {
-      this.selectedResultsPage = 0;
-    }
-    this.showCurrentResults();
+  onPauseClick() {
+    this.engine.pauseGame();
   }
 
   // CUSTOM SCRIPT

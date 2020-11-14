@@ -1,6 +1,7 @@
 import { Utils } from "../utils/Utils";
 import * as Constants from "../constants/constants";
 import { Graphic2D } from "../view/Graphic2D";
+import { View } from "../controller/ViewController";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
@@ -11,6 +12,7 @@ let domRedrawCounter = 0;
 export class Engine {
   constructor() {
     this.canvas = new Graphic2D();
+    this.view = new View();
 
     //game state
     this.stopTimer = null;
@@ -21,6 +23,27 @@ export class Engine {
     this.selectedResultsWaypoint = 0;
     this.selectedResultsPage = 0;
   }
+
+  setSelectedResultWaypoint = (newWaypointId) => {
+    this.selectedResultsWaypoint = newWaypointId;
+    this.showCurrentResults();
+  };
+
+  setSelectedResultPage = (pageId) => {
+    if (pageId === "next") {
+      this.selectedResultsPage++;
+    } else if (pageId === "prev") {
+      this.selectedResultsPage--;
+    } else {
+      this.selectedResultsPage = pageId;
+    }
+
+    if (this.selectedResultsPage < 0) {
+      this.selectedResultsPage = 0;
+    }
+
+    this.showCurrentResults();
+  };
 
   runGame(timeStamp) {
     // main game loop
@@ -44,12 +67,11 @@ export class Engine {
     if (++tickCounter === 14) {
       this.showCurrentResults();
       this.showPlayerControls();
-      // this.showShootingRange();
+      this.showShootingRange();
       tickCounter = 0;
     }
 
     // if (++domRedrawCounter === 70) {
-    //   this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
     //   domRedrawCounter = 0;
     // }
 
@@ -82,16 +104,18 @@ export class Engine {
       });
 
       this.canvas.drawIntermediateResults(startList, resOffset);
+      this.view.updateResultsControls(this.race.players.length);
       return;
     }
 
-    const results = this.race
-      .getWaypointResults(this.selectedResultsWaypoint)
-      .slice(resOffset, resLength)
-      .map((result, i) => {
-        return { ...result, place: i + 1 + resOffset };
-      });
-    this.canvas.drawIntermediateResults(results, resOffset);
+    const waypointResults = this.race.getWaypointResults(this.selectedResultsWaypoint);
+
+    const filteredResults = waypointResults.slice(resOffset, resLength).map((result, i) => {
+      return { ...result, place: i + 1 + resOffset };
+    });
+
+    this.canvas.drawIntermediateResults(filteredResults, resOffset);
+    this.view.updateResultsControls(waypointResults.length);
   }
 
   showPlayerControls() {
@@ -127,6 +151,9 @@ export class Engine {
     oldTimeStamp = performance.now();
 
     this.canvas.initRaceCanvas();
+    this.showPlayerControls();
+    this.showCurrentResults();
+
     requestAnimationFrame(this.runGame.bind(this));
   }
 
@@ -138,5 +165,22 @@ export class Engine {
     } while (!race.raceFinished);
 
     onRaceEnd();
+  }
+
+  pauseGame() {
+    const button = document.querySelector("#pause");
+
+    if (!this.paused) {
+      //stop
+      this.paused = true;
+      cancelAnimationFrame(this.stopTimer);
+      button.innerText = "Resume";
+    } else {
+      //resume
+      this.paused = false;
+      oldTimeStamp = performance.now();
+      requestAnimationFrame(this.runGame.bind(this));
+      button.innerText = "Pause";
+    }
   }
 }

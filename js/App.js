@@ -23,7 +23,7 @@ export class App {
       .querySelector("#champ-standings")
       .addEventListener("click", this.game.showChampionshipStandings.bind(this.game));
 
-    document.querySelector("#pause").addEventListener("click", this.game.pauseGame.bind(this.game));
+    document.querySelector("#pause").addEventListener("click", this.game.onPauseClick.bind(this.game));
 
     document.querySelector("#next-race").addEventListener("click", () => {
       this.game.showStartList();
