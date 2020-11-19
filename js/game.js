@@ -11,7 +11,7 @@ import { MassStartRace } from "./controller/MassStartRace";
 
 import * as Constants from "./constants/constants";
 import { View, VIEW_PANELS } from "./controller/ViewController";
-import { Graphic2D } from "./view/Graphic2D";
+// import { Graphic2D } from "./view/Graphic2D";
 import { Championship } from "./controller/championship";
 import { Engine } from "./engine/Engine";
 
@@ -38,7 +38,7 @@ export class Game {
 
     //graphics
     this.view = new View();
-    this.canvas = new Graphic2D();
+    // this.canvas = new Graphic2D();
     this.engine = new Engine();
 
     //game state
@@ -203,15 +203,10 @@ export class Game {
   // }
 
   onSimulateRaceClick() {
-    // const engine = new Engine();
-
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    // if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
-    // await this.prepareNextRace();
-    // }
 
     this.engine.simulateRace(this.race, this.endRace);
   }
@@ -221,7 +216,6 @@ export class Game {
       alert("Season over! Please start a new one");
       return;
     }
-    // await this.prepareNextRace();
     this.startNextRace();
   }
 
@@ -292,14 +286,9 @@ export class Game {
     this.selectedResults = 0;
     // SET!
     this.view.setupRaceView(this.race);
-    // this.canvas.initRaceCanvas();
-    // this.showPlayerControls();
-    // this.showCurrentResults();
     // GO!!!
     this.race.status = Constants.RACE_STATUS.IN_PROGRESS;
     this.engine.startRace(race, this.endRace);
-
-    // requestAnimationFrame(this.runGame.bind(this));
   }
 
   endRace() {
@@ -350,7 +339,6 @@ export class Game {
   }
 
   showTeamPlayersList(gender) {
-    // const myTeam = this.getTeam(this.userTeam);
     const teamPlayers = this.players
       .filter((p) => p.team === this.userTeam && p.gender === gender)
       .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));

@@ -7,7 +7,6 @@ let oldTimeStamp = 0;
 const numberResultsShown = 20;
 const gameSpeed = 50;
 let tickCounter = 0;
-let domRedrawCounter = 0;
 
 export class Engine {
   constructor() {
@@ -64,16 +63,12 @@ export class Engine {
     this.canvas.drawGameTick(gameTick); // FPS counter
 
     // DOM RENDER
-    if (++tickCounter === 14) {
+    if (++tickCounter === 6) {
       this.showCurrentResults();
       this.showPlayerControls();
       this.showShootingRange();
       tickCounter = 0;
     }
-
-    // if (++domRedrawCounter === 70) {
-    //   domRedrawCounter = 0;
-    // }
 
     //REQUEST NEXT FRAME
     this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
@@ -130,6 +125,10 @@ export class Engine {
           team: player.team,
           number: player.number,
           distance: player.distance,
+          currentSpeed: player.currentSpeed,
+          strength: player.strength,
+          accuracy: player.accuracy,
+          fatigue: player.fatigue,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
           ...prevWaypointData,
@@ -150,7 +149,7 @@ export class Engine {
     this.endRace = onRaceEnd;
     oldTimeStamp = performance.now();
 
-    this.canvas.initRaceCanvas();
+    this.canvas.clearRaceCanvas();
     this.showPlayerControls();
     this.showCurrentResults();
 

@@ -18,6 +18,7 @@ export const PlayerBub = {
     ctx.fillStyle = colors[1];
     ctx.font = "bold 10px Verdana";
     ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
 
     if (number <= 9) {
       ctx.fillText(number, x, y + 3.25);

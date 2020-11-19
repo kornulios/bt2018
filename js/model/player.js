@@ -19,7 +19,7 @@ export class Player {
     this.accuracy = args.accuracy || Utils.rand(95, 65);
     this.strength = args.strength || Utils.rand(95, 75);
     this.stamina = args.stamina || Utils.rand(99, 30);
-    this.fatigue = 100;
+    this.fatigue = 60;
     this.technique = args.technique || Utils.rand(99, 50);
     this.points = 0;
 
@@ -121,6 +121,8 @@ export class Player {
     //move forward on track
     const fps = elapsedTime;
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
+
+    this.fatigue -= 0.075;
 
     this.distance += distancePassed;
     if (this.shootingTimer > 0) {

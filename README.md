@@ -39,18 +39,21 @@ Routes:
 ## Biatech roadmap:
 
 **RC 1**
+- enable player team interaction (8)
+  - ski service before the race (3)
+  - player trainings between stages (5)
+  - 3 buttons for speed control (5)
+  - change player stats between races (5)
+
 - ~~display more player properties (points) (2)~~
-- select players for next race by user (5)
+- ~~select players for next race by user (5)~~
 - stage switch (5)
 - enable view of previous results (3)
 - enable modern UI full functions (5)
-- create in-App navigation (5)
+- ~~Create in-App navigation (5)~~
 - rework championship standings screen (3)
 
-- enable player team interaction (8)
-  - ski service before the race (3)
-
-- implement start roster scheduling (5)
+- ~~implement start roster scheduling (5)~~
 - pause on browser tab switch (3)
 - race speed control (5)
 - start-line players route (3)

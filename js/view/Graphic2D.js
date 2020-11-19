@@ -50,7 +50,7 @@ export class Graphic2D {
     this.shootingRange = new ShootingRange();
   }
 
-  initRaceCanvas() {
+  clearRaceCanvas() {
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
   }
@@ -64,7 +64,7 @@ export class Graphic2D {
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#000000";
-    if (1000 / tick < 100) {
+    if (1000 / tick < 59) {
       console.log("fps drop");
       fpsDrops++;
     }
