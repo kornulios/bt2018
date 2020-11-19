@@ -122,7 +122,7 @@ export class Player {
     const fps = elapsedTime;
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
-    this.fatigue -= 0.075;
+    this.fatigue = this.fatigue - 0.075;
 
     this.distance += distancePassed;
     if (this.shootingTimer > 0) {
@@ -166,6 +166,7 @@ export class Player {
   shoot(elapsedTime) {
     this.rifle.aimTime -= elapsedTime;
 
+    this.fatigue = this.fatigue + 0.125;
     if (this.rifle.aimTime > 0) {
       return false;
     }

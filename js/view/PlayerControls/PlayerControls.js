@@ -84,15 +84,25 @@ export class PlayerControls {
     ctx.fillText(data.place, 210, y + 4);
     ctx.closePath();
 
+    // speed info
+    ctx.fillStyle = "#193B5A";
+    ctx.font = "bold italic 14px Open sans";
+    ctx.textAlign = "left";
+    ctx.fillText(data.currentSpeed.toFixed(2), 156, y + 42);
+    ctx.font = "bold italic 9px Open sans";
+    ctx.fillText("km/h", 194, y + 46);
+
+    // stats info
+    ctx.font = "bold 10px Open sans";
+    ctx.textAlign = "right";
+    ctx.fillText("STR: " + data.strength, 275, y + 33);
+    ctx.fillText("ACC: " + data.accuracy, 275, y + 43);
+    
     // fatigue bar
     ctx.fillStyle = "#193B5A";
     ctx.fillRect(0, y + 24, 280, 5);
     ctx.fillStyle = this.getBarColorHex(data.fatigue);
     ctx.fillRect(0, y + 24, (data.fatigue * 280) / 100, 5);
-
-    // speed info
-
-    // stats info
   }
 
   getBarColorHex(percent) {
