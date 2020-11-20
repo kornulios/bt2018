@@ -50,7 +50,7 @@ export class Graphic2D {
     this.shootingRange = new ShootingRange();
   }
 
-  initRaceCanvas() {
+  clearRaceCanvas() {
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
   }
@@ -64,7 +64,7 @@ export class Graphic2D {
 
     ctx.textAlign = "left";
     ctx.fillStyle = "#000000";
-    if (1000 / tick < 100) {
+    if (1000 / tick < 59) {
       console.log("fps drop");
       fpsDrops++;
     }
@@ -81,7 +81,11 @@ export class Graphic2D {
       ctx.lineTo(coordsMap[i].coords.x, coordsMap[i].coords.y);
     }
     ctx.strokeStyle = color;
+    ctx.lineWidth = 10;
+    ctx.lineJoin = "round";
     ctx.stroke();
+    ctx.closePath();
+    ctx.lineWidth = 1;
   }
 
   drawMapBeta(track) {
@@ -93,9 +97,9 @@ export class Graphic2D {
 
     // ctx.drawImage(img, 10, 10, canvas.width - 20, canvas.height - 20);
 
-    this.drawCoordinatesMap(coordsMap, "#ffdd00");
-    this.drawCoordinatesMap(penaltyCoordsMap, "green");
-    this.drawCoordinatesMap(finishCoordsMap, "red");
+    this.drawCoordinatesMap(coordsMap, "#ffffff");
+    this.drawCoordinatesMap(penaltyCoordsMap, "#ffffff");
+    this.drawCoordinatesMap(finishCoordsMap, "#ffffff");
 
     //draw waypoint flags
     flagsCoords.forEach((flag) => {
@@ -146,7 +150,7 @@ export class Graphic2D {
     ctx.stroke();
 
     //render text
-    ctx.strokeWidth = "2px";
+    ctx.lineWidth = 1;
     ctx.fillStyle = colors[1];
     ctx.font = "bold 10px Verdana";
     ctx.textAlign = "center";

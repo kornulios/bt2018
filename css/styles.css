@@ -39,7 +39,7 @@ body {
 }
 
 canvas {
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 #results-paging {
@@ -75,7 +75,7 @@ canvas {
   width: 100%;
   margin: auto;
   max-width: 1280px;
-  background-color: #ebf5ff;
+  /* background-color: #ebf5ff; */
   padding: 20px;
   flex-direction: column;
 }

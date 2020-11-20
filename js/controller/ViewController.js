@@ -2,6 +2,7 @@ import { Utils } from "../utils/Utils";
 import { teamData } from "../data";
 import { RACE_STATUS, PLAYER_STATUS } from "../constants/constants";
 import { flagImages } from "../services/flagService";
+import { Pagination } from "../view/Pagination/Pagination";
 
 export const VIEW_PANELS = {
   PANEL_RACE: "race",
@@ -18,6 +19,7 @@ export class View {
   constructor() {
     this.trackView = document.querySelector("#track-info");
     this.flagImages = flagImages();
+    this.resultsPagination = new Pagination();
 
     this.screenMainPanel = document.querySelector("#main-panel");
     this.screenRacePanel = document.querySelector("#race-panel");
@@ -481,18 +483,20 @@ export class View {
 
   // controls displayed result section
   updateResultsControls(resultsCount) {
-    const pagingContainer = document.querySelector("#results-paging");
+    this.resultsPagination.render(resultsCount);
 
-    const pagesNum = resultsCount / 20;
+    // const pagingContainer = document.querySelector("#results-paging");
 
-    let pagingButtons = [];
+    // const pagesNum = resultsCount / 20;
 
-    pagingButtons.push(`<button type="button" class="btn-paging" name="prev">Prev</button>`);
-    for (let i = 0; i < pagesNum; i++) {
-      pagingButtons.push(`<button type="button" class="btn-paging" name=${i}>${i * 20 + 1}...${(i + 1) * 20}</button>`);
-    }
-    pagingButtons.push(`<button type="button" class="btn-paging" name="next">Next</button>`);
+    // let pagingButtons = [];
 
-    pagingContainer.innerHTML = pagingButtons.join("");
+    // pagingButtons.push(`<button type="button" class="btn-paging" name="prev">Prev</button>`);
+    // for (let i = 0; i < pagesNum; i++) {
+    //   pagingButtons.push(`<button type="button" class="btn-paging" name=${i}>${i * 20 + 1}...${(i + 1) * 20}</button>`);
+    // }
+    // pagingButtons.push(`<button type="button" class="btn-paging" name="next">Next</button>`);
+
+    // pagingContainer.innerHTML = pagingButtons.join("");
   }
 }

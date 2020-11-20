@@ -1,6 +1,7 @@
-import * as gameData from "./data.js";
-import { Utils } from "./utils/Utils.js";
-import { TeamAI } from "./model/Team.js";
+import * as gameData from "./data";
+import { Utils } from "./utils/Utils";
+import { TeamAI } from "./model/Team";
+import { Roster } from "./controller/Roster";
 
 import { SprintRace } from "./controller/SprintRace";
 import { PursuitRace } from "./controller/PursuitRace";
@@ -10,14 +11,9 @@ import { MassStartRace } from "./controller/MassStartRace";
 
 import * as Constants from "./constants/constants";
 import { View, VIEW_PANELS } from "./controller/ViewController";
-import { Graphic2D } from "./view/Graphic2D";
+// import { Graphic2D } from "./view/Graphic2D";
 import { Championship } from "./controller/championship";
-
-let oldTimeStamp = 0;
-const numberResultsShown = 20;
-const gameSpeed = 50;
-let tickCounter = 0;
-let domRedrawCounter = 0;
+import { Engine } from "./engine/Engine";
 
 export class Game {
   constructor() {
@@ -42,11 +38,12 @@ export class Game {
 
     //graphics
     this.view = new View();
-    this.canvas = new Graphic2D();
+    // this.canvas = new Graphic2D();
+    this.engine = new Engine();
 
     //game state
-    this.stopTimer = null;
-    this.paused = false;
+    // this.stopTimer = null;
+    // this.paused = false;
 
     //initializations
     this.initGameData(); // tmp generator
@@ -59,6 +56,8 @@ export class Game {
     this.view.showMainPanel();
     this.view.showPanel(VIEW_PANELS.PANEL_TEAM);
     this.showTeamPlayersList("men");
+
+    this.endRace = this.endRace.bind(this);
 
     this.onPlayerSelectorClick = this.onPlayerSelectorClick.bind(this);
     this.onPlayerSelectorClear = this.onPlayerSelectorClear.bind(this);
@@ -77,181 +76,139 @@ export class Game {
     this.players = gameData.generateTeams(); //temporary players generator
   }
 
-  runGame(timeStamp) {
-    // main game loop
-    //refactored with rAF X2
+  // runGame(timeStamp) {
+  //   // main game loop
+  //   //refactored with rAF X2
 
-    const gameTick = timeStamp - oldTimeStamp;
+  //   const gameTick = timeStamp - oldTimeStamp;
 
-    //update timer
-    oldTimeStamp = timeStamp;
+  //   //update timer
+  //   oldTimeStamp = timeStamp;
 
-    // UPDATE
-    this.race.run(gameTick * gameSpeed);
+  //   // UPDATE
+  //   this.race.run(gameTick * gameSpeed);
 
-    //CANVAS RENDER
-    const racePlayers = this.race.getPlayers();
-    this.canvas.drawMapBeta(this.race.track);
-    this.canvas.drawPlayersBeta(this.getPlayerCoords(racePlayers));
-    this.canvas.drawGameTick(gameTick); // FPS counter
+  //   //CANVAS RENDER
+  //   const playersCoords = this.race.getPlayerCoords();
+  //   this.canvas.drawMapBeta(this.race.getTrack());
+  //   this.canvas.drawPlayersBeta(playersCoords);
+  //   this.canvas.drawGameTick(gameTick); // FPS counter
 
-    if (++tickCounter === 14) {
-      this.showCurrentResults();
-      this.showPlayerControls();
-      this.showShootingRange();
-      tickCounter = 0;
-    }
+  //   //DOM RENDER
+  //   if (++tickCounter === 14) {
+  //     this.showCurrentResults();
+  //     this.showPlayerControls();
+  //     this.showShootingRange();
+  //     tickCounter = 0;
+  //   }
 
-    if (++domRedrawCounter === 70) {
-      this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
-      domRedrawCounter = 0;
-    }
+  //   if (++domRedrawCounter === 70) {
+  //     this.view.updateResultsControls(this.race.getWaypointResults(this.selectedResults).length);
+  //     domRedrawCounter = 0;
+  //   }
 
-    //REQUEST NEXT FRAME
-    this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
+  //   //REQUEST NEXT FRAME
+  //   this.stopTimer = requestAnimationFrame(this.runGame.bind(this));
 
-    //FINISH THE RACE
-    if (this.race.raceFinished) {
-      cancelAnimationFrame(this.stopTimer);
-      this.canvas.finalFPSDrops(); // total FPS drops counter
-      this.endRace();
-    }
-  }
+  //   //FINISH THE RACE
+  //   if (this.race.raceFinished) {
+  //     cancelAnimationFrame(this.stopTimer);
+  //     this.canvas.finalFPSDrops(); // total FPS drops counter
+  //     this.endRace();
+  //   }
+  // }
 
   //CANVAS RENDER
-  showCurrentResults() {
-    const resOffset = this.selectedResultsPage * numberResultsShown;
-    const resLength = resOffset + numberResultsShown;
+  // showCurrentResults() {
+  //   const resOffset = this.selectedResultsPage * numberResultsShown;
+  //   const resLength = resOffset + numberResultsShown;
 
-    if (this.selectedResults === 0) {
-      const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
-        return {
-          place: index + 1 + resOffset,
-          playerName: player.name,
-          playerNumber: player.number,
-          team: player.team,
-          timeString: Utils.convertToMinutes(player.startTimer / 1000),
-          relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
-        };
-      });
+  //   if (this.selectedResults === 0) {
+  //     const startList = this.race.players.slice(resOffset, resLength).map((player, index) => {
+  //       return {
+  //         place: index + 1 + resOffset,
+  //         playerName: player.name,
+  //         playerNumber: player.number,
+  //         team: player.team,
+  //         timeString: Utils.convertToMinutes(player.startTimer / 1000),
+  //         relativeTime: Utils.convertToMinutes(player.startTimer / 1000),
+  //       };
+  //     });
 
-      this.canvas.drawIntermediateResults(startList, resOffset);
-      return;
-    }
+  //     this.canvas.drawIntermediateResults(startList, resOffset);
+  //     return;
+  //   }
 
-    const results = this.race
-      .getWaypointResults(this.selectedResults)
-      .slice(resOffset, resLength)
-      .map((result, i) => {
-        return { ...result, place: i + 1 + resOffset };
-      });
-    this.canvas.drawIntermediateResults(results, resOffset);
-  }
+  //   const results = this.race
+  //     .getWaypointResults(this.selectedResults)
+  //     .slice(resOffset, resLength)
+  //     .map((result, i) => {
+  //       return { ...result, place: i + 1 + resOffset };
+  //     });
+  //   this.canvas.drawIntermediateResults(results, resOffset);
+  // }
 
-  showPlayerControls() {
-    const userPlayers = this.race.players
-      .filter((player) => player.team === this.userTeam)
-      .map((player) => {
-        const prevWaypoint = this.race.getPrevWaypointId(player.distance);
-        const prevWaypointData = this.race.getLastWaypointResult(player.id, prevWaypoint);
+  // showPlayerControls() {
+  //   const userPlayers = this.race.players
+  //     .filter((player) => player.team === this.userTeam)
+  //     .map((player) => {
+  //       const prevWaypoint = this.race.getPrevWaypointId(player.distance);
+  //       const prevWaypointData = this.race.getLastWaypointResult(player.id, prevWaypoint);
 
-        return {
-          name: player.name,
-          team: player.team,
-          number: player.number,
-          distance: player.distance,
-          lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
-          ...prevWaypointData,
-        };
-      });
+  //       return {
+  //         name: player.name,
+  //         team: player.team,
+  //         number: player.number,
+  //         distance: player.distance,
+  //         lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
+  //         time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
+  //         ...prevWaypointData,
+  //       };
+  //     });
 
-    this.canvas.drawPlayerControls(userPlayers);
-  }
+  //   this.canvas.drawPlayerControls(userPlayers);
+  // }
 
-  showShootingRange() {
-    const shootingPlayers = this.getShootingPlayers(this.race.players);
-    this.canvas.drawShootingRange(shootingPlayers);
-  }
+  // showShootingRange() {
+  //   const shootingPlayers = this.race.getShootingPlayers();
+  //   this.canvas.drawShootingRange(shootingPlayers);
+  // }
 
   // RACE CONTROLS
-  simulateRace() {
-    if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
+  // simulateRace() {
+  //   if (this.stopTimer) cancelAnimationFrame(this.stopTimer);
 
-    do {
-      this.race.run(100);
-    } while (!this.race.raceFinished);
+  //   do {
+  //     this.race.run(100);
+  //   } while (!this.race.raceFinished);
 
-    this.endRace();
-  }
+  //   this.endRace();
+  // }
 
-  pauseGame() {
-    const button = document.querySelector("#pause");
+  // pauseGame() {
+  //   const button = document.querySelector("#pause");
 
-    if (!this.paused) {
-      //stop
-      this.paused = true;
-      cancelAnimationFrame(this.stopTimer);
-      button.innerText = "Resume";
-    } else {
-      //resume
-      this.paused = false;
-      oldTimeStamp = performance.now();
-      requestAnimationFrame(this.runGame.bind(this));
-      button.innerText = "Pause";
-    }
-  }
-
-  getPlayerCoords(players) {
-    const playersData = players.map((player) => {
-      if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
-        return false;
-      }
-
-      let playerData = {
-        name: player.name,
-        team: player.team,
-        number: player.number,
-        colors: player.colors,
-        status: player.status,
-      };
-
-      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
-        playerData.coords = this.race.track.getPenaltyCoordinates(player.penalty);
-      } else {
-        playerData.coords = this.race.track.getCoordinates(player.distance);
-      }
-
-      return playerData;
-    });
-
-    return playersData;
-  }
-
-  getShootingPlayers() {
-    const shootingPlayers = this.race.shootingRange.map((playerId) => {
-      const player = this.race.getPlayerById(playerId);
-      return {
-        name: player.name,
-        range: player.currentRange,
-        team: player.team,
-        rangeTimer: player.shootingTimer > 0,
-        misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
-      };
-    });
-
-    return shootingPlayers;
-  }
+  //   if (!this.paused) {
+  //     //stop
+  //     this.paused = true;
+  //     cancelAnimationFrame(this.stopTimer);
+  //     button.innerText = "Resume";
+  //   } else {
+  //     //resume
+  //     this.paused = false;
+  //     oldTimeStamp = performance.now();
+  //     requestAnimationFrame(this.runGame.bind(this));
+  //     button.innerText = "Pause";
+  //   }
+  // }
 
   onSimulateRaceClick() {
     if (this.championship.state === Constants.RACE_STATUS.FINISHED) {
       alert("Season over! Please start a new one");
       return;
     }
-    if (!this.race || this.race.status !== Constants.RACE_STATUS.IN_PROGRESS) {
-      // await this.prepareNextRace();
-    }
-    this.simulateRace();
+
+    this.engine.simulateRace(this.race, this.endRace);
   }
 
   onStartRaceClick() {
@@ -259,7 +216,6 @@ export class Game {
       alert("Season over! Please start a new one");
       return;
     }
-    // await this.prepareNextRace();
     this.startNextRace();
   }
 
@@ -287,33 +243,31 @@ export class Game {
 
   async prepareNextRace() {
     // get next race definition from championship
-    const nextRace = this.championship.getNextRace();
+    const nextRace = this.getNextRace();
     let playerRoster = [];
-    let aiRoster = [];
+    let roster = new Roster(this);
 
     // get players from teamAI as per quotas
     switch (nextRace.raceType) {
       case "Individual":
-        aiRoster = this.aiSelectRacePlayers(nextRace);
-        playerRoster = this.aiRaceRosterDraw(aiRoster);
+        playerRoster = roster.selectRacePlayers();
         this.race = new IndividualRace();
         break;
       case "Mass-start":
-        playerRoster = this.aiSelectMassStartPlayers(nextRace);
+        playerRoster = roster.selectMassStartPlayers();
         this.race = new MassStartRace();
         break;
       case "Sprint":
-        aiRoster = this.aiSelectRacePlayers(nextRace);
-        playerRoster = this.aiRaceRosterDraw(aiRoster);
+        playerRoster = roster.selectRacePlayers();
         this.race = new SprintRace();
         break;
       case "Pursuit":
-        playerRoster = this.aiSelectPursuitPlayers(nextRace);
+        playerRoster = roster.selectPursuitPlayers();
         this.race = new PursuitRace();
         break;
       case "Relay":
-        playerRoster = this.aiSelectRelayPlayers(nextRace);
-        this.race = new RelayRace();
+        // playerRoster = this.aiSelectRelayPlayers(nextRace);
+        // this.race = new RelayRace();
         break;
       default:
         console.log("PrepareNextRace() error: Couldn't find racetype");
@@ -322,22 +276,19 @@ export class Game {
     // create new race with players list
     await this.race.initRaceData(nextRace);
     this.race.initPlayers(playerRoster);
+    this.race.userTeam = this.userTeam;
   }
 
   startNextRace() {
     // start predefined race
     const { race } = this;
     // READY!
-    oldTimeStamp = performance.now();
     this.selectedResults = 0;
     // SET!
     this.view.setupRaceView(this.race);
-    this.canvas.initRaceCanvas();
-    this.showPlayerControls();
-    this.showCurrentResults();
     // GO!!!
     this.race.status = Constants.RACE_STATUS.IN_PROGRESS;
-    requestAnimationFrame(this.runGame.bind(this));
+    this.engine.startRace(race, this.endRace);
   }
 
   endRace() {
@@ -354,7 +305,7 @@ export class Game {
       this.view.renderMenuNextEvent("Season over");
       this.showChampionshipStandings();
     } else {
-      this.view.renderMenuNextEvent(this.championship.getNextRace().name);
+      this.view.renderMenuNextEvent(this.getNextRace().name);
     }
   }
 
@@ -388,7 +339,6 @@ export class Game {
   }
 
   showTeamPlayersList(gender) {
-    const myTeam = this.getTeam(this.userTeam);
     const teamPlayers = this.players
       .filter((p) => p.team === this.userTeam && p.gender === gender)
       .map((player) => ({ ...player, points: this.championship.getPlayerPoints(player) }));
@@ -447,107 +397,27 @@ export class Game {
     return this.players.find((player) => player.id === id);
   }
 
-  // PREPARING THE ROSTER FOR NEXT RACE
-  aiRaceRosterDraw(playerRoster) {
-    const newRoster = [];
-
-    const groups = [0, 1, 2, 3].map((i) => {
-      return playerRoster.filter((p) => p.startGroup === i + 1);
-    });
-
-    for (let i = 0; i < groups.length; i++) {
-      do {
-        const index = Utils.rand(groups[i].length - 1, 0);
-        newRoster.push(groups[i].splice(index, 1)[0]);
-      } while (groups[i].length);
-    }
-
-    return newRoster;
-  }
-
-  aiSelectRacePlayers(nextRace) {
-    return this.teams
-      .map((team) => {
-        if (team.shortName === this.userTeam) {
-          return team.getNextRacePlayers();
-        } else {
-          return team.getNextRacePlayersAI(this.players, nextRace.raceGender);
-        }
-      })
-      .flat();
-  }
-
-  aiSelectRelayPlayers(nextRace) {
-    return this.teams.map((team) => {
-      return team.getNextRelayPlayers(this.players, nextRace.raceGender);
-    });
-  }
-
-  aiSelectMassStartPlayers(nextRace) {
-    const standings = this.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
-    const eligiblePlayers = standings.map((result) => {
-      return this.getPlayerById(result.id);
-    });
-
-    return eligiblePlayers;
-  }
-
-  aiSelectPursuitPlayers(nextRace) {
-    const stage = nextRace.stageName;
-    const calendar = this.championship.getRaceList();
-    const prevSprint = calendar.find((race) => {
-      return race.stageName === stage && race.raceType === "Sprint" && race.raceGender === nextRace.raceGender;
-    });
-
-    if (!prevSprint.finish) throw "ERROR: Sprint race has no results! Check race calendar";
-
-    const eligiblePlayers = prevSprint.finish.slice(0, 60).map((result) => {
-      const player = this.getPlayerById(result.id);
-      player.startTimer = result.time;
-      return player;
-    });
-
-    return eligiblePlayers;
+  getNextRace() {
+    return this.championship.getNextRace();
   }
 
   // RACE UI DOM EVENTS
   onResultSelect(event) {
     const waypointId = event.target.name;
-    this.selectedResults = +waypointId;
-    this.selectedResultsPage = 0;
-
-    this.showCurrentResults();
+    this.engine.setSelectedResultWaypoint(+waypointId);
   }
 
   onResultPageSelect(event) {
-    if (event.target.name === "next") {
-      this.selectedResultsPage++;
-    } else if (event.target.name === "prev") {
-      this.selectedResultsPage--;
-    } else {
-      this.selectedResultsPage = event.target.name;
-    }
+    this.engine.setSelectedResultPage(event.target.name);
+  }
 
-    if (this.selectedResultsPage < 0) {
-      this.selectedResultsPage = 0;
-    }
-    this.showCurrentResults();
+  onPauseClick() {
+    this.engine.pauseGame();
   }
 
   // CUSTOM SCRIPT
   customScript() {
-    const tempShootingPlayers = [
-      {
-        name: "Player 1",
-        team: "GER",
-        range: [0, 0, 0, 0, 0],
-        rangeTimer: false,
-        misses: 5,
-      },
-    ];
-
-    this.canvas.drawShootingRange(tempShootingPlayers);
-    // this.canvas.drawFlagTest();
+    this.onSimulateRaceClick();
   }
 
   // ********************************************************************

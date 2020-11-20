@@ -39,7 +39,7 @@ export class Result {
     result.timeString = Utils.convertToMinutes(result.time / 1000);
 
     this.dataObject[result.waypoint].push(result);
-    this.dataObject[result.waypoint].sort((r1, r2) => (r1.time > r2.time ? 1 : -1));
+    this.dataObject[result.waypoint].sort((r1, r2) => (r1.time >= r2.time ? 1 : -1));
     this.recalculateRelative(result.waypoint);
   }
 

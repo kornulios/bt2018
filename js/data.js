@@ -349,6 +349,8 @@ export const racesData = [
       // raceTypes.relay_women,
       raceTypes.sprint_men,
       raceTypes.sprint_women,
+      raceTypes.massStart_men,
+      raceTypes.massStart_women,
       raceTypes.pursuit_men,
       raceTypes.pursuit_women,
       // raceTypes.relay_men,

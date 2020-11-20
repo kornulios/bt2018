@@ -19,7 +19,7 @@ export class Player {
     this.accuracy = args.accuracy || Utils.rand(95, 65);
     this.strength = args.strength || Utils.rand(95, 75);
     this.stamina = args.stamina || Utils.rand(99, 30);
-    this.fatigue = 100;
+    this.fatigue = 60;
     this.technique = args.technique || Utils.rand(99, 50);
     this.points = 0;
 
@@ -122,6 +122,8 @@ export class Player {
     const fps = elapsedTime;
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
+    this.fatigue = this.fatigue - 0.075;
+
     this.distance += distancePassed;
     if (this.shootingTimer > 0) {
       this.shootingTimer -= elapsedTime;
@@ -164,13 +166,13 @@ export class Player {
   shoot(elapsedTime) {
     this.rifle.aimTime -= elapsedTime;
 
+    this.fatigue = this.fatigue + 0.125;
     if (this.rifle.aimTime > 0) {
       return false;
     }
 
     //uncomment after debugging
     this.rifle.aimTime = this.shotCount < 5 ? Utils.rand(6, 3) * 600 : Utils.rand(12, 7) * 600;
-    // this.rifle.aimTime = 3000;		// 3 - 5s
 
     //uncomment after debugging
     const nextTarget = this.shotCount >= 5 ? this.currentRange.indexOf(0) : this.shotCount;
@@ -179,7 +181,6 @@ export class Player {
     } else {
       this.setMissedNotification();
     }
-    // this.currentRange = [1, 0, 0, 1, 1];
 
     this.shotCount++;
   }

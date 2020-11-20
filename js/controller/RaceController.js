@@ -10,6 +10,7 @@ export class Race {
     this.track = new Track();
     this.results = new Result();
     this.players = [];
+    this.userTeam = null;
     this.shootingRange = [];
 
     this.id = null;
@@ -20,15 +21,6 @@ export class Race {
 
     this.raceTimer = 0;
     this.raceFinished = false;
-  }
-
-  exitShootingRange(id) {
-    const index = this.shootingRange.indexOf(id);
-    this.shootingRange.splice(index, 1);
-  }
-
-  enterShootingRange(id) {
-    this.shootingRange.push(id);
   }
 
   async initRaceData(raceData) {
@@ -46,8 +38,64 @@ export class Race {
     this.track.initTrack();
   }
 
+  exitShootingRange(id) {
+    const index = this.shootingRange.indexOf(id);
+    this.shootingRange.splice(index, 1);
+  }
+
+  enterShootingRange(id) {
+    this.shootingRange.push(id);
+  }
+
+  // RENDER RELATED
+  getPlayerCoords() {
+    const playersData = this.players.map((player) => {
+      if (player.status === Constants.PLAYER_STATUS.NOT_STARTED || player.status === Constants.PLAYER_STATUS.FINISHED) {
+        return false;
+      }
+
+      let playerData = {
+        name: player.name,
+        team: player.team,
+        number: player.number,
+        colors: player.colors,
+        status: player.status,
+      };
+
+      if (player.status === Constants.PLAYER_STATUS.PENALTY) {
+        playerData.coords = this.track.getPenaltyCoordinates(player.penalty);
+      } else {
+        playerData.coords = this.track.getCoordinates(player.distance);
+      }
+
+      return playerData;
+    });
+
+    return playersData;
+  }
+
+  getShootingPlayers() {
+    const shootingPlayers = this.shootingRange.map((playerId) => {
+      const player = this.getPlayerById(playerId);
+      return {
+        name: player.name,
+        range: player.currentRange,
+        team: player.team,
+        rangeTimer: player.shootingTimer > 0,
+        misses: player.shotCount - player.currentRange.filter((r) => r === 1).length,
+      };
+    });
+
+    return shootingPlayers;
+  }
+
+  // GETTERS
   getPlayers() {
     return this.players;
+  }
+
+  getTrack() {
+    return this.track || {};
   }
 
   getPlayerById(id) {
@@ -183,7 +231,7 @@ export class Race {
   }
 
   getRaceName() {
-    return this.stageName + ' - ' + this.name;
+    return this.stageName + " - " + this.name;
   }
 
   getRaceStatus() {
