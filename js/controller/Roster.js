@@ -69,7 +69,7 @@ export class Roster {
     const standings = game.championship.getPlayersStandings(nextRace.raceGender).slice(0, 30);
 
     const eligiblePlayers = standings.map((result) => {
-      return this.getPlayerById(result.id);
+      return this.game.getPlayerById(result.id);
     });
 
     return eligiblePlayers;
