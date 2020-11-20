@@ -173,7 +173,6 @@ export class Player {
 
     //uncomment after debugging
     this.rifle.aimTime = this.shotCount < 5 ? Utils.rand(6, 3) * 600 : Utils.rand(12, 7) * 600;
-    // this.rifle.aimTime = 3000;		// 3 - 5s
 
     //uncomment after debugging
     const nextTarget = this.shotCount >= 5 ? this.currentRange.indexOf(0) : this.shotCount;
@@ -182,7 +181,6 @@ export class Player {
     } else {
       this.setMissedNotification();
     }
-    // this.currentRange = [1, 0, 0, 1, 1];
 
     this.shotCount++;
   }
