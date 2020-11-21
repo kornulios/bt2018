@@ -55,6 +55,7 @@ export class Engine {
 
     // UPDATE
     this.race.run(gameTick * gameSpeed);
+    this.race.updatePlayerStats(gameTick * gameSpeed);
 
     // CANVAS RENDER
     const playersCoords = this.race.getPlayerCoords();
@@ -62,7 +63,7 @@ export class Engine {
     this.canvas.drawPlayersBeta(playersCoords);
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    // DOM RENDER
+    // DOM RENDER every 10 ms
     if (++tickCounter === 6) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -129,8 +130,8 @@ export class Engine {
           strength: player.strength,
           accuracy: player.accuracy,
           fatigue: player.fatigue,
+          healthState: player.healthState.name,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
           ...prevWaypointData,
         };
       });

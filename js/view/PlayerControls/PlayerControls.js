@@ -88,13 +88,19 @@ export class PlayerControls {
     ctx.fillStyle = "#193B5A";
     ctx.font = "bold italic 14px Open sans";
     ctx.textAlign = "left";
-    ctx.fillText(data.currentSpeed.toFixed(2), 156, y + 42);
+    ctx.textBaseline = "bottom"
+    ctx.fillText(data.currentSpeed.toFixed(2), 156, y + 60);
     ctx.font = "bold italic 9px Open sans";
-    ctx.fillText("km/h", 194, y + 46);
+    ctx.fillText("km/h", 194, y + 58);
+
+    // health status
+    ctx.font = "bold 10px Open sans";
+    ctx.fillText(data.healthState, 156, y + 41);
 
     // stats info
     ctx.font = "bold 10px Open sans";
     ctx.textAlign = "right";
+    ctx.textBaseline = "top"
     ctx.fillText("STR: " + data.strength, 275, y + 33);
     ctx.fillText("ACC: " + data.accuracy, 275, y + 43);
     
