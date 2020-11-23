@@ -148,11 +148,14 @@ export class Engine {
   startRace(race, onRaceEnd) {
     this.race = race;
     this.endRace = onRaceEnd;
-    oldTimeStamp = performance.now();
 
-    this.canvas.clearRaceCanvas();
+    const userPlayers = this.race.players.filter(p => p.team === this.race.userTeam);
+    
+    this.canvas.initRaceCanvas(userPlayers);
     this.showPlayerControls();
     this.showCurrentResults();
+    
+    oldTimeStamp = performance.now();
 
     requestAnimationFrame(this.runGame.bind(this));
   }

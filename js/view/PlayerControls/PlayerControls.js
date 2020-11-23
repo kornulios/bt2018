@@ -1,8 +1,19 @@
-import { PlayerBub } from "../PlayerBub/PlayerBub.js";
+import { PlayerBub } from "../PlayerBub/PlayerBub";
+import { ControlButton } from "./ControlButton";
 
 export class PlayerControls {
   constructor() {
     this.data = [];
+    this.controlButtons = [];
+  }
+
+  initControlButtons(players) {
+    // const button = new ControlButton({ ctx, x: x + 30, y: y + 45 });
+    for (let i = 0; i < players.length; i++) {
+      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 20, y: 70 * i + 45 }));
+      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 50, y: 70 * i + 45 }));
+      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 80, y: 70 * i + 45 }));
+    }
   }
 
   compareControls(newData) {
@@ -88,7 +99,7 @@ export class PlayerControls {
     ctx.fillStyle = "#193B5A";
     ctx.font = "bold italic 14px Open sans";
     ctx.textAlign = "left";
-    ctx.textBaseline = "bottom"
+    ctx.textBaseline = "bottom";
     ctx.fillText(data.currentSpeed.toFixed(2), 156, y + 60);
     ctx.font = "bold italic 9px Open sans";
     ctx.fillText("km/h", 194, y + 58);
@@ -100,15 +111,20 @@ export class PlayerControls {
     // stats info
     ctx.font = "bold 10px Open sans";
     ctx.textAlign = "right";
-    ctx.textBaseline = "top"
+    ctx.textBaseline = "top";
     ctx.fillText("STR: " + data.strength, 275, y + 33);
     ctx.fillText("ACC: " + data.accuracy, 275, y + 43);
-    
+
     // fatigue bar
     ctx.fillStyle = "#193B5A";
     ctx.fillRect(0, y + 24, 280, 5);
     ctx.fillStyle = this.getBarColorHex(data.fatigue);
     ctx.fillRect(0, y + 24, (data.fatigue * 280) / 100, 5);
+
+    //test
+    this.controlButtons.forEach((button) => {
+      button.render(ctx);
+    });
   }
 
   getBarColorHex(percent) {

@@ -198,7 +198,7 @@ export class Player {
   //REFACTOR!
 
   reset() {
-    this.runState = Constants.AI_PLAYER_RUN_STATUS.PUSHING;
+    this.runState = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
     this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
     this.fatigue = 100;
     this.distance = 0;
@@ -214,9 +214,7 @@ export class Player {
   // CHECK LATER
 
   recalculateStatus(gameTick) {
-    //FATIGUE
-    // var newSpeed = this.baseSpeed * this.speedMod * Math.pow(this.fatigue / 100, 0.33);
-    // debugger
+    //FATIGUE MODEL
     const fatigueTicks = Math.round(gameTick / 100);
     const oldHeathState = this.healthState.name;
     switch (this.runState) {

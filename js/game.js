@@ -14,7 +14,8 @@ import { View, VIEW_PANELS } from "./controller/ViewController";
 // import { Graphic2D } from "./view/Graphic2D";
 import { Championship } from "./controller/championship";
 import { Engine } from "./engine/Engine";
-import { Player } from "./model/player";
+
+import { TestModule } from "./test/TestModule";
 
 export class Game {
   constructor() {
@@ -418,29 +419,9 @@ export class Game {
 
   // CUSTOM SCRIPT
   customScript() {
-    document.querySelector("body").innerHTML = "<div>Player model test suite</div>";
-    const player = new Player(this.players[9]);
-    let frameCount = 0;
-    let tickCounter = 0;
+    const testModule = new TestModule(this);
 
-    const fps = 16.66 * 50;
-
-    do {
-      frameCount++;
-      player.run(fps);
-      player.recalculateStatus(829.749);
-
-      if (frameCount % 1000 === 0) {
-        // console.log("Dist", player.distance);
-        // console.log("FAT", player.fatigue);
-      }
-    } while (frameCount * fps < 15000 * 100);
-
-    console.log(frameCount);
-    console.log(player.distance);
-    console.log(player.fatigue);
-    console.log("MS", frameCount * fps);
-    console.log(player);
+    testModule.renderPlayerControl();
   }
 
   // ********************************************************************

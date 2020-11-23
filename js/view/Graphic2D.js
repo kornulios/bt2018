@@ -50,9 +50,10 @@ export class Graphic2D {
     this.shootingRange = new ShootingRange();
   }
 
-  clearRaceCanvas() {
+  initRaceCanvas(userPlayers) {
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
+    this.playerControls.initControlButtons(userPlayers);
   }
 
   finalFPSDrops() {
