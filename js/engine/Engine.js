@@ -5,7 +5,7 @@ import { View } from "../controller/ViewController";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 50;
+const gameSpeed = 30;
 let tickCounter = 0;
 
 export class Engine {
@@ -131,6 +131,8 @@ export class Engine {
           accuracy: player.accuracy,
           fatigue: player.fatigue,
           healthState: player.healthState.name,
+          runState: player.runState,
+          status: player.status,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
           ...prevWaypointData,
         };
@@ -190,6 +192,7 @@ export class Engine {
   onControlClick(x, y) {
     const target = this.canvas.playerControls.onControlClick(x, y);
     if (!target) return;
+    console.log('clicete', target);
     //change player behaviour
     const player = this.race.getRacePlayerById(target.id);
 
@@ -206,7 +209,7 @@ export class Engine {
       default:
         console.log("Engine.onControlClick - unknown action received");
     }
-    
+
     this.showPlayerControls();
   }
 }

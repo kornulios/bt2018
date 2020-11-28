@@ -167,17 +167,17 @@ export class Graphic2D {
   }
 
   drawPlayerControls(players) {
-    let offscreenCtx = this.offscreenControlsContext;
-    let ctx = this.controlsCtx;
+    // let offscreenCtx = this.offscreenControlsContext;
+    // let ctx = this.controlsCtx;
 
-    if (this.playerControls.compareControls(players)) {
-      return;
-    }
+    // if (this.playerControls.compareControls(players)) {
+    //   return;
+    // }
 
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.playerControls.draw(offscreenCtx, players);
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.playerControls.draw(players);
 
-    ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
+    // ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 
   drawShootingRange(players) {

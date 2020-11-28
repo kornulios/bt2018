@@ -1,5 +1,6 @@
 import { Player } from "../model/player";
 import { PlayerControls } from "../view/PlayerControls/PlayerControls";
+import ButtonSprites from "../../static/ButtonSprites.png";
 
 export class TestModule {
   constructor(config) {
@@ -13,6 +14,12 @@ export class TestModule {
     this.container.innerHTML =
       '<canvas id="test-canvas" width="600px" height="600px" style="border: 1px solid black"></canvas>';
     const ctx = document.querySelector("#test-canvas").getContext("2d");
+
+    // const img = new Image();
+    // img.src = ButtonSprites;
+    // img.onload = () => {
+    //   ctx.drawImage(img, 0, 0);
+    // };
 
     const mockPlayerData = [
       {

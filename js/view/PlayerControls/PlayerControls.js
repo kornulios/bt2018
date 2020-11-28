@@ -6,20 +6,41 @@ export class PlayerControls {
   constructor(players) {
     this.data = [];
     this.controlButtons = [];
+    this.canvas = document.querySelector("#controls-canvas");
+    this.ctx = this.canvas.getContext("2d");
 
     this._initControlButtons(players);
   }
 
   _initControlButtons(players) {
+    const buttonTop = 33;
     for (let i = 0; i < players.length; i++) {
       this.controlButtons.push(
-        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.EASY, x: 20, y: 70 * i + 45 })
+        new ControlButton({
+          ctx: this.ctx,
+          playerId: players[i].id,
+          action: Constants.PLAYER_ACTIONS.EASY,
+          x: 20,
+          y: 70 * i + buttonTop,
+        })
       );
       this.controlButtons.push(
-        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.NORMAL, x: 50, y: 70 * i + 45 })
+        new ControlButton({
+          ctx: this.ctx,
+          playerId: players[i].id,
+          action: Constants.PLAYER_ACTIONS.NORMAL,
+          x: 50,
+          y: 70 * i + buttonTop,
+        })
       );
       this.controlButtons.push(
-        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.PUSH, x: 80, y: 70 * i + 45 })
+        new ControlButton({
+          ctx: this.ctx,
+          playerId: players[i].id,
+          action: Constants.PLAYER_ACTIONS.PUSH,
+          x: 80,
+          y: 70 * i + buttonTop,
+        })
       );
     }
   }
@@ -55,11 +76,25 @@ export class PlayerControls {
     return true;
   }
 
-  draw(ctx, players) {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  draw(players) {
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    if (this.compareControls(players)) return;
+
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     for (let i = 0; i < players.length; i++) {
-      this.drawPlayerControlItem(ctx, players[i], 0, i * 70);
+      this.drawPlayerControlItem(this.ctx, players[i], 0, i * 70);
+      this.drawPlayerControlButtons(i, players[i]);
+    }
+  }
+
+  drawPlayerControlButtons(index, player) {
+    if ((player.status === Constants.PLAYER_STATUS.RUNNING || player.status === Constants.PLAYER_STATUS.SHOOTING)) {
+      for (let i = index * 3; i < index * 3 + 3; i++) {
+        const button = this.controlButtons[i];
+        const isActive = Constants.SPEED_MODIFIER_MAP[i - index * 3] === player.runState;
+        button.render(isActive);
+      }
     }
   }
 
@@ -138,11 +173,6 @@ export class PlayerControls {
     ctx.fillRect(0, y + 24, 280, 5);
     ctx.fillStyle = this._getBarColorHex(data.fatigue);
     ctx.fillRect(0, y + 24, (data.fatigue * 280) / 100, 5);
-
-    //test
-    this.controlButtons.forEach((button) => {
-      button.render(ctx);
-    });
   }
 
   _getBarColorHex(percent) {

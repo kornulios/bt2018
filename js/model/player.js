@@ -9,6 +9,7 @@ const healthStateMap = [
   { name: "Rested", modifier: 1.02, maxFatigue: 90 },
 ];
 
+
 const [EXAUSTED, TIRED, NORMAL, RESTED] = [0, 1, 2, 3];
 
 const baseFatigueLoss = 0.0025;
@@ -216,7 +217,6 @@ export class Player {
   recalculateStatus(gameTick) {
     //FATIGUE MODEL
     const fatigueTicks = Math.round(gameTick / 100);
-    const oldHeathState = this.healthState.name;
     switch (this.runState) {
       case Constants.AI_PLAYER_RUN_STATUS.EASE:
         this.fatigue -= (this.fatigueLossPerTick - this.fatigueLossPerTick * 0.4) * fatigueTicks;
@@ -235,9 +235,7 @@ export class Player {
       }
     }
 
-    // if (this.healthState.name !== oldHeathState) {
     this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
-    // }
 
     // if (this.shooting) {
     //   this.fatigue = this.fatigue * (1 + 0.0004);

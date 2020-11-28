@@ -21,6 +21,11 @@ export const GENDER = {
 };
 
 export const AI_PLAYER_RUN_STATUS = { NORMAL: 1, EASE: 0.96, PUSHING: 1.04 };
+export const SPEED_MODIFIER_MAP = [
+  AI_PLAYER_RUN_STATUS.EASE,
+  AI_PLAYER_RUN_STATUS.NORMAL,
+  AI_PLAYER_RUN_STATUS.PUSHING,
+];
 
 export const START_TIME_INTERVAL = 30; // in seconds
 export const PURSUIT_PLAYERS_NUM = 60;
@@ -48,7 +53,7 @@ export const PLAYER_ACTIONS = {
   EASY: 0,
   NORMAL: 1,
   PUSH: 2,
-}
+};
 
 // indi - 20km / 15km
 // mass - 15km / 12.5km
@@ -64,17 +69,15 @@ export const PLAYER_ACTIONS = {
 // 6km:    [0, 700, 1400, 1950, 2000,  2700, 3400, 3950, 4000,  4700, 5400, 6000]
 
 //individual / pursuit / mass start
-// export const WAYPOINTS_TYPE_1 = 
-// { 
+// export const WAYPOINTS_TYPE_1 =
+// {
 //   [GENDER.MEN]: [0, 1500, 2300, 2950, 3000, 4500, 5300, 5950, 6000, 7500, 8300, 8950, 9000, 10500, 11300, 11950, 12000, 13500, 14300, 15000],
 //   [GENDER.WOMEN]: [0, 800, 1600, 2450, 2500,  3300, 4100, 4950, 5000,   5800, 6600, 7450, 7500,  8300, 9100, 9950,  10000, 10800, 11600, 12500],
 // };
 // export const RANGE_TYPE_1 = { [GENDER.MEN]: [0, 2950, 5950, 8950, 11950], [GENDER.WOMEN]: [2450, 4950, 7450, 9950] };
 
-
-
 // // relay / sprint
-// export const WAYPOINTS_TYPE_2 = { 
+// export const WAYPOINTS_TYPE_2 = {
 //   [GENDER.WOMEN]: [0, 800, 1600, 2450, 2500, 3300, 4100, 4950, 5000, 5800, 6600, 7500],
 //   [GENDER.MEN]: [0, 1100, 2200, 3280, 3300, 4400, 5500, 6580, 6600, 7800, 8900, 10000] };
 // export const RANGE_TYPE_2 = { [GENDER.WOMEN]: [0, 2450, 4950], [GENDER.MEN]: [0, 3280, 6580] };
@@ -83,17 +86,81 @@ export const PLAYER_ACTIONS = {
 // export const RACE_TYPE_SHORT = 2;
 
 export const RACE_POINTS_MAP = [
-  60, 54, 48, 43, 40, 38, 36, 34, 32, 31, 30, 29, 
-  28, 27, 26, 25, 24, 23, 22, 21, 20, 19,
-  18, 17, 16, 15, 14, 13, 12, 11, 10, 9,
-  8, 7, 6, 5, 4, 3, 2, 1
+  60,
+  54,
+  48,
+  43,
+  40,
+  38,
+  36,
+  34,
+  32,
+  31,
+  30,
+  29,
+  28,
+  27,
+  26,
+  25,
+  24,
+  23,
+  22,
+  21,
+  20,
+  19,
+  18,
+  17,
+  16,
+  15,
+  14,
+  13,
+  12,
+  11,
+  10,
+  9,
+  8,
+  7,
+  6,
+  5,
+  4,
+  3,
+  2,
+  1,
 ];
 
 export const RELAY_POINTS_MAP = [];
 
 export const MASS_START_POINTS_MAP = [
-  60, 54, 48, 43, 40, 38, 36, 34, 32, 31,
-  30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
-  20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 1
+  60,
+  54,
+  48,
+  43,
+  40,
+  38,
+  36,
+  34,
+  32,
+  31,
+  30,
+  29,
+  28,
+  27,
+  26,
+  25,
+  24,
+  23,
+  22,
+  21,
+  20,
+  18,
+  16,
+  14,
+  12,
+  10,
+  8,
+  6,
+  4,
+  2,
+  1,
 ];
 export const NATION_POINTS_MAP = [];
