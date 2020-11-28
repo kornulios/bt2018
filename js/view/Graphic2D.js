@@ -46,14 +46,14 @@ export class Graphic2D {
     this.offscreenRangeContext = this.offRangeCanvas.getContext("2d");
 
     this.intermediateResults = new IntermediateResults();
-    this.playerControls = new PlayerControls();
+    this.playerControls = null;
     this.shootingRange = new ShootingRange();
   }
 
   initRaceCanvas(userPlayers) {
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
-    this.playerControls.initControlButtons(userPlayers);
+    this.playerControls = new PlayerControls(userPlayers);
   }
 
   finalFPSDrops() {

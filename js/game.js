@@ -417,6 +417,10 @@ export class Game {
     this.engine.pauseGame();
   }
 
+  onControlClick(x, y) {
+    this.engine.onControlClick(x, y);
+  }
+
   // CUSTOM SCRIPT
   customScript() {
     const testModule = new TestModule(this);

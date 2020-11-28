@@ -1,18 +1,35 @@
+import * as Constants from "../../constants/constants";
 import { PlayerBub } from "../PlayerBub/PlayerBub";
 import { ControlButton } from "./ControlButton";
 
 export class PlayerControls {
-  constructor() {
+  constructor(players) {
     this.data = [];
     this.controlButtons = [];
+
+    this._initControlButtons(players);
   }
 
-  initControlButtons(players) {
-    // const button = new ControlButton({ ctx, x: x + 30, y: y + 45 });
+  _initControlButtons(players) {
     for (let i = 0; i < players.length; i++) {
-      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 20, y: 70 * i + 45 }));
-      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 50, y: 70 * i + 45 }));
-      this.controlButtons.push(new ControlButton({ playerId: players[i].id, x: 80, y: 70 * i + 45 }));
+      this.controlButtons.push(
+        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.EASY, x: 20, y: 70 * i + 45 })
+      );
+      this.controlButtons.push(
+        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.NORMAL, x: 50, y: 70 * i + 45 })
+      );
+      this.controlButtons.push(
+        new ControlButton({ playerId: players[i].id, action: Constants.PLAYER_ACTIONS.PUSH, x: 80, y: 70 * i + 45 })
+      );
+    }
+  }
+
+  onControlClick(x, y) {
+    for (let i = 0; i < this.controlButtons.length; i++) {
+      const button = this.controlButtons[i];
+      if (button.isClicked(x, y)) {
+        return { id: button.playerId, action: button.action };
+      }
     }
   }
 
@@ -27,7 +44,8 @@ export class PlayerControls {
         newData[i].place !== this.data[i].place ||
         newData[i].lastWaypoint !== this.data[i].lastWaypoint ||
         newData[i].time !== this.data[i].time ||
-        newData[i].fatigue !== this.data[i].fatigue
+        newData[i].fatigue !== this.data[i].fatigue ||
+        newData[i].currentSpeed !== this.data[i].currentSpeed
       ) {
         this.data = newData;
         return false;
@@ -118,7 +136,7 @@ export class PlayerControls {
     // fatigue bar
     ctx.fillStyle = "#193B5A";
     ctx.fillRect(0, y + 24, 280, 5);
-    ctx.fillStyle = this.getBarColorHex(data.fatigue);
+    ctx.fillStyle = this._getBarColorHex(data.fatigue);
     ctx.fillRect(0, y + 24, (data.fatigue * 280) / 100, 5);
 
     //test
@@ -127,7 +145,7 @@ export class PlayerControls {
     });
   }
 
-  getBarColorHex(percent) {
+  _getBarColorHex(percent) {
     if (percent > 50) {
       const redW = (100 - percent) * 2;
       const red = (255 * redW) / 100;

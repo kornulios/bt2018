@@ -149,12 +149,12 @@ export class Engine {
     this.race = race;
     this.endRace = onRaceEnd;
 
-    const userPlayers = this.race.players.filter(p => p.team === this.race.userTeam);
-    
+    const userPlayers = this.race.players.filter((p) => p.team === this.race.userTeam);
+
     this.canvas.initRaceCanvas(userPlayers);
     this.showPlayerControls();
     this.showCurrentResults();
-    
+
     oldTimeStamp = performance.now();
 
     requestAnimationFrame(this.runGame.bind(this));
@@ -185,5 +185,28 @@ export class Engine {
       requestAnimationFrame(this.runGame.bind(this));
       button.innerText = "Pause";
     }
+  }
+
+  onControlClick(x, y) {
+    const target = this.canvas.playerControls.onControlClick(x, y);
+    if (!target) return;
+    //change player behaviour
+    const player = this.race.getRacePlayerById(target.id);
+
+    switch (target.action) {
+      case Constants.PLAYER_ACTIONS.EASY:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.EASE;
+        break;
+      case Constants.PLAYER_ACTIONS.NORMAL:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
+        break;
+      case Constants.PLAYER_ACTIONS.PUSH:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.PUSHING;
+        break;
+      default:
+        console.log("Engine.onControlClick - unknown action received");
+    }
+    
+    this.showPlayerControls();
   }
 }

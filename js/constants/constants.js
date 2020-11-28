@@ -20,7 +20,7 @@ export const GENDER = {
   WOMEN: "women",
 };
 
-export const AI_PLAYER_RUN_STATUS = { NORMAL: 1, EASE: 0.98, PUSHING: 1.02 };
+export const AI_PLAYER_RUN_STATUS = { NORMAL: 1, EASE: 0.96, PUSHING: 1.04 };
 
 export const START_TIME_INTERVAL = 30; // in seconds
 export const PURSUIT_PLAYERS_NUM = 60;
@@ -43,6 +43,12 @@ export const RACE_STATUS = {
   FINISHED: 3,
   RACE_NEXT: 4,
 };
+
+export const PLAYER_ACTIONS = {
+  EASY: 0,
+  NORMAL: 1,
+  PUSH: 2,
+}
 
 // indi - 20km / 15km
 // mass - 15km / 12.5km

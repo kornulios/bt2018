@@ -235,9 +235,9 @@ export class Player {
       }
     }
 
-    if (this.healthState.name !== oldHeathState) {
-      this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
-    }
+    // if (this.healthState.name !== oldHeathState) {
+    this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
+    // }
 
     // if (this.shooting) {
     //   this.fatigue = this.fatigue * (1 + 0.0004);

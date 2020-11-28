@@ -29,7 +29,7 @@ export class TestModule {
         lastWaypoint: "1.2km",
       },
       {
-        id: 2,
+        id: 122,
         number: 2,
         team: "ITA",
         name: "Focaccho",
@@ -42,8 +42,12 @@ export class TestModule {
         lastWaypoint: "1.9km",
       },
     ];
-    const playerControl = new PlayerControls();
-    playerControl.initControlButtons([{ id: 1 }, {id: 2}]);
+
+    const playerControl = new PlayerControls(mockPlayerData);
+
+    document.querySelector("#test-canvas").addEventListener("click", (event) => {
+      console.log(playerControl.onControlClick(event.offsetX, event.offsetY));
+    });
 
     playerControl.draw(ctx, mockPlayerData);
   }
