@@ -15,6 +15,8 @@ import { View, VIEW_PANELS } from "./controller/ViewController";
 import { Championship } from "./controller/championship";
 import { Engine } from "./engine/Engine";
 
+import { TestModule } from "./test/TestModule";
+
 export class Game {
   constructor() {
     // REDUNDANT CODE
@@ -415,9 +417,15 @@ export class Game {
     this.engine.pauseGame();
   }
 
+  onControlClick(x, y) {
+    this.engine.onControlClick(x, y);
+  }
+
   // CUSTOM SCRIPT
   customScript() {
-    this.onSimulateRaceClick();
+    const testModule = new TestModule(this);
+
+    testModule.renderPlayerControl();
   }
 
   // ********************************************************************

@@ -1,5 +1,4 @@
 //Game controller
-import { View } from "./ViewController.js";
 import { Track } from "../model/track.js";
 import { Result } from "../model/result.js";
 import * as Constants from "../constants/constants.js";
@@ -76,7 +75,7 @@ export class Race {
 
   getShootingPlayers() {
     const shootingPlayers = this.shootingRange.map((playerId) => {
-      const player = this.getPlayerById(playerId);
+      const player = this.getRacePlayerById(playerId);
       return {
         name: player.name,
         range: player.currentRange,
@@ -89,19 +88,20 @@ export class Race {
     return shootingPlayers;
   }
 
-  // GETTERS
-  getPlayers() {
-    return this.players;
-  }
-
+  // MISC GETTERS
   getTrack() {
     return this.track || {};
   }
 
-  getPlayerById(id) {
+  getRacePlayerById(id) {
     return this.players.find((player) => player.id === id);
   }
 
+  getRaceName() {
+    return this.stageName + " - " + this.name;
+  }
+
+  // RESULT LOGGING
   logPlayerResult(resultStore, player, passedWaypoint, time) {
     const payload = {
       id: player.id,
@@ -128,25 +128,9 @@ export class Race {
     resultStore.pushShootingResult(payload);
   }
 
-  get fullName() {
-    return this.stageName + " " + this.raceType + " " + this.track.getTrackLengthKm() + "km" + " " + this.raceGender;
-  }
-
-  get shortName() {
-    return this.raceType + " " + this.track.getTrackLengthKm() + "km" + " " + this.raceGender;
-  }
-
+  // RESULTS FETCH
   getFinishResult() {
     return this.results.getWaypointResults(this.track.waypointsNum() - 1);
-  }
-
-  getPlayers() {
-    return this.players;
-  }
-
-  //RESULTS FETCH
-  getResults() {
-    return this.results;
   }
 
   getWaypointResults(waypointId) {
@@ -173,21 +157,21 @@ export class Race {
     });
   }
 
-  getNextWaypointName(distance) {
-    if (distance === 0) {
-      return "";
-    }
+  // getNextWaypointName(distance) {
+  //   if (distance === 0) {
+  //     return "";
+  //   }
 
-    if (distance >= this.track.getTrackLength()) {
-      return "Finished";
-    }
+  //   if (distance >= this.track.getTrackLength()) {
+  //     return "Finished";
+  //   }
 
-    for (let i = 0; i < this.track.waypoints.length; i++) {
-      if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
-        return this.track.getWaypointName(i + 1);
-      }
-    }
-  }
+  //   for (let i = 0; i < this.track.waypoints.length; i++) {
+  //     if (this.track.waypoints[i] < distance && this.track.waypoints[i + 1] > distance) {
+  //       return this.track.getWaypointName(i + 1);
+  //     }
+  //   }
+  // }
 
   getLastWaypointName(waypointId) {
     if (waypointId === 0) {
@@ -201,6 +185,7 @@ export class Race {
     return this.track.getWaypointName(waypointId);
   }
 
+  // MOST IMPORTANT RESULTS DATA
   getLastWaypointResult(playerId, waypointId) {
     if (waypointId === 0) {
       return {
@@ -230,18 +215,24 @@ export class Race {
     return result;
   }
 
-  getRaceName() {
-    return this.stageName + " - " + this.name;
-  }
+  // getRaceStatus() {
+  //   return this.status;
+  // }
 
-  getRaceStatus() {
-    return this.status;
-  }
+  // getPlayerTime(startTime) {
+  //   if (startTime > this.raceTimer) {
+  //     return "Starting in " + Utils.convertToMinutes((startTime - this.raceTimer) / 1000);
+  //   }
+  //   return Utils.convertToMinutes((this.raceTimer - startTime) / 1000);
+  // }
 
-  getPlayerTime(startTime) {
-    if (startTime > this.raceTimer) {
-      return "Starting in " + Utils.convertToMinutes((startTime - this.raceTimer) / 1000);
+  // PLAYERS RECALC
+  updatePlayerStats(gameTick) {
+    for (let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      if(player.status === Constants.PLAYER_STATUS.RUNNING) {
+        player.recalculateStatus(gameTick);
+      }
     }
-    return Utils.convertToMinutes((this.raceTimer - startTime) / 1000);
   }
 }

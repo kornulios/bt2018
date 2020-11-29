@@ -5,7 +5,7 @@ import { View } from "../controller/ViewController";
 
 let oldTimeStamp = 0;
 const numberResultsShown = 20;
-const gameSpeed = 50;
+const gameSpeed = 30;
 let tickCounter = 0;
 
 export class Engine {
@@ -55,6 +55,7 @@ export class Engine {
 
     // UPDATE
     this.race.run(gameTick * gameSpeed);
+    this.race.updatePlayerStats(gameTick * gameSpeed);
 
     // CANVAS RENDER
     const playersCoords = this.race.getPlayerCoords();
@@ -62,7 +63,7 @@ export class Engine {
     this.canvas.drawPlayersBeta(playersCoords);
     this.canvas.drawGameTick(gameTick); // FPS counter
 
-    // DOM RENDER
+    // DOM RENDER every 10 ms
     if (++tickCounter === 6) {
       this.showCurrentResults();
       this.showPlayerControls();
@@ -129,8 +130,10 @@ export class Engine {
           strength: player.strength,
           accuracy: player.accuracy,
           fatigue: player.fatigue,
+          healthState: player.healthState.name,
+          runState: player.runState,
+          status: player.status,
           lastWaypoint: this.race.getLastWaypointName(prevWaypoint),
-          time: player.status === Constants.PLAYER_STATUS.FINISHED ? "" : this.race.getPlayerTime(player.startTimer),
           ...prevWaypointData,
         };
       });
@@ -147,11 +150,14 @@ export class Engine {
   startRace(race, onRaceEnd) {
     this.race = race;
     this.endRace = onRaceEnd;
-    oldTimeStamp = performance.now();
 
-    this.canvas.clearRaceCanvas();
+    const userPlayers = this.race.players.filter((p) => p.team === this.race.userTeam);
+
+    this.canvas.initRaceCanvas(userPlayers);
     this.showPlayerControls();
     this.showCurrentResults();
+
+    oldTimeStamp = performance.now();
 
     requestAnimationFrame(this.runGame.bind(this));
   }
@@ -181,5 +187,29 @@ export class Engine {
       requestAnimationFrame(this.runGame.bind(this));
       button.innerText = "Pause";
     }
+  }
+
+  onControlClick(x, y) {
+    const target = this.canvas.playerControls.onControlClick(x, y);
+    if (!target) return;
+    console.log('clicete', target);
+    //change player behaviour
+    const player = this.race.getRacePlayerById(target.id);
+
+    switch (target.action) {
+      case Constants.PLAYER_ACTIONS.EASY:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.EASE;
+        break;
+      case Constants.PLAYER_ACTIONS.NORMAL:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
+        break;
+      case Constants.PLAYER_ACTIONS.PUSH:
+        player.runState = Constants.AI_PLAYER_RUN_STATUS.PUSHING;
+        break;
+      default:
+        console.log("Engine.onControlClick - unknown action received");
+    }
+
+    this.showPlayerControls();
   }
 }

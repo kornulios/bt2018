@@ -2,6 +2,18 @@ import { Utils } from "../utils/Utils.js";
 import * as Constants from "../constants/constants.js";
 import { PLAYER_STATUS } from "../constants/constants.js";
 
+const healthStateMap = [
+  { name: "Exausted", modifier: 0.92, maxFatigue: 0 },
+  { name: "Tired", modifier: 0.96, maxFatigue: 30 },
+  { name: "Normal", modifier: 1, maxFatigue: 60 },
+  { name: "Rested", modifier: 1.02, maxFatigue: 90 },
+];
+
+
+const [EXAUSTED, TIRED, NORMAL, RESTED] = [0, 1, 2, 3];
+
+const baseFatigueLoss = 0.0025;
+
 export class Player {
   constructor(args) {
     //base stats
@@ -15,13 +27,13 @@ export class Player {
 
     this.baseSpeed = args.baseSpeed ? args.baseSpeed : this._getRandomSpeed();
     this.currentSpeed = this.baseSpeed;
-    // this.index = args.index;
     this.accuracy = args.accuracy || Utils.rand(95, 65);
-    this.strength = args.strength || Utils.rand(95, 75);
+    this.strength = args.strength || Utils.rand(99, 65);
     this.stamina = args.stamina || Utils.rand(99, 30);
-    this.fatigue = 60;
+    this.fatigue = 100;
     this.technique = args.technique || Utils.rand(99, 50);
     this.points = 0;
+    this.healthState = healthStateMap[RESTED];
 
     //distance related
     this.distance = 0;
@@ -42,10 +54,11 @@ export class Player {
     this.shotCount = 0;
     this.missNotification = false;
 
-    //AI related
+    //balance related
+    this.fatigueLossPerTick = baseFatigueLoss / (this.strength * 0.01);
     this.speedMod = 1;
     this.aiBehaviour = args.aiBehaviour || Constants.AI_BEHAVIOUR.NORMAL;
-    this.state = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
+    this.runState = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
   }
 
   _getRandomSpeed() {
@@ -72,7 +85,7 @@ export class Player {
       status: this.status,
       distance: this.distance.toFixed(2),
       speed: this.currentSpeed.toFixed(2),
-      stamina: this.fatigue.toFixed(2),
+      fatigue: this.fatigue.toFixed(2),
     };
   }
 
@@ -122,8 +135,6 @@ export class Player {
     const fps = elapsedTime;
     const distancePassed = (this.currentSpeed / 3600) * fps; // m/ms
 
-    this.fatigue = this.fatigue - 0.075;
-
     this.distance += distancePassed;
     if (this.shootingTimer > 0) {
       this.shootingTimer -= elapsedTime;
@@ -166,7 +177,7 @@ export class Player {
   shoot(elapsedTime) {
     this.rifle.aimTime -= elapsedTime;
 
-    this.fatigue = this.fatigue + 0.125;
+    // this.fatigue = this.fatigue + 0.125;
     if (this.rifle.aimTime > 0) {
       return false;
     }
@@ -188,7 +199,8 @@ export class Player {
   //REFACTOR!
 
   reset() {
-    this.currentSpeed = this.baseSpeed;
+    this.runState = Constants.AI_PLAYER_RUN_STATUS.NORMAL;
+    this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
     this.fatigue = 100;
     this.distance = 0;
     this.penalty = 0;
@@ -202,34 +214,38 @@ export class Player {
 
   // CHECK LATER
 
-  recalculateStatus() {
-    //FATIGUE
-    if (this.running) {
-      var newSpeed = this.baseSpeed * this.speedMod * Math.pow(this.fatigue / 100, 0.33);
-      switch (this.state) {
-        case CONSTANT.RUNSTATE.EASE:
-          this.fatigue = this.fatigue * (1 - 0.0001);
-          break;
-        case CONSTANT.RUNSTATE.NORMAL:
-          this.fatigue = this.fatigue * (1 - 0.0002);
-          break;
-        case CONSTANT.RUNSTATE.PUSHING:
-          this.fatigue = this.fatigue * (1 - 0.0004);
-          break;
+  recalculateStatus(gameTick) {
+    //FATIGUE MODEL
+    const fatigueTicks = Math.round(gameTick / 100);
+    switch (this.runState) {
+      case Constants.AI_PLAYER_RUN_STATUS.EASE:
+        this.fatigue -= (this.fatigueLossPerTick - this.fatigueLossPerTick * 0.4) * fatigueTicks;
+        break;
+      case Constants.AI_PLAYER_RUN_STATUS.NORMAL:
+        this.fatigue -= this.fatigueLossPerTick * fatigueTicks;
+        break;
+      case Constants.AI_PLAYER_RUN_STATUS.PUSHING:
+        this.fatigue -= (this.fatigueLossPerTick + this.fatigueLossPerTick * 0.4) * fatigueTicks;
+        break;
+    }
+
+    for (let i = 0; i < healthStateMap.length; i++) {
+      if (this.fatigue > healthStateMap[i].maxFatigue) {
+        this.healthState = healthStateMap[i];
       }
-
-      this.setSpeed(newSpeed);
     }
 
-    if (this.shooting) {
-      this.fatigue = this.fatigue * (1 + 0.0004);
-    }
+    this.currentSpeed = this.baseSpeed * this.healthState.modifier * this.runState;
 
-    if (debugProfiler[this.name]) {
-      debugProfiler[this.name].push([newSpeed, this.fatigue, this.currentSpeed]);
-    } else {
-      debugProfiler[this.name] = [newSpeed, this.fatigue];
-    }
+    // if (this.shooting) {
+    //   this.fatigue = this.fatigue * (1 + 0.0004);
+    // }
+
+    // if (debugProfiler[this.name]) {
+    //   debugProfiler[this.name].push([newSpeed, this.fatigue, this.currentSpeed]);
+    // } else {
+    //   debugProfiler[this.name] = [newSpeed, this.fatigue];
+    // }
   }
 
   //AI

@@ -46,13 +46,14 @@ export class Graphic2D {
     this.offscreenRangeContext = this.offRangeCanvas.getContext("2d");
 
     this.intermediateResults = new IntermediateResults();
-    this.playerControls = new PlayerControls();
+    this.playerControls = null;
     this.shootingRange = new ShootingRange();
   }
 
-  clearRaceCanvas() {
+  initRaceCanvas(userPlayers) {
     this.resultContext.clearRect(0, 0, resultCanvas.width, resultCanvas.height);
     this.controlsCtx.clearRect(0, 0, controlsCanvas.width, controlsCanvas.height);
+    this.playerControls = new PlayerControls(userPlayers);
   }
 
   finalFPSDrops() {
@@ -166,17 +167,17 @@ export class Graphic2D {
   }
 
   drawPlayerControls(players) {
-    let offscreenCtx = this.offscreenControlsContext;
-    let ctx = this.controlsCtx;
+    // let offscreenCtx = this.offscreenControlsContext;
+    // let ctx = this.controlsCtx;
 
-    if (this.playerControls.compareControls(players)) {
-      return;
-    }
+    // if (this.playerControls.compareControls(players)) {
+    //   return;
+    // }
 
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    this.playerControls.draw(offscreenCtx, players);
+    // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.playerControls.draw(players);
 
-    ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
+    // ctx.drawImage(this.offscreenControlsCanvas, 0, 0);
   }
 
   drawShootingRange(players) {
