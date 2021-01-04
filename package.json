@@ -20,7 +20,7 @@
   "homepage": "https://github.com/kornulios/bt2018#readme",
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
